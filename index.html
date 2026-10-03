@@ -53,14 +53,66 @@
         
         .badge { display: inline-block; background: linear-gradient(45deg, var(--vermelho-redplay), #ff4d4d); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(229,9,20,0.4); }
 
-        .input-container { margin-bottom: 15px; }
+        .input-container { margin-bottom: 15px; position: relative; }
 
         input { width: 100%; padding: 15px; background: rgba(0, 0, 0, 0.6); border: 2px solid #333; border-radius: 10px; color: white; font-size: 16px; text-align: center; transition: all 0.3s ease; outline: none; }
         input:focus { border-color: var(--vermelho-redplay); box-shadow: 0 0 15px rgba(229, 9, 20, 0.3); background: rgba(0, 0, 0, 0.9); }
         input::placeholder { color: #666; text-transform: uppercase; font-size: 14px; }
 
-        button { width: 100%; padding: 15px; margin-top: 10px; background: linear-gradient(90deg, var(--vermelho-redplay), var(--vermelho-escuro)); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; }
-        button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(229, 9, 20, 0.6); }
+        /* Campo de senha com botão de olho */
+        .input-senha-wrap {
+            position: relative;
+        }
+        .input-senha-wrap input {
+            padding-right: 50px; /* espaço para o olho */
+        }
+        .btn-olho {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 5px 8px;
+            width: auto;
+            margin: 0;
+            line-height: 1;
+            transition: color 0.2s;
+            border-radius: 6px;
+        }
+        .btn-olho:hover { color: var(--vermelho-redplay); transform: translateY(-50%); box-shadow: none; }
+
+        /* Checkbox "Lembrar-me" */
+        .lembrar-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .lembrar-wrap input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            padding: 0;
+            accent-color: var(--vermelho-redplay);
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .lembrar-wrap label {
+            font-size: 13px;
+            color: #bbb;
+            cursor: pointer;
+            text-transform: none;
+        }
+
+        button.btn-entrar { width: 100%; padding: 15px; margin-top: 10px; background: linear-gradient(90deg, var(--vermelho-redplay), var(--vermelho-escuro)); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; }
+        button.btn-entrar:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(229, 9, 20, 0.6); }
 
         .msg-erro { color: #ff4d4d; font-size: 13px; margin-top: 15px; font-weight: 600; opacity: 0; transition: opacity 0.3s; display: block; }
 
@@ -90,11 +142,20 @@
         <div class="input-container">
             <input type="text" id="servidor" placeholder="Utilizador">
         </div>
+
         <div class="input-container">
-            <input type="password" id="senha" placeholder="Senha" onkeypress="verificarEnter(event)">
+            <div class="input-senha-wrap">
+                <input type="password" id="senha" placeholder="Senha" onkeypress="verificarEnter(event)">
+                <button type="button" class="btn-olho" id="btn-olho" onclick="toggleSenha()" tabindex="-1">👁️</button>
+            </div>
         </div>
 
-        <button id="btn-entrar" onclick="verificarAcesso()">Conectar</button>
+        <div class="lembrar-wrap">
+            <input type="checkbox" id="lembrar">
+            <label for="lembrar">Lembrar-me</label>
+        </div>
+
+        <button id="btn-entrar" class="btn-entrar" onclick="verificarAcesso()">Conectar</button>
         
         <span id="msg-erro" class="msg-erro">Utilizador ou senha incorretos.</span>
     </div>
@@ -104,15 +165,18 @@
 
     <script>
         // ==========================================
-        // CONFIGURAÇÃO SUPABASE (JÁ PREENCHIDA)
+        // CONFIGURAÇÃO SUPABASE
         // ==========================================
         const SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // Chave para guardar credenciais no armazenamento local
+        const STORAGE_KEY = "redplay_credenciais";
+
         // ==========================================
-        // SPLASH SCREEN
+        // SPLASH SCREEN + CARREGAR CREDENCIAIS SALVAS
         // ==========================================
         window.addEventListener('load', () => {
             setTimeout(() => {
@@ -125,7 +189,16 @@
                 setTimeout(() => {
                     splash.style.display = 'none';
                     caixaLogin.classList.add('show');
-                    setTimeout(() => inputServidor.focus(), 300);
+
+                    // 🔑 Carrega credenciais salvas (se existirem)
+                    carregarCredenciaisSalvas();
+
+                    // Foca no primeiro campo vazio
+                    if (inputServidor.value) {
+                        document.getElementById("senha").focus();
+                    } else {
+                        inputServidor.focus();
+                    }
                 }, 800);
             }, 2500);
         });
@@ -134,9 +207,57 @@
         const inputSenha = document.getElementById("senha");
         const msgErro = document.getElementById("msg-erro");
         const btnEntrar = document.getElementById("btn-entrar");
+        const chkLembrar = document.getElementById("lembrar");
+        const btnOlho = document.getElementById("btn-olho");
 
         function verificarEnter(event) {
             if (event.key === "Enter") verificarAcesso();
+        }
+
+        // ==========================================
+        // MOSTRAR / ESCONDER SENHA
+        // ==========================================
+        function toggleSenha() {
+            if (inputSenha.type === "password") {
+                inputSenha.type = "text";
+                btnOlho.innerText = "🙈";
+            } else {
+                inputSenha.type = "password";
+                btnOlho.innerText = "👁️";
+            }
+        }
+
+        // ==========================================
+        // LEMBRAR-ME (localStorage)
+        // ==========================================
+        function carregarCredenciaisSalvas() {
+            try {
+                const salvo = localStorage.getItem(STORAGE_KEY);
+                if (salvo) {
+                    const dados = JSON.parse(salvo);
+                    inputServidor.value = dados.usuario || "";
+                    inputSenha.value = dados.senha || "";
+                    chkLembrar.checked = true;
+                }
+            } catch (e) {
+                console.warn("Erro ao carregar credenciais:", e);
+            }
+        }
+
+        function salvarCredenciais() {
+            if (chkLembrar.checked) {
+                const dados = {
+                    usuario: inputServidor.value.trim(),
+                    senha: inputSenha.value.trim()
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
+            } else {
+                localStorage.removeItem(STORAGE_KEY);
+            }
+        }
+
+        function limparCredenciaisSalvas() {
+            localStorage.removeItem(STORAGE_KEY);
         }
 
         // ==========================================
@@ -172,6 +293,7 @@
                 if (error) throw error;
 
                 if (!data) {
+                    limparCredenciaisSalvas(); // Limpa se senha estiver errada
                     erroLogin("Utilizador ou senha incorretos.");
                     return;
                 }
@@ -190,6 +312,9 @@
                         return;
                     }
                 }
+
+                // ✅ SUCESSO — salva credenciais se "lembrar-me" marcado
+                salvarCredenciais();
 
                 btnEntrar.classList.remove("loading");
                 btnEntrar.innerText = "CONECTADO";
