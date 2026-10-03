@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso RedPlay MAX</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vermelho-redplay: #e50914;
+            --vermelho-escuro: #b20710;
+            --fundo-preto: #000000;
+            --texto-claro: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+
+        body { background-color: var(--fundo-preto); color: var(--texto-claro); height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; }
+
+        /* TELA DE CARREGAMENTO (SPLASH SCREEN) */
+        #splash-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--fundo-preto);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease-out;
+        }
+        
+        .splash-logo {
+            width: 180px;
+            margin-bottom: 30px;
+            animation: pulseSplash 1.5s infinite alternate;
+        }
+
+        .loader {
+            border: 4px solid rgba(229, 9, 20, 0.2);
+            border-top: 4px solid var(--vermelho-redplay);
+            border-radius: 50%;
+            width: 40px; height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        /* EFEITOS DE FUNDO */
+        .bg-glow { position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, rgba(229,9,20,0.15) 0%, rgba(0,0,0,0) 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 0; animation: pulseGlow 4s infinite alternate; }
+
+        /* CAIXA DE LOGIN */
+        .login-box { position: relative; z-index: 1; background: rgba(15, 15, 15, 0.85); border: 1px solid rgba(229, 9, 20, 0.3); border-radius: 20px; padding: 40px 30px; width: 90%; max-width: 380px; text-align: center; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6); opacity: 0; transform: translateY(20px); transition: all 0.8s ease; }
+        
+        .login-box.show { opacity: 1; transform: translateY(0); }
+
+        .login-logo { width: 140px; margin-bottom: 10px; mix-blend-mode: screen; }
+        
+        .badge { display: inline-block; background: linear-gradient(45deg, var(--vermelho-redplay), #ff4d4d); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(229,9,20,0.4); }
+
+        .input-container { margin-bottom: 15px; }
+
+        input { width: 100%; padding: 15px; background: rgba(0, 0, 0, 0.6); border: 2px solid #333; border-radius: 10px; color: white; font-size: 16px; text-align: center; transition: all 0.3s ease; outline: none; }
+        input:focus { border-color: var(--vermelho-redplay); box-shadow: 0 0 15px rgba(229, 9, 20, 0.3); background: rgba(0, 0, 0, 0.9); }
+        input::placeholder { color: #666; text-transform: uppercase; font-size: 14px; }
+
+        button { width: 100%; padding: 15px; margin-top: 10px; background: linear-gradient(90deg, var(--vermelho-redplay), var(--vermelho-escuro)); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(229, 9, 20, 0.6); }
+
+        .msg-erro { color: #ff4d4d; font-size: 13px; margin-top: 15px; font-weight: 600; opacity: 0; transition: opacity 0.3s; display: block; }
+
+        @keyframes pulseSplash { from { transform: scale(0.95); opacity: 0.8; } to { transform: scale(1.05); opacity: 1; } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes pulseGlow { from { transform: translate(-50%, -50%) scale(1); opacity: 0.5; } to { transform: translate(-50%, -50%) scale(1.5); opacity: 1; } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
+        
+        .shake-animation { animation: shake 0.4s ease-in-out; border-color: #ff4d4d !important; background: rgba(255, 77, 77, 0.1) !important; }
+        .loading { pointer-events: none; opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+    <!-- TELA DE CARREGAMENTO -->
+    <div id="splash-screen">
+        <img src="download.png" alt="RedPlay Logo" class="splash-logo">
+        <div class="loader"></div>
+    </div>
+
+    <!-- FUNDO -->
+    <div class="bg-glow"></div>
+
+    <!-- CAIXA DE LOGIN -->
+    <div class="login-box" id="caixa-login">
+        <img src="download.png" alt="RedPlay" class="login-logo">
+        <br>
+        <span class="badge">V5 MAX SECURE</span>
+
+        <div class="input-container">
+            <input type="text" id="servidor" placeholder="Servidor">
+        </div>
+        <div class="input-container">
+            <input type="password" id="senha" placeholder="Senha" onkeypress="verificarEnter(event)">
+        </div>
+
+        <button id="btn-entrar" onclick="verificarAcesso()">Conectar</button>
+        
+        <span id="msg-erro" class="msg-erro">Servidor ou senha incorretos.</span>
+    </div>
+
+    <script>
+        // ==========================================
+        // ÁREA DO ADMINISTRADOR - GERENCIE NO GITHUB
+        // ==========================================
+        const serverAdmin = "Server RedPlay"; 
+        const senhaAdmin = "warzone27"; 
+
+        // Lógica de remoção da tela de carregamento após 2.5 segundos
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                const caixaLogin = document.getElementById('caixa-login');
+                
+                splash.style.opacity = '0';
+                
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    caixaLogin.classList.add('show');
+                }, 800); // Aguarda a animação de fade-out do splash terminar
+            }, 2500); // Tempo que o ecrã de carregamento fica visível
+        });
+
+        // Lógica de Verificação de Acesso
+        const inputServidor = document.getElementById("servidor");
+        const inputSenha = document.getElementById("senha");
+        const msgErro = document.getElementById("msg-erro");
+        const btnEntrar = document.getElementById("btn-entrar");
+
+        function verificarEnter(event) {
+            if (event.key === "Enter") verificarAcesso();
+        }
+
+        function verificarAcesso() {
+            let servidorDigitado = inputServidor.value;
+            let senhaDigitada = inputSenha.value;
+
+            inputServidor.classList.remove("shake-animation");
+            inputSenha.classList.remove("shake-animation");
+            msgErro.style.opacity = "0";
+            
+            btnEntrar.classList.add("loading");
+            btnEntrar.innerText = "A VERIFICAR...";
+
+            setTimeout(() => {
+                btnEntrar.classList.remove("loading");
+                btnEntrar.innerText = "CONECTAR";
+
+                if (servidorDigitado === serverAdmin && senhaDigitada === senhaAdmin) {
+                    btnEntrar.innerText = "CONECTADO";
+                    btnEntrar.style.background = "#00c853"; 
+                    
+                    setTimeout(() => {
+                        if (typeof AndroidApp !== 'undefined') {
+                            AndroidApp.liberarAcesso(); 
+                        } else {
+                            alert("Conectado com sucesso! (A testar no navegador)");
+                        }
+                    }, 500);
+
+                } else {
+                    inputServidor.classList.add("shake-animation");
+                    inputSenha.classList.add("shake-animation");
+                    msgErro.style.opacity = "1";
+                    inputSenha.value = ""; 
+                    inputSenha.focus();
+                }
+            }, 800); 
+        }
+    </script>
+</body>
+</html>
