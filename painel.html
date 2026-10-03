@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Admin - RedPlay</title>
+    <title>Painel Admin V5 - RedPlay</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -16,20 +16,19 @@
             --texto-suave: #a0a0a0;
             --verde: #00c853;
             --amarelo: #ffab00;
+            --azul: #1976d2;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
 
         body { background: var(--preto); color: var(--texto); min-height: 100vh; }
 
+        /* ============ TELA DE LOGIN ============ */
         #tela-login {
-            position: fixed;
-            inset: 0;
+            position: fixed; inset: 0;
             background: var(--preto);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; padding: 20px;
         }
         #tela-login.escondida { display: none; }
 
@@ -38,8 +37,7 @@
             padding: 50px 40px;
             border-radius: 20px;
             border: 1px solid var(--borda);
-            width: 90%;
-            max-width: 400px;
+            width: 100%; max-width: 400px;
             text-align: center;
             box-shadow: 0 20px 60px rgba(229, 9, 20, 0.15);
         }
@@ -63,6 +61,7 @@
         .login-admin button:hover { transform: scale(1.02); box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4); }
         .login-erro { color: #ff4d4d; font-size: 13px; margin-top: 15px; display: none; }
 
+        /* ============ PAINEL ============ */
         #painel-principal { display: none; }
         #painel-principal.ativo { display: block; }
 
@@ -70,6 +69,7 @@
             background: var(--painel); border-bottom: 1px solid var(--borda);
             padding: 20px 30px; display: flex; justify-content: space-between;
             align-items: center; flex-wrap: wrap; gap: 15px;
+            position: sticky; top: 0; z-index: 100;
         }
         header h1 { color: var(--vermelho); font-size: 22px; font-weight: 900; }
         header h1 span { color: white; font-weight: 400; font-size: 14px; margin-left: 10px; }
@@ -86,46 +86,100 @@
         .btn-sair { background: transparent; color: var(--texto-suave); border: 1px solid var(--borda); }
         .btn-sair:hover { color: white; border-color: var(--vermelho); }
 
+        /* ============ ESTATÍSTICAS ============ */
         .stats {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: 15px; padding: 25px 30px 0;
         }
-        .stat-card { background: var(--painel); border: 1px solid var(--borda); border-radius: 12px; padding: 20px; }
+        .stat-card {
+            background: var(--painel); border: 1px solid var(--borda);
+            border-radius: 12px; padding: 20px;
+            transition: 0.2s;
+        }
+        .stat-card:hover { border-color: var(--vermelho); transform: translateY(-3px); }
         .stat-card .num { font-size: 32px; font-weight: 900; color: var(--vermelho); }
-        .stat-card .lbl { color: var(--texto-suave); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
+        .stat-card .lbl {
+            color: var(--texto-suave); font-size: 12px;
+            text-transform: uppercase; letter-spacing: 1px; margin-top: 5px;
+        }
 
-        .toolbar { padding: 25px 30px 15px; display: flex; gap: 12px; flex-wrap: wrap; }
+        /* ============ TOOLBAR ============ */
+        .toolbar {
+            padding: 25px 30px 15px;
+            display: flex; gap: 12px; flex-wrap: wrap;
+        }
         .toolbar input, .toolbar select {
-            padding: 12px 15px; background: var(--painel); border: 1px solid var(--borda);
-            border-radius: 8px; color: white; font-size: 14px; outline: none;
+            padding: 12px 15px; background: var(--painel);
+            border: 1px solid var(--borda); border-radius: 8px;
+            color: white; font-size: 14px; outline: none;
         }
         .toolbar input { flex: 1; min-width: 200px; }
         .toolbar input:focus, .toolbar select:focus { border-color: var(--vermelho); }
 
+        /* ============ TABELA ============ */
         .tabela-wrap { padding: 0 30px 40px; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; background: var(--painel); border-radius: 12px; overflow: hidden; }
+        table {
+            width: 100%; border-collapse: collapse;
+            background: var(--painel); border-radius: 12px; overflow: hidden;
+        }
         th {
             background: #1a1a1a; padding: 15px; text-align: left;
             font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
             color: var(--texto-suave); border-bottom: 1px solid var(--borda);
+            white-space: nowrap;
         }
         td { padding: 15px; border-bottom: 1px solid var(--borda); font-size: 14px; }
         tr:last-child td { border-bottom: none; }
         tr:hover td { background: rgba(229, 9, 20, 0.05); }
 
-        .badge-status { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .badge-status {
+            display: inline-block; padding: 5px 12px;
+            border-radius: 20px; font-size: 11px; font-weight: 700;
+            text-transform: uppercase;
+        }
         .badge-ativo { background: rgba(0, 200, 83, 0.15); color: var(--verde); }
         .badge-inativo { background: rgba(229, 9, 20, 0.15); color: #ff4d4d; }
 
-        .acoes { display: flex; gap: 6px; }
-        .btn-mini { padding: 6px 10px; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
-        .btn-editar { background: #1976d2; color: white; }
+        .senha-cell {
+            display: flex; align-items: center; gap: 8px;
+        }
+        .senha-texto {
+            font-family: monospace; color: var(--texto-suave);
+            font-size: 13px; min-width: 60px;
+        }
+        .btn-olho-mini {
+            background: transparent; border: none;
+            color: #666; cursor: pointer; font-size: 14px;
+            padding: 2px 5px; border-radius: 4px;
+            transition: 0.2s;
+        }
+        .btn-olho-mini:hover { color: var(--vermelho); background: rgba(229,9,20,0.1); }
+
+        .btn-copiar {
+            background: transparent; border: none;
+            color: #666; cursor: pointer; font-size: 13px;
+            padding: 2px 5px; border-radius: 4px;
+            transition: 0.2s;
+        }
+        .btn-copiar:hover { color: var(--azul); background: rgba(25,118,210,0.1); }
+
+        .acoes { display: flex; gap: 6px; flex-wrap: wrap; }
+        .btn-mini {
+            padding: 6px 10px; border: none; border-radius: 6px;
+            font-size: 11px; font-weight: 700; cursor: pointer;
+            text-transform: uppercase; transition: 0.2s;
+            white-space: nowrap;
+        }
+        .btn-editar { background: var(--azul); color: white; }
         .btn-editar:hover { background: #0d47a1; }
         .btn-toggle { background: var(--amarelo); color: black; }
         .btn-toggle:hover { background: #ff8f00; }
         .btn-excluir { background: #c62828; color: white; }
         .btn-excluir:hover { background: #8e0000; }
+        .btn-whats { background: #25D366; color: white; }
+        .btn-whats:hover { background: #128C7E; }
 
+        /* ============ MODAL ============ */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85);
             display: none; justify-content: center; align-items: center;
@@ -137,24 +191,32 @@
             background: var(--painel); border: 1px solid var(--borda);
             border-radius: 16px; padding: 30px; width: 100%; max-width: 450px;
             animation: fadeUp 0.3s ease;
+            max-height: 90vh; overflow-y: auto;
         }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         .modal h2 { color: var(--vermelho); margin-bottom: 20px; font-size: 20px; }
-        .modal label { display: block; font-size: 12px; text-transform: uppercase; color: var(--texto-suave); margin-bottom: 6px; letter-spacing: 0.5px; }
+        .modal label {
+            display: block; font-size: 12px; text-transform: uppercase;
+            color: var(--texto-suave); margin-bottom: 6px; letter-spacing: 0.5px;
+        }
         .modal input {
             width: 100%; padding: 12px 15px; margin-bottom: 15px;
             background: #000; border: 1px solid var(--borda); border-radius: 8px;
             color: white; font-size: 14px; outline: none;
         }
         .modal input:focus { border-color: var(--vermelho); }
-        .modal .checkbox-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-        .modal .checkbox-row input { width: auto; margin: 0; }
+        .modal .checkbox-row {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+        }
+        .modal .checkbox-row input { width: auto; margin: 0; accent-color: var(--vermelho); }
+        .modal .checkbox-row label { margin: 0; text-transform: none; color: white; font-size: 14px; }
         .modal-botoes { display: flex; gap: 10px; margin-top: 10px; }
         .modal-botoes .btn { flex: 1; }
         .btn-cancelar { background: transparent; color: var(--texto-suave); border: 1px solid var(--borda); }
         .btn-cancelar:hover { color: white; border-color: var(--vermelho); }
 
+        /* ============ TOAST ============ */
         #toast {
             position: fixed; bottom: 30px; right: 30px;
             background: var(--painel); border-left: 4px solid var(--verde);
@@ -162,36 +224,43 @@
             font-size: 14px; font-weight: 600;
             transform: translateX(500px); transition: transform 0.3s ease;
             z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 90vw;
         }
         #toast.ativo { transform: translateX(0); }
         #toast.erro { border-left-color: var(--vermelho); }
 
         .vazio { text-align: center; padding: 40px; color: var(--texto-suave); font-style: italic; }
+        .loading-tabela { text-align: center; padding: 60px 20px; color: var(--texto-suave); }
 
         @media (max-width: 700px) {
             header { padding: 15px; }
+            header h1 { font-size: 18px; }
+            header h1 span { display: block; margin: 4px 0 0 0; font-size: 12px; }
             .stats, .toolbar, .tabela-wrap { padding-left: 15px; padding-right: 15px; }
             .stats { grid-template-columns: repeat(2, 1fr); }
             th, td { padding: 10px; font-size: 12px; }
             .btn-mini { padding: 5px 8px; font-size: 10px; }
+            #toast { bottom: 15px; right: 15px; left: 15px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- ============ LOGIN ADMIN ============ -->
     <div id="tela-login">
         <div class="login-admin">
             <h1>🔐 Painel Admin</h1>
-            <p>RedPlay MAX - Área Restrita</p>
+            <p>RedPlay MAX V5 - Área Restrita</p>
             <input type="password" id="senha-admin" placeholder="Senha do administrador" onkeypress="if(event.key==='Enter')entrarAdmin()">
             <button onclick="entrarAdmin()">Entrar</button>
             <span class="login-erro" id="login-erro">Senha incorreta.</span>
         </div>
     </div>
 
+    <!-- ============ PAINEL PRINCIPAL ============ -->
     <div id="painel-principal">
         <header>
-            <h1>RedPlay Admin <span>Gerenciamento de Clientes</span></h1>
+            <h1>RedPlay Admin <span>V5 - Gerenciamento de Clientes</span></h1>
             <div class="header-actions">
                 <button class="btn btn-primario" onclick="abrirModalNovo()">+ Novo Cliente</button>
                 <button class="btn btn-sair" onclick="sairAdmin()">Sair</button>
@@ -224,17 +293,18 @@
                         <th>Senha</th>
                         <th>Status</th>
                         <th>Vencimento</th>
-                        <th>Criado em</th>
+                        <th>Criado</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody id="corpo-tabela">
-                    <tr><td colspan="7" class="vazio">Carregando...</td></tr>
+                    <tr><td colspan="7" class="loading-tabela">Carregando clientes...</td></tr>
                 </tbody>
             </table>
         </div>
     </div>
 
+    <!-- ============ MODAL NOVO/EDITAR ============ -->
     <div class="modal-overlay" id="modal">
         <div class="modal">
             <h2 id="modal-titulo">Novo Cliente</h2>
@@ -251,7 +321,7 @@
 
             <div class="checkbox-row">
                 <input type="checkbox" id="edit-ativo" checked>
-                <label for="edit-ativo" style="margin: 0; text-transform: none; color: white;">Conta ativa</label>
+                <label for="edit-ativo">Conta ativa</label>
             </div>
 
             <div class="modal-botoes">
@@ -261,8 +331,10 @@
         </div>
     </div>
 
+    <!-- ============ TOAST ============ -->
     <div id="toast"></div>
 
+    <!-- BIBLIOTECA SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
@@ -275,8 +347,12 @@
         // 🔑 TROQUE ESTA SENHA!
         const SENHA_ADMIN = "admin@redplay2026";
 
+        // 📱 Número do WhatsApp (com DDI + DDD + número, sem espaços)
+        const WHATSAPP_NUMERO = "55997340723";
+
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         let clientes = [];
+        let senhasVisiveis = {}; // guarda quais senhas estão visíveis por id
 
         // ==========================================
         // LOGIN DO ADMIN
@@ -317,7 +393,7 @@
         // ==========================================
         async function carregarClientes() {
             const tbody = document.getElementById("corpo-tabela");
-            tbody.innerHTML = '<tr><td colspan="7" class="vazio">Carregando...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" class="loading-tabela">Carregando clientes...</td></tr>';
 
             const { data, error } = await supabaseClient
                 .from('utilizadores')
@@ -326,7 +402,7 @@
 
             if (error) {
                 console.error(error);
-                tbody.innerHTML = '<tr><td colspan="7" class="vazio">Erro ao carregar. Verifique a consola.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" class="vazio">Erro ao carregar. Verifique a consola (F12).</td></tr>';
                 toast("Erro ao carregar clientes", true);
                 return;
             }
@@ -336,6 +412,9 @@
             renderizarTabela();
         }
 
+        // ==========================================
+        // ESTATÍSTICAS
+        // ==========================================
         function atualizarStats() {
             const hoje = new Date(); hoje.setHours(0,0,0,0);
             document.getElementById("stat-total").innerText = clientes.length;
@@ -347,6 +426,9 @@
             }).length;
         }
 
+        // ==========================================
+        // RENDERIZAR TABELA
+        // ==========================================
         function renderizarTabela() {
             const tbody = document.getElementById("corpo-tabela");
             const busca = document.getElementById("busca").value.toLowerCase().trim();
@@ -373,12 +455,22 @@
                 const venc = c.vencimento ? formatarData(c.vencimento) : "—";
                 const vencido = c.vencimento && new Date(c.vencimento + "T00:00:00") < hoje;
                 const criado = c.created_at ? new Date(c.created_at).toLocaleDateString('pt-BR') : "—";
+                const senhaVisivel = senhasVisiveis[c.id];
+                const senhaMostrada = senhaVisivel ? escapeHtml(c.senha) : "••••••";
 
                 return `
                     <tr>
                         <td>${c.id}</td>
                         <td><strong>${escapeHtml(c.usuario)}</strong></td>
-                        <td><code style="color: var(--texto-suave);">${escapeHtml(c.senha)}</code></td>
+                        <td>
+                            <div class="senha-cell">
+                                <span class="senha-texto">${senhaMostrada}</span>
+                                <button class="btn-olho-mini" onclick="toggleSenhaTabela(${c.id})" title="${senhaVisivel ? 'Esconder' : 'Mostrar'} senha">
+                                    ${senhaVisivel ? '🙈' : '👁️'}
+                                </button>
+                                <button class="btn-copiar" onclick="copiarSenha(${c.id})" title="Copiar senha">📋</button>
+                            </div>
+                        </td>
                         <td><span class="badge-status ${c.ativo ? 'badge-ativo' : 'badge-inativo'}">${c.ativo ? 'Ativo' : 'Inativo'}</span></td>
                         <td style="${vencido ? 'color: var(--amarelo); font-weight: 700;' : ''}">${venc} ${vencido ? '⚠️' : ''}</td>
                         <td style="color: var(--texto-suave); font-size: 12px;">${criado}</td>
@@ -386,6 +478,7 @@
                             <div class="acoes">
                                 <button class="btn-mini btn-editar" onclick="abrirModalEditar(${c.id})">Editar</button>
                                 <button class="btn-mini btn-toggle" onclick="toggleAtivo(${c.id})">${c.ativo ? 'Desativar' : 'Ativar'}</button>
+                                <button class="btn-mini btn-whats" onclick="abrirWhats(${c.id})" title="Enviar credenciais no WhatsApp">💬</button>
                                 <button class="btn-mini btn-excluir" onclick="excluirCliente(${c.id})">Excluir</button>
                             </div>
                         </td>
@@ -394,6 +487,57 @@
             }).join('');
         }
 
+        // ==========================================
+        // MOSTRAR/ESCONDER SENHA NA TABELA
+        // ==========================================
+        function toggleSenhaTabela(id) {
+            senhasVisiveis[id] = !senhasVisiveis[id];
+            renderizarTabela();
+        }
+
+        // ==========================================
+        // COPIAR SENHA PARA ÁREA DE TRANSFERÊNCIA
+        // ==========================================
+        async function copiarSenha(id) {
+            const c = clientes.find(x => x.id === id);
+            if (!c) return;
+
+            try {
+                await navigator.clipboard.writeText(c.senha);
+                toast("Senha copiada!");
+            } catch (err) {
+                // Fallback para navegadores antigos
+                const input = document.createElement("input");
+                input.value = c.senha;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand("copy");
+                document.body.removeChild(input);
+                toast("Senha copiada!");
+            }
+        }
+
+        // ==========================================
+        // WHATSAPP RÁPIDO PARA O CLIENTE
+        // ==========================================
+        function abrirWhats(id) {
+            const c = clientes.find(x => x.id === id);
+            if (!c) return;
+
+            const texto = encodeURIComponent(
+                "Olá! Aqui estão suas credenciais RedPlay MAX:\n\n" +
+                "👤 Utilizador: " + c.usuario + "\n" +
+                "🔑 Senha: " + c.senha + "\n\n" +
+                "Bom entretenimento! 🎬"
+            );
+
+            // Abre o WhatsApp Web/app com uma mensagem pronta (sem número definido — você escolhe o contato)
+            window.open("https://wa.me/?text=" + texto, "_blank");
+        }
+
+        // ==========================================
+        // MODAL NOVO / EDITAR
+        // ==========================================
         function abrirModalNovo() {
             document.getElementById("modal-titulo").innerText = "Novo Cliente";
             document.getElementById("edit-id").value = "";
@@ -421,6 +565,9 @@
             document.getElementById("modal").classList.remove("ativo");
         }
 
+        // ==========================================
+        // SALVAR (CRIAR OU ATUALIZAR)
+        // ==========================================
         async function salvarCliente() {
             const id = document.getElementById("edit-id").value;
             const usuario = document.getElementById("edit-usuario").value.trim();
@@ -439,11 +586,11 @@
                 if (id) {
                     const { error } = await supabaseClient.from('utilizadores').update(payload).eq('id', id);
                     if (error) throw error;
-                    toast("Cliente atualizado!");
+                    toast("Cliente atualizado com sucesso!");
                 } else {
                     const { error } = await supabaseClient.from('utilizadores').insert([payload]);
                     if (error) throw error;
-                    toast("Cliente criado!");
+                    toast("Cliente criado com sucesso!");
                 }
                 fecharModal();
                 carregarClientes();
@@ -457,6 +604,9 @@
             }
         }
 
+        // ==========================================
+        // ATIVAR / DESATIVAR
+        // ==========================================
         async function toggleAtivo(id) {
             const c = clientes.find(x => x.id === id);
             if (!c) return;
@@ -466,16 +616,22 @@
             carregarClientes();
         }
 
+        // ==========================================
+        // EXCLUIR
+        // ==========================================
         async function excluirCliente(id) {
             const c = clientes.find(x => x.id === id);
             if (!c) return;
-            if (!confirm(`Apagar DEFINITIVAMENTE o cliente "${c.usuario}"?`)) return;
+            if (!confirm(`Apagar DEFINITIVAMENTE o cliente "${c.usuario}"?\n\nEsta ação não pode ser desfeita.`)) return;
             const { error } = await supabaseClient.from('utilizadores').delete().eq('id', id);
             if (error) { toast("Erro ao excluir.", true); return; }
             toast("Cliente excluído.");
             carregarClientes();
         }
 
+        // ==========================================
+        // UTILITÁRIOS
+        // ==========================================
         function formatarData(iso) {
             const [a, m, d] = iso.split("-");
             return `${d}/${m}/${a}`;
