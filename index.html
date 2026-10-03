@@ -17,7 +17,6 @@
 
         body { background-color: var(--fundo-preto); color: var(--texto-claro); height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; }
 
-        /* TELA DE CARREGAMENTO (SPLASH SCREEN) */
         #splash-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -44,10 +43,8 @@
             animation: spin 1s linear infinite;
         }
 
-        /* EFEITOS DE FUNDO */
         .bg-glow { position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, rgba(229,9,20,0.15) 0%, rgba(0,0,0,0) 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 0; animation: pulseGlow 4s infinite alternate; }
 
-        /* CAIXA DE LOGIN */
         .login-box { position: relative; z-index: 1; background: rgba(15, 15, 15, 0.85); border: 1px solid rgba(229, 9, 20, 0.3); border-radius: 20px; padding: 40px 30px; width: 90%; max-width: 380px; text-align: center; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6); opacity: 0; transform: translateY(20px); transition: all 0.8s ease; }
         
         .login-box.show { opacity: 1; transform: translateY(0); }
@@ -78,23 +75,20 @@
 </head>
 <body>
 
-    <!-- TELA DE CARREGAMENTO -->
     <div id="splash-screen">
         <img src="download.png" alt="RedPlay Logo" class="splash-logo">
         <div class="loader"></div>
     </div>
 
-    <!-- FUNDO -->
     <div class="bg-glow"></div>
 
-    <!-- CAIXA DE LOGIN -->
     <div class="login-box" id="caixa-login">
         <img src="download.png" alt="RedPlay" class="login-logo">
         <br>
         <span class="badge">V5 MAX SECURE</span>
 
         <div class="input-container">
-            <input type="text" id="servidor" placeholder="Servidor">
+            <input type="text" id="servidor" placeholder="Utilizador">
         </div>
         <div class="input-container">
             <input type="password" id="senha" placeholder="Senha" onkeypress="verificarEnter(event)">
@@ -102,32 +96,40 @@
 
         <button id="btn-entrar" onclick="verificarAcesso()">Conectar</button>
         
-        <span id="msg-erro" class="msg-erro">Servidor ou senha incorretos.</span>
+        <span id="msg-erro" class="msg-erro">Utilizador ou senha incorretos.</span>
     </div>
+
+    <!-- BIBLIOTECA SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
         // ==========================================
-        // ÁREA DO ADMINISTRADOR - GERENCIE NO GITHUB
+        // CONFIGURAÇÃO SUPABASE (JÁ PREENCHIDA)
         // ==========================================
-        const serverAdmin = "Server RedPlay"; 
-        const senhaAdmin = "warzone27"; 
+        const SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
 
-        // Lógica de remoção da tela de carregamento após 2.5 segundos
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ==========================================
+        // SPLASH SCREEN
+        // ==========================================
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 const caixaLogin = document.getElementById('caixa-login');
+                const inputServidor = document.getElementById("servidor");
                 
                 splash.style.opacity = '0';
                 
                 setTimeout(() => {
                     splash.style.display = 'none';
                     caixaLogin.classList.add('show');
-                }, 800); // Aguarda a animação de fade-out do splash terminar
-            }, 2500); // Tempo que o ecrã de carregamento fica visível
+                    setTimeout(() => inputServidor.focus(), 300);
+                }, 800);
+            }, 2500);
         });
 
-        // Lógica de Verificação de Acesso
         const inputServidor = document.getElementById("servidor");
         const inputSenha = document.getElementById("senha");
         const msgErro = document.getElementById("msg-erro");
@@ -137,41 +139,88 @@
             if (event.key === "Enter") verificarAcesso();
         }
 
-        function verificarAcesso() {
-            let servidorDigitado = inputServidor.value;
-            let senhaDigitada = inputSenha.value;
+        // ==========================================
+        // VERIFICAÇÃO VIA SUPABASE
+        // ==========================================
+        async function verificarAcesso() {
+            const usuarioDigitado = inputServidor.value.trim();
+            const senhaDigitada = inputSenha.value.trim();
 
             inputServidor.classList.remove("shake-animation");
             inputSenha.classList.remove("shake-animation");
             msgErro.style.opacity = "0";
-            
+
+            if (!usuarioDigitado || !senhaDigitada) {
+                inputServidor.classList.add("shake-animation");
+                inputSenha.classList.add("shake-animation");
+                msgErro.innerText = "Preencha utilizador e senha.";
+                msgErro.style.opacity = "1";
+                return;
+            }
+
             btnEntrar.classList.add("loading");
             btnEntrar.innerText = "A VERIFICAR...";
 
-            setTimeout(() => {
-                btnEntrar.classList.remove("loading");
-                btnEntrar.innerText = "CONECTAR";
+            try {
+                const { data, error } = await supabaseClient
+                    .from('utilizadores')
+                    .select('usuario, ativo, vencimento')
+                    .eq('usuario', usuarioDigitado)
+                    .eq('senha', senhaDigitada)
+                    .maybeSingle();
 
-                if (servidorDigitado === serverAdmin && senhaDigitada === senhaAdmin) {
-                    btnEntrar.innerText = "CONECTADO";
-                    btnEntrar.style.background = "#00c853"; 
-                    
-                    setTimeout(() => {
-                        if (typeof AndroidApp !== 'undefined') {
-                            AndroidApp.liberarAcesso(); 
-                        } else {
-                            alert("Conectado com sucesso! (A testar no navegador)");
-                        }
-                    }, 500);
+                if (error) throw error;
 
-                } else {
-                    inputServidor.classList.add("shake-animation");
-                    inputSenha.classList.add("shake-animation");
-                    msgErro.style.opacity = "1";
-                    inputSenha.value = ""; 
-                    inputSenha.focus();
+                if (!data) {
+                    erroLogin("Utilizador ou senha incorretos.");
+                    return;
                 }
-            }, 800); 
+
+                if (!data.ativo) {
+                    erroLogin("Conta desativada. Contacte o suporte.");
+                    return;
+                }
+
+                if (data.vencimento) {
+                    const hoje = new Date();
+                    hoje.setHours(0, 0, 0, 0);
+                    const venc = new Date(data.vencimento + "T00:00:00");
+                    if (venc < hoje) {
+                        erroLogin("Acesso expirado. Renove a sua assinatura.");
+                        return;
+                    }
+                }
+
+                btnEntrar.classList.remove("loading");
+                btnEntrar.innerText = "CONECTADO";
+                btnEntrar.style.background = "#00c853";
+
+                setTimeout(() => {
+                    if (typeof AndroidApp !== 'undefined') {
+                        AndroidApp.liberarAcesso();
+                    } else {
+                        alert("✅ Conectado com sucesso!\n\nBem-vindo, " + data.usuario + "!");
+                    }
+                }, 500);
+
+            } catch (err) {
+                console.error("Erro Supabase:", err);
+                erroLogin("Erro de conexão. Tente novamente.");
+            }
+        }
+
+        function erroLogin(mensagem) {
+            btnEntrar.classList.remove("loading");
+            btnEntrar.innerText = "CONECTAR";
+            btnEntrar.style.background = "";
+
+            inputServidor.classList.add("shake-animation");
+            inputSenha.classList.add("shake-animation");
+            msgErro.innerText = mensagem;
+            msgErro.style.opacity = "1";
+
+            inputSenha.value = "";
+            inputSenha.focus();
         }
     </script>
 </body>
