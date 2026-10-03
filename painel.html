@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - RedPlay</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vermelho: #e50914;
+            --vermelho-escuro: #b20710;
+            --preto: #0a0a0a;
+            --painel: #141414;
+            --borda: #2a2a2a;
+            --texto: #ffffff;
+            --texto-suave: #a0a0a0;
+            --verde: #00c853;
+            --amarelo: #ffab00;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+
+        body { background: var(--preto); color: var(--texto); min-height: 100vh; }
+
+        #tela-login {
+            position: fixed;
+            inset: 0;
+            background: var(--preto);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        #tela-login.escondida { display: none; }
+
+        .login-admin {
+            background: var(--painel);
+            padding: 50px 40px;
+            border-radius: 20px;
+            border: 1px solid var(--borda);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(229, 9, 20, 0.15);
+        }
+
+        .login-admin h1 { color: var(--vermelho); font-size: 26px; font-weight: 900; margin-bottom: 8px; }
+        .login-admin p { color: var(--texto-suave); font-size: 13px; margin-bottom: 30px; }
+        .login-admin input {
+            width: 100%; padding: 15px; margin-bottom: 15px;
+            background: #000; border: 2px solid var(--borda);
+            border-radius: 10px; color: white; font-size: 16px; outline: none;
+            transition: 0.2s;
+        }
+        .login-admin input:focus { border-color: var(--vermelho); box-shadow: 0 0 15px rgba(229, 9, 20, 0.3); }
+        .login-admin button {
+            width: 100%; padding: 15px;
+            background: linear-gradient(90deg, var(--vermelho), var(--vermelho-escuro));
+            color: white; border: none; border-radius: 10px;
+            font-size: 15px; font-weight: 700; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 1px; transition: 0.2s;
+        }
+        .login-admin button:hover { transform: scale(1.02); box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4); }
+        .login-erro { color: #ff4d4d; font-size: 13px; margin-top: 15px; display: none; }
+
+        #painel-principal { display: none; }
+        #painel-principal.ativo { display: block; }
+
+        header {
+            background: var(--painel); border-bottom: 1px solid var(--borda);
+            padding: 20px 30px; display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 15px;
+        }
+        header h1 { color: var(--vermelho); font-size: 22px; font-weight: 900; }
+        header h1 span { color: white; font-weight: 400; font-size: 14px; margin-left: 10px; }
+
+        .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .btn {
+            padding: 11px 20px; border: none; border-radius: 8px;
+            font-weight: 700; font-size: 13px; cursor: pointer;
+            transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .btn-primario { background: var(--vermelho); color: white; }
+        .btn-primario:hover { background: var(--vermelho-escuro); transform: translateY(-2px); }
+        .btn-sair { background: transparent; color: var(--texto-suave); border: 1px solid var(--borda); }
+        .btn-sair:hover { color: white; border-color: var(--vermelho); }
+
+        .stats {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px; padding: 25px 30px 0;
+        }
+        .stat-card { background: var(--painel); border: 1px solid var(--borda); border-radius: 12px; padding: 20px; }
+        .stat-card .num { font-size: 32px; font-weight: 900; color: var(--vermelho); }
+        .stat-card .lbl { color: var(--texto-suave); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
+
+        .toolbar { padding: 25px 30px 15px; display: flex; gap: 12px; flex-wrap: wrap; }
+        .toolbar input, .toolbar select {
+            padding: 12px 15px; background: var(--painel); border: 1px solid var(--borda);
+            border-radius: 8px; color: white; font-size: 14px; outline: none;
+        }
+        .toolbar input { flex: 1; min-width: 200px; }
+        .toolbar input:focus, .toolbar select:focus { border-color: var(--vermelho); }
+
+        .tabela-wrap { padding: 0 30px 40px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; background: var(--painel); border-radius: 12px; overflow: hidden; }
+        th {
+            background: #1a1a1a; padding: 15px; text-align: left;
+            font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
+            color: var(--texto-suave); border-bottom: 1px solid var(--borda);
+        }
+        td { padding: 15px; border-bottom: 1px solid var(--borda); font-size: 14px; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(229, 9, 20, 0.05); }
+
+        .badge-status { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .badge-ativo { background: rgba(0, 200, 83, 0.15); color: var(--verde); }
+        .badge-inativo { background: rgba(229, 9, 20, 0.15); color: #ff4d4d; }
+
+        .acoes { display: flex; gap: 6px; }
+        .btn-mini { padding: 6px 10px; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
+        .btn-editar { background: #1976d2; color: white; }
+        .btn-editar:hover { background: #0d47a1; }
+        .btn-toggle { background: var(--amarelo); color: black; }
+        .btn-toggle:hover { background: #ff8f00; }
+        .btn-excluir { background: #c62828; color: white; }
+        .btn-excluir:hover { background: #8e0000; }
+
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85);
+            display: none; justify-content: center; align-items: center;
+            z-index: 500; padding: 20px;
+        }
+        .modal-overlay.ativo { display: flex; }
+
+        .modal {
+            background: var(--painel); border: 1px solid var(--borda);
+            border-radius: 16px; padding: 30px; width: 100%; max-width: 450px;
+            animation: fadeUp 0.3s ease;
+        }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .modal h2 { color: var(--vermelho); margin-bottom: 20px; font-size: 20px; }
+        .modal label { display: block; font-size: 12px; text-transform: uppercase; color: var(--texto-suave); margin-bottom: 6px; letter-spacing: 0.5px; }
+        .modal input {
+            width: 100%; padding: 12px 15px; margin-bottom: 15px;
+            background: #000; border: 1px solid var(--borda); border-radius: 8px;
+            color: white; font-size: 14px; outline: none;
+        }
+        .modal input:focus { border-color: var(--vermelho); }
+        .modal .checkbox-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .modal .checkbox-row input { width: auto; margin: 0; }
+        .modal-botoes { display: flex; gap: 10px; margin-top: 10px; }
+        .modal-botoes .btn { flex: 1; }
+        .btn-cancelar { background: transparent; color: var(--texto-suave); border: 1px solid var(--borda); }
+        .btn-cancelar:hover { color: white; border-color: var(--vermelho); }
+
+        #toast {
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--painel); border-left: 4px solid var(--verde);
+            padding: 15px 25px; border-radius: 8px;
+            font-size: 14px; font-weight: 600;
+            transform: translateX(500px); transition: transform 0.3s ease;
+            z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        #toast.ativo { transform: translateX(0); }
+        #toast.erro { border-left-color: var(--vermelho); }
+
+        .vazio { text-align: center; padding: 40px; color: var(--texto-suave); font-style: italic; }
+
+        @media (max-width: 700px) {
+            header { padding: 15px; }
+            .stats, .toolbar, .tabela-wrap { padding-left: 15px; padding-right: 15px; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            th, td { padding: 10px; font-size: 12px; }
+            .btn-mini { padding: 5px 8px; font-size: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="tela-login">
+        <div class="login-admin">
+            <h1>🔐 Painel Admin</h1>
+            <p>RedPlay MAX - Área Restrita</p>
+            <input type="password" id="senha-admin" placeholder="Senha do administrador" onkeypress="if(event.key==='Enter')entrarAdmin()">
+            <button onclick="entrarAdmin()">Entrar</button>
+            <span class="login-erro" id="login-erro">Senha incorreta.</span>
+        </div>
+    </div>
+
+    <div id="painel-principal">
+        <header>
+            <h1>RedPlay Admin <span>Gerenciamento de Clientes</span></h1>
+            <div class="header-actions">
+                <button class="btn btn-primario" onclick="abrirModalNovo()">+ Novo Cliente</button>
+                <button class="btn btn-sair" onclick="sairAdmin()">Sair</button>
+            </div>
+        </header>
+
+        <div class="stats">
+            <div class="stat-card"><div class="num" id="stat-total">0</div><div class="lbl">Total</div></div>
+            <div class="stat-card"><div class="num" id="stat-ativos" style="color: var(--verde);">0</div><div class="lbl">Ativos</div></div>
+            <div class="stat-card"><div class="num" id="stat-inativos" style="color: #ff4d4d;">0</div><div class="lbl">Inativos</div></div>
+            <div class="stat-card"><div class="num" id="stat-vencidos" style="color: var(--amarelo);">0</div><div class="lbl">Vencidos</div></div>
+        </div>
+
+        <div class="toolbar">
+            <input type="text" id="busca" placeholder="🔍 Buscar por utilizador..." oninput="renderizarTabela()">
+            <select id="filtro" onchange="renderizarTabela()">
+                <option value="todos">Todos</option>
+                <option value="ativos">Só ativos</option>
+                <option value="inativos">Só inativos</option>
+                <option value="vencidos">Só vencidos</option>
+            </select>
+        </div>
+
+        <div class="tabela-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Utilizador</th>
+                        <th>Senha</th>
+                        <th>Status</th>
+                        <th>Vencimento</th>
+                        <th>Criado em</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="corpo-tabela">
+                    <tr><td colspan="7" class="vazio">Carregando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <h2 id="modal-titulo">Novo Cliente</h2>
+            <input type="hidden" id="edit-id">
+
+            <label>Utilizador</label>
+            <input type="text" id="edit-usuario" placeholder="ex: cliente01">
+
+            <label>Senha</label>
+            <input type="text" id="edit-senha" placeholder="ex: 123456">
+
+            <label>Vencimento (opcional)</label>
+            <input type="date" id="edit-vencimento">
+
+            <div class="checkbox-row">
+                <input type="checkbox" id="edit-ativo" checked>
+                <label for="edit-ativo" style="margin: 0; text-transform: none; color: white;">Conta ativa</label>
+            </div>
+
+            <div class="modal-botoes">
+                <button class="btn btn-cancelar" onclick="fecharModal()">Cancelar</button>
+                <button class="btn btn-primario" onclick="salvarCliente()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        // ==========================================
+        // CONFIGURAÇÃO
+        // ==========================================
+        const SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
+
+        // 🔑 TROQUE ESTA SENHA!
+        const SENHA_ADMIN = "admin@redplay2026";
+
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let clientes = [];
+
+        // ==========================================
+        // LOGIN DO ADMIN
+        // ==========================================
+        function entrarAdmin() {
+            const senha = document.getElementById("senha-admin").value;
+            const erro = document.getElementById("login-erro");
+
+            if (senha === SENHA_ADMIN) {
+                sessionStorage.setItem("admin_logado", "1");
+                document.getElementById("tela-login").classList.add("escondida");
+                document.getElementById("painel-principal").classList.add("ativo");
+                carregarClientes();
+            } else {
+                erro.style.display = "block";
+                document.getElementById("senha-admin").value = "";
+                document.getElementById("senha-admin").focus();
+            }
+        }
+
+        function sairAdmin() {
+            sessionStorage.removeItem("admin_logado");
+            location.reload();
+        }
+
+        window.addEventListener("load", () => {
+            if (sessionStorage.getItem("admin_logado") === "1") {
+                document.getElementById("tela-login").classList.add("escondida");
+                document.getElementById("painel-principal").classList.add("ativo");
+                carregarClientes();
+            } else {
+                document.getElementById("senha-admin").focus();
+            }
+        });
+
+        // ==========================================
+        // CARREGAR CLIENTES
+        // ==========================================
+        async function carregarClientes() {
+            const tbody = document.getElementById("corpo-tabela");
+            tbody.innerHTML = '<tr><td colspan="7" class="vazio">Carregando...</td></tr>';
+
+            const { data, error } = await supabaseClient
+                .from('utilizadores')
+                .select('*')
+                .order('id', { ascending: true });
+
+            if (error) {
+                console.error(error);
+                tbody.innerHTML = '<tr><td colspan="7" class="vazio">Erro ao carregar. Verifique a consola.</td></tr>';
+                toast("Erro ao carregar clientes", true);
+                return;
+            }
+
+            clientes = data || [];
+            atualizarStats();
+            renderizarTabela();
+        }
+
+        function atualizarStats() {
+            const hoje = new Date(); hoje.setHours(0,0,0,0);
+            document.getElementById("stat-total").innerText = clientes.length;
+            document.getElementById("stat-ativos").innerText = clientes.filter(c => c.ativo).length;
+            document.getElementById("stat-inativos").innerText = clientes.filter(c => !c.ativo).length;
+            document.getElementById("stat-vencidos").innerText = clientes.filter(c => {
+                if (!c.vencimento) return false;
+                return new Date(c.vencimento + "T00:00:00") < hoje;
+            }).length;
+        }
+
+        function renderizarTabela() {
+            const tbody = document.getElementById("corpo-tabela");
+            const busca = document.getElementById("busca").value.toLowerCase().trim();
+            const filtro = document.getElementById("filtro").value;
+            const hoje = new Date(); hoje.setHours(0,0,0,0);
+
+            let lista = clientes.filter(c => {
+                if (busca && !c.usuario.toLowerCase().includes(busca)) return false;
+                if (filtro === "ativos" && !c.ativo) return false;
+                if (filtro === "inativos" && c.ativo) return false;
+                if (filtro === "vencidos") {
+                    if (!c.vencimento) return false;
+                    if (new Date(c.vencimento + "T00:00:00") >= hoje) return false;
+                }
+                return true;
+            });
+
+            if (lista.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="vazio">Nenhum cliente encontrado.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = lista.map(c => {
+                const venc = c.vencimento ? formatarData(c.vencimento) : "—";
+                const vencido = c.vencimento && new Date(c.vencimento + "T00:00:00") < hoje;
+                const criado = c.created_at ? new Date(c.created_at).toLocaleDateString('pt-BR') : "—";
+
+                return `
+                    <tr>
+                        <td>${c.id}</td>
+                        <td><strong>${escapeHtml(c.usuario)}</strong></td>
+                        <td><code style="color: var(--texto-suave);">${escapeHtml(c.senha)}</code></td>
+                        <td><span class="badge-status ${c.ativo ? 'badge-ativo' : 'badge-inativo'}">${c.ativo ? 'Ativo' : 'Inativo'}</span></td>
+                        <td style="${vencido ? 'color: var(--amarelo); font-weight: 700;' : ''}">${venc} ${vencido ? '⚠️' : ''}</td>
+                        <td style="color: var(--texto-suave); font-size: 12px;">${criado}</td>
+                        <td>
+                            <div class="acoes">
+                                <button class="btn-mini btn-editar" onclick="abrirModalEditar(${c.id})">Editar</button>
+                                <button class="btn-mini btn-toggle" onclick="toggleAtivo(${c.id})">${c.ativo ? 'Desativar' : 'Ativar'}</button>
+                                <button class="btn-mini btn-excluir" onclick="excluirCliente(${c.id})">Excluir</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function abrirModalNovo() {
+            document.getElementById("modal-titulo").innerText = "Novo Cliente";
+            document.getElementById("edit-id").value = "";
+            document.getElementById("edit-usuario").value = "";
+            document.getElementById("edit-senha").value = "";
+            document.getElementById("edit-vencimento").value = "";
+            document.getElementById("edit-ativo").checked = true;
+            document.getElementById("modal").classList.add("ativo");
+            setTimeout(() => document.getElementById("edit-usuario").focus(), 100);
+        }
+
+        function abrirModalEditar(id) {
+            const c = clientes.find(x => x.id === id);
+            if (!c) return;
+            document.getElementById("modal-titulo").innerText = "Editar Cliente";
+            document.getElementById("edit-id").value = c.id;
+            document.getElementById("edit-usuario").value = c.usuario;
+            document.getElementById("edit-senha").value = c.senha;
+            document.getElementById("edit-vencimento").value = c.vencimento || "";
+            document.getElementById("edit-ativo").checked = c.ativo;
+            document.getElementById("modal").classList.add("ativo");
+        }
+
+        function fecharModal() {
+            document.getElementById("modal").classList.remove("ativo");
+        }
+
+        async function salvarCliente() {
+            const id = document.getElementById("edit-id").value;
+            const usuario = document.getElementById("edit-usuario").value.trim();
+            const senha = document.getElementById("edit-senha").value.trim();
+            const vencimento = document.getElementById("edit-vencimento").value || null;
+            const ativo = document.getElementById("edit-ativo").checked;
+
+            if (!usuario || !senha) {
+                toast("Preencha utilizador e senha.", true);
+                return;
+            }
+
+            const payload = { usuario, senha, vencimento, ativo };
+
+            try {
+                if (id) {
+                    const { error } = await supabaseClient.from('utilizadores').update(payload).eq('id', id);
+                    if (error) throw error;
+                    toast("Cliente atualizado!");
+                } else {
+                    const { error } = await supabaseClient.from('utilizadores').insert([payload]);
+                    if (error) throw error;
+                    toast("Cliente criado!");
+                }
+                fecharModal();
+                carregarClientes();
+            } catch (err) {
+                console.error(err);
+                if (err.message && err.message.includes("duplicate")) {
+                    toast("Este utilizador já existe.", true);
+                } else {
+                    toast("Erro: " + err.message, true);
+                }
+            }
+        }
+
+        async function toggleAtivo(id) {
+            const c = clientes.find(x => x.id === id);
+            if (!c) return;
+            const { error } = await supabaseClient.from('utilizadores').update({ ativo: !c.ativo }).eq('id', id);
+            if (error) { toast("Erro ao atualizar.", true); return; }
+            toast(!c.ativo ? "Cliente ativado!" : "Cliente desativado!");
+            carregarClientes();
+        }
+
+        async function excluirCliente(id) {
+            const c = clientes.find(x => x.id === id);
+            if (!c) return;
+            if (!confirm(`Apagar DEFINITIVAMENTE o cliente "${c.usuario}"?`)) return;
+            const { error } = await supabaseClient.from('utilizadores').delete().eq('id', id);
+            if (error) { toast("Erro ao excluir.", true); return; }
+            toast("Cliente excluído.");
+            carregarClientes();
+        }
+
+        function formatarData(iso) {
+            const [a, m, d] = iso.split("-");
+            return `${d}/${m}/${a}`;
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/[&<>"']/g, s => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[s]);
+        }
+
+        function toast(msg, erro = false) {
+            const t = document.getElementById("toast");
+            t.innerText = msg;
+            t.classList.toggle("erro", erro);
+            t.classList.add("ativo");
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => t.classList.remove("ativo"), 3000);
+        }
+
+        document.getElementById("modal").addEventListener("click", (e) => {
+            if (e.target.id === "modal") fecharModal();
+        });
+    </script>
+</body>
+</html>
