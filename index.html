@@ -4,19 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acesso RedPlay MAX</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --vermelho-redplay: #e50914;
-            --vermelho-escuro: #b20710;
-            --fundo-preto: #000000;
+            --vermelho-escuro: #8a040a;
+            --fundo-preto: #050505;
             --texto-claro: #ffffff;
+            --vidro: rgba(20, 20, 20, 0.6);
+            --borda-vidro: rgba(255, 255, 255, 0.08);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
 
-        body { background-color: var(--fundo-preto); color: var(--texto-claro); height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; }
+        /* Fundo Animado Premium */
+        body { 
+            background: linear-gradient(-45deg, #000000, #1a0000, #330000, #000000);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--texto-claro); 
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            overflow: hidden; 
+            position: relative; 
+        }
 
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* SplashScreen */
         #splash-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -24,80 +45,176 @@
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             z-index: 9999;
-            transition: opacity 0.8s ease-out;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
-        
         .splash-logo { width: 180px; margin-bottom: 30px; animation: pulseSplash 1.5s infinite alternate; }
+        .loader { border: 3px solid rgba(229, 9, 20, 0.1); border-top: 3px solid var(--vermelho-redplay); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
 
-        .loader { border: 4px solid rgba(229, 9, 20, 0.2); border-top: 4px solid var(--vermelho-redplay); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        /* Caixa de Login (Glassmorphism) */
+        .login-box { 
+            position: relative; z-index: 1; 
+            background: var(--vidro); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--borda-vidro); 
+            border-radius: 24px; 
+            padding: 45px 35px; 
+            width: 90%; max-width: 400px; 
+            text-align: center; 
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8); 
+            opacity: 0; transform: translateY(40px) scale(0.95); 
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); 
+        }
+        .login-box.show { opacity: 1; transform: translateY(0) scale(1); }
 
-        .bg-glow { position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, rgba(229,9,20,0.15) 0%, rgba(0,0,0,0) 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 0; animation: pulseGlow 4s infinite alternate; }
-
-        .login-box { position: relative; z-index: 1; background: rgba(15, 15, 15, 0.85); border: 1px solid rgba(229, 9, 20, 0.3); border-radius: 20px; padding: 40px 30px; width: 90%; max-width: 380px; text-align: center; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6); opacity: 0; transform: translateY(20px); transition: all 0.8s ease; }
+        .login-logo { width: 150px; margin-bottom: 5px; filter: drop-shadow(0 0 10px rgba(229,9,20,0.5)); }
         
-        .login-box.show { opacity: 1; transform: translateY(0); }
+        .badge { display: inline-block; background: linear-gradient(90deg, var(--vermelho-escuro), var(--vermelho-redplay)); font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(229,9,20,0.4); letter-spacing: 1px; text-transform: uppercase;}
 
-        .login-logo { width: 140px; margin-bottom: 10px; mix-blend-mode: screen; }
-        
-        .badge { display: inline-block; background: linear-gradient(45deg, var(--vermelho-redplay), #ff4d4d); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(229,9,20,0.4); }
-
-        .input-container { margin-bottom: 15px; position: relative; }
-
-        input { width: 100%; padding: 15px; background: rgba(0, 0, 0, 0.6); border: 2px solid #333; border-radius: 10px; color: white; font-size: 16px; text-align: center; transition: all 0.3s ease; outline: none; }
-        input:focus { border-color: var(--vermelho-redplay); box-shadow: 0 0 15px rgba(229, 9, 20, 0.3); background: rgba(0, 0, 0, 0.9); }
-        input::placeholder { color: #666; text-transform: uppercase; font-size: 14px; }
+        /* Inputs Modernos */
+        .input-container { margin-bottom: 20px; position: relative; }
+        input { 
+            width: 100%; padding: 18px 20px; 
+            background: rgba(0, 0, 0, 0.4); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 14px; color: white; 
+            font-size: 15px; text-align: center; 
+            transition: all 0.3s ease; outline: none; 
+            font-weight: 600;
+        }
+        input:focus { 
+            border-color: var(--vermelho-redplay); 
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.2); 
+            background: rgba(0, 0, 0, 0.7); 
+            transform: translateY(-2px);
+        }
+        input::placeholder { color: #888; font-weight: 400; font-size: 14px; }
 
         .input-senha-wrap { position: relative; }
         .input-senha-wrap input { padding-right: 50px; }
         .btn-olho {
-            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-            background: transparent; border: none; color: #888; font-size: 22px;
-            cursor: pointer; padding: 5px 8px; width: auto; margin: 0; line-height: 1;
-            transition: color 0.2s; border-radius: 6px;
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            background: transparent; border: none; color: #aaa; font-size: 20px;
+            cursor: pointer; transition: color 0.3s;
         }
         .btn-olho:hover { color: var(--vermelho-redplay); }
 
-        .lembrar-wrap {
-            display: flex; align-items: center; justify-content: center;
-            gap: 8px; margin-top: 5px; margin-bottom: 10px;
-            cursor: pointer; user-select: none;
+        /* Botão de Entrar Animado */
+        button.btn-entrar { 
+            width: 100%; padding: 18px; margin-top: 10px; 
+            background: linear-gradient(90deg, var(--vermelho-redplay), #ff0f1a, var(--vermelho-redplay)); 
+            background-size: 200% auto;
+            color: white; border: none; border-radius: 14px; 
+            font-size: 16px; font-weight: 900; 
+            cursor: pointer; transition: all 0.4s ease; 
+            text-transform: uppercase; letter-spacing: 2px; 
+            box-shadow: 0 10px 20px rgba(229, 9, 20, 0.3);
         }
-        .lembrar-wrap input[type="checkbox"] {
-            width: 18px; height: 18px; padding: 0;
-            accent-color: var(--vermelho-redplay); cursor: pointer;
+        button.btn-entrar:hover { 
+            background-position: right center;
+            transform: translateY(-3px); 
+            box-shadow: 0 15px 30px rgba(229, 9, 20, 0.5); 
         }
-        .lembrar-wrap label { font-size: 13px; color: #bbb; cursor: pointer; text-transform: none; }
 
-        button.btn-entrar { width: 100%; padding: 15px; margin-top: 10px; background: linear-gradient(90deg, var(--vermelho-redplay), var(--vermelho-escuro)); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; }
-        button.btn-entrar:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(229, 9, 20, 0.6); }
+        /* Link Suporte */
+        .link-suporte {
+            display: block; margin-top: 25px;
+            color: #aaa; font-size: 13px;
+            cursor: pointer; transition: 0.3s;
+            text-decoration: none;
+        }
+        .link-suporte:hover { color: white; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-        .msg-erro { color: #ff4d4d; font-size: 13px; margin-top: 15px; font-weight: 600; opacity: 0; transition: opacity 0.3s; display: block; }
+        /* Pop-up (Modal) de Suporte */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; opacity: 0; pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .modal-overlay.ativo { opacity: 1; pointer-events: auto; }
+        .modal-content {
+            background: #111; border: 1px solid var(--vermelho-redplay);
+            padding: 40px 30px; border-radius: 20px; width: 90%; max-width: 350px;
+            text-align: center; box-shadow: 0 20px 40px rgba(229,9,20,0.3);
+            transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.ativo .modal-content { transform: scale(1); }
+        .modal-content h3 { color: white; margin-bottom: 15px; font-size: 20px; }
+        .modal-content p { color: #aaa; font-size: 14px; line-height: 1.5; margin-bottom: 25px; }
+        .numero-suporte { 
+            background: #222; color: var(--vermelho-redplay); 
+            font-size: 24px; font-weight: 900; padding: 15px; 
+            border-radius: 10px; margin-bottom: 25px; letter-spacing: 2px;
+            border: 1px dashed var(--vermelho-redplay);
+        }
+        .btn-fechar-modal {
+            background: transparent; border: 2px solid #444; color: white;
+            padding: 10px 30px; border-radius: 10px; cursor: pointer; font-weight: 600;
+            transition: 0.3s; text-transform: uppercase;
+        }
+        .btn-fechar-modal:hover { background: #444; }
 
+        /* Notificações (Toast) para Erros */
+        .toast {
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            background: #ff0f1a; color: white; padding: 15px 25px;
+            border-radius: 30px; font-weight: 700; font-size: 14px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5); z-index: 2000;
+            transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .toast.show { top: 30px; }
+        .toast.sucesso { background: #00c853; }
+
+        /* Tela de Boas Vindas */
+        .welcome-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--fundo-preto); z-index: 3000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
+        }
+        .welcome-screen.ativo { opacity: 1; pointer-events: auto; }
+        .welcome-logo { width: 120px; margin-bottom: 30px; }
+        .welcome-title { font-size: 28px; font-weight: 900; color: white; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;}
+        .welcome-subtitle { font-size: 16px; color: #888; font-weight: 300; }
+        .check-animado {
+            width: 80px; height: 80px; border-radius: 50%; border: 4px solid #00c853;
+            display: flex; justify-content: center; align-items: center;
+            margin-bottom: 20px; animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .check-animado::after { content: '✓'; color: #00c853; font-size: 40px; font-weight: bold; }
+
+        /* Animações base */
         @keyframes pulseSplash { from { transform: scale(0.95); opacity: 0.8; } to { transform: scale(1.05); opacity: 1; } }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes pulseGlow { from { transform: translate(-50%, -50%) scale(1); opacity: 0.5; } to { transform: translate(-50%, -50%) scale(1.5); opacity: 1; } }
+        @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
         
         .shake-animation { animation: shake 0.4s ease-in-out; border-color: #ff4d4d !important; background: rgba(255, 77, 77, 0.1) !important; }
-        .loading { pointer-events: none; opacity: 0.7; }
+        .loading { pointer-events: none; opacity: 0.7; filter: grayscale(50%); }
+
     </style>
 </head>
 <body>
 
+    <!-- Splash Screen Inicial -->
     <div id="splash-screen">
-        <img src="download.png" alt="RedPlay Logo" class="splash-logo">
+        <img src="download.png" alt="RedPlay Logo" class="splash-logo" onerror="this.src='https://via.placeholder.com/180x60/000000/e50914?text=REDPLAY'">
         <div class="loader"></div>
     </div>
 
-    <div class="bg-glow"></div>
+    <!-- Sistema de Notificações -->
+    <div id="toast" class="toast">Mensagem de Erro</div>
 
+    <!-- Caixa de Login Principal -->
     <div class="login-box" id="caixa-login">
-        <img src="download.png" alt="RedPlay" class="login-logo">
+        <img src="download.png" alt="RedPlay" class="login-logo" onerror="this.src='https://via.placeholder.com/150x50/000000/e50914?text=REDPLAY'">
         <br>
         <span class="badge">V5 MAX SECURE</span>
 
         <div class="input-container">
-            <input type="text" id="servidor" placeholder="Utilizador">
+            <input type="text" id="servidor" placeholder="Utilizador" autocomplete="off">
         </div>
 
         <div class="input-container">
@@ -107,61 +224,90 @@
             </div>
         </div>
 
-        <div class="lembrar-wrap">
-            <input type="checkbox" id="lembrar">
-            <label for="lembrar">Lembrar-me</label>
-        </div>
-
         <button id="btn-entrar" class="btn-entrar" onclick="verificarAcesso()">Conectar</button>
         
-        <span id="msg-erro" class="msg-erro">Utilizador ou senha incorretos.</span>
+        <span class="link-suporte" onclick="abrirModal()">Ainda não tem login? Adquira já!</span>
     </div>
 
+    <!-- Pop-up (Modal) de Suporte -->
+    <div class="modal-overlay" id="modal-suporte">
+        <div class="modal-content">
+            <h3>Novo Acesso</h3>
+            <p>Ainda não tem login? Adquira agora mesmo através do nosso número oficial de suporte.</p>
+            <div class="numero-suporte">55 997340723</div>
+            <button class="btn-fechar-modal" onclick="fecharModal()">Fechar</button>
+        </div>
+    </div>
+
+    <!-- Tela de Boas Vindas Espetacular -->
+    <div class="welcome-screen" id="tela-boas-vindas">
+        <div class="check-animado"></div>
+        <h1 class="welcome-title">Bem-vindo(a)</h1>
+        <p class="welcome-subtitle" id="welcome-user">Preparando seu entretenimento...</p>
+    </div>
+
+    <!-- Script Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
         // ==========================================
-        // CONFIGURAÇÃO SUPABASE (SUAS CHAVES)
+        // CONFIGURAÇÃO SUPABASE
         // ==========================================
         const SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
-
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        const STORAGE_KEY = "redplay_credenciais";
 
+        // Referências DOM
+        const inputServidor = document.getElementById("servidor");
+        const inputSenha = document.getElementById("senha");
+        const btnEntrar = document.getElementById("btn-entrar");
+        const btnOlho = document.getElementById("btn-olho");
+        const toast = document.getElementById("toast");
+        const modalSuporte = document.getElementById("modal-suporte");
+        const telaBoasVindas = document.getElementById("tela-boas-vindas");
+
+        // Inicialização - Oculta Splash Screen
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 const caixaLogin = document.getElementById('caixa-login');
-                const inputServidor = document.getElementById("servidor");
                 
                 splash.style.opacity = '0';
+                splash.style.transform = 'scale(1.1)';
                 
                 setTimeout(() => {
                     splash.style.display = 'none';
                     caixaLogin.classList.add('show');
-                    carregarCredenciaisSalvas();
-
-                    if (inputServidor.value) {
-                        document.getElementById("senha").focus();
-                    } else {
-                        inputServidor.focus();
-                    }
+                    inputServidor.focus();
                 }, 800);
-            }, 2500);
+            }, 2000);
         });
 
-        const inputServidor = document.getElementById("servidor");
-        const inputSenha = document.getElementById("senha");
-        const msgErro = document.getElementById("msg-erro");
-        const btnEntrar = document.getElementById("btn-entrar");
-        const chkLembrar = document.getElementById("lembrar");
-        const btnOlho = document.getElementById("btn-olho");
-
-        function verificarEnter(event) {
-            if (event.key === "Enter") verificarAcesso();
+        // Função Exibir Toast (Mensagens de Erro/Sucesso flutuantes)
+        function mostrarToast(mensagem, tipo = 'erro') {
+            toast.textContent = mensagem;
+            if(tipo === 'sucesso') {
+                toast.classList.add('sucesso');
+            } else {
+                toast.classList.remove('sucesso');
+            }
+            
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
         }
 
+        // Funções do Modal de Suporte
+        function abrirModal() { modalSuporte.classList.add('ativo'); }
+        function fecharModal() { modalSuporte.classList.remove('ativo'); }
+
+        // Fechar modal clicando fora
+        modalSuporte.addEventListener('click', (e) => {
+            if (e.target === modalSuporte) fecharModal();
+        });
+
+        // Toggle Senha (Visualizar/Ocultar)
         function toggleSenha() {
             if (inputSenha.type === "password") {
                 inputSenha.type = "text";
@@ -172,49 +318,34 @@
             }
         }
 
-        function carregarCredenciaisSalvas() {
-            try {
-                const salvo = localStorage.getItem(STORAGE_KEY);
-                if (salvo) {
-                    const dados = JSON.parse(salvo);
-                    inputServidor.value = dados.usuario || "";
-                    inputSenha.value = dados.senha || "";
-                    chkLembrar.checked = true;
-                }
-            } catch (e) {
-                console.warn("Erro ao carregar credenciais:", e);
-            }
+        function verificarEnter(event) {
+            if (event.key === "Enter") verificarAcesso();
         }
 
-        function salvarCredenciais() {
-            if (chkLembrar.checked) {
-                const dados = {
-                    usuario: inputServidor.value.trim(),
-                    senha: inputSenha.value.trim()
-                };
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
-            } else {
-                localStorage.removeItem(STORAGE_KEY);
-            }
-        }
+        function erroLogin(mensagem) {
+            btnEntrar.classList.remove("loading");
+            btnEntrar.innerText = "CONECTAR";
+            
+            inputServidor.classList.add("shake-animation");
+            inputSenha.classList.add("shake-animation");
+            
+            mostrarToast(mensagem, 'erro');
+            
+            inputSenha.value = "";
+            inputSenha.focus();
 
-        function limparCredenciaisSalvas() {
-            localStorage.removeItem(STORAGE_KEY);
+            setTimeout(() => {
+                inputServidor.classList.remove("shake-animation");
+                inputSenha.classList.remove("shake-animation");
+            }, 500);
         }
 
         async function verificarAcesso() {
             const usuarioDigitado = inputServidor.value.trim();
             const senhaDigitada = inputSenha.value.trim();
 
-            inputServidor.classList.remove("shake-animation");
-            inputSenha.classList.remove("shake-animation");
-            msgErro.style.opacity = "0";
-
             if (!usuarioDigitado || !senhaDigitada) {
-                inputServidor.classList.add("shake-animation");
-                inputSenha.classList.add("shake-animation");
-                msgErro.innerText = "Preencha utilizador e senha.";
-                msgErro.style.opacity = "1";
+                erroLogin("Preencha o utilizador e a senha.");
                 return;
             }
 
@@ -232,7 +363,6 @@
                 if (error) throw error;
 
                 if (!data) {
-                    limparCredenciaisSalvas();
                     erroLogin("Utilizador ou senha incorretos.");
                     return;
                 }
@@ -252,38 +382,28 @@
                     }
                 }
 
-                salvarCredenciais();
-
+                // SUCESSO NO LOGIN
                 btnEntrar.classList.remove("loading");
                 btnEntrar.innerText = "CONECTADO";
-                btnEntrar.style.background = "#00c853";
+                
+                // Exibe Tela de Boas Vindas
+                document.getElementById('welcome-user').innerText = data.usuario;
+                telaBoasVindas.classList.add('ativo');
 
+                // Aguarda a animação antes de liberar o acesso no app
                 setTimeout(() => {
                     if (typeof AndroidApp !== 'undefined' && typeof AndroidApp.liberarAcesso === 'function') {
                         AndroidApp.liberarAcesso();
                     } else {
-                        alert("✅ Conectado com sucesso!\n\nBem-vindo, " + data.usuario + "!");
+                        // Apenas para testes no navegador
+                        console.log("Acesso liberado para:", data.usuario);
                     }
-                }, 500);
+                }, 2500); // 2.5 segundos admirando a tela de boas vindas
 
             } catch (err) {
                 console.error("Erro Supabase:", err);
-                erroLogin("Erro de conexão. Tente novamente.");
+                erroLogin("Erro de conexão. Verifique sua internet.");
             }
-        }
-
-        function erroLogin(mensagem) {
-            btnEntrar.classList.remove("loading");
-            btnEntrar.innerText = "CONECTAR";
-            btnEntrar.style.background = "";
-
-            inputServidor.classList.add("shake-animation");
-            inputSenha.classList.add("shake-animation");
-            msgErro.innerText = mensagem;
-            msgErro.style.opacity = "1";
-
-            inputSenha.value = "";
-            inputSenha.focus();
         }
     </script>
 </body>
