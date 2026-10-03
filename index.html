@@ -117,12 +117,11 @@
         <span id="msg-erro" class="msg-erro">Utilizador ou senha incorretos.</span>
     </div>
 
-    <!-- BIBLIOTECA SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
         // ==========================================
-        // CONFIGURAÇÃO SUPABASE
+        // CONFIGURAÇÃO SUPABASE (SUAS CHAVES)
         // ==========================================
         const SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
@@ -130,9 +129,6 @@
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const STORAGE_KEY = "redplay_credenciais";
 
-        // ==========================================
-        // SPLASH + CREDENCIAIS
-        // ==========================================
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
@@ -166,9 +162,6 @@
             if (event.key === "Enter") verificarAcesso();
         }
 
-        // ==========================================
-        // MOSTRAR / ESCONDER SENHA
-        // ==========================================
         function toggleSenha() {
             if (inputSenha.type === "password") {
                 inputSenha.type = "text";
@@ -179,9 +172,6 @@
             }
         }
 
-        // ==========================================
-        // LEMBRAR-ME
-        // ==========================================
         function carregarCredenciaisSalvas() {
             try {
                 const salvo = localStorage.getItem(STORAGE_KEY);
@@ -212,9 +202,6 @@
             localStorage.removeItem(STORAGE_KEY);
         }
 
-        // ==========================================
-        // VERIFICAÇÃO DE LOGIN (ÚNICA VERIFICAÇÃO)
-        // ==========================================
         async function verificarAcesso() {
             const usuarioDigitado = inputServidor.value.trim();
             const senhaDigitada = inputSenha.value.trim();
@@ -265,7 +252,6 @@
                     }
                 }
 
-                // ✅ SUCESSO
                 salvarCredenciais();
 
                 btnEntrar.classList.remove("loading");
@@ -299,7 +285,6 @@
             inputSenha.value = "";
             inputSenha.focus();
         }
-
     </script>
 </body>
 </html>
