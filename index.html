@@ -19,7 +19,7 @@
 
         body { background-color: var(--fundo-preto); color: var(--texto-claro); height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; }
 
-        /* ========== SPLASH TURBO (1.2s) ========== */
+        /* ========== SPLASH ========== */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--fundo-preto);
@@ -161,6 +161,95 @@
 
         .msg-erro { color: #ff4d4d; font-size: 13px; margin-top: 15px; font-weight: 600; opacity: 0; transition: opacity 0.3s; display: block; }
 
+        /* ========== 🎬 TELA DE BOAS-VINDAS (APÓS LOGIN) ========== */
+        #tela-boas-vindas {
+            position: fixed; inset: 0;
+            background: linear-gradient(135deg, #000000 0%, #1a0000 50%, #000000 100%);
+            z-index: 99998;
+            display: none;
+            justify-content: center; align-items: center;
+            text-align: center; padding: 30px;
+            opacity: 0; transition: opacity 0.5s ease;
+        }
+        #tela-boas-vindas.ativo { display: flex; opacity: 1; }
+        #tela-boas-vindas.saindo { opacity: 0; }
+
+        .bv-conteudo { max-width: 550px; animation: bvEntrada 0.6s ease; }
+        @keyframes bvEntrada {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .bv-emoji { font-size: 90px; margin-bottom: 15px; animation: bvPulsa 1.5s infinite alternate; }
+        @keyframes bvPulsa { from { transform: scale(1); } to { transform: scale(1.15); } }
+
+        .bv-titulo {
+            color: var(--vermelho-redplay);
+            font-size: 32px; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .bv-usuario {
+            color: #fff; font-size: 26px; font-weight: 700;
+            margin-bottom: 20px; padding: 12px 30px;
+            background: rgba(229, 9, 20, 0.15);
+            border: 2px solid rgba(229, 9, 20, 0.4);
+            border-radius: 50px; display: inline-block;
+        }
+
+        .bv-mensagem {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 22px;
+            line-height: 1.4;
+        }
+        .bv-mensagem span {
+            color: var(--vermelho-redplay);
+            font-weight: 900;
+        }
+
+        .bv-status {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 10px 22px;
+            background: rgba(0, 200, 83, 0.15);
+            border: 1px solid rgba(0, 200, 83, 0.4);
+            border-radius: 50px; margin-bottom: 20px;
+        }
+        .bv-status-icone { font-size: 20px; }
+        .bv-status-texto {
+            color: #00c853; font-size: 15px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .bv-vencimento { color: #aaa; font-size: 15px; margin-bottom: 25px; }
+        .bv-venc-label { color: #888; }
+        .bv-venc-data { color: #fff; font-weight: 700; margin-left: 5px; }
+        .bv-venc-dias {
+            display: block; margin-top: 5px;
+            color: #ffab00; font-size: 13px; font-weight: 700;
+        }
+
+        .bv-loader {
+            width: 220px; height: 4px;
+            background: rgba(229, 9, 20, 0.2);
+            border-radius: 4px; margin: 0 auto 15px;
+            overflow: hidden;
+        }
+        .bv-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--vermelho-redplay), #ff4d4d);
+            border-radius: 4px; width: 0%;
+            animation: bvCarregar 3s ease-in-out forwards;
+        }
+        @keyframes bvCarregar { from { width: 0%; } to { width: 100%; } }
+
+        .bv-msg {
+            color: #666; font-size: 13px;
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+
         /* ========== OVERLAY DE BLOQUEIO ========== */
         #overlay-bloqueio {
             position: fixed; inset: 0;
@@ -183,7 +272,7 @@
         .aviso-pagamento { color: #ffcc00; font-size: 15px; font-weight: 700; margin-bottom: 10px; }
         .aviso-suporte { color: #ff4d4d; font-weight: 700; font-size: 16px; margin-bottom: 12px; }
 
-        #overlay-bloqueio p { color: #ccc; font-size: 15px; line-height: 1.6; max-width: 500px; margin-bottom: 10px; }
+        #overlay-bloqueio p { color: #ccc; font-size: 15px; line-height: 1.6; max-width: 520px; margin-bottom: 10px; }
 
         #overlay-bloqueio .motivo {
             color: #ff4d4d; font-weight: 700; font-size: 15px;
@@ -192,6 +281,14 @@
             background: rgba(229, 9, 20, 0.1);
             border: 1px solid rgba(229, 9, 20, 0.4);
             border-radius: 10px;
+            max-width: 550px;
+        }
+
+        #overlay-bloqueio .motivo strong { color: #fff; }
+        #overlay-bloqueio .motivo code {
+            color: #ffcc00; background: rgba(0,0,0,0.4);
+            padding: 2px 8px; border-radius: 5px;
+            font-family: monospace; font-size: 14px;
         }
 
         .btn-whatsapp {
@@ -239,7 +336,7 @@
 </head>
 <body>
 
-    <!-- ========== SPLASH TURBO ========== -->
+    <!-- ========== SPLASH ========== -->
     <div id="splash-screen">
         <img src="download.png" alt="RedPlay Logo" class="splash-logo">
         <div class="loader"></div>
@@ -247,7 +344,7 @@
 
     <div class="bg-glow"></div>
 
-    <!-- ========== TELA 1: BEM-VINDO / CONDIÇÕES ========== -->
+    <!-- ========== TELA 1: BOAS-VINDAS / CONDIÇÕES ========== -->
     <div class="box hidden" id="caixa-termos">
         <span class="badge">BEM-VINDO À REDPLAY</span>
         <h1 class="termos-titulo">A Melhor TV do Brasil</h1>
@@ -286,7 +383,7 @@
             <p>Esqueça "servidor caiu". Nosso sistema <strong>multiservidor troca de fonte sozinho</strong>, automaticamente. Sua programação <strong>não para</strong> — nem em final de campeonato, nem em lançamento de série.</p>
 
             <h3>🔒 Conta Pessoal e Segura</h3>
-            <p>Sua conta é <strong>pessoal e intransferível</strong>. Para garantir a qualidade pra todos, o compartilhamento de login é bloqueado automaticamente pelo sistema.</p>
+            <p>Sua conta é <strong>pessoal e intransferível</strong>. O sistema <strong>bloqueia automaticamente</strong> login simultâneo em mais de um aparelho, garantindo a qualidade pra todos os clientes.</p>
 
             <h3>📞 Suporte Todos os Dias</h3>
             <p>Atendimento direto pelo WhatsApp, todos os dias. Qualquer dúvida, problema ou sugestão — <strong>é só chamar, respondemos rápido</strong>.</p>
@@ -332,16 +429,44 @@
         <span id="msg-erro" class="msg-erro">Utilizador ou senha incorretos.</span>
     </div>
 
+    <!-- ========== 🎬 TELA DE BOAS-VINDAS (APÓS LOGIN) ========== -->
+    <div id="tela-boas-vindas">
+        <div class="bv-conteudo">
+            <div class="bv-emoji">🎬</div>
+            <h1 class="bv-titulo">Bem-vindo!</h1>
+            <p class="bv-usuario" id="bv-usuario">cliente</p>
+
+            <p class="bv-mensagem">
+                <span>Aproveite o conteúdo RedPlay!</span>
+            </p>
+
+            <div class="bv-status" id="bv-status">
+                <span class="bv-status-icone">✅</span>
+                <span class="bv-status-texto">Conta ativa</span>
+            </div>
+
+            <div class="bv-vencimento" id="bv-vencimento" style="display: none;">
+                <span class="bv-venc-label">Vencimento:</span>
+                <span class="bv-venc-data" id="bv-data">—</span>
+                <span class="bv-venc-dias" id="bv-dias"></span>
+            </div>
+
+            <div class="bv-loader">
+                <div class="bv-bar"></div>
+            </div>
+
+            <p class="bv-msg">Preparando seu entretenimento...</p>
+        </div>
+    </div>
+
     <!-- ========== OVERLAY DE BLOQUEIO ========== -->
     <div id="overlay-bloqueio">
-        <div class="icone-bloqueio">🔒</div>
-        <h2>Acesso Bloqueado</h2>
+        <div class="icone-bloqueio" id="icone-bloqueio">🔒</div>
+        <h2 id="titulo-bloqueio">Acesso Bloqueado</h2>
 
-        <p class="aviso-pagamento">⚠️ Sua conta está inativa</p>
-        <p class="aviso-suporte">Para reativar, CONTATE O SUPORTE</p>
+        <p class="aviso-pagamento" id="aviso-principal">⚠️ Sua conta está inativa</p>
+        <p class="aviso-suporte" id="aviso-secundario">Para reativar, CONTATE O SUPORTE</p>
 
-        <p>Sua conta foi <strong style="color: #ff4d4d;">desativada</strong> ou <strong style="color: #ff4d4d;">expirada</strong>.</p>
-        <p>Fale com o suporte pelo WhatsApp para regularizar:</p>
         <div class="motivo" id="motivo-bloqueio">Conta desativada</div>
 
         <a href="https://wa.me/55997340723" target="_blank" class="btn-whatsapp" id="btn-whatsapp-bloqueio">
@@ -357,7 +482,7 @@
             ✕ Fechar aplicativo agora
         </button>
 
-        <p class="texto-contador">
+        <p class="texto-contador" id="texto-contador">
             O aplicativo será fechado automaticamente em
             <strong id="contador-fechar">25</strong>
             segundos
@@ -373,17 +498,43 @@
         // CONFIGURAÇÃO SUPABASE
         // ==========================================
         const SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzOTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
 
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // ⚠️ Se a chave acima estiver errada, o Supabase não conecta.
+        // Use a sua chave real do Supabase. A de baixo é a sua original.
+        const SUPABASE_ANON_KEY_REAL = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
+
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY_REAL);
         const STORAGE_KEY = "redplay_credenciais";
         const TERMOS_KEY = "redplay_termos_aceitos";
+        const DEVICE_KEY = "redplay_device_id";
 
         // ==========================================
-        // TURBO: SPLASH 1.2s + TERMOS SEMPRE APARECE
+        // 🔐 SESSÃO ÚNICA — GERENCIAMENTO DE DISPOSITIVO
+        // ==========================================
+        function obterDeviceId() {
+            let id = localStorage.getItem(DEVICE_KEY);
+            if (!id) {
+                id = 'DEV-' + Date.now().toString(36).toUpperCase() +
+                     '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+                localStorage.setItem(DEVICE_KEY, id);
+            }
+            return id;
+        }
+
+        function obterTipoDispositivo() {
+            const ua = navigator.userAgent.toLowerCase();
+            if (ua.includes("android tv") || ua.includes("smarttv") || ua.includes("leanback")) return "TV";
+            if (ua.includes("android")) return "Celular/Tablet";
+            if (ua.includes("iphone") || ua.includes("ipad")) return "iPhone/iPad";
+            if (ua.includes("windows") || ua.includes("mac") || ua.includes("linux")) return "Computador";
+            return "Desconhecido";
+        }
+
+        // ==========================================
+        // SPLASH + FLUXO INICIAL
         // ==========================================
         window.addEventListener('load', () => {
-            // 🧪 Modo teste: se URL tiver ?reset=1, limpa tudo
             if (window.location.search.includes('reset=1')) {
                 localStorage.clear();
                 console.log("🧪 localStorage limpo!");
@@ -395,19 +546,16 @@
 
                 setTimeout(() => {
                     splash.style.display = 'none';
-
-                    // ✅ SEMPRE mostra os termos (turbo)
                     mostrarTermos();
                 }, 400);
-            }, 1200); // 👈 Turbo: 1.2s ao invés de 2.5s
+            }, 1200);
         });
 
         // ==========================================
         // NAVEGAÇÃO
         // ==========================================
         function mostrarTermos() {
-            const box = document.getElementById('caixa-termos');
-            box.classList.remove('hidden');
+            document.getElementById('caixa-termos').classList.remove('hidden');
         }
 
         function mostrarLogin() {
@@ -519,7 +667,7 @@
             try {
                 const { data, error } = await supabaseClient
                     .from('utilizadores')
-                    .select('usuario, ativo, vencimento')
+                    .select('usuario, ativo, vencimento, device_id, device_nome, ultimo_acesso')
                     .eq('usuario', usuarioDigitado)
                     .eq('senha', senhaDigitada)
                     .maybeSingle();
@@ -533,7 +681,11 @@
                 }
 
                 if (!data.ativo) {
-                    bloquearEFechar("Sua conta foi desativada pelo administrador.");
+                    bloquearEFechar(
+                        "Sua conta foi desativada pelo administrador.",
+                        "⚠️ Sua conta está inativa",
+                        "Para reativar, CONTATE O SUPORTE"
+                    );
                     return;
                 }
 
@@ -542,10 +694,39 @@
                     hoje.setHours(0, 0, 0, 0);
                     const venc = new Date(data.vencimento + "T00:00:00");
                     if (venc < hoje) {
-                        bloquearEFechar("Sua assinatura venceu em " + formatarData(data.vencimento) + ".");
+                        bloquearEFechar(
+                            "Sua assinatura venceu em " + formatarData(data.vencimento) + ".",
+                            "⚠️ Sua assinatura venceu",
+                            "Para renovar, CONTATE O SUPORTE"
+                        );
                         return;
                     }
                 }
+
+                // 🔐 VERIFICA SESSÃO ÚNICA
+                const deviceIdAtual = obterDeviceId();
+                const deviceNome = obterTipoDispositivo();
+
+                if (data.device_id && data.device_id !== deviceIdAtual) {
+                    // Já está logado em outro dispositivo
+                    mostrarJaLogado(
+                        data.device_nome || 'Desconhecido',
+                        data.device_id,
+                        data.ultimo_acesso
+                    );
+                    return;
+                }
+
+                // ✅ GRAVA O DEVICE ATUAL
+                await supabaseClient
+                    .from('utilizadores')
+                    .update({
+                        device_id: deviceIdAtual,
+                        device_nome: deviceNome,
+                        ultimo_acesso: new Date().toISOString(),
+                        session_token: 'TKN-' + Date.now()
+                    })
+                    .eq('usuario', usuarioDigitado);
 
                 // ✅ SUCESSO
                 salvarCredenciais();
@@ -555,12 +736,8 @@
                 btnEntrar.style.background = "#00c853";
 
                 setTimeout(() => {
-                    if (typeof AndroidApp !== 'undefined' && typeof AndroidApp.liberarAcesso === 'function') {
-                        AndroidApp.liberarAcesso();
-                    } else {
-                        alert("✅ Conectado com sucesso!\n\nBem-vindo, " + data.usuario + "!");
-                    }
-                }, 300); // 👈 Turbo: 300ms ao invés de 500ms
+                    mostrarBoasVindas(data.usuario, data.vencimento);
+                }, 300);
 
             } catch (err) {
                 console.error("Erro Supabase:", err);
@@ -583,21 +760,76 @@
         }
 
         // ==========================================
-        // BLOQUEIO E FECHAMENTO AUTOMÁTICO (25s)
+        // 🎬 TELA DE BOAS-VINDAS (APÓS LOGIN)
         // ==========================================
-        function bloquearEFechar(motivo) {
+        function mostrarBoasVindas(usuario, vencimento) {
+            const tela = document.getElementById('tela-boas-vindas');
+
+            document.getElementById('bv-usuario').innerText = usuario;
+
+            if (vencimento) {
+                const hoje = new Date();
+                hoje.setHours(0, 0, 0, 0);
+                const venc = new Date(vencimento + "T00:00:00");
+                const dias = Math.floor((venc - hoje) / (1000 * 60 * 60 * 24));
+
+                document.getElementById('bv-data').innerText = formatarData(vencimento);
+
+                const diasEl = document.getElementById('bv-dias');
+                if (dias <= 5) {
+                    diasEl.innerText = `⚠️ Vence em ${dias} dia${dias !== 1 ? 's' : ''}!`;
+                    diasEl.style.color = '#ff4d4d';
+                } else if (dias <= 15) {
+                    diasEl.innerText = `Vence em ${dias} dias`;
+                    diasEl.style.color = '#ffab00';
+                } else {
+                    diasEl.innerText = `Acesso por mais ${dias} dias`;
+                    diasEl.style.color = '#00c853';
+                }
+
+                document.getElementById('bv-vencimento').style.display = 'block';
+            } else {
+                document.getElementById('bv-vencimento').style.display = 'none';
+            }
+
+            tela.classList.add('ativo');
+
+            setTimeout(() => {
+                tela.classList.add('saindo');
+
+                setTimeout(() => {
+                    tela.classList.remove('ativo');
+                    tela.classList.remove('saindo');
+
+                    if (typeof AndroidApp !== 'undefined' && typeof AndroidApp.liberarAcesso === 'function') {
+                        AndroidApp.liberarAcesso();
+                    } else {
+                        alert("✅ Bem-vindo, " + usuario + "! Aproveite o conteúdo RedPlay.");
+                    }
+                }, 500);
+            }, 3000);
+        }
+
+        // ==========================================
+        // 🚫 BLOQUEIO GERAL (inativo / vencido)
+        // ==========================================
+        function bloquearEFechar(motivo, aviso1, aviso2) {
             limparCredenciaisSalvas();
 
-            document.getElementById("motivo-bloqueio").innerText = motivo;
+            document.getElementById('icone-bloqueio').innerText = '🔒';
+            document.getElementById('titulo-bloqueio').innerText = 'Acesso Bloqueado';
+            document.getElementById('aviso-principal').innerText = aviso1 || '⚠️ Sua conta está inativa';
+            document.getElementById('aviso-secundario').innerText = aviso2 || 'Para reativar, CONTATE O SUPORTE';
+            document.getElementById('motivo-bloqueio').innerText = motivo;
 
             const texto = encodeURIComponent("Olá! Minha conta RedPlay foi bloqueada. Motivo: " + motivo + ". Podem me ajudar?");
-            document.getElementById("btn-whatsapp-bloqueio").href = "https://wa.me/55997340723?text=" + texto;
+            document.getElementById('btn-whatsapp-bloqueio').href = "https://wa.me/55997340723?text=" + texto;
 
-            document.getElementById("overlay-bloqueio").classList.add("ativo");
+            document.getElementById('texto-contador').style.display = 'block';
+            document.getElementById('overlay-bloqueio').classList.add('ativo');
 
             let segundos = 25;
-            const contador = document.getElementById("contador-fechar");
-
+            const contador = document.getElementById('contador-fechar');
             if (contador) contador.innerText = segundos;
 
             const intervalo = setInterval(() => {
@@ -611,6 +843,39 @@
             }, 1000);
         }
 
+        // ==========================================
+        // 🚫 JÁ LOGADO EM OUTRO DISPOSITIVO
+        // (não fecha — só mostra a mensagem e o WhatsApp)
+        // ==========================================
+        function mostrarJaLogado(deviceNome, deviceId, ultimoAcesso) {
+            document.getElementById('icone-bloqueio').innerText = '📱';
+            document.getElementById('titulo-bloqueio').innerText = 'Você já está logado';
+            document.getElementById('aviso-principal').innerText = '⚠️ Conta ativa em outro dispositivo';
+            document.getElementById('aviso-secundario').innerText = 'Para usar aqui, libere com o suporte';
+
+            const dataAcesso = ultimoAcesso
+                ? new Date(ultimoAcesso).toLocaleString('pt-BR')
+                : 'desconhecida';
+
+            document.getElementById('motivo-bloqueio').innerHTML =
+                `Sua conta já está ativa em:<br>` +
+                `<strong>${deviceNome}</strong><br>` +
+                `ID: <code>${deviceId || 'sem ID'}</code><br>` +
+                `Último acesso: ${dataAcesso}`;
+
+            const texto = encodeURIComponent(
+                `Olá! Estou tentando logar minha conta RedPlay em outro aparelho, mas aparece "já logado em ${deviceNome} (${deviceId})". Podem liberar para eu usar nesta TV?`
+            );
+            document.getElementById('btn-whatsapp-bloqueio').href = "https://wa.me/55997340723?text=" + texto;
+
+            // Esconde o contador (não fecha)
+            document.getElementById('texto-contador').style.display = 'none';
+            document.getElementById('overlay-bloqueio').classList.add('ativo');
+        }
+
+        // ==========================================
+        // FECHAR APP
+        // ==========================================
         function fecharApp() {
             console.log("🔴 Fechando o app...");
 
