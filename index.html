@@ -6,7 +6,7 @@
     <title>RedPlay</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --vermelho-redplay: #e50914;
@@ -14,9 +14,7 @@
             --fundo-preto: #000000;
             --texto-claro: #ffffff;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif; }
-
         body { background-color: var(--fundo-preto); color: var(--texto-claro); height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; }
 
         /* ========== SPLASH ========== */
@@ -28,7 +26,6 @@
         }
         .splash-logo { width: 180px; margin-bottom: 30px; }
         .loader { border: 4px solid rgba(229, 9, 20, 0.2); border-top: 4px solid var(--vermelho-redplay); border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; }
-
         .bg-glow { position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, rgba(229,9,20,0.15) 0%, rgba(0,0,0,0) 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 0; }
 
         /* ========== CAIXA PADRÃO ========== */
@@ -41,13 +38,10 @@
             width: 90%; max-width: 620px;
             text-align: center;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-            max-height: 92vh;
-            overflow-y: auto;
+            max-height: 92vh; overflow-y: auto;
         }
         .box.hidden { display: none; }
-
         .login-logo { width: 140px; margin-bottom: 10px; mix-blend-mode: screen; }
-
         .badge {
             display: inline-block;
             background: linear-gradient(45deg, var(--vermelho-redplay), #ff4d4d);
@@ -58,19 +52,8 @@
         }
 
         /* ========== TERMOS ========== */
-        .termos-titulo {
-            color: var(--vermelho-redplay);
-            font-size: 22px; font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 6px;
-        }
-        .termos-sub {
-            color: #888; font-size: 12px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+        .termos-titulo { color: var(--vermelho-redplay); font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+        .termos-sub { color: #888; font-size: 12px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
         .termos-scroll {
             background: #000; border: 1px solid #2a2a2a;
             border-radius: 12px; padding: 20px 22px;
@@ -81,37 +64,18 @@
         .termos-scroll::-webkit-scrollbar { width: 6px; }
         .termos-scroll::-webkit-scrollbar-track { background: #1a1a1a; border-radius: 3px; }
         .termos-scroll::-webkit-scrollbar-thumb { background: var(--vermelho-redplay); border-radius: 3px; }
-
-        .termos-scroll h3 {
-            color: #fff; font-size: 14px;
-            text-transform: uppercase; letter-spacing: 1px;
-            margin-top: 16px; margin-bottom: 6px;
-        }
+        .termos-scroll h3 { color: #fff; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-top: 16px; margin-bottom: 6px; }
         .termos-scroll h3:first-child { margin-top: 0; }
         .termos-scroll p { margin-bottom: 8px; }
         .termos-scroll strong { color: #fff; }
         .termos-scroll ul { padding-left: 20px; margin-bottom: 8px; list-style: none; }
         .termos-scroll li { margin-bottom: 5px; }
-
-        .check-termo {
-            display: flex; align-items: center; justify-content: center;
-            gap: 10px; margin-bottom: 15px;
-            cursor: pointer; user-select: none;
-            padding: 12px; border-radius: 10px;
-        }
-        .check-termo input[type="checkbox"] {
-            width: 22px; height: 22px;
-            accent-color: var(--vermelho-redplay);
-            cursor: pointer;
-        }
-        .check-termo label {
-            font-size: 13px; color: #ddd;
-            cursor: pointer; font-weight: 600;
-        }
+        .check-termo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px; cursor: pointer; user-select: none; padding: 12px; border-radius: 10px; }
+        .check-termo input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--vermelho-redplay); cursor: pointer; }
+        .check-termo label { font-size: 13px; color: #ddd; cursor: pointer; font-weight: 600; }
 
         /* ========== INPUTS ========== */
         .input-container { margin-bottom: 15px; position: relative; }
-
         input {
             width: 100%; padding: 15px;
             background: rgba(0, 0, 0, 0.6);
@@ -126,7 +90,6 @@
             background: rgba(0, 0, 0, 0.9);
         }
         input::placeholder { color: #666; text-transform: uppercase; font-size: 14px; }
-
         .input-senha-wrap { position: relative; }
         .input-senha-wrap input { padding-right: 50px; }
         .btn-olho {
@@ -135,16 +98,8 @@
             cursor: pointer; padding: 5px 8px; line-height: 1;
         }
         .btn-olho:hover { color: var(--vermelho-redplay); }
-
-        .lembrar-wrap {
-            display: flex; align-items: center; justify-content: center;
-            gap: 8px; margin-top: 5px; margin-bottom: 10px;
-            cursor: pointer;
-        }
-        .lembrar-wrap input[type="checkbox"] {
-            width: 18px; height: 18px;
-            accent-color: var(--vermelho-redplay); cursor: pointer;
-        }
+        .lembrar-wrap { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 5px; margin-bottom: 10px; cursor: pointer; }
+        .lembrar-wrap input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--vermelho-redplay); cursor: pointer; }
         .lembrar-wrap label { font-size: 13px; color: #bbb; cursor: pointer; }
 
         /* ========== BOTÕES ========== */
@@ -158,58 +113,38 @@
         }
         button.btn-principal:hover:not(:disabled) { transform: translateY(-2px); }
         button.btn-principal:disabled { opacity: 0.4; cursor: not-allowed; }
-
         .msg-erro { color: #ff4d4d; font-size: 13px; margin-top: 15px; font-weight: 600; opacity: 0; transition: opacity 0.3s; display: block; }
 
-        /* ========== 🎬 TELA DE BOAS-VINDAS (MARCANTE E DISCRETA) ========== */
+        /* ========== TELA DE BOAS-VINDAS (APÓS LOGIN) ========== */
         #tela-boas-vindas {
             position: fixed; inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 99998;
-            display: none;
+            background: linear-gradient(135deg, #000000 0%, #1a0000 50%, #000000 100%);
+            z-index: 99998; display: none;
             justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 0.3s ease;
+            text-align: center; padding: 30px;
+            opacity: 0; transition: opacity 0.5s ease;
         }
         #tela-boas-vindas.ativo { display: flex; opacity: 1; }
         #tela-boas-vindas.saindo { opacity: 0; }
-
-        .bv-card {
-            background: linear-gradient(145deg, #121212 0%, #050505 100%);
-            border: 1px solid rgba(229, 9, 20, 0.4);
-            border-left: 4px solid var(--vermelho-redplay);
-            border-radius: 16px;
-            padding: 25px 35px;
-            width: 90%; max-width: 440px;
-            text-align: left;
-            box-shadow: 0 20px 50px rgba(229, 9, 20, 0.25);
-            animation: bvSuave 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes bvSuave {
-            from { opacity: 0; transform: translateY(15px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .bv-topo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .bv-tag { font-size: 10px; font-weight: 900; letter-spacing: 2px; color: var(--vermelho-redplay); text-transform: uppercase; }
-        .bv-ponto-ativo { width: 8px; height: 8px; background: #00c853; border-radius: 50%; box-shadow: 0 0 8px #00c853; }
-
-        .bv-saudacao { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 4px; }
-        .bv-usuario-txt { color: var(--vermelho-redplay); }
-        .bv-subtitulo { font-size: 13px; color: #aaa; margin-bottom: 18px; font-weight: 400; }
-
-        .bv-info-vencimento {
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 10px 14px; border-radius: 8px; font-size: 12px;
-        }
-        .bv-lbl { color: #888; }
-        .bv-val { color: #fff; font-weight: 700; }
-        .bv-dias-tag { font-weight: 700; margin-left: 8px; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
-
-        .bv-progresso-bar { width: 100%; height: 2px; background: rgba(255,255,255,0.1); margin-top: 15px; overflow: hidden; border-radius: 2px; }
-        .bv-progresso-fill { height: 100%; background: var(--vermelho-redplay); width: 0%; animation: bvCarregar 1.8s linear forwards; }
+        .bv-conteudo { max-width: 550px; animation: bvEntrada 0.6s ease; }
+        @keyframes bvEntrada { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .bv-emoji { font-size: 90px; margin-bottom: 15px; animation: bvPulsa 1.5s infinite alternate; }
+        @keyframes bvPulsa { from { transform: scale(1); } to { transform: scale(1.15); } }
+        .bv-titulo { color: var(--vermelho-redplay); font-size: 32px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px; }
+        .bv-usuario { color: #fff; font-size: 26px; font-weight: 700; margin-bottom: 20px; padding: 12px 30px; background: rgba(229, 9, 20, 0.15); border: 2px solid rgba(229, 9, 20, 0.4); border-radius: 50px; display: inline-block; }
+        .bv-mensagem { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 22px; line-height: 1.4; }
+        .bv-mensagem span { color: var(--vermelho-redplay); font-weight: 900; }
+        .bv-status { display: inline-flex; align-items: center; gap: 10px; padding: 10px 22px; background: rgba(0, 200, 83, 0.15); border: 1px solid rgba(0, 200, 83, 0.4); border-radius: 50px; margin-bottom: 20px; }
+        .bv-status-icone { font-size: 20px; }
+        .bv-status-texto { color: #00c853; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .bv-vencimento { color: #aaa; font-size: 15px; margin-bottom: 25px; }
+        .bv-venc-label { color: #888; }
+        .bv-venc-data { color: #fff; font-weight: 700; margin-left: 5px; }
+        .bv-venc-dias { display: block; margin-top: 5px; color: #ffab00; font-size: 13px; font-weight: 700; }
+        .bv-loader { width: 220px; height: 4px; background: rgba(229, 9, 20, 0.2); border-radius: 4px; margin: 0 auto 15px; overflow: hidden; }
+        .bv-bar { height: 100%; background: linear-gradient(90deg, var(--vermelho-redplay), #ff4d4d); border-radius: 4px; width: 0%; animation: bvCarregar 3s ease-in-out forwards; }
         @keyframes bvCarregar { from { width: 0%; } to { width: 100%; } }
+        .bv-msg { color: #666; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; }
 
         /* ========== OVERLAY DE BLOQUEIO ========== */
         #overlay-bloqueio {
@@ -220,21 +155,11 @@
             text-align: center; padding: 40px 25px;
         }
         #overlay-bloqueio.ativo { display: flex; }
-
         .icone-bloqueio { font-size: 80px; margin-bottom: 15px; }
-
-        #overlay-bloqueio h2 {
-            color: var(--vermelho-redplay);
-            font-size: 26px; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 2px;
-            margin-bottom: 10px;
-        }
-
+        #overlay-bloqueio h2 { color: var(--vermelho-redplay); font-size: 26px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
         .aviso-pagamento { color: #ffcc00; font-size: 15px; font-weight: 700; margin-bottom: 10px; }
         .aviso-suporte { color: #ff4d4d; font-weight: 700; font-size: 16px; margin-bottom: 12px; }
-
         #overlay-bloqueio p { color: #ccc; font-size: 15px; line-height: 1.6; max-width: 520px; margin-bottom: 10px; }
-
         #overlay-bloqueio .motivo {
             color: #ff4d4d; font-weight: 700; font-size: 15px;
             margin-top: 5px; margin-bottom: 22px;
@@ -244,25 +169,17 @@
             border-radius: 10px;
             max-width: 550px;
         }
-
         #overlay-bloqueio .motivo strong { color: #fff; }
-        #overlay-bloqueio .motivo code {
-            color: #ffcc00; background: rgba(0,0,0,0.4);
-            padding: 2px 8px; border-radius: 5px;
-            font-family: monospace; font-size: 14px;
-        }
-
+        #overlay-bloqueio .motivo code { color: #ffcc00; background: rgba(0,0,0,0.4); padding: 2px 8px; border-radius: 5px; font-family: monospace; font-size: 14px; }
         .btn-whatsapp {
             display: inline-flex; align-items: center; gap: 12px;
             background: linear-gradient(135deg, #25D366, #128C7E);
             color: white; border: none; padding: 16px 32px;
             border-radius: 50px; font-size: 16px; font-weight: 700;
             text-decoration: none; text-transform: uppercase;
-            letter-spacing: 1px; cursor: pointer;
-            margin-bottom: 18px;
+            letter-spacing: 1px; cursor: pointer; margin-bottom: 18px;
         }
         .btn-whatsapp svg { width: 24px; height: 24px; fill: white; }
-
         .btn-fechar-app {
             display: inline-flex; align-items: center; gap: 10px;
             background: transparent; color: #888; border: 1px solid #444;
@@ -272,25 +189,13 @@
             letter-spacing: 1px; margin-top: 5px;
         }
         .btn-fechar-app:hover { color: white; border-color: var(--vermelho-redplay); }
-
-        .numero-contato {
-            color: #fff; font-size: 20px; font-weight: 900;
-            letter-spacing: 2px; margin-bottom: 20px;
-            font-family: monospace;
-        }
-
+        .numero-contato { color: #fff; font-size: 20px; font-weight: 900; letter-spacing: 2px; margin-bottom: 20px; font-family: monospace; }
         .texto-contador { color: #888; font-size: 13px; margin-top: 15px; }
         .texto-contador strong { color: #ff4d4d; font-size: 18px; }
-
-        .rodape-bloqueio {
-            color: #555; font-size: 12px;
-            position: absolute; bottom: 20px; left: 0; right: 0;
-            text-align: center;
-        }
+        .rodape-bloqueio { color: #555; font-size: 12px; position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; }
 
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
-
         .shake-animation { animation: shake 0.4s ease-in-out; border-color: #ff4d4d !important; background: rgba(255, 77, 77, 0.1) !important; }
         .loading { pointer-events: none; opacity: 0.7; }
     </style>
@@ -302,10 +207,9 @@
         <img src="download.png" alt="RedPlay Logo" class="splash-logo">
         <div class="loader"></div>
     </div>
-
     <div class="bg-glow"></div>
 
-    <!-- ========== TELA 1: TERMOS ========== -->
+    <!-- ========== TELA 1: BOAS-VINDAS / CONDIÇÕES ========== -->
     <div class="box hidden" id="caixa-termos">
         <span class="badge">BEM-VINDO À REDPLAY</span>
         <h1 class="termos-titulo">A Melhor TV do Brasil</h1>
@@ -313,7 +217,47 @@
 
         <div class="termos-scroll">
             <h3>🎬 Bem-vindo à RedPlay</h3>
-            <p>A <strong>RedPlay</strong> é a plataforma definitiva de entretenimento.</p>
+            <p>A <strong>RedPlay</strong> é a plataforma definitiva de entretenimento. Aqui você encontra <strong>tudo em um só lugar</strong>: filmes, séries, novelas, animes, doramas, canais ao vivo e esportes — sem limites, sem complicação, sem propaganda.</p>
+
+            <h3>🌐 Multiservidor Inteligente</h3>
+            <p>Nosso sistema é conectado a <strong>dezenas de servidores espalhados pelo mundo</strong>, todos monitorados 24 horas por dia. Se um servidor oscilar, o sistema <strong>troca para outro automaticamente em milissegundos</strong>.</p>
+            <p style="color: #ffcc00; font-weight: 700;">💡 Traduzindo: você nunca fica sem sinal. Nunca.</p>
+
+            <h3>🔄 Catálogo Atualizado Todos os Dias</h3>
+            <p><strong>Todos os dias, pontualmente às 11h da manhã</strong>, nosso sistema faz uma varredura completa em todas as fontes e atualiza o catálogo. Lançamentos, episódios novos, temporadas completas — <strong>tudo entra automaticamente</strong> antes mesmo de você procurar.</p>
+
+            <h3>📺 O que você recebe</h3>
+            <ul>
+                <li>🎥 Filmes lançamentos e clássicos</li>
+                <li>📺 Séries, novelas, animes e doramas</li>
+                <li>⚽ Futebol ao vivo — Brasileirão, Libertadores, Champions</li>
+                <li>📡 Canais ao vivo 24h — esportes, notícias, filmes, infantis</li>
+                <li>🎞️ Qualidade até 4K quando disponível</li>
+                <li>🚫 Zero anúncios, zero interrupções</li>
+                <li>📱 Funciona em TV Box, Smart TV, celular, tablet e PC</li>
+            </ul>
+
+            <h3>💰 Nossos Planos</h3>
+            <p><strong>📅 Plano Anual — R$ 150,00</strong></p>
+            <p style="font-size: 12px; color: #888; margin-left: 15px; margin-bottom: 12px;">Acesso completo por 12 meses. Menos de R$ 13 por mês. Praticamente de graça.</p>
+
+            <p><strong>💎 Plano Vitalício — R$ 390,00</strong></p>
+            <p style="font-size: 12px; color: #888; margin-left: 15px; margin-bottom: 12px;">Pague uma única vez e tenha acesso <strong>para sempre</strong>. Sem mensalidade, sem renovação, sem surpresa. Um pagamento, entretenimento pra vida toda.</p>
+
+            <p><strong>➕ Tela Adicional — R$ 130,00/ano</strong></p>
+            <p style="font-size: 12px; color: #888; margin-left: 15px;">Adicione até 2 telas extras à sua conta e assista em mais aparelhos simultaneamente.</p>
+
+            <h3>⚡ Estabilidade Garantida</h3>
+            <p>Esqueça "servidor caiu". Nosso sistema <strong>multiservidor troca de fonte sozinho</strong>, automaticamente. Sua programação <strong>não para</strong> — nem em final de campeonato, nem em lançamento de série.</p>
+
+            <h3>🔒 Conta Pessoal e Segura</h3>
+            <p>Sua conta é <strong>pessoal e intransferível</strong>. O sistema <strong>bloqueia automaticamente</strong> login simultâneo em mais de um aparelho, garantindo a qualidade pra todos os clientes.</p>
+
+            <h3>📞 Suporte Todos os Dias</h3>
+            <p>Atendimento direto pelo WhatsApp, todos os dias. Qualquer dúvida, problema ou sugestão — <strong>é só chamar, respondemos rápido</strong>.</p>
+
+            <h3>✅ Tudo Pronto?</h3>
+            <p>Marque a caixa abaixo para confirmar que <strong>concorda com as condições</strong> e começar a assistir agora.</p>
         </div>
 
         <div class="check-termo">
@@ -321,59 +265,50 @@
             <label for="aceito-termos">Concordo e quero começar a assistir</label>
         </div>
 
-        <button class="btn-principal" id="btn-continuar" onclick="aceitarTermos()" disabled>
-            ▶ Começar Agora
-        </button>
+        <button class="btn-principal" id="btn-continuar" onclick="aceitarTermos()" disabled>▶ Começar Agora</button>
     </div>
 
     <!-- ========== TELA 2: LOGIN ========== -->
     <div class="box hidden" id="caixa-login">
         <img src="download.png" alt="RedPlay" class="login-logo">
         <br>
-        <span class="badge">V5 SECURE</span>
+        <span class="badge">V6 SECURE</span>
 
         <div class="input-container">
             <input type="text" id="servidor" placeholder="Utilizador">
         </div>
-
         <div class="input-container">
             <div class="input-senha-wrap">
                 <input type="password" id="senha" placeholder="Senha" onkeypress="verificarEnter(event)">
                 <button type="button" class="btn-olho" id="btn-olho" onclick="toggleSenha()" tabindex="-1">👁️</button>
             </div>
         </div>
-
         <div class="lembrar-wrap">
             <input type="checkbox" id="lembrar">
             <label for="lembrar">Lembrar-me</label>
         </div>
-
         <button id="btn-entrar" class="btn-principal" onclick="verificarAcesso()">Conectar</button>
-
         <span id="msg-erro" class="msg-erro">Utilizador ou senha incorretos.</span>
     </div>
 
-    <!-- ========== 🎬 TELA DE BOAS-VINDAS (ELEGANTE E RÁPIDA) ========== -->
+    <!-- ========== TELA DE BOAS-VINDAS (APÓS LOGIN) ========== -->
     <div id="tela-boas-vindas">
-        <div class="bv-card">
-            <div class="bv-topo">
-                <span class="bv-tag">REDPLAY IPTV</span>
-                <span class="bv-ponto-ativo"></span>
+        <div class="bv-conteudo">
+            <div class="bv-emoji">🎬</div>
+            <h1 class="bv-titulo">Bem-vindo!</h1>
+            <p class="bv-usuario" id="bv-usuario">cliente</p>
+            <p class="bv-mensagem"><span>Aproveite o conteúdo RedPlay!</span></p>
+            <div class="bv-status" id="bv-status">
+                <span class="bv-status-icone">✅</span>
+                <span class="bv-status-texto">Conta ativa</span>
             </div>
-            <h2 class="bv-saudacao">Olá, <span id="bv-usuario" class="bv-usuario-txt">cliente</span></h2>
-            <p class="bv-subtitulo">Sessão iniciada com sucesso.</p>
-
-            <div class="bv-info-vencimento" id="bv-vencimento" style="display: none;">
-                <span class="bv-lbl">Vencimento:</span>
-                <div>
-                    <span class="bv-val" id="bv-data">—</span>
-                    <span id="bv-dias" class="bv-dias-tag"></span>
-                </div>
+            <div class="bv-vencimento" id="bv-vencimento" style="display: none;">
+                <span class="bv-venc-label">Vencimento:</span>
+                <span class="bv-venc-data" id="bv-data">—</span>
+                <span class="bv-venc-dias" id="bv-dias"></span>
             </div>
-
-            <div class="bv-progresso-bar">
-                <div class="bv-progresso-fill"></div>
-            </div>
+            <div class="bv-loader"><div class="bv-bar"></div></div>
+            <p class="bv-msg">Preparando seu entretenimento...</p>
         </div>
     </div>
 
@@ -381,49 +316,46 @@
     <div id="overlay-bloqueio">
         <div class="icone-bloqueio" id="icone-bloqueio">🔒</div>
         <h2 id="titulo-bloqueio">Acesso Bloqueado</h2>
-
         <p class="aviso-pagamento" id="aviso-principal">⚠️ Sua conta está inativa</p>
         <p class="aviso-suporte" id="aviso-secundario">Para reativar, CONTATE O SUPORTE</p>
-
         <div class="motivo" id="motivo-bloqueio">Conta desativada</div>
-
         <a href="https://wa.me/55997340723" target="_blank" class="btn-whatsapp" id="btn-whatsapp-bloqueio">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
             </svg>
             Falar no WhatsApp
         </a>
-
         <div class="numero-contato">📱 (55) 99973-40723</div>
-
-        <button class="btn-fechar-app" onclick="fecharApp()">
-            ✕ Fechar aplicativo agora
-        </button>
-
+        <button class="btn-fechar-app" onclick="fecharApp()">✕ Fechar aplicativo agora</button>
         <p class="texto-contador" id="texto-contador">
             O aplicativo será fechado automaticamente em
-            <strong id="contador-fechar">25</strong>
-            segundos
+            <strong id="contador-fechar">25</strong> segundos
         </p>
-
         <div class="rodape-bloqueio">RedPlay • Suporte ao Cliente</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
+        // ==========================================
+        // CONFIGURAÇÃO SUPABASE
+        // ==========================================
         const SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
-        const SUPABASE_ANON_KEY_REAL = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_z96rFkWrk7fTegOk6m_4";
 
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY_REAL);
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const STORAGE_KEY = "redplay_credenciais";
         const TERMOS_KEY = "redplay_termos_aceitos";
         const DEVICE_KEY = "redplay_device_id";
 
+        // ==========================================
+        // 🔐 GERENCIAMENTO DE DISPOSITIVO
+        // ==========================================
         function obterDeviceId() {
             let id = localStorage.getItem(DEVICE_KEY);
             if (!id) {
-                id = 'DEV-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+                id = 'DEV-' + Date.now().toString(36).toUpperCase() +
+                     '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
                 localStorage.setItem(DEVICE_KEY, id);
             }
             return id;
@@ -435,10 +367,18 @@
             if (ua.includes("android")) return "Celular/Tablet";
             if (ua.includes("iphone") || ua.includes("ipad")) return "iPhone/iPad";
             if (ua.includes("windows") || ua.includes("mac") || ua.includes("linux")) return "Computador";
-            return "Outro Dispositivo";
+            return "Desconhecido";
         }
 
+        // ==========================================
+        // SPLASH + FLUXO INICIAL
+        // ==========================================
         window.addEventListener('load', () => {
+            if (window.location.search.includes('reset=1')) {
+                localStorage.clear();
+                console.log("🧪 localStorage limpo!");
+            }
+
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 splash.style.opacity = '0';
@@ -449,18 +389,31 @@
             }, 1200);
         });
 
-        function mostrarTermos() { document.getElementById('caixa-termos').classList.remove('hidden'); }
+        function mostrarTermos() {
+            document.getElementById('caixa-termos').classList.remove('hidden');
+        }
 
         function mostrarLogin() {
             document.getElementById('caixa-termos').classList.add('hidden');
             document.getElementById('caixa-login').classList.remove('hidden');
             carregarCredenciaisSalvas();
+            const inputServidor = document.getElementById("servidor");
+            if (inputServidor.value) {
+                document.getElementById("senha").focus();
+            } else {
+                inputServidor.focus();
+            }
         }
 
+        // ==========================================
+        // TERMOS
+        // ==========================================
         const chkTermos = document.getElementById("aceito-termos");
         const btnContinuar = document.getElementById("btn-continuar");
 
-        chkTermos.addEventListener('change', () => { btnContinuar.disabled = !chkTermos.checked; });
+        chkTermos.addEventListener('change', () => {
+            btnContinuar.disabled = !chkTermos.checked;
+        });
 
         function aceitarTermos() {
             if (!chkTermos.checked) return;
@@ -468,16 +421,28 @@
             mostrarLogin();
         }
 
+        // ==========================================
+        // LOGIN — ELEMENTOS
+        // ==========================================
         const inputServidor = document.getElementById("servidor");
         const inputSenha = document.getElementById("senha");
         const msgErro = document.getElementById("msg-erro");
         const btnEntrar = document.getElementById("btn-entrar");
         const chkLembrar = document.getElementById("lembrar");
+        const btnOlho = document.getElementById("btn-olho");
 
-        function verificarEnter(event) { if (event.key === "Enter") verificarAcesso(); }
+        function verificarEnter(event) {
+            if (event.key === "Enter") verificarAcesso();
+        }
 
         function toggleSenha() {
-            inputSenha.type = inputSenha.type === "password" ? "text" : "password";
+            if (inputSenha.type === "password") {
+                inputSenha.type = "text";
+                btnOlho.innerText = "🙈";
+            } else {
+                inputSenha.type = "password";
+                btnOlho.innerText = "👁️";
+            }
         }
 
         function carregarCredenciaisSalvas() {
@@ -489,27 +454,36 @@
                     inputSenha.value = dados.senha || "";
                     chkLembrar.checked = true;
                 }
-            } catch (e) {}
+            } catch (e) { console.warn("Erro credenciais:", e); }
         }
 
         function salvarCredenciais() {
             if (chkLembrar.checked) {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify({ usuario: inputServidor.value.trim(), senha: inputSenha.value.trim() }));
+                const dados = { usuario: inputServidor.value.trim(), senha: inputSenha.value.trim() };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
             } else {
                 localStorage.removeItem(STORAGE_KEY);
             }
         }
 
+        function limparCredenciaisSalvas() {
+            localStorage.removeItem(STORAGE_KEY);
+        }
+
         // ==========================================
-        // VERIFICAÇÃO DE LOGIN E SESSÃO ÚNICA (CORRIGIDO)
+        // VERIFICAÇÃO DE LOGIN
         // ==========================================
         async function verificarAcesso() {
             const usuarioDigitado = inputServidor.value.trim();
             const senhaDigitada = inputSenha.value.trim();
 
+            inputServidor.classList.remove("shake-animation");
+            inputSenha.classList.remove("shake-animation");
             msgErro.style.opacity = "0";
 
             if (!usuarioDigitado || !senhaDigitada) {
+                inputServidor.classList.add("shake-animation");
+                inputSenha.classList.add("shake-animation");
                 msgErro.innerText = "Preencha utilizador e senha.";
                 msgErro.style.opacity = "1";
                 return;
@@ -519,10 +493,9 @@
             btnEntrar.innerText = "A VERIFICAR...";
 
             try {
-                // 1. Buscar usuário no Supabase
                 const { data, error } = await supabaseClient
                     .from('utilizadores')
-                    .select('usuario, ativo, vencimento, device_id, device_nome, ultimo_acesso')
+                    .select('usuario, ativo, vencimento, plano, telas_permitidas, devices, device_id, device_nome, ultimo_acesso, revendedor_id')
                     .eq('usuario', usuarioDigitado)
                     .eq('senha', senhaDigitada)
                     .maybeSingle();
@@ -530,67 +503,88 @@
                 if (error) throw error;
 
                 if (!data) {
+                    limparCredenciaisSalvas();
                     erroLogin("Utilizador ou senha incorretos.");
                     return;
                 }
 
                 if (!data.ativo) {
-                    bloquearEFechar("Sua conta foi desativada pelo administrador.");
-                    return;
-                }
-
-                if (data.vencimento) {
-                    const hoje = new Date();
-                    hoje.setHours(0, 0, 0, 0);
-                    const venc = new Date(data.vencimento + "T00:00:00");
-                    if (venc < hoje) {
-                        bloquearEFechar("Sua assinatura venceu em " + formatarData(data.vencimento) + ".");
-                        return;
-                    }
-                }
-
-                // 🔐 2. LÓGICA DE DETECÇÃO DE SESSÃO ÚNICA
-                const deviceIdAtual = obterDeviceId();
-                const deviceNome = obterTipoDispositivo();
-
-                // Considera ativo se houve atividade nas últimas 12 horas
-                const agora = new Date();
-                const ultimoAcessoData = data.ultimo_acesso ? new Date(data.ultimo_acesso) : null;
-                const horasDesdeUltimoAcesso = ultimoAcessoData ? (agora - ultimoAcessoData) / (1000 * 60 * 60) : 999;
-
-                if (data.device_id && data.device_id !== deviceIdAtual && horasDesdeUltimoAcesso < 12) {
-                    btnEntrar.classList.remove("loading");
-                    btnEntrar.innerText = "CONECTAR";
-                    mostrarJaLogado(
-                        data.device_nome || 'Outro aparelho',
-                        data.device_id,
-                        data.ultimo_acesso
+                    bloquearEFechar(
+                        "Sua conta foi desativada pelo administrador.",
+                        "⚠️ Sua conta está inativa",
+                        "Para reativar, CONTATE O SUPORTE"
                     );
                     return;
                 }
 
-                // 3. ATUALIZA O DEVICE ATUAL NO SUPABASE (E verifica se gravou com sucesso)
-                const { error: updateError } = await supabaseClient
+                // Verifica vencimento (só se não for vitalício)
+                if (data.vencimento && data.plano !== 'vitalicio') {
+                    const hoje = new Date();
+                    hoje.setHours(0, 0, 0, 0);
+                    const venc = new Date(data.vencimento + "T00:00:00");
+                    if (venc < hoje) {
+                        bloquearEFechar(
+                            "Sua assinatura venceu em " + formatarData(data.vencimento) + ".",
+                            "⚠️ Sua assinatura venceu",
+                            "Para renovar, CONTATE O SUPORTE"
+                        );
+                        return;
+                    }
+                }
+
+                // 🔐 VERIFICA SESSÃO ÚNICA / LIMITE DE TELAS
+                const deviceIdAtual = obterDeviceId();
+                const deviceNome = obterTipoDispositivo();
+                const listaDisp = obterDispositivosDoCliente(data);
+                const telasMax = data.telas_permitidas || 1;
+
+                // Verifica se esse device já está autorizado
+                const jaAutorizado = listaDisp.some(d => d.id === deviceIdAtual);
+
+                if (!jaAutorizado) {
+                    // Se já atingiu o limite de telas, bloqueia
+                    if (listaDisp.length >= telasMax) {
+                        await mostrarJaLogado(
+                            listaDisp[0]?.nome || 'Desconhecido',
+                            listaDisp[0]?.id || 'sem ID',
+                            data.ultimo_acesso,
+                            data.usuario,
+                            data.revendedor_id,
+                            data.device_id,
+                            telasMax
+                        );
+                        return;
+                    }
+
+                    // Se ainda tem espaço, adiciona o device
+                    listaDisp.push({
+                        id: deviceIdAtual,
+                        nome: deviceNome,
+                        adicionado_em: new Date().toISOString()
+                    });
+                }
+
+                // ✅ GRAVA O DEVICE ATUAL
+                await supabaseClient
                     .from('utilizadores')
                     .update({
+                        devices: listaDisp,
                         device_id: deviceIdAtual,
                         device_nome: deviceNome,
-                        ultimo_acesso: new Date().toISOString()
+                        ultimo_acesso: new Date().toISOString(),
+                        session_token: 'TKN-' + Date.now()
                     })
                     .eq('usuario', usuarioDigitado);
 
-                if (updateError) {
-                    console.error("❌ ERRO AO GRAVAR DISPOSITIVO:", updateError);
-                    alert("Atenção: A permissão de UPDATE na tabela 'utilizadores' precisa ser ativada no Supabase (RLS Policy).");
-                }
-
+                // ✅ SUCESSO
                 salvarCredenciais();
+
                 btnEntrar.classList.remove("loading");
                 btnEntrar.innerText = "CONECTADO";
                 btnEntrar.style.background = "#00c853";
 
                 setTimeout(() => {
-                    mostrarBoasVindas(data.usuario, data.vencimento);
+                    mostrarBoasVindas(data.usuario, data.vencimento, data.plano);
                 }, 300);
 
             } catch (err) {
@@ -602,87 +596,190 @@
         function erroLogin(mensagem) {
             btnEntrar.classList.remove("loading");
             btnEntrar.innerText = "CONECTAR";
+            btnEntrar.style.background = "";
+            inputServidor.classList.add("shake-animation");
+            inputSenha.classList.add("shake-animation");
             msgErro.innerText = mensagem;
             msgErro.style.opacity = "1";
+            inputSenha.value = "";
+            inputSenha.focus();
         }
 
         // ==========================================
-        // 🎬 TELA DE BOAS-VINDAS (MARCANTE E RÁPIDA)
+        // DISPOSITIVOS - helpers
         // ==========================================
-        function mostrarBoasVindas(usuario, vencimento) {
+        function obterDispositivosDoCliente(data) {
+            if (Array.isArray(data.devices) && data.devices.length > 0) return [...data.devices];
+            if (data.devices && typeof data.devices === 'string') {
+                try {
+                    const p = JSON.parse(data.devices);
+                    if (Array.isArray(p) && p.length > 0) return p;
+                } catch(e) {}
+            }
+            if (data.device_id) {
+                return [{ id: data.device_id, nome: data.device_nome || 'Aparelho Antigo' }];
+            }
+            return [];
+        }
+
+        // ==========================================
+        // 🎬 TELA DE BOAS-VINDAS
+        // ==========================================
+        function mostrarBoasVindas(usuario, vencimento, plano) {
             const tela = document.getElementById('tela-boas-vindas');
             document.getElementById('bv-usuario').innerText = usuario;
 
-            if (vencimento) {
-                const hoje = new Date();
-                hoje.setHours(0, 0, 0, 0);
+            if (plano === 'vitalicio') {
+                document.getElementById('bv-data').innerText = '♾️ VITALÍCIO';
+                document.getElementById('bv-dias').innerText = 'Acesso para sempre!';
+                document.getElementById('bv-dias').style.color = '#ffc107';
+                document.getElementById('bv-vencimento').style.display = 'block';
+            } else if (vencimento) {
+                const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
                 const venc = new Date(vencimento + "T00:00:00");
                 const dias = Math.floor((venc - hoje) / (1000 * 60 * 60 * 24));
 
                 document.getElementById('bv-data').innerText = formatarData(vencimento);
-                const diasEl = document.getElementById('bv-dias');
 
+                const diasEl = document.getElementById('bv-dias');
                 if (dias <= 5) {
-                    diasEl.innerText = `${dias}d restantes`;
-                    diasEl.style.background = 'rgba(255,77,77,0.2)';
+                    diasEl.innerText = `⚠️ Vence em ${dias} dia${dias !== 1 ? 's' : ''}!`;
                     diasEl.style.color = '#ff4d4d';
+                } else if (dias <= 15) {
+                    diasEl.innerText = `Vence em ${dias} dias`;
+                    diasEl.style.color = '#ffab00';
                 } else {
-                    diasEl.innerText = `${dias}d restantes`;
-                    diasEl.style.background = 'rgba(0,200,83,0.2)';
+                    diasEl.innerText = `Acesso por mais ${dias} dias`;
                     diasEl.style.color = '#00c853';
                 }
-                document.getElementById('bv-vencimento').style.display = 'flex';
+                document.getElementById('bv-vencimento').style.display = 'block';
             } else {
                 document.getElementById('bv-vencimento').style.display = 'none';
             }
 
             tela.classList.add('ativo');
 
-            // Exibição mais ágil (1.8s) para liberar o player rápido
             setTimeout(() => {
                 tela.classList.add('saindo');
                 setTimeout(() => {
                     tela.classList.remove('ativo');
                     tela.classList.remove('saindo');
-
                     if (typeof AndroidApp !== 'undefined' && typeof AndroidApp.liberarAcesso === 'function') {
                         AndroidApp.liberarAcesso();
                     } else {
-                        console.log("Acesso liberado com sucesso!");
+                        alert("✅ Bem-vindo, " + usuario + "! Aproveite o conteúdo RedPlay.");
                     }
-                }, 300);
-            }, 1800);
+                }, 500);
+            }, 3000);
         }
 
-        function bloquearEFechar(motivo) {
+        // ==========================================
+        // 🚫 BLOQUEIO GERAL (inativo / vencido)
+        // ==========================================
+        function bloquearEFechar(motivo, aviso1, aviso2) {
+            limparCredenciaisSalvas();
+
+            document.getElementById('icone-bloqueio').innerText = '🔒';
+            document.getElementById('titulo-bloqueio').innerText = 'Acesso Bloqueado';
+            document.getElementById('aviso-principal').innerText = aviso1 || '⚠️ Sua conta está inativa';
+            document.getElementById('aviso-secundario').innerText = aviso2 || 'Para reativar, CONTATE O SUPORTE';
             document.getElementById('motivo-bloqueio').innerText = motivo;
+
+            const texto = encodeURIComponent("Olá! Minha conta RedPlay foi bloqueada. Motivo: " + motivo + ". Podem me ajudar?");
+            document.getElementById('btn-whatsapp-bloqueio').href = "https://wa.me/55997340723?text=" + texto;
+
+            document.getElementById('texto-contador').style.display = 'block';
             document.getElementById('overlay-bloqueio').classList.add('ativo');
-            setTimeout(fecharApp, 25000);
+
+            let segundos = 25;
+            const contador = document.getElementById('contador-fechar');
+            if (contador) contador.innerText = segundos;
+
+            const intervalo = setInterval(() => {
+                segundos--;
+                if (contador) contador.innerText = segundos;
+                if (segundos <= 0) {
+                    clearInterval(intervalo);
+                    fecharApp();
+                }
+            }, 1000);
         }
 
-        function mostrarJaLogado(deviceNome, deviceId, ultimoAcesso) {
-            document.getElementById('icone-bloqueio').innerText = '📱';
-            document.getElementById('titulo-bloqueio').innerText = 'Você já está logado';
-            document.getElementById('aviso-principal').innerText = '⚠️ Conta ativa em outro dispositivo';
-            document.getElementById('aviso-secundario').innerText = 'Para usar aqui, deslogue do outro aparelho';
+        // ==========================================
+        // 🚫 LIMITE DE TELAS ATINGIDO
+        // Salva a tentativa como PENDENTE para aprovação
+        // ==========================================
+        async function mostrarJaLogado(deviceNomeAntigo, deviceIdAntigo, ultimoAcesso, usuario, revendedorId, deviceIdSalvo, telasMax) {
+            const deviceIdAtual = obterDeviceId();
+            const deviceNomeAtual = obterTipoDispositivo();
 
-            const dataAcesso = ultimoAcesso ? new Date(ultimoAcesso).toLocaleString('pt-BR') : 'agora';
+            // 📝 SALVA A TENTATIVA para o painel mostrar
+            try {
+                await supabaseClient
+                    .from('devices_pendentes')
+                    .insert([{
+                        usuario: usuario,
+                        device_id: deviceIdAtual,
+                        device_nome: deviceNomeAtual,
+                        revendedor_id: revendedorId,
+                        status: 'pendente',
+                        observacoes: `Tentou com device_id: ${deviceIdAtual}`
+                    }]);
+                console.log("📝 Tentativa salva como pendente!");
+            } catch (e) {
+                console.warn("Erro ao salvar tentativa:", e);
+            }
+
+            // Mostra overlay
+            document.getElementById('icone-bloqueio').innerText = '📱';
+            document.getElementById('titulo-bloqueio').innerText = 'Limite de telas atingido';
+            document.getElementById('aviso-principal').innerText = '⚠️ Sua conta já está ativa em outro aparelho';
+            document.getElementById('aviso-secundario').innerText = 'Aguarde aprovação do suporte';
+
+            const dataAcesso = ultimoAcesso ? new Date(ultimoAcesso).toLocaleString('pt-BR') : 'desconhecida';
 
             document.getElementById('motivo-bloqueio').innerHTML =
-                `Ativo em: <strong>${deviceNome}</strong><br>` +
-                `ID: <code>${deviceId || 'sem ID'}</code><br>` +
-                `Último acesso: ${dataAcesso}`;
+                `<strong>Sua conta já está ativa em:</strong><br>` +
+                `📺 ${deviceNomeAntigo}<br>` +
+                `ID: <code>${deviceIdSalvo || deviceIdAntigo || 'sem ID'}</code><br>` +
+                `Último acesso: ${dataAcesso}<br><br>` +
+                `<span style="color: #ffcc00; font-size: 13px;">` +
+                `🆕 <strong>Novo aparelho detectado:</strong><br>` +
+                `📱 ${deviceNomeAtual}<br>` +
+                `ID: ${deviceIdAtual}<br><br>` +
+                `⏳ <strong>Aguarde aprovação do suporte</strong>` +
+                `</span>`;
+
+            const texto = encodeURIComponent(
+                `Olá! Estou logando minha conta RedPlay em um novo aparelho.\n\n` +
+                `👤 Usuário: ${usuario}\n` +
+                `📱 Aparelho: ${deviceNomeAtual}\n` +
+                `🆔 ID: ${deviceIdAtual}\n\n` +
+                `Podem liberar?`
+            );
+            document.getElementById('btn-whatsapp-bloqueio').href = "https://wa.me/55997340723?text=" + texto;
 
             document.getElementById('texto-contador').style.display = 'none';
             document.getElementById('overlay-bloqueio').classList.add('ativo');
         }
 
+        // ==========================================
+        // FECHAR APP
+        // ==========================================
         function fecharApp() {
+            console.log("🔴 Fechando o app...");
             if (typeof AndroidApp !== 'undefined' && typeof AndroidApp.fecharApp === 'function') {
-                AndroidApp.fecharApp();
-            } else {
-                window.close();
+                try {
+                    AndroidApp.fecharApp();
+                    return;
+                } catch (e) {
+                    console.warn("Erro AndroidApp.fecharApp:", e);
+                }
             }
+            try { window.close(); } catch (e) {}
+            setTimeout(() => {
+                try { window.location.href = "about:blank"; } catch (e) {}
+            }, 100);
         }
 
         function formatarData(iso) {
