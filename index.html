@@ -217,7 +217,14 @@
         .aviso-pagamento {
             color: #ffcc00;
             font-size: 15px; font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+        }
+
+        .aviso-suporte {
+            color: #ff4d4d;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 12px;
         }
 
         #overlay-bloqueio p {
@@ -227,7 +234,7 @@
 
         #overlay-bloqueio .motivo {
             color: #ff4d4d; font-weight: 700; font-size: 15px;
-            margin-top: 5px; margin-bottom: 25px;
+            margin-top: 5px; margin-bottom: 22px;
             padding: 12px 22px;
             background: rgba(229, 9, 20, 0.1);
             border: 1px solid rgba(229, 9, 20, 0.4);
@@ -267,7 +274,7 @@
         .texto-contador {
             color: #888; font-size: 13px; margin-top: 15px;
         }
-        .texto-contador strong { color: #ff4d4d; font-size: 16px; }
+        .texto-contador strong { color: #ff4d4d; font-size: 18px; }
 
         .rodape-bloqueio {
             color: #555; font-size: 12px;
@@ -387,10 +394,12 @@
         <div class="icone-bloqueio">🔒</div>
         <h2>Acesso Bloqueado</h2>
 
-        <p class="aviso-pagamento">⚠️ Falta de pagamento</p>
+        <p class="aviso-pagamento">⚠️ Sua conta está inativa</p>
+
+        <p class="aviso-suporte">Para reativar, CONTATE O SUPORTE</p>
 
         <p>Sua conta foi <strong style="color: #ff4d4d;">desativada</strong> ou <strong style="color: #ff4d4d;">expirada</strong>.</p>
-        <p>Para reativar, entre em contato pelo WhatsApp:</p>
+        <p>Fale com o suporte pelo WhatsApp para regularizar:</p>
         <div class="motivo" id="motivo-bloqueio">Conta desativada</div>
 
         <a href="https://wa.me/55997340723" target="_blank" class="btn-whatsapp" id="btn-whatsapp-bloqueio">
@@ -408,7 +417,7 @@
 
         <p class="texto-contador">
             O aplicativo será fechado automaticamente em
-            <strong id="contador-fechar">15</strong>
+            <strong id="contador-fechar">25</strong>
             segundos
         </p>
 
@@ -634,7 +643,7 @@
         }
 
         // ==========================================
-        // BLOQUEIO E FECHAMENTO AUTOMÁTICO (15s)
+        // BLOQUEIO E FECHAMENTO AUTOMÁTICO (25s)
         // ==========================================
         function bloquearEFechar(motivo) {
             limparCredenciaisSalvas();
@@ -646,7 +655,8 @@
 
             document.getElementById("overlay-bloqueio").classList.add("ativo");
 
-            let segundos = 15;
+            // ⏱️ Contador regressivo de 25 segundos
+            let segundos = 25;
             const contador = document.getElementById("contador-fechar");
 
             if (contador) contador.innerText = segundos;
