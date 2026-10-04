@@ -3,218 +3,350 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acesso RedPlay MAX</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <title>RedPlay</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --vermelho-redplay: #e50914;
-            --vermelho-escuro: #8a040a;
-            --fundo-preto: #050505;
+            --vermelho-escuro: #b20710;
+            --fundo-preto: #000000;
             --texto-claro: #ffffff;
-            --vidro: rgba(20, 20, 20, 0.6);
-            --borda-vidro: rgba(255, 255, 255, 0.08);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
 
-        /* Fundo Animado Premium */
-        body { 
-            background: linear-gradient(-45deg, #000000, #1a0000, #330000, #000000);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: var(--texto-claro); 
-            height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            overflow: hidden; 
-            position: relative; 
-        }
+        body { background-color: var(--fundo-preto); color: var(--texto-claro); height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* SplashScreen */
+        /* ========== SPLASH SCREEN ========== */
         #splash-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--fundo-preto);
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            z-index: 9999;
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9999; transition: opacity 0.8s ease-out;
         }
         .splash-logo { width: 180px; margin-bottom: 30px; animation: pulseSplash 1.5s infinite alternate; }
-        .loader { border: 3px solid rgba(229, 9, 20, 0.1); border-top: 3px solid var(--vermelho-redplay); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
+        .loader { border: 4px solid rgba(229, 9, 20, 0.2); border-top: 4px solid var(--vermelho-redplay); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
 
-        /* Caixa de Login (Glassmorphism) */
-        .login-box { 
-            position: relative; z-index: 1; 
-            background: var(--vidro); 
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--borda-vidro); 
-            border-radius: 24px; 
-            padding: 45px 35px; 
-            width: 90%; max-width: 400px; 
-            text-align: center; 
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8); 
-            opacity: 0; transform: translateY(40px) scale(0.95); 
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); 
-        }
-        .login-box.show { opacity: 1; transform: translateY(0) scale(1); }
+        .bg-glow { position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, rgba(229,9,20,0.15) 0%, rgba(0,0,0,0) 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 0; animation: pulseGlow 4s infinite alternate; }
 
-        .login-logo { width: 150px; margin-bottom: 5px; filter: drop-shadow(0 0 10px rgba(229,9,20,0.5)); }
-        
-        .badge { display: inline-block; background: linear-gradient(90deg, var(--vermelho-escuro), var(--vermelho-redplay)); font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(229,9,20,0.4); letter-spacing: 1px; text-transform: uppercase;}
+        /* ========== CAIXA PADRÃO ========== */
+        .box {
+            position: relative; z-index: 1;
+            background: rgba(15, 15, 15, 0.92);
+            border: 1px solid rgba(229, 9, 20, 0.3);
+            border-radius: 20px;
+            padding: 40px 35px;
+            width: 90%; max-width: 620px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            opacity: 0; transform: translateY(20px);
+            transition: all 0.8s ease;
+            max-height: 92vh;
+            overflow-y: auto;
+        }
+        .box.show { opacity: 1; transform: translateY(0); }
+        .box.hidden { display: none; }
 
-        /* Inputs Modernos */
-        .input-container { margin-bottom: 20px; position: relative; }
-        input { 
-            width: 100%; padding: 18px 20px; 
-            background: rgba(0, 0, 0, 0.4); 
-            border: 1px solid rgba(255,255,255,0.1); 
-            border-radius: 14px; color: white; 
-            font-size: 15px; text-align: center; 
-            transition: all 0.3s ease; outline: none; 
-            font-weight: 600;
+        .login-logo { width: 140px; margin-bottom: 10px; mix-blend-mode: screen; }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--vermelho-redplay), #ff4d4d);
+            font-size: 10px; font-weight: 700;
+            padding: 3px 10px; border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(229,9,20,0.4);
         }
-        input:focus { 
-            border-color: var(--vermelho-redplay); 
-            box-shadow: 0 0 20px rgba(229, 9, 20, 0.2); 
-            background: rgba(0, 0, 0, 0.7); 
-            transform: translateY(-2px);
+
+        /* ========== TERMOS DE USO ========== */
+        .termos-titulo {
+            color: var(--vermelho-redplay);
+            font-size: 20px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
         }
-        input::placeholder { color: #888; font-weight: 400; font-size: 14px; }
+        .termos-sub {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .termos-scroll {
+            background: #000;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            padding: 18px 20px;
+            max-height: 240px;
+            overflow-y: auto;
+            text-align: left;
+            margin-bottom: 15px;
+            font-size: 12.5px;
+            line-height: 1.65;
+            color: #b8b8b8;
+        }
+        .termos-scroll::-webkit-scrollbar { width: 6px; }
+        .termos-scroll::-webkit-scrollbar-track { background: #1a1a1a; border-radius: 3px; }
+        .termos-scroll::-webkit-scrollbar-thumb { background: var(--vermelho-redplay); border-radius: 3px; }
+
+        .termos-scroll h3 {
+            color: #fff;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 14px;
+            margin-bottom: 6px;
+        }
+        .termos-scroll h3:first-child { margin-top: 0; }
+
+        .termos-scroll p { margin-bottom: 8px; }
+        .termos-scroll strong { color: #fff; }
+        .termos-scroll ul { padding-left: 20px; margin-bottom: 8px; }
+        .termos-scroll li { margin-bottom: 4px; }
+
+        .check-termo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            user-select: none;
+            padding: 10px;
+            border-radius: 10px;
+            transition: background 0.2s;
+        }
+        .check-termo:hover { background: rgba(229,9,20,0.05); }
+        .check-termo input[type="checkbox"] {
+            width: 22px; height: 22px;
+            accent-color: var(--vermelho-redplay);
+            cursor: pointer;
+        }
+        .check-termo label {
+            font-size: 13px;
+            color: #ccc;
+            cursor: pointer;
+            text-transform: none;
+        }
+
+        /* ========== INPUTS ========== */
+        .input-container { margin-bottom: 15px; position: relative; }
+
+        input {
+            width: 100%; padding: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #333;
+            border-radius: 10px;
+            color: white; font-size: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        input:focus {
+            border-color: var(--vermelho-redplay);
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.3);
+            background: rgba(0, 0, 0, 0.9);
+        }
+        input::placeholder { color: #666; text-transform: uppercase; font-size: 14px; }
 
         .input-senha-wrap { position: relative; }
         .input-senha-wrap input { padding-right: 50px; }
         .btn-olho {
-            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-            background: transparent; border: none; color: #aaa; font-size: 20px;
-            cursor: pointer; transition: color 0.3s;
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            background: transparent; border: none; color: #888; font-size: 22px;
+            cursor: pointer; padding: 5px 8px; width: auto; margin: 0; line-height: 1;
+            transition: color 0.2s; border-radius: 6px;
         }
         .btn-olho:hover { color: var(--vermelho-redplay); }
 
-        /* Botão de Entrar Animado */
-        button.btn-entrar { 
-            width: 100%; padding: 18px; margin-top: 10px; 
-            background: linear-gradient(90deg, var(--vermelho-redplay), #ff0f1a, var(--vermelho-redplay)); 
-            background-size: 200% auto;
-            color: white; border: none; border-radius: 14px; 
-            font-size: 16px; font-weight: 900; 
-            cursor: pointer; transition: all 0.4s ease; 
-            text-transform: uppercase; letter-spacing: 2px; 
-            box-shadow: 0 10px 20px rgba(229, 9, 20, 0.3);
+        .lembrar-wrap {
+            display: flex; align-items: center; justify-content: center;
+            gap: 8px; margin-top: 5px; margin-bottom: 10px;
+            cursor: pointer; user-select: none;
         }
-        button.btn-entrar:hover { 
-            background-position: right center;
-            transform: translateY(-3px); 
-            box-shadow: 0 15px 30px rgba(229, 9, 20, 0.5); 
+        .lembrar-wrap input[type="checkbox"] {
+            width: 18px; height: 18px; padding: 0;
+            accent-color: var(--vermelho-redplay); cursor: pointer;
+        }
+        .lembrar-wrap label { font-size: 13px; color: #bbb; cursor: pointer; text-transform: none; }
+
+        /* ========== BOTÕES ========== */
+        button.btn-principal {
+            width: 100%; padding: 15px; margin-top: 8px;
+            background: linear-gradient(90deg, var(--vermelho-redplay), var(--vermelho-escuro));
+            color: white; border: none; border-radius: 10px;
+            font-size: 16px; font-weight: 700; cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        button.btn-principal:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.6);
+        }
+        button.btn-principal:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        /* Link Suporte */
-        .link-suporte {
-            display: block; margin-top: 25px;
-            color: #aaa; font-size: 13px;
-            cursor: pointer; transition: 0.3s;
-            text-decoration: none;
-        }
-        .link-suporte:hover { color: white; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        .msg-erro { color: #ff4d4d; font-size: 13px; margin-top: 15px; font-weight: 600; opacity: 0; transition: opacity 0.3s; display: block; }
 
-        /* Pop-up (Modal) de Suporte */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 1000; opacity: 0; pointer-events: none;
-            transition: opacity 0.4s ease;
+        /* ========== OVERLAY DE BLOQUEIO ========== */
+        #overlay-bloqueio {
+            position: fixed; inset: 0;
+            background: linear-gradient(135deg, #1a0000 0%, #000000 50%, #1a0000 100%);
+            z-index: 99999; display: none;
+            flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 40px 25px;
+            animation: fadeOverlay 0.4s ease;
         }
-        .modal-overlay.ativo { opacity: 1; pointer-events: auto; }
-        .modal-content {
-            background: #111; border: 1px solid var(--vermelho-redplay);
-            padding: 40px 30px; border-radius: 20px; width: 90%; max-width: 350px;
-            text-align: center; box-shadow: 0 20px 40px rgba(229,9,20,0.3);
-            transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .modal-overlay.ativo .modal-content { transform: scale(1); }
-        .modal-content h3 { color: white; margin-bottom: 15px; font-size: 20px; }
-        .modal-content p { color: #aaa; font-size: 14px; line-height: 1.5; margin-bottom: 25px; }
-        .numero-suporte { 
-            background: #222; color: var(--vermelho-redplay); 
-            font-size: 24px; font-weight: 900; padding: 15px; 
-            border-radius: 10px; margin-bottom: 25px; letter-spacing: 2px;
-            border: 1px dashed var(--vermelho-redplay);
-        }
-        .btn-fechar-modal {
-            background: transparent; border: 2px solid #444; color: white;
-            padding: 10px 30px; border-radius: 10px; cursor: pointer; font-weight: 600;
-            transition: 0.3s; text-transform: uppercase;
-        }
-        .btn-fechar-modal:hover { background: #444; }
+        #overlay-bloqueio.ativo { display: flex; }
 
-        /* Notificações (Toast) para Erros */
-        .toast {
-            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: #ff0f1a; color: white; padding: 15px 25px;
-            border-radius: 30px; font-weight: 700; font-size: 14px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5); z-index: 2000;
-            transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        .toast.show { top: 30px; }
-        .toast.sucesso { background: #00c853; }
+        .icone-bloqueio { font-size: 80px; margin-bottom: 15px; animation: pulseIcone 1.5s infinite alternate; }
 
-        /* Tela de Boas Vindas */
-        .welcome-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--fundo-preto); z-index: 3000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
+        #overlay-bloqueio h2 {
+            color: var(--vermelho-redplay);
+            font-size: 26px; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 2px;
+            margin-bottom: 10px;
         }
-        .welcome-screen.ativo { opacity: 1; pointer-events: auto; }
-        .welcome-logo { width: 120px; margin-bottom: 30px; }
-        .welcome-title { font-size: 28px; font-weight: 900; color: white; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;}
-        .welcome-subtitle { font-size: 16px; color: #888; font-weight: 300; }
-        .check-animado {
-            width: 80px; height: 80px; border-radius: 50%; border: 4px solid #00c853;
-            display: flex; justify-content: center; align-items: center;
-            margin-bottom: 20px; animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .check-animado::after { content: '✓'; color: #00c853; font-size: 40px; font-weight: bold; }
 
-        /* Animações base */
+        .aviso-pagamento {
+            color: #ffcc00;
+            font-size: 15px; font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        #overlay-bloqueio p {
+            color: #ccc; font-size: 15px; line-height: 1.6;
+            max-width: 500px; margin-bottom: 10px;
+        }
+
+        #overlay-bloqueio .motivo {
+            color: #ff4d4d; font-weight: 700; font-size: 15px;
+            margin-top: 5px; margin-bottom: 25px;
+            padding: 12px 22px;
+            background: rgba(229, 9, 20, 0.1);
+            border: 1px solid rgba(229, 9, 20, 0.4);
+            border-radius: 10px;
+        }
+
+        .btn-whatsapp {
+            display: inline-flex; align-items: center; gap: 12px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white; border: none; padding: 16px 32px;
+            border-radius: 50px; font-size: 16px; font-weight: 700;
+            text-decoration: none; text-transform: uppercase;
+            letter-spacing: 1px; cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+            margin-bottom: 18px;
+        }
+        .btn-whatsapp:hover { transform: scale(1.05); box-shadow: 0 12px 35px rgba(37, 211, 102, 0.7); }
+        .btn-whatsapp svg { width: 24px; height: 24px; fill: white; }
+
+        .btn-fechar-app {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: transparent; color: #888; border: 1px solid #444;
+            padding: 12px 26px; border-radius: 50px;
+            font-size: 13px; font-weight: 700;
+            cursor: pointer; text-transform: uppercase;
+            letter-spacing: 1px; transition: all 0.3s ease;
+            margin-top: 5px;
+        }
+        .btn-fechar-app:hover { color: white; border-color: var(--vermelho-redplay); background: rgba(229,9,20,0.1); }
+
+        .numero-contato {
+            color: #fff; font-size: 20px; font-weight: 900;
+            letter-spacing: 2px; margin-bottom: 20px;
+            font-family: monospace;
+        }
+
+        .texto-contador {
+            color: #888; font-size: 13px; margin-top: 15px;
+        }
+        .texto-contador strong { color: #ff4d4d; font-size: 16px; }
+
+        .rodape-bloqueio {
+            color: #555; font-size: 12px;
+            position: absolute; bottom: 20px; left: 0; right: 0;
+            text-align: center;
+        }
+
+        /* ========== ANIMAÇÕES ========== */
+        @keyframes fadeOverlay { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes pulseIcone { from { transform: scale(0.95); } to { transform: scale(1.08); } }
         @keyframes pulseSplash { from { transform: scale(0.95); opacity: 0.8; } to { transform: scale(1.05); opacity: 1; } }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+        @keyframes pulseGlow { from { transform: translate(-50%, -50%) scale(1); opacity: 0.5; } to { transform: translate(-50%, -50%) scale(1.5); opacity: 1; } }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
-        
-        .shake-animation { animation: shake 0.4s ease-in-out; border-color: #ff4d4d !important; background: rgba(255, 77, 77, 0.1) !important; }
-        .loading { pointer-events: none; opacity: 0.7; filter: grayscale(50%); }
 
+        .shake-animation { animation: shake 0.4s ease-in-out; border-color: #ff4d4d !important; background: rgba(255, 77, 77, 0.1) !important; }
+        .loading { pointer-events: none; opacity: 0.7; }
     </style>
 </head>
 <body>
 
-    <!-- Splash Screen Inicial -->
+    <!-- ========== SPLASH ========== -->
     <div id="splash-screen">
-        <img src="download.png" alt="RedPlay Logo" class="splash-logo" onerror="this.src='https://via.placeholder.com/180x60/000000/e50914?text=REDPLAY'">
+        <img src="download.png" alt="RedPlay Logo" class="splash-logo">
         <div class="loader"></div>
     </div>
 
-    <!-- Sistema de Notificações -->
-    <div id="toast" class="toast">Mensagem de Erro</div>
+    <div class="bg-glow"></div>
 
-    <!-- Caixa de Login Principal -->
-    <div class="login-box" id="caixa-login">
-        <img src="download.png" alt="RedPlay" class="login-logo" onerror="this.src='https://via.placeholder.com/150x50/000000/e50914?text=REDPLAY'">
+    <!-- ========== TELA 1: TERMOS DE USO ========== -->
+    <div class="box hidden" id="caixa-termos">
+        <span class="badge">BEM-VINDO</span>
+        <h1 class="termos-titulo">Termos de Uso</h1>
+        <p class="termos-sub">Leia com atenção antes de continuar</p>
+
+        <div class="termos-scroll">
+            <h3>1. Sobre o aplicativo</h3>
+            <p>Este aplicativo é um <strong>agregador de conteúdo de múltiplos servidores</strong>, coletados automaticamente por sistemas de busca (bots) disponíveis publicamente na internet.</p>
+
+            <h3>2. Origem do conteúdo</h3>
+            <p>O conteúdo exibido <strong>não é hospedado</strong>, armazenado ou produzido por nós. Ele é indexado automaticamente de fontes públicas de terceiros.</p>
+            <p>Não temos controle sobre a disponibilidade, qualidade, legalidade ou permanência de qualquer conteúdo.</p>
+
+            <h3>3. Isenção de responsabilidade</h3>
+            <p>Não nos responsabilizamos por:</p>
+            <ul>
+                <li>Conteúdo de terceiros exibido no app;</li>
+                <li>Interrupções, falhas ou remoção de servidores;</li>
+                <li>Direitos autorais de terceiros — todo o conteúdo pertence aos seus respectivos proprietários;</li>
+                <li>Uso indevido por parte do usuário.</li>
+            </ul>
+
+            <h3>4. Uso pessoal</h3>
+            <p>Este aplicativo destina-se a <strong>uso pessoal e não comercial</strong>. O compartilhamento de credenciais é proibido e pode resultar em bloqueio imediato.</p>
+
+            <h3>5. Privacidade</h3>
+            <p>Coletamos apenas as informações estritamente necessárias para o funcionamento do serviço (usuário, senha, status da conta e dispositivo). Nenhum dado é compartilhado com terceiros.</p>
+
+            <h3>6. Aceitação</h3>
+            <p>Ao marcar a caixa abaixo e continuar, você <strong>declara ter lido, entendido e aceito</strong> todos os termos acima.</p>
+        </div>
+
+        <div class="check-termo">
+            <input type="checkbox" id="aceito-termos">
+            <label for="aceito-termos">Li e aceito os Termos de Uso</label>
+        </div>
+
+        <button class="btn-principal" id="btn-continuar" onclick="aceitarTermos()" disabled>
+            Continuar
+        </button>
+    </div>
+
+    <!-- ========== TELA 2: LOGIN ========== -->
+    <div class="box hidden" id="caixa-login">
+        <img src="download.png" alt="RedPlay" class="login-logo">
         <br>
-        <span class="badge">V5 MAX SECURE</span>
+        <span class="badge">V5 SECURE</span>
 
         <div class="input-container">
-            <input type="text" id="servidor" placeholder="Utilizador" autocomplete="off">
+            <input type="text" id="servidor" placeholder="Utilizador">
         </div>
 
         <div class="input-container">
@@ -224,29 +356,49 @@
             </div>
         </div>
 
-        <button id="btn-entrar" class="btn-entrar" onclick="verificarAcesso()">Conectar</button>
-        
-        <span class="link-suporte" onclick="abrirModal()">Ainda não tem login? Adquira já!</span>
-    </div>
-
-    <!-- Pop-up (Modal) de Suporte -->
-    <div class="modal-overlay" id="modal-suporte">
-        <div class="modal-content">
-            <h3>Novo Acesso</h3>
-            <p>Ainda não tem login? Adquira agora mesmo através do nosso número oficial de suporte.</p>
-            <div class="numero-suporte">55 997340723</div>
-            <button class="btn-fechar-modal" onclick="fecharModal()">Fechar</button>
+        <div class="lembrar-wrap">
+            <input type="checkbox" id="lembrar">
+            <label for="lembrar">Lembrar-me</label>
         </div>
+
+        <button id="btn-entrar" class="btn-principal" onclick="verificarAcesso()">Conectar</button>
+
+        <span id="msg-erro" class="msg-erro">Utilizador ou senha incorretos.</span>
     </div>
 
-    <!-- Tela de Boas Vindas Espetacular -->
-    <div class="welcome-screen" id="tela-boas-vindas">
-        <div class="check-animado"></div>
-        <h1 class="welcome-title">Bem-vindo(a)</h1>
-        <p class="welcome-subtitle" id="welcome-user">Preparando seu entretenimento...</p>
+    <!-- ========== OVERLAY DE BLOQUEIO ========== -->
+    <div id="overlay-bloqueio">
+        <div class="icone-bloqueio">🔒</div>
+        <h2>Acesso Bloqueado</h2>
+
+        <p class="aviso-pagamento">⚠️ Falta de pagamento</p>
+
+        <p>Sua conta foi <strong style="color: #ff4d4d;">desativada</strong> ou <strong style="color: #ff4d4d;">expirada</strong>.</p>
+        <p>Para reativar, entre em contato pelo WhatsApp:</p>
+        <div class="motivo" id="motivo-bloqueio">Conta desativada</div>
+
+        <a href="https://wa.me/55997340723" target="_blank" class="btn-whatsapp" id="btn-whatsapp-bloqueio">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+            Falar no WhatsApp
+        </a>
+
+        <div class="numero-contato">📱 (55) 99973-40723</div>
+
+        <button class="btn-fechar-app" onclick="fecharApp()">
+            ✕ Fechar aplicativo agora
+        </button>
+
+        <p class="texto-contador">
+            O aplicativo será fechado automaticamente em
+            <strong id="contador-fechar">15</strong>
+            segundos
+        </p>
+
+        <div class="rodape-bloqueio">RedPlay • Suporte ao Cliente</div>
     </div>
 
-    <!-- Script Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
@@ -254,60 +406,95 @@
         // CONFIGURAÇÃO SUPABASE
         // ==========================================
         const SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rkWrk7fTegOk6m_4";
+
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const STORAGE_KEY = "redplay_credenciais";
+        const TERMOS_KEY = "redplay_termos_aceitos";
 
-        // Referências DOM
-        const inputServidor = document.getElementById("servidor");
-        const inputSenha = document.getElementById("senha");
-        const btnEntrar = document.getElementById("btn-entrar");
-        const btnOlho = document.getElementById("btn-olho");
-        const toast = document.getElementById("toast");
-        const modalSuporte = document.getElementById("modal-suporte");
-        const telaBoasVindas = document.getElementById("tela-boas-vindas");
-
-        // Inicialização - Oculta Splash Screen
+        // ==========================================
+        // SPLASH + FLUXO INICIAL
+        // ==========================================
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
-                const caixaLogin = document.getElementById('caixa-login');
-                
+
                 splash.style.opacity = '0';
-                splash.style.transform = 'scale(1.1)';
-                
+
                 setTimeout(() => {
                     splash.style.display = 'none';
-                    caixaLogin.classList.add('show');
-                    inputServidor.focus();
+
+                    // Decide qual tela mostrar
+                    const termosJaAceitos = localStorage.getItem(TERMOS_KEY) === "1";
+
+                    if (termosJaAceitos) {
+                        // Já aceitou antes → vai direto pro login
+                        mostrarLogin();
+                    } else {
+                        // Primeira vez → mostra termos
+                        mostrarTermos();
+                    }
                 }, 800);
-            }, 2000);
+            }, 2500);
         });
 
-        // Função Exibir Toast (Mensagens de Erro/Sucesso flutuantes)
-        function mostrarToast(mensagem, tipo = 'erro') {
-            toast.textContent = mensagem;
-            if(tipo === 'sucesso') {
-                toast.classList.add('sucesso');
-            } else {
-                toast.classList.remove('sucesso');
-            }
-            
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3500);
+        // ==========================================
+        // NAVEGAÇÃO ENTRE TELAS
+        // ==========================================
+        function mostrarTermos() {
+            document.getElementById('caixa-termos').classList.remove('hidden');
+            document.getElementById('caixa-termos').classList.add('show');
         }
 
-        // Funções do Modal de Suporte
-        function abrirModal() { modalSuporte.classList.add('ativo'); }
-        function fecharModal() { modalSuporte.classList.remove('ativo'); }
+        function mostrarLogin() {
+            document.getElementById('caixa-termos').classList.add('hidden');
+            document.getElementById('caixa-login').classList.remove('hidden');
+            document.getElementById('caixa-login').classList.add('show');
 
-        // Fechar modal clicando fora
-        modalSuporte.addEventListener('click', (e) => {
-            if (e.target === modalSuporte) fecharModal();
+            carregarCredenciaisSalvas();
+
+            const inputServidor = document.getElementById("servidor");
+            if (inputServidor.value) {
+                document.getElementById("senha").focus();
+            } else {
+                inputServidor.focus();
+            }
+        }
+
+        // ==========================================
+        // TERMOS DE USO
+        // ==========================================
+        const chkTermos = document.getElementById("aceito-termos");
+        const btnContinuar = document.getElementById("btn-continuar");
+
+        chkTermos.addEventListener('change', () => {
+            btnContinuar.disabled = !chkTermos.checked;
         });
 
-        // Toggle Senha (Visualizar/Ocultar)
+        function aceitarTermos() {
+            if (!chkTermos.checked) return;
+
+            // Salva que aceitou
+            localStorage.setItem(TERMOS_KEY, "1");
+
+            // Vai pro login
+            mostrarLogin();
+        }
+
+        // ==========================================
+        // LOGIN — ELEMENTOS
+        // ==========================================
+        const inputServidor = document.getElementById("servidor");
+        const inputSenha = document.getElementById("senha");
+        const msgErro = document.getElementById("msg-erro");
+        const btnEntrar = document.getElementById("btn-entrar");
+        const chkLembrar = document.getElementById("lembrar");
+        const btnOlho = document.getElementById("btn-olho");
+
+        function verificarEnter(event) {
+            if (event.key === "Enter") verificarAcesso();
+        }
+
         function toggleSenha() {
             if (inputSenha.type === "password") {
                 inputSenha.type = "text";
@@ -318,34 +505,52 @@
             }
         }
 
-        function verificarEnter(event) {
-            if (event.key === "Enter") verificarAcesso();
+        function carregarCredenciaisSalvas() {
+            try {
+                const salvo = localStorage.getItem(STORAGE_KEY);
+                if (salvo) {
+                    const dados = JSON.parse(salvo);
+                    inputServidor.value = dados.usuario || "";
+                    inputSenha.value = dados.senha || "";
+                    chkLembrar.checked = true;
+                }
+            } catch (e) {
+                console.warn("Erro ao carregar credenciais:", e);
+            }
         }
 
-        function erroLogin(mensagem) {
-            btnEntrar.classList.remove("loading");
-            btnEntrar.innerText = "CONECTAR";
-            
-            inputServidor.classList.add("shake-animation");
-            inputSenha.classList.add("shake-animation");
-            
-            mostrarToast(mensagem, 'erro');
-            
-            inputSenha.value = "";
-            inputSenha.focus();
-
-            setTimeout(() => {
-                inputServidor.classList.remove("shake-animation");
-                inputSenha.classList.remove("shake-animation");
-            }, 500);
+        function salvarCredenciais() {
+            if (chkLembrar.checked) {
+                const dados = {
+                    usuario: inputServidor.value.trim(),
+                    senha: inputSenha.value.trim()
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
+            } else {
+                localStorage.removeItem(STORAGE_KEY);
+            }
         }
 
+        function limparCredenciaisSalvas() {
+            localStorage.removeItem(STORAGE_KEY);
+        }
+
+        // ==========================================
+        // VERIFICAÇÃO DE LOGIN
+        // ==========================================
         async function verificarAcesso() {
             const usuarioDigitado = inputServidor.value.trim();
             const senhaDigitada = inputSenha.value.trim();
 
+            inputServidor.classList.remove("shake-animation");
+            inputSenha.classList.remove("shake-animation");
+            msgErro.style.opacity = "0";
+
             if (!usuarioDigitado || !senhaDigitada) {
-                erroLogin("Preencha o utilizador e a senha.");
+                inputServidor.classList.add("shake-animation");
+                inputSenha.classList.add("shake-animation");
+                msgErro.innerText = "Preencha utilizador e senha.";
+                msgErro.style.opacity = "1";
                 return;
             }
 
@@ -363,12 +568,13 @@
                 if (error) throw error;
 
                 if (!data) {
+                    limparCredenciaisSalvas();
                     erroLogin("Utilizador ou senha incorretos.");
                     return;
                 }
 
                 if (!data.ativo) {
-                    erroLogin("Conta desativada. Contacte o suporte.");
+                    bloquearEFechar("Sua conta foi desativada pelo administrador.");
                     return;
                 }
 
@@ -377,33 +583,98 @@
                     hoje.setHours(0, 0, 0, 0);
                     const venc = new Date(data.vencimento + "T00:00:00");
                     if (venc < hoje) {
-                        erroLogin("Acesso expirado. Renove a sua assinatura.");
+                        bloquearEFechar("Sua assinatura venceu em " + formatarData(data.vencimento) + ".");
                         return;
                     }
                 }
 
-                // SUCESSO NO LOGIN
+                // ✅ SUCESSO
+                salvarCredenciais();
+
                 btnEntrar.classList.remove("loading");
                 btnEntrar.innerText = "CONECTADO";
-                
-                // Exibe Tela de Boas Vindas
-                document.getElementById('welcome-user').innerText = data.usuario;
-                telaBoasVindas.classList.add('ativo');
+                btnEntrar.style.background = "#00c853";
 
-                // Aguarda a animação antes de liberar o acesso no app
                 setTimeout(() => {
                     if (typeof AndroidApp !== 'undefined' && typeof AndroidApp.liberarAcesso === 'function') {
                         AndroidApp.liberarAcesso();
                     } else {
-                        // Apenas para testes no navegador
-                        console.log("Acesso liberado para:", data.usuario);
+                        alert("✅ Conectado com sucesso!\n\nBem-vindo, " + data.usuario + "!");
                     }
-                }, 2500); // 2.5 segundos admirando a tela de boas vindas
+                }, 500);
 
             } catch (err) {
                 console.error("Erro Supabase:", err);
-                erroLogin("Erro de conexão. Verifique sua internet.");
+                erroLogin("Erro de conexão. Tente novamente.");
             }
+        }
+
+        function erroLogin(mensagem) {
+            btnEntrar.classList.remove("loading");
+            btnEntrar.innerText = "CONECTAR";
+            btnEntrar.style.background = "";
+
+            inputServidor.classList.add("shake-animation");
+            inputSenha.classList.add("shake-animation");
+            msgErro.innerText = mensagem;
+            msgErro.style.opacity = "1";
+
+            inputSenha.value = "";
+            inputSenha.focus();
+        }
+
+        // ==========================================
+        // BLOQUEIO E FECHAMENTO AUTOMÁTICO (15s)
+        // ==========================================
+        function bloquearEFechar(motivo) {
+            limparCredenciaisSalvas();
+
+            document.getElementById("motivo-bloqueio").innerText = motivo;
+
+            const texto = encodeURIComponent("Olá! Minha conta RedPlay foi bloqueada. Motivo: " + motivo + ". Podem me ajudar?");
+            document.getElementById("btn-whatsapp-bloqueio").href = "https://wa.me/55997340723?text=" + texto;
+
+            document.getElementById("overlay-bloqueio").classList.add("ativo");
+
+            // Contador regressivo de 15 segundos
+            let segundos = 15;
+            const contador = document.getElementById("contador-fechar");
+
+            if (contador) contador.innerText = segundos;
+
+            const intervalo = setInterval(() => {
+                segundos--;
+                if (contador) contador.innerText = segundos;
+
+                if (segundos <= 0) {
+                    clearInterval(intervalo);
+                    fecharApp();
+                }
+            }, 1000);
+        }
+
+        function fecharApp() {
+            console.log("🔴 Fechando o app...");
+
+            if (typeof AndroidApp !== 'undefined' && typeof AndroidApp.fecharApp === 'function') {
+                try {
+                    AndroidApp.fecharApp();
+                    return;
+                } catch (e) {
+                    console.warn("Erro ao chamar AndroidApp.fecharApp:", e);
+                }
+            }
+
+            try { window.close(); } catch (e) {}
+
+            setTimeout(() => {
+                try { window.location.href = "about:blank"; } catch (e) {}
+            }, 100);
+        }
+
+        function formatarData(iso) {
+            const [a, m, d] = iso.split("-");
+            return `${d}/${m}/${a}`;
         }
     </script>
 </body>
