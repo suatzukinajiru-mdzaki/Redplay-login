@@ -115,7 +115,7 @@
         button.btn-principal:disabled { opacity: 0.4; cursor: not-allowed; }
         .msg-erro { color: #ff4d4d; font-size: 13px; margin-top: 15px; font-weight: 600; opacity: 0; transition: opacity 0.3s; display: block; }
 
-        /* ========== TELA DE BOAS-VINDAS (APÓS LOGIN) ========== */
+        /* ========== TELA DE BOAS-VINDAS ========== */
         #tela-boas-vindas {
             position: fixed; inset: 0;
             background: linear-gradient(135deg, #000000 0%, #1a0000 50%, #000000 100%);
@@ -239,22 +239,22 @@
 
             <h3>💰 Nossos Planos</h3>
             <p><strong>📅 Plano Anual — R$ 150,00</strong></p>
-            <p style="font-size: 12px; color: #888; margin-left: 15px; margin-bottom: 12px;">Acesso completo por 12 meses. Menos de R$ 13 por mês. Praticamente de graça.</p>
+            <p style="font-size: 12px; color: #888; margin-left: 15px; margin-bottom: 12px;">Acesso completo por 12 meses. Menos de R$ 13 por mês.</p>
 
             <p><strong>💎 Plano Vitalício — R$ 390,00</strong></p>
-            <p style="font-size: 12px; color: #888; margin-left: 15px; margin-bottom: 12px;">Pague uma única vez e tenha acesso <strong>para sempre</strong>. Sem mensalidade, sem renovação, sem surpresa. Um pagamento, entretenimento pra vida toda.</p>
+            <p style="font-size: 12px; color: #888; margin-left: 15px; margin-bottom: 12px;">Pague uma única vez e tenha acesso <strong>para sempre</strong>.</p>
 
             <p><strong>➕ Tela Adicional — R$ 130,00/ano</strong></p>
-            <p style="font-size: 12px; color: #888; margin-left: 15px;">Adicione até 2 telas extras à sua conta e assista em mais aparelhos simultaneamente.</p>
+            <p style="font-size: 12px; color: #888; margin-left: 15px;">Adicione até 2 telas extras e assista em mais aparelhos.</p>
 
             <h3>⚡ Estabilidade Garantida</h3>
-            <p>Esqueça "servidor caiu". Nosso sistema <strong>multiservidor troca de fonte sozinho</strong>, automaticamente. Sua programação <strong>não para</strong> — nem em final de campeonato, nem em lançamento de série.</p>
+            <p>Esqueça "servidor caiu". Nosso sistema <strong>multiservidor troca de fonte sozinho</strong>. Sua programação <strong>não para</strong>.</p>
 
             <h3>🔒 Conta Pessoal e Segura</h3>
-            <p>Sua conta é <strong>pessoal e intransferível</strong>. O sistema <strong>bloqueia automaticamente</strong> login simultâneo em mais de um aparelho, garantindo a qualidade pra todos os clientes.</p>
+            <p>Sua conta é <strong>pessoal e intransferível</strong>. O sistema <strong>bloqueia automaticamente</strong> login simultâneo em mais de um aparelho.</p>
 
             <h3>📞 Suporte Todos os Dias</h3>
-            <p>Atendimento direto pelo WhatsApp, todos os dias. Qualquer dúvida, problema ou sugestão — <strong>é só chamar, respondemos rápido</strong>.</p>
+            <p>Atendimento direto pelo WhatsApp, todos os dias. <strong>É só chamar, respondemos rápido</strong>.</p>
 
             <h3>✅ Tudo Pronto?</h3>
             <p>Marque a caixa abaixo para confirmar que <strong>concorda com as condições</strong> e começar a assistir agora.</p>
@@ -341,7 +341,7 @@
         // CONFIGURAÇÃO SUPABASE
         // ==========================================
         const SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_z96rFkWrk7fTegOk6m_4";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const STORAGE_KEY = "redplay_credenciais";
@@ -349,15 +349,36 @@
         const DEVICE_KEY = "redplay_device_id";
 
         // ==========================================
-        // 🔐 GERENCIAMENTO DE DISPOSITIVO
+        // 🔐 DEVICE ID — Usa ANDROID_ID real (fixo por aparelho)
         // ==========================================
         function obterDeviceId() {
+            // 1️⃣ Tenta pegar o ANDROID_ID real (fixo, nunca muda)
+            if (typeof AndroidApp !== 'undefined' && typeof AndroidApp.getAndroidId === 'function') {
+                try {
+                    const androidId = AndroidApp.getAndroidId();
+                    console.log("🔍 Android ID bruto:", androidId);
+
+                    if (androidId && androidId !== 'ID-DESCONHECIDO' && androidId.length > 5) {
+                        const deviceReal = 'DEV-' + androidId.substring(0, 12).toUpperCase();
+                        localStorage.setItem(DEVICE_KEY, deviceReal);
+                        console.log("📱 Device ID (Android):", deviceReal);
+                        return deviceReal;
+                    }
+                } catch (e) {
+                    console.warn("⚠️ Erro Android ID:", e);
+                }
+            } else {
+                console.log("⚠️ AndroidApp.getAndroidId não disponível (rodando no navegador?)");
+            }
+
+            // 2️⃣ Fallback: localStorage (se o APK não tiver a função)
             let id = localStorage.getItem(DEVICE_KEY);
             if (!id) {
                 id = 'DEV-' + Date.now().toString(36).toUpperCase() +
                      '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
                 localStorage.setItem(DEVICE_KEY, id);
             }
+            console.log("📱 Device ID (fallback):", id);
             return id;
         }
 
@@ -517,7 +538,6 @@
                     return;
                 }
 
-                // Verifica vencimento (só se não for vitalício)
                 if (data.vencimento && data.plano !== 'vitalicio') {
                     const hoje = new Date();
                     hoje.setHours(0, 0, 0, 0);
@@ -532,17 +552,19 @@
                     }
                 }
 
-                // 🔐 VERIFICA SESSÃO ÚNICA / LIMITE DE TELAS
+                // 🔐 SESSÃO ÚNICA / LIMITE DE TELAS
                 const deviceIdAtual = obterDeviceId();
                 const deviceNome = obterTipoDispositivo();
                 const listaDisp = obterDispositivosDoCliente(data);
                 const telasMax = data.telas_permitidas || 1;
 
-                // Verifica se esse device já está autorizado
+                console.log("🔎 Devices salvos:", listaDisp);
+                console.log("🔎 Device atual:", deviceIdAtual);
+                console.log("🔎 Limite telas:", telasMax);
+
                 const jaAutorizado = listaDisp.some(d => d.id === deviceIdAtual);
 
                 if (!jaAutorizado) {
-                    // Se já atingiu o limite de telas, bloqueia
                     if (listaDisp.length >= telasMax) {
                         await mostrarJaLogado(
                             listaDisp[0]?.nome || 'Desconhecido',
@@ -556,7 +578,6 @@
                         return;
                     }
 
-                    // Se ainda tem espaço, adiciona o device
                     listaDisp.push({
                         id: deviceIdAtual,
                         nome: deviceNome,
@@ -564,7 +585,6 @@
                     });
                 }
 
-                // ✅ GRAVA O DEVICE ATUAL
                 await supabaseClient
                     .from('utilizadores')
                     .update({
@@ -576,7 +596,6 @@
                     })
                     .eq('usuario', usuarioDigitado);
 
-                // ✅ SUCESSO
                 salvarCredenciais();
 
                 btnEntrar.classList.remove("loading");
@@ -707,13 +726,11 @@
 
         // ==========================================
         // 🚫 LIMITE DE TELAS ATINGIDO
-        // Salva a tentativa como PENDENTE para aprovação
         // ==========================================
         async function mostrarJaLogado(deviceNomeAntigo, deviceIdAntigo, ultimoAcesso, usuario, revendedorId, deviceIdSalvo, telasMax) {
             const deviceIdAtual = obterDeviceId();
             const deviceNomeAtual = obterTipoDispositivo();
 
-            // 📝 SALVA A TENTATIVA para o painel mostrar
             try {
                 await supabaseClient
                     .from('devices_pendentes')
@@ -730,7 +747,6 @@
                 console.warn("Erro ao salvar tentativa:", e);
             }
 
-            // Mostra overlay
             document.getElementById('icone-bloqueio').innerText = '📱';
             document.getElementById('titulo-bloqueio').innerText = 'Limite de telas atingido';
             document.getElementById('aviso-principal').innerText = '⚠️ Sua conta já está ativa em outro aparelho';
