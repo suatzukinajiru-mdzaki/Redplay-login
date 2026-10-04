@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RedPlay Admin V6 MAX</title>
+    <title>RedPlay Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
@@ -58,7 +58,6 @@
         #painel-principal { display: none; }
         #painel-principal.ativo { display: block; }
 
-        /* ============ BANNER IMPERSONAÇÃO ============ */
         #banner-impersonate {
             background: linear-gradient(90deg, var(--dourado), #ff9800);
             color: #000; padding: 12px 25px;
@@ -252,6 +251,13 @@
         }
         .modal input:focus, .modal textarea:focus, .modal select:focus { border-color: var(--vermelho); }
         .modal textarea { min-height: 70px; resize: vertical; }
+        .modal input[type="file"] {
+            padding: 10px;
+            background: #000;
+            border: 2px dashed var(--borda);
+            cursor: pointer;
+        }
+        .modal input[type="file"]:hover { border-color: var(--vermelho); }
         .modal .checkbox-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
         .modal .checkbox-row input { width: auto; margin: 0; accent-color: var(--vermelho); }
         .modal .checkbox-row label { margin: 0; text-transform: none; color: white; font-size: 14px; }
@@ -284,6 +290,20 @@
             color: var(--amarelo); font-size: 15px;
             margin-bottom: 10px; text-transform: uppercase;
             letter-spacing: 1px;
+        }
+
+        /* ============ CARD DE VERSÃO ============ */
+        .upload-card {
+            background: var(--painel); border: 1px solid var(--borda);
+            border-radius: 12px; padding: 25px; margin-bottom: 25px;
+        }
+        .upload-card h2 {
+            color: var(--vermelho); margin-bottom: 20px;
+            font-size: 18px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .progresso {
+            margin-top: 15px; color: var(--texto-suave);
+            font-size: 13px; line-height: 1.6;
         }
 
         /* ============ TOAST ============ */
@@ -333,7 +353,7 @@
     <!-- ============ LOGIN ============ -->
     <div id="tela-login">
         <div class="login-admin">
-            <h1>🔐 Painel V6 MAX</h1>
+            <h1>Painel Admin</h1>
             <p>RedPlay - Sistema Multi-Revenda</p>
             <input type="text" id="login-usuario" placeholder="Usuário" onkeypress="if(event.key==='Enter')document.getElementById('login-senha').focus()">
             <input type="password" id="login-senha" placeholder="Senha" onkeypress="if(event.key==='Enter')entrarAdmin()">
@@ -344,17 +364,17 @@
 
     <!-- ============ BANNER IMPERSONAÇÃO ============ -->
     <div id="banner-impersonate">
-        <span>👁️ Você está vendo como: <strong id="nome-impersonate">—</strong></span>
-        <button onclick="sairImpersonate()">✕ Voltar para Admin</button>
+        <span>Você está vendo como: <strong id="nome-impersonate">—</strong></span>
+        <button onclick="sairImpersonate()">Voltar para Admin</button>
     </div>
 
     <!-- ============ PAINEL ============ -->
     <div id="painel-principal">
         <header>
-            <h1>RedPlay Admin <span id="subtitulo-painel">V6 MAX</span></h1>
+            <h1>RedPlay Admin <span id="subtitulo-painel">Gerenciamento</span></h1>
             <div class="user-info">
                 <strong id="nome-logado">—</strong>
-                <span id="tag-admin" class="tag-admin" style="display: none;">👑 SUPER ADMIN</span>
+                <span id="tag-admin" class="tag-admin" style="display: none;">SUPER ADMIN</span>
             </div>
             <div class="header-actions">
                 <button class="btn btn-sair" onclick="sairAdmin()">Sair</button>
@@ -362,13 +382,14 @@
         </header>
 
         <div class="tabs">
-            <button class="tab ativa" data-tab="clientes" onclick="mudarTab('clientes')">👥 Clientes</button>
+            <button class="tab ativa" data-tab="clientes" onclick="mudarTab('clientes')">Clientes</button>
             <button class="tab" data-tab="pendentes" onclick="mudarTab('pendentes')">
-                🔔 Pendentes <span class="badge-num" id="badge-pendentes">0</span>
+                Pendentes <span class="badge-num" id="badge-pendentes">0</span>
             </button>
-            <button class="tab" id="tab-revendedores-btn" data-tab="revendedores" onclick="mudarTab('revendedores')" style="display: none;">🏪 Revendedores</button>
-            <button class="tab" data-tab="pagamentos" onclick="mudarTab('pagamentos')">💰 Pagamentos</button>
-            <button class="tab" data-tab="pesquisas" onclick="mudarTab('pesquisas')">⭐ Pesquisas</button>
+            <button class="tab" id="tab-revendedores-btn" data-tab="revendedores" onclick="mudarTab('revendedores')" style="display: none;">Revendedores</button>
+            <button class="tab" data-tab="pagamentos" onclick="mudarTab('pagamentos')">Pagamentos</button>
+            <button class="tab" data-tab="pesquisas" onclick="mudarTab('pesquisas')">Pesquisas</button>
+            <button class="tab" data-tab="atualizacoes" onclick="mudarTab('atualizacoes')">Atualizações</button>
         </div>
 
         <!-- ============ TAB CLIENTES ============ -->
@@ -378,13 +399,13 @@
                 <div class="stat-card"><div class="num" id="stat-ativos" style="color: var(--verde);">0</div><div class="lbl">Ativos</div></div>
                 <div class="stat-card"><div class="num" id="stat-inativos" style="color: #ff4d4d;">0</div><div class="lbl">Inativos</div></div>
                 <div class="stat-card"><div class="num" id="stat-vencidos" style="color: var(--amarelo);">0</div><div class="lbl">Vencidos</div></div>
-                <div class="stat-card"><div class="num" id="stat-vitalicios" style="color: var(--dourado);">0</div><div class="lbl">💎 Vitalícios</div></div>
+                <div class="stat-card"><div class="num" id="stat-vitalicios" style="color: var(--dourado);">0</div><div class="lbl">Vitalícios</div></div>
             </div>
 
             <div id="aviso-limite-container"></div>
 
             <div class="toolbar">
-                <input type="text" id="busca" placeholder="🔍 Buscar por utilizador..." oninput="renderizarTabelaClientes()">
+                <input type="text" id="busca" placeholder="Buscar por utilizador..." oninput="renderizarTabelaClientes()">
                 <select id="filtro" onchange="renderizarTabelaClientes()">
                     <option value="todos">Todos</option>
                     <option value="ativos">Só ativos</option>
@@ -421,15 +442,15 @@
         <div class="conteudo-tab" id="tab-pendentes">
             <div class="tabela-wrap" style="padding-top: 20px;">
                 <div id="conteudo-pendentes">
-                    <p style="color: #888; text-align: center; padding: 40px;">Nenhuma solicitação pendente. 🎉</p>
+                    <p style="color: #888; text-align: center; padding: 40px;">Nenhuma solicitação pendente.</p>
                 </div>
             </div>
         </div>
 
-        <!-- ============ TAB REVENDEDORES (SÓ ADMIN) ============ -->
+        <!-- ============ TAB REVENDEDORES ============ -->
         <div class="conteudo-tab" id="tab-revendedores">
             <div class="toolbar">
-                <input type="text" id="busca-rev" placeholder="🔍 Buscar revendedor..." oninput="renderizarTabelaRevendedores()">
+                <input type="text" id="busca-rev" placeholder="Buscar revendedor..." oninput="renderizarTabelaRevendedores()">
                 <button class="btn btn-dourado" onclick="abrirModalNovoRevendedor()">+ Novo Revendedor</button>
             </div>
             <div class="tabela-wrap">
@@ -487,6 +508,53 @@
                 </div>
             </div>
         </div>
+
+        <!-- ============ TAB ATUALIZAÇÕES ============ -->
+        <div class="conteudo-tab" id="tab-atualizacoes">
+            <div class="tabela-wrap" style="padding-top: 20px;">
+
+                <div class="upload-card">
+                    <h2>Enviar Nova Versão do APK</h2>
+
+                    <label>Arquivo APK</label>
+                    <input type="file" id="apk-arquivo" accept=".apk">
+
+                    <label>Versão (ex: 6.0.1)</label>
+                    <input type="text" id="apk-versao" placeholder="6.0.1">
+
+                    <label>Código da Versão (número, ex: 601)</label>
+                    <input type="number" id="apk-versao-code" placeholder="601">
+
+                    <label>Changelog (o que mudou)</label>
+                    <textarea id="apk-changelog" placeholder="- Correção de bug&#10;- Nova funcionalidade"></textarea>
+
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="apk-obrigatoria">
+                        <label for="apk-obrigatoria">Atualização obrigatória (bloqueia o app até atualizar)</label>
+                    </div>
+
+                    <button class="btn btn-primario" onclick="enviarApk()" id="btn-enviar-apk">Enviar APK</button>
+                    <div class="progresso" id="apk-progresso"></div>
+                </div>
+
+                <h2 style="color: var(--vermelho); margin-bottom: 15px; font-size: 18px;">Histórico de Versões</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Versão</th>
+                            <th>Código</th>
+                            <th>Obrigatória</th>
+                            <th>Status</th>
+                            <th>Enviado em</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpo-versoes">
+                        <tr><td colspan="6" class="loading-tabela">Carregando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <!-- ============ MODAL CLIENTE ============ -->
@@ -503,8 +571,8 @@
 
             <label>Plano</label>
             <select id="cliente-plano">
-                <option value="anual">📅 Anual - R$ 150 (12 meses)</option>
-                <option value="vitalicio">💎 Vitalício - R$ 390</option>
+                <option value="anual">Anual - R$ 150 (12 meses)</option>
+                <option value="vitalicio">Vitalício - R$ 390</option>
             </select>
 
             <label>Telas Permitidas (1 a 3)</label>
@@ -567,7 +635,7 @@
     <!-- ============ MODAL DISPOSITIVOS ============ -->
     <div class="modal-overlay" id="modal-dispositivos">
         <div class="modal">
-            <h2 id="modal-disp-titulo">📱 Dispositivos</h2>
+            <h2 id="modal-disp-titulo">Dispositivos</h2>
             <p style="color: var(--texto-suave); font-size: 12px; margin-bottom: 20px;">
                 Remova um aparelho para liberar vaga (até o limite de telas do cliente).
             </p>
@@ -604,6 +672,7 @@
         let revendedores = [];
         let pagamentos = [];
         let pendentes = [];
+        let versoesApk = [];
         let senhasVisiveis = {};
         let clienteSelecionadoDisp = null;
 
@@ -703,7 +772,7 @@
 
             document.getElementById('nome-logado').innerText = usuarioLogado.nome;
             document.getElementById('subtitulo-painel').innerText =
-                souSuperAdmin ? 'V6 MAX - Super Admin' : `Revenda: ${usuarioLogado.nome}`;
+                souSuperAdmin ? 'Super Admin' : `Revenda: ${usuarioLogado.nome}`;
 
             document.getElementById('tag-admin').style.display =
                 (souSuperAdmin && !impersonando) ? 'inline-block' : 'none';
@@ -717,6 +786,7 @@
             await carregarPendentes();
             await carregarPagamentos();
             await carregarPesquisas();
+            await carregarVersoes();
 
             if (souSuperAdmin && !impersonando) {
                 await carregarRevendedores();
@@ -747,6 +817,7 @@
             if (nome === 'pesquisas') carregarPesquisas();
             if (nome === 'pagamentos') carregarPagamentos();
             if (nome === 'pendentes') carregarPendentes();
+            if (nome === 'atualizacoes') carregarVersoes();
         }
 
         // ==========================================
@@ -796,17 +867,14 @@
             const restante = limite - atual;
 
             if (restante <= 0) {
-                container.innerHTML = `<div class="aviso-limite">⚠️ <strong>Limite atingido!</strong> Você tem ${atual}/${limite} clientes.</div>`;
+                container.innerHTML = `<div class="aviso-limite"><strong>Limite atingido!</strong> Você tem ${atual}/${limite} clientes.</div>`;
             } else if (restante <= 5) {
-                container.innerHTML = `<div class="aviso-limite">📊 <strong>Atenção:</strong> ${atual}/${limite} clientes. Restam ${restante} vagas.</div>`;
+                container.innerHTML = `<div class="aviso-limite"><strong>Atenção:</strong> ${atual}/${limite} clientes. Restam ${restante} vagas.</div>`;
             } else {
                 container.innerHTML = '';
             }
         }
 
-        // ==========================================
-        // DISPOSITIVOS
-        // ==========================================
         function obterDispositivos(c) {
             if (Array.isArray(c.devices) && c.devices.length > 0) return c.devices;
             if (c.devices && typeof c.devices === 'string') {
@@ -819,9 +887,6 @@
             return [];
         }
 
-        // ==========================================
-        // RENDERIZAR TABELA CLIENTES
-        // ==========================================
         function renderizarTabelaClientes() {
             const tbody = document.getElementById("corpo-clientes");
             const busca = document.getElementById("busca").value.toLowerCase().trim();
@@ -855,12 +920,12 @@
                 const telasMax = c.telas_permitidas || 1;
 
                 let badgePlano = '';
-                if (c.plano === 'vitalicio') badgePlano = '<span class="badge-status" style="background:rgba(255,193,7,0.15);color:#ffc107;">💎 Vitalício</span>';
-                else badgePlano = '<span class="badge-status" style="background:rgba(25,118,210,0.15);color:#64b5f6;">📅 Anual</span>';
+                if (c.plano === 'vitalicio') badgePlano = '<span class="badge-status" style="background:rgba(255,193,7,0.15);color:#ffc107;">Vitalício</span>';
+                else badgePlano = '<span class="badge-status" style="background:rgba(25,118,210,0.15);color:#64b5f6;">Anual</span>';
 
                 let deviceHtml = '<span class="dev-off">— sem device —</span>';
                 if (qtdDisp > 0) {
-                    deviceHtml = `<div class="device-badge" onclick="abrirModalDispositivos(${c.id})">📱 ${qtdDisp} ⚙️</div>`;
+                    deviceHtml = `<div class="device-badge" onclick="abrirModalDispositivos(${c.id})">${qtdDisp} Aparelho(s) ⚙</div>`;
                 }
 
                 return `
@@ -870,20 +935,20 @@
                         <td>
                             <div class="senha-cell">
                                 <span class="senha-texto">${senhaMostrada}</span>
-                                <button class="btn-mini-icon" onclick="toggleSenhaTabela(${c.id})">${senhaVisivel ? '🙈' : '👁️'}</button>
-                                <button class="btn-mini-icon" onclick="copiarSenha(${c.id})">📋</button>
+                                <button class="btn-mini-icon" onclick="toggleSenhaTabela(${c.id})">${senhaVisivel ? 'Esconder' : 'Ver'}</button>
+                                <button class="btn-mini-icon" onclick="copiarSenha(${c.id})">Copiar</button>
                             </div>
                         </td>
                         <td><span class="badge-status ${c.ativo ? 'badge-ativo' : 'badge-inativo'}">${c.ativo ? 'Ativo' : 'Inativo'}</span></td>
                         <td>${badgePlano}</td>
-                        <td style="${vencido ? 'color: var(--amarelo); font-weight: 700;' : ''}">${venc} ${vencido ? '⚠️' : ''}</td>
+                        <td style="${vencido ? 'color: var(--amarelo); font-weight: 700;' : ''}">${venc} ${vencido ? '(!)' : ''}</td>
                         <td style="text-align:center;"><strong>${qtdDisp}/${telasMax}</strong></td>
                         <td>${deviceHtml}</td>
                         <td>
                             <div class="acoes">
                                 <button class="btn-mini btn-editar" onclick="abrirModalEditarCliente(${c.id})">Editar</button>
                                 <button class="btn-mini btn-toggle" onclick="toggleAtivo(${c.id})">${c.ativo ? 'Off' : 'On'}</button>
-                                <button class="btn-mini btn-whats" onclick="abrirWhats(${c.id})">💬</button>
+                                <button class="btn-mini btn-whats" onclick="abrirWhats(${c.id})">WhatsApp</button>
                                 <button class="btn-mini btn-excluir" onclick="excluirCliente(${c.id})">X</button>
                             </div>
                         </td>
@@ -899,7 +964,7 @@
             const c = clientes.find(x => x.id === id);
             if (!c) return;
             clienteSelecionadoDisp = c;
-            document.getElementById("modal-disp-titulo").innerText = `📱 Devices: ${c.usuario}`;
+            document.getElementById("modal-disp-titulo").innerText = `Devices: ${c.usuario}`;
             renderizarListaModalDispositivos();
             document.getElementById("modal-dispositivos").classList.add("ativo");
         }
@@ -916,7 +981,7 @@
             container.innerHTML = lista.map(d => `
                 <div class="disp-card">
                     <div class="disp-info">
-                        <span class="disp-nome">📺 ${escapeHtml(d.nome || 'Aparelho')}</span>
+                        <span class="disp-nome">${escapeHtml(d.nome || 'Aparelho')}</span>
                         <span class="disp-id">ID: ${escapeHtml(d.id || 'N/A')}</span>
                     </div>
                     <button class="btn-mini btn-excluir" onclick="removerDispositivoUnico('${d.id}')">Remover</button>
@@ -963,7 +1028,7 @@
         }
 
         // ==========================================
-        // 🔔 PENDENTES
+        // PENDENTES
         // ==========================================
         async function carregarPendentes() {
             let query = supabaseClient
@@ -999,7 +1064,7 @@
             const container = document.getElementById("conteudo-pendentes");
 
             if (pendentes.length === 0) {
-                container.innerHTML = '<p style="color: #888; text-align: center; padding: 40px;">Nenhuma solicitação pendente. 🎉</p>';
+                container.innerHTML = '<p style="color: #888; text-align: center; padding: 40px;">Nenhuma solicitação pendente.</p>';
                 return;
             }
 
@@ -1008,17 +1073,17 @@
 
                 return `
                     <div class="pendente-card">
-                        <h3>📱 NOVO APARELHO DETECTADO</h3>
+                        <h3>Novo Aparelho Detectado</h3>
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px;">
                             <div style="flex: 1; min-width: 250px;">
                                 <p style="font-size: 14px; margin-bottom: 5px;"><strong>Cliente:</strong> ${escapeHtml(p.usuario)}</p>
                                 <p style="font-size: 13px; color: var(--texto-suave); margin-bottom: 5px;"><strong>Aparelho:</strong> ${escapeHtml(p.device_nome || 'Desconhecido')}</p>
                                 <p style="font-size: 12px; color: var(--texto-suave); margin-bottom: 5px; font-family: monospace;"><strong>ID:</strong> ${escapeHtml(p.device_id)}</p>
-                                <p style="font-size: 11px; color: #666;">🕐 Tentou às ${dataStr}</p>
+                                <p style="font-size: 11px; color: #666;">Tentou às ${dataStr}</p>
                             </div>
                             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                <button class="btn-mini btn-aprovar" style="padding: 10px 18px; font-size: 12px;" onclick="aprovarPendente(${p.id})">✅ Aprovar</button>
-                                <button class="btn-mini btn-excluir" style="padding: 10px 18px; font-size: 12px;" onclick="rejeitarPendente(${p.id})">❌ Rejeitar</button>
+                                <button class="btn-mini btn-aprovar" style="padding: 10px 18px; font-size: 12px;" onclick="aprovarPendente(${p.id})">Aprovar</button>
+                                <button class="btn-mini btn-excluir" style="padding: 10px 18px; font-size: 12px;" onclick="rejeitarPendente(${p.id})">Rejeitar</button>
                             </div>
                         </div>
                     </div>
@@ -1039,7 +1104,7 @@
             const telasMax = cliente.telas_permitidas || 1;
 
             if (listaAtual.length >= telasMax) {
-                if (!confirm(`⚠️ Cliente já tem ${listaAtual.length}/${telasMax} aparelhos.\n\nSubstituir o mais antigo?`)) return;
+                if (!confirm(`Cliente já tem ${listaAtual.length}/${telasMax} aparelhos.\n\nSubstituir o mais antigo?`)) return;
                 listaAtual.shift();
             }
 
@@ -1063,7 +1128,7 @@
 
             await supabaseClient.from('devices_pendentes').update({ status: 'aprovado' }).eq('id', id);
 
-            toast("✅ Aparelho aprovado!");
+            toast("Aparelho aprovado!");
             carregarPendentes();
             carregarClientes();
         }
@@ -1077,7 +1142,7 @@
         }
 
         // ==========================================
-        // MODAIS CLIENTE
+        // MODAL CLIENTE
         // ==========================================
         function abrirModalNovoCliente() {
             if (!souSuperAdmin || impersonando) {
@@ -1152,9 +1217,6 @@
             }
         }
 
-        // ==========================================
-        // AÇÕES CLIENTE
-        // ==========================================
         async function toggleAtivo(id) {
             const c = clientes.find(x => x.id === id);
             if (!c) return;
@@ -1201,9 +1263,9 @@
             if (!c) return;
             const texto = encodeURIComponent(
                 "Olá! Suas credenciais RedPlay:\n\n" +
-                "👤 Utilizador: " + c.usuario + "\n" +
-                "🔑 Senha: " + c.senha + "\n\n" +
-                "Bom entretenimento! 🎬"
+                "Utilizador: " + c.usuario + "\n" +
+                "Senha: " + c.senha + "\n\n" +
+                "Bom entretenimento!"
             );
             window.open("https://wa.me/?text=" + texto, "_blank");
         }
@@ -1256,7 +1318,7 @@
                 return `
                     <tr>
                         <td>${r.id}</td>
-                        <td><strong>${escapeHtml(r.nome)}</strong> ${isAdmin ? '<span class="badge-admin">👑 VOCÊ</span>' : ''}</td>
+                        <td><strong>${escapeHtml(r.nome)}</strong> ${isAdmin ? '<span class="badge-admin">SUPER ADMIN</span>' : ''}</td>
                         <td><code style="color: var(--texto-suave);">${escapeHtml(r.usuario)}</code></td>
                         <td style="font-size: 12px;">${r.whatsapp || '—'}</td>
                         <td><span class="badge-status ${r.ativo ? 'badge-ativo' : 'badge-inativo'}">${r.ativo ? 'Ativo' : 'Inativo'}</span></td>
@@ -1264,7 +1326,7 @@
                         <td style="text-align:center;">${qtd}</td>
                         <td>
                             <div class="acoes">
-                                ${!isAdmin ? `<button class="btn-mini btn-entrar-como" onclick="entrarComoRevendedor(${r.id})">🔑 Entrar</button>` : ''}
+                                ${!isAdmin ? `<button class="btn-mini btn-entrar-como" onclick="entrarComoRevendedor(${r.id})">Entrar</button>` : ''}
                                 <button class="btn-mini btn-editar" onclick="abrirModalEditarRevendedor(${r.id})">Editar</button>
                                 ${!isAdmin ? `<button class="btn-mini btn-toggle" onclick="toggleRevendedor(${r.id})">${r.ativo ? 'Off' : 'On'}</button>` : ''}
                                 ${!isAdmin ? `<button class="btn-mini btn-excluir" onclick="excluirRevendedor(${r.id})">X</button>` : ''}
@@ -1285,7 +1347,7 @@
 
             mudarTab('clientes');
 
-            document.getElementById('subtitulo-painel').innerText = `👁️ Vendo como: ${r.nome}`;
+            document.getElementById('subtitulo-painel').innerText = `Vendo como: ${r.nome}`;
             document.getElementById('tag-admin').style.display = 'none';
             document.getElementById('tab-revendedores-btn').style.display = 'none';
             atualizarBannerImpersonate();
@@ -1300,7 +1362,7 @@
             impersonando = false;
             revendedorAtual = usuarioLogado;
 
-            document.getElementById('subtitulo-painel').innerText = 'V6 MAX - Super Admin';
+            document.getElementById('subtitulo-painel').innerText = 'Super Admin';
             document.getElementById('tag-admin').style.display = 'inline-block';
             document.getElementById('tab-revendedores-btn').style.display = 'block';
             atualizarBannerImpersonate();
@@ -1447,9 +1509,9 @@
             tbody.innerHTML = pagamentos.map(p => {
                 const data = new Date(p.criado_em).toLocaleString('pt-BR');
                 let badgeTipo = p.tipo;
-                if (p.tipo === 'anual') badgeTipo = '📅 Anual';
-                else if (p.tipo === 'vitalicio') badgeTipo = '💎 Vitalício';
-                else if (p.tipo === 'tela_extra') badgeTipo = '➕ Tela Extra';
+                if (p.tipo === 'anual') badgeTipo = 'Anual';
+                else if (p.tipo === 'vitalicio') badgeTipo = 'Vitalício';
+                else if (p.tipo === 'tela_extra') badgeTipo = 'Tela Extra';
 
                 return `
                     <tr>
@@ -1495,7 +1557,7 @@
 
             let html = `
                 <div style="text-align: center; background: var(--painel); padding: 25px; border-radius: 12px; margin-bottom: 20px;">
-                    <div style="font-size: 42px; font-weight: 900; color: var(--amarelo);">${media} ⭐</div>
+                    <div style="font-size: 42px; font-weight: 900; color: var(--amarelo);">${media} / 5</div>
                     <div style="color: var(--texto-suave); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px;">
                         ${data.length} resposta${data.length !== 1 ? 's' : ''}
                     </div>
@@ -1518,6 +1580,172 @@
             });
 
             container.innerHTML = html;
+        }
+
+        // ==========================================
+        // ATUALIZAÇÕES DO APK
+        // ==========================================
+        async function carregarVersoes() {
+            const tbody = document.getElementById("corpo-versoes");
+            if (!tbody) return;
+            tbody.innerHTML = '<tr><td colspan="6" class="loading-tabela">Carregando...</td></tr>';
+
+            const { data, error } = await supabaseClient
+                .from('versoes_apk')
+                .select('*')
+                .order('versao_code', { ascending: false });
+
+            if (error) {
+                tbody.innerHTML = '<tr><td colspan="6" class="vazio">Erro ao carregar.</td></tr>';
+                return;
+            }
+
+            versoesApk = data || [];
+            renderizarVersoes();
+        }
+
+        function renderizarVersoes() {
+            const tbody = document.getElementById("corpo-versoes");
+            if (versoesApk.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="vazio">Nenhuma versão cadastrada ainda.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = versoesApk.map(v => {
+                const dataStr = new Date(v.criado_em).toLocaleString('pt-BR');
+                return `
+                    <tr>
+                        <td><strong>${escapeHtml(v.versao)}</strong></td>
+                        <td>${v.versao_code}</td>
+                        <td>${v.obrigatoria ? '<span class="badge-status badge-inativo">Sim</span>' : '<span class="badge-status badge-ativo">Não</span>'}</td>
+                        <td>${v.ativo ? '<span class="badge-status badge-ativo">Ativo</span>' : '<span class="badge-status badge-inativo">Inativo</span>'}</td>
+                        <td style="font-size: 11px;">${dataStr}</td>
+                        <td>
+                            <div class="acoes">
+                                <button class="btn-mini btn-editar" onclick="toggleObrigatoria(${v.id})">${v.obrigatoria ? 'Tornar Opcional' : 'Tornar Obrigatória'}</button>
+                                <button class="btn-mini btn-toggle" onclick="toggleVersaoAtivo(${v.id})">${v.ativo ? 'Desativar' : 'Ativar'}</button>
+                                <button class="btn-mini btn-excluir" onclick="excluirVersao(${v.id})">Excluir</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function enviarApk() {
+            const arquivo = document.getElementById('apk-arquivo').files[0];
+            const versao = document.getElementById('apk-versao').value.trim();
+            const versaoCode = parseInt(document.getElementById('apk-versao-code').value);
+            const changelog = document.getElementById('apk-changelog').value.trim();
+            const obrigatoria = document.getElementById('apk-obrigatoria').checked;
+
+            if (!arquivo) { toast("Selecione um arquivo APK.", true); return; }
+            if (!versao) { toast("Preencha a versão.", true); return; }
+            if (!versaoCode || versaoCode < 1) { toast("Preencha o código da versão.", true); return; }
+            if (!arquivo.name.toLowerCase().endsWith('.apk')) { toast("O arquivo deve ser .apk", true); return; }
+
+            const btn = document.getElementById('btn-enviar-apk');
+            const prog = document.getElementById('apk-progresso');
+
+            btn.disabled = true;
+            btn.innerText = "Enviando...";
+            prog.innerHTML = `Preparando upload...<br>Tamanho: ${(arquivo.size / 1024 / 1024).toFixed(2)} MB`;
+
+            try {
+                const nomeArquivo = `redplay-v${versaoCode}-${Date.now()}.apk`;
+
+                prog.innerHTML = `Enviando para o Supabase Storage...<br>${nomeArquivo}`;
+
+                const { data: upload, error: upError } = await supabaseClient
+                    .storage
+                    .from('apk')
+                    .upload(nomeArquivo, arquivo, {
+                        cacheControl: '3600',
+                        upsert: false,
+                        contentType: 'application/vnd.android.package-archive'
+                    });
+
+                if (upError) throw upError;
+
+                prog.innerHTML = "Gerando URL pública...";
+
+                const { data: urlData } = supabaseClient
+                    .storage
+                    .from('apk')
+                    .getPublicUrl(nomeArquivo);
+
+                const urlPublica = urlData.publicUrl;
+
+                prog.innerHTML = "Salvando registro no banco...";
+
+                const { error: dbError } = await supabaseClient
+                    .from('versoes_apk')
+                    .insert([{
+                        versao: versao,
+                        versao_code: versaoCode,
+                        changelog: changelog || null,
+                        url_apk: urlPublica,
+                        obrigatoria: obrigatoria,
+                        ativo: true
+                    }]);
+
+                if (dbError) throw dbError;
+
+                prog.innerHTML = "APK publicado com sucesso!";
+                toast("APK enviado com sucesso!");
+
+                document.getElementById('apk-arquivo').value = '';
+                document.getElementById('apk-versao').value = '';
+                document.getElementById('apk-versao-code').value = '';
+                document.getElementById('apk-changelog').value = '';
+                document.getElementById('apk-obrigatoria').checked = false;
+
+                setTimeout(() => { prog.innerHTML = ''; }, 5000);
+
+                carregarVersoes();
+
+            } catch (err) {
+                console.error(err);
+                prog.innerHTML = `<span style="color: #ff4d4d;">Erro: ${err.message}</span>`;
+                toast("Erro ao enviar: " + err.message, true);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Enviar APK";
+            }
+        }
+
+        async function toggleObrigatoria(id) {
+            const v = versoesApk.find(x => x.id === id);
+            if (!v) return;
+            const { error } = await supabaseClient.from('versoes_apk').update({ obrigatoria: !v.obrigatoria }).eq('id', id);
+            if (error) { toast("Erro.", true); return; }
+            toast(!v.obrigatoria ? "Agora é obrigatória!" : "Agora é opcional.");
+            carregarVersoes();
+        }
+
+        async function toggleVersaoAtivo(id) {
+            const v = versoesApk.find(x => x.id === id);
+            if (!v) return;
+            const { error } = await supabaseClient.from('versoes_apk').update({ ativo: !v.ativo }).eq('id', id);
+            if (error) { toast("Erro.", true); return; }
+            toast(!v.ativo ? "Versão ativada!" : "Versão desativada.");
+            carregarVersoes();
+        }
+
+        async function excluirVersao(id) {
+            const v = versoesApk.find(x => x.id === id);
+            if (!v) return;
+            if (!confirm(`Excluir versão ${v.versao}?\n\nO APK no storage também será removido.`)) return;
+
+            try {
+                const nomeArquivo = v.url_apk.split('/').pop();
+                await supabaseClient.storage.from('apk').remove([nomeArquivo]);
+            } catch (e) { console.warn("Arquivo não encontrado no storage:", e); }
+
+            const { error } = await supabaseClient.from('versoes_apk').delete().eq('id', id);
+            if (error) { toast("Erro ao excluir.", true); return; }
+            toast("Versão excluída.");
+            carregarVersoes();
         }
 
         // ==========================================
