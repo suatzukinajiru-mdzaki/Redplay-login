@@ -6,7 +6,7 @@
     <title>RedPlay</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --vermelho-redplay: #e50914;
@@ -161,94 +161,55 @@
 
         .msg-erro { color: #ff4d4d; font-size: 13px; margin-top: 15px; font-weight: 600; opacity: 0; transition: opacity 0.3s; display: block; }
 
-        /* ========== 🎬 TELA DE BOAS-VINDAS (APÓS LOGIN) ========== */
+        /* ========== 🎬 TELA DE BOAS-VINDAS (MARCANTE E DISCRETA) ========== */
         #tela-boas-vindas {
             position: fixed; inset: 0;
-            background: linear-gradient(135deg, #000000 0%, #1a0000 50%, #000000 100%);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
             z-index: 99998;
             display: none;
             justify-content: center; align-items: center;
-            text-align: center; padding: 30px;
-            opacity: 0; transition: opacity 0.5s ease;
+            opacity: 0; transition: opacity 0.3s ease;
         }
         #tela-boas-vindas.ativo { display: flex; opacity: 1; }
         #tela-boas-vindas.saindo { opacity: 0; }
 
-        .bv-conteudo { max-width: 550px; animation: bvEntrada 0.6s ease; }
-        @keyframes bvEntrada {
-            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+        .bv-card {
+            background: linear-gradient(145deg, #121212 0%, #050505 100%);
+            border: 1px solid rgba(229, 9, 20, 0.4);
+            border-left: 4px solid var(--vermelho-redplay);
+            border-radius: 16px;
+            padding: 25px 35px;
+            width: 90%; max-width: 440px;
+            text-align: left;
+            box-shadow: 0 20px 50px rgba(229, 9, 20, 0.25);
+            animation: bvSuave 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes bvSuave {
+            from { opacity: 0; transform: translateY(15px) scale(0.98); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .bv-emoji { font-size: 90px; margin-bottom: 15px; animation: bvPulsa 1.5s infinite alternate; }
-        @keyframes bvPulsa { from { transform: scale(1); } to { transform: scale(1.15); } }
+        .bv-topo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .bv-tag { font-size: 10px; font-weight: 900; letter-spacing: 2px; color: var(--vermelho-redplay); text-transform: uppercase; }
+        .bv-ponto-ativo { width: 8px; height: 8px; background: #00c853; border-radius: 50%; box-shadow: 0 0 8px #00c853; }
 
-        .bv-titulo {
-            color: var(--vermelho-redplay);
-            font-size: 32px; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 3px;
-            margin-bottom: 10px;
-        }
+        .bv-saudacao { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+        .bv-usuario-txt { color: var(--vermelho-redplay); }
+        .bv-subtitulo { font-size: 13px; color: #aaa; margin-bottom: 18px; font-weight: 400; }
 
-        .bv-usuario {
-            color: #fff; font-size: 26px; font-weight: 700;
-            margin-bottom: 20px; padding: 12px 30px;
-            background: rgba(229, 9, 20, 0.15);
-            border: 2px solid rgba(229, 9, 20, 0.4);
-            border-radius: 50px; display: inline-block;
+        .bv-info-vencimento {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 10px 14px; border-radius: 8px; font-size: 12px;
         }
+        .bv-lbl { color: #888; }
+        .bv-val { color: #fff; font-weight: 700; }
+        .bv-dias-tag { font-weight: 700; margin-left: 8px; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
 
-        .bv-mensagem {
-            color: #fff;
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 22px;
-            line-height: 1.4;
-        }
-        .bv-mensagem span {
-            color: var(--vermelho-redplay);
-            font-weight: 900;
-        }
-
-        .bv-status {
-            display: inline-flex; align-items: center; gap: 10px;
-            padding: 10px 22px;
-            background: rgba(0, 200, 83, 0.15);
-            border: 1px solid rgba(0, 200, 83, 0.4);
-            border-radius: 50px; margin-bottom: 20px;
-        }
-        .bv-status-icone { font-size: 20px; }
-        .bv-status-texto {
-            color: #00c853; font-size: 15px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-
-        .bv-vencimento { color: #aaa; font-size: 15px; margin-bottom: 25px; }
-        .bv-venc-label { color: #888; }
-        .bv-venc-data { color: #fff; font-weight: 700; margin-left: 5px; }
-        .bv-venc-dias {
-            display: block; margin-top: 5px;
-            color: #ffab00; font-size: 13px; font-weight: 700;
-        }
-
-        .bv-loader {
-            width: 220px; height: 4px;
-            background: rgba(229, 9, 20, 0.2);
-            border-radius: 4px; margin: 0 auto 15px;
-            overflow: hidden;
-        }
-        .bv-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--vermelho-redplay), #ff4d4d);
-            border-radius: 4px; width: 0%;
-            animation: bvCarregar 3s ease-in-out forwards;
-        }
+        .bv-progresso-bar { width: 100%; height: 2px; background: rgba(255,255,255,0.1); margin-top: 15px; overflow: hidden; border-radius: 2px; }
+        .bv-progresso-fill { height: 100%; background: var(--vermelho-redplay); width: 0%; animation: bvCarregar 1.8s linear forwards; }
         @keyframes bvCarregar { from { width: 0%; } to { width: 100%; } }
-
-        .bv-msg {
-            color: #666; font-size: 13px;
-            text-transform: uppercase; letter-spacing: 2px;
-        }
 
         /* ========== OVERLAY DE BLOQUEIO ========== */
         #overlay-bloqueio {
@@ -344,7 +305,7 @@
 
     <div class="bg-glow"></div>
 
-    <!-- ========== TELA 1: BOAS-VINDAS / CONDIÇÕES ========== -->
+    <!-- ========== TELA 1: TERMOS ========== -->
     <div class="box hidden" id="caixa-termos">
         <span class="badge">BEM-VINDO À REDPLAY</span>
         <h1 class="termos-titulo">A Melhor TV do Brasil</h1>
@@ -352,44 +313,7 @@
 
         <div class="termos-scroll">
             <h3>🎬 Bem-vindo à RedPlay</h3>
-            <p>A <strong>RedPlay</strong> é a plataforma definitiva de entretenimento. Aqui você encontra <strong>tudo em um só lugar</strong>: filmes, séries, novelas, animes, doramas, canais ao vivo e esportes — sem limites, sem complicação, sem propaganda.</p>
-
-            <h3>🌐 Multiservidor Inteligente</h3>
-            <p>Nosso sistema é conectado a <strong>dezenas de servidores espalhados pelo mundo</strong>, todos monitorados 24 horas por dia. Se um servidor oscilar, o sistema <strong>troca para outro automaticamente em milissegundos</strong>.</p>
-            <p style="color: #ffcc00; font-weight: 700;">💡 Traduzindo: você nunca fica sem sinal. Nunca.</p>
-
-            <h3>🔄 Catálogo Atualizado Todos os Dias</h3>
-            <p><strong>Todos os dias, pontualmente às 11h da manhã</strong>, nosso sistema faz uma varredura completa em todas as fontes e atualiza o catálogo. Lançamentos, episódios novos, temporadas completas — <strong>tudo entra automaticamente</strong> antes mesmo de você procurar.</p>
-
-            <h3>📺 O que você recebe</h3>
-            <ul>
-                <li>🎥 Filmes lançamentos e clássicos</li>
-                <li>📺 Séries, novelas, animes e doramas</li>
-                <li>⚽ Futebol ao vivo — Brasileirão, Libertadores, Champions</li>
-                <li>📡 Canais ao vivo 24h — esportes, notícias, filmes, infantis</li>
-                <li>🎞️ Qualidade até 4K quando disponível</li>
-                <li>🚫 Zero anúncios, zero interrupções</li>
-                <li>📱 Funciona em TV Box, Smart TV, celular, tablet e PC</li>
-            </ul>
-
-            <h3>💰 Nossos Planos</h3>
-            <p><strong>📅 Plano Anual — R$ 150,00</strong></p>
-            <p style="font-size: 12px; color: #888; margin-left: 15px; margin-bottom: 12px;">Acesso completo por 12 meses. Menos de R$ 13 por mês. Praticamente de graça.</p>
-
-            <p><strong>💎 Plano Vitalício — R$ 390,00</strong></p>
-            <p style="font-size: 12px; color: #888; margin-left: 15px;">Pague uma única vez e tenha acesso <strong>para sempre</strong>. Sem mensalidade, sem renovação, sem surpresa. Um pagamento, entretenimento pra vida toda.</p>
-
-            <h3>⚡ Estabilidade Garantida</h3>
-            <p>Esqueça "servidor caiu". Nosso sistema <strong>multiservidor troca de fonte sozinho</strong>, automaticamente. Sua programação <strong>não para</strong> — nem em final de campeonato, nem em lançamento de série.</p>
-
-            <h3>🔒 Conta Pessoal e Segura</h3>
-            <p>Sua conta é <strong>pessoal e intransferível</strong>. O sistema <strong>bloqueia automaticamente</strong> login simultâneo em mais de um aparelho, garantindo a qualidade pra todos os clientes.</p>
-
-            <h3>📞 Suporte Todos os Dias</h3>
-            <p>Atendimento direto pelo WhatsApp, todos os dias. Qualquer dúvida, problema ou sugestão — <strong>é só chamar, respondemos rápido</strong>.</p>
-
-            <h3>✅ Tudo Pronto?</h3>
-            <p>Marque a caixa abaixo para confirmar que <strong>concorda com as condições</strong> e começar a assistir agora.</p>
+            <p>A <strong>RedPlay</strong> é a plataforma definitiva de entretenimento.</p>
         </div>
 
         <div class="check-termo">
@@ -429,33 +353,27 @@
         <span id="msg-erro" class="msg-erro">Utilizador ou senha incorretos.</span>
     </div>
 
-    <!-- ========== 🎬 TELA DE BOAS-VINDAS (APÓS LOGIN) ========== -->
+    <!-- ========== 🎬 TELA DE BOAS-VINDAS (ELEGANTE E RÁPIDA) ========== -->
     <div id="tela-boas-vindas">
-        <div class="bv-conteudo">
-            <div class="bv-emoji">🎬</div>
-            <h1 class="bv-titulo">Bem-vindo!</h1>
-            <p class="bv-usuario" id="bv-usuario">cliente</p>
+        <div class="bv-card">
+            <div class="bv-topo">
+                <span class="bv-tag">REDPLAY IPTV</span>
+                <span class="bv-ponto-ativo"></span>
+            </div>
+            <h2 class="bv-saudacao">Olá, <span id="bv-usuario" class="bv-usuario-txt">cliente</span></h2>
+            <p class="bv-subtitulo">Sessão iniciada com sucesso.</p>
 
-            <p class="bv-mensagem">
-                <span>Aproveite o conteúdo RedPlay!</span>
-            </p>
-
-            <div class="bv-status" id="bv-status">
-                <span class="bv-status-icone">✅</span>
-                <span class="bv-status-texto">Conta ativa</span>
+            <div class="bv-info-vencimento" id="bv-vencimento" style="display: none;">
+                <span class="bv-lbl">Vencimento:</span>
+                <div>
+                    <span class="bv-val" id="bv-data">—</span>
+                    <span id="bv-dias" class="bv-dias-tag"></span>
+                </div>
             </div>
 
-            <div class="bv-vencimento" id="bv-vencimento" style="display: none;">
-                <span class="bv-venc-label">Vencimento:</span>
-                <span class="bv-venc-data" id="bv-data">—</span>
-                <span class="bv-venc-dias" id="bv-dias"></span>
+            <div class="bv-progresso-bar">
+                <div class="bv-progresso-fill"></div>
             </div>
-
-            <div class="bv-loader">
-                <div class="bv-bar"></div>
-            </div>
-
-            <p class="bv-msg">Preparando seu entretenimento...</p>
         </div>
     </div>
 
@@ -494,14 +412,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-        // ==========================================
-        // CONFIGURAÇÃO SUPABASE
-        // ==========================================
         const SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzOTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
-
-        // ⚠️ Se a chave acima estiver errada, o Supabase não conecta.
-        // Use a sua chave real do Supabase. A de baixo é a sua original.
         const SUPABASE_ANON_KEY_REAL = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY_REAL);
@@ -509,14 +420,10 @@
         const TERMOS_KEY = "redplay_termos_aceitos";
         const DEVICE_KEY = "redplay_device_id";
 
-        // ==========================================
-        // 🔐 SESSÃO ÚNICA — GERENCIAMENTO DE DISPOSITIVO
-        // ==========================================
         function obterDeviceId() {
             let id = localStorage.getItem(DEVICE_KEY);
             if (!id) {
-                id = 'DEV-' + Date.now().toString(36).toUpperCase() +
-                     '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+                id = 'DEV-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
                 localStorage.setItem(DEVICE_KEY, id);
             }
             return id;
@@ -528,22 +435,13 @@
             if (ua.includes("android")) return "Celular/Tablet";
             if (ua.includes("iphone") || ua.includes("ipad")) return "iPhone/iPad";
             if (ua.includes("windows") || ua.includes("mac") || ua.includes("linux")) return "Computador";
-            return "Desconhecido";
+            return "Outro Dispositivo";
         }
 
-        // ==========================================
-        // SPLASH + FLUXO INICIAL
-        // ==========================================
         window.addEventListener('load', () => {
-            if (window.location.search.includes('reset=1')) {
-                localStorage.clear();
-                console.log("🧪 localStorage limpo!");
-            }
-
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 splash.style.opacity = '0';
-
                 setTimeout(() => {
                     splash.style.display = 'none';
                     mostrarTermos();
@@ -551,36 +449,18 @@
             }, 1200);
         });
 
-        // ==========================================
-        // NAVEGAÇÃO
-        // ==========================================
-        function mostrarTermos() {
-            document.getElementById('caixa-termos').classList.remove('hidden');
-        }
+        function mostrarTermos() { document.getElementById('caixa-termos').classList.remove('hidden'); }
 
         function mostrarLogin() {
             document.getElementById('caixa-termos').classList.add('hidden');
             document.getElementById('caixa-login').classList.remove('hidden');
-
             carregarCredenciaisSalvas();
-
-            const inputServidor = document.getElementById("servidor");
-            if (inputServidor.value) {
-                document.getElementById("senha").focus();
-            } else {
-                inputServidor.focus();
-            }
         }
 
-        // ==========================================
-        // TERMOS
-        // ==========================================
         const chkTermos = document.getElementById("aceito-termos");
         const btnContinuar = document.getElementById("btn-continuar");
 
-        chkTermos.addEventListener('change', () => {
-            btnContinuar.disabled = !chkTermos.checked;
-        });
+        chkTermos.addEventListener('change', () => { btnContinuar.disabled = !chkTermos.checked; });
 
         function aceitarTermos() {
             if (!chkTermos.checked) return;
@@ -588,28 +468,16 @@
             mostrarLogin();
         }
 
-        // ==========================================
-        // LOGIN — ELEMENTOS
-        // ==========================================
         const inputServidor = document.getElementById("servidor");
         const inputSenha = document.getElementById("senha");
         const msgErro = document.getElementById("msg-erro");
         const btnEntrar = document.getElementById("btn-entrar");
         const chkLembrar = document.getElementById("lembrar");
-        const btnOlho = document.getElementById("btn-olho");
 
-        function verificarEnter(event) {
-            if (event.key === "Enter") verificarAcesso();
-        }
+        function verificarEnter(event) { if (event.key === "Enter") verificarAcesso(); }
 
         function toggleSenha() {
-            if (inputSenha.type === "password") {
-                inputSenha.type = "text";
-                btnOlho.innerText = "🙈";
-            } else {
-                inputSenha.type = "password";
-                btnOlho.innerText = "👁️";
-            }
+            inputSenha.type = inputSenha.type === "password" ? "text" : "password";
         }
 
         function carregarCredenciaisSalvas() {
@@ -621,41 +489,27 @@
                     inputSenha.value = dados.senha || "";
                     chkLembrar.checked = true;
                 }
-            } catch (e) {
-                console.warn("Erro credenciais:", e);
-            }
+            } catch (e) {}
         }
 
         function salvarCredenciais() {
             if (chkLembrar.checked) {
-                const dados = {
-                    usuario: inputServidor.value.trim(),
-                    senha: inputSenha.value.trim()
-                };
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({ usuario: inputServidor.value.trim(), senha: inputSenha.value.trim() }));
             } else {
                 localStorage.removeItem(STORAGE_KEY);
             }
         }
 
-        function limparCredenciaisSalvas() {
-            localStorage.removeItem(STORAGE_KEY);
-        }
-
         // ==========================================
-        // VERIFICAÇÃO DE LOGIN
+        // VERIFICAÇÃO DE LOGIN E SESSÃO ÚNICA (CORRIGIDO)
         // ==========================================
         async function verificarAcesso() {
             const usuarioDigitado = inputServidor.value.trim();
             const senhaDigitada = inputSenha.value.trim();
 
-            inputServidor.classList.remove("shake-animation");
-            inputSenha.classList.remove("shake-animation");
             msgErro.style.opacity = "0";
 
             if (!usuarioDigitado || !senhaDigitada) {
-                inputServidor.classList.add("shake-animation");
-                inputSenha.classList.add("shake-animation");
                 msgErro.innerText = "Preencha utilizador e senha.";
                 msgErro.style.opacity = "1";
                 return;
@@ -665,6 +519,7 @@
             btnEntrar.innerText = "A VERIFICAR...";
 
             try {
+                // 1. Buscar usuário no Supabase
                 const { data, error } = await supabaseClient
                     .from('utilizadores')
                     .select('usuario, ativo, vencimento, device_id, device_nome, ultimo_acesso')
@@ -675,17 +530,12 @@
                 if (error) throw error;
 
                 if (!data) {
-                    limparCredenciaisSalvas();
                     erroLogin("Utilizador ou senha incorretos.");
                     return;
                 }
 
                 if (!data.ativo) {
-                    bloquearEFechar(
-                        "Sua conta foi desativada pelo administrador.",
-                        "⚠️ Sua conta está inativa",
-                        "Para reativar, CONTATE O SUPORTE"
-                    );
+                    bloquearEFechar("Sua conta foi desativada pelo administrador.");
                     return;
                 }
 
@@ -694,43 +544,47 @@
                     hoje.setHours(0, 0, 0, 0);
                     const venc = new Date(data.vencimento + "T00:00:00");
                     if (venc < hoje) {
-                        bloquearEFechar(
-                            "Sua assinatura venceu em " + formatarData(data.vencimento) + ".",
-                            "⚠️ Sua assinatura venceu",
-                            "Para renovar, CONTATE O SUPORTE"
-                        );
+                        bloquearEFechar("Sua assinatura venceu em " + formatarData(data.vencimento) + ".");
                         return;
                     }
                 }
 
-                // 🔐 VERIFICA SESSÃO ÚNICA
+                // 🔐 2. LÓGICA DE DETECÇÃO DE SESSÃO ÚNICA
                 const deviceIdAtual = obterDeviceId();
                 const deviceNome = obterTipoDispositivo();
 
-                if (data.device_id && data.device_id !== deviceIdAtual) {
-                    // Já está logado em outro dispositivo
+                // Considera ativo se houve atividade nas últimas 12 horas
+                const agora = new Date();
+                const ultimoAcessoData = data.ultimo_acesso ? new Date(data.ultimo_acesso) : null;
+                const horasDesdeUltimoAcesso = ultimoAcessoData ? (agora - ultimoAcessoData) / (1000 * 60 * 60) : 999;
+
+                if (data.device_id && data.device_id !== deviceIdAtual && horasDesdeUltimoAcesso < 12) {
+                    btnEntrar.classList.remove("loading");
+                    btnEntrar.innerText = "CONECTAR";
                     mostrarJaLogado(
-                        data.device_nome || 'Desconhecido',
+                        data.device_nome || 'Outro aparelho',
                         data.device_id,
                         data.ultimo_acesso
                     );
                     return;
                 }
 
-                // ✅ GRAVA O DEVICE ATUAL
-                await supabaseClient
+                // 3. ATUALIZA O DEVICE ATUAL NO SUPABASE (E verifica se gravou com sucesso)
+                const { error: updateError } = await supabaseClient
                     .from('utilizadores')
                     .update({
                         device_id: deviceIdAtual,
                         device_nome: deviceNome,
-                        ultimo_acesso: new Date().toISOString(),
-                        session_token: 'TKN-' + Date.now()
+                        ultimo_acesso: new Date().toISOString()
                     })
                     .eq('usuario', usuarioDigitado);
 
-                // ✅ SUCESSO
-                salvarCredenciais();
+                if (updateError) {
+                    console.error("❌ ERRO AO GRAVAR DISPOSITIVO:", updateError);
+                    alert("Atenção: A permissão de UPDATE na tabela 'utilizadores' precisa ser ativada no Supabase (RLS Policy).");
+                }
 
+                salvarCredenciais();
                 btnEntrar.classList.remove("loading");
                 btnEntrar.innerText = "CONECTADO";
                 btnEntrar.style.background = "#00c853";
@@ -748,23 +602,15 @@
         function erroLogin(mensagem) {
             btnEntrar.classList.remove("loading");
             btnEntrar.innerText = "CONECTAR";
-            btnEntrar.style.background = "";
-
-            inputServidor.classList.add("shake-animation");
-            inputSenha.classList.add("shake-animation");
             msgErro.innerText = mensagem;
             msgErro.style.opacity = "1";
-
-            inputSenha.value = "";
-            inputSenha.focus();
         }
 
         // ==========================================
-        // 🎬 TELA DE BOAS-VINDAS (APÓS LOGIN)
+        // 🎬 TELA DE BOAS-VINDAS (MARCANTE E RÁPIDA)
         // ==========================================
         function mostrarBoasVindas(usuario, vencimento) {
             const tela = document.getElementById('tela-boas-vindas');
-
             document.getElementById('bv-usuario').innerText = usuario;
 
             if (vencimento) {
@@ -774,29 +620,27 @@
                 const dias = Math.floor((venc - hoje) / (1000 * 60 * 60 * 24));
 
                 document.getElementById('bv-data').innerText = formatarData(vencimento);
-
                 const diasEl = document.getElementById('bv-dias');
+
                 if (dias <= 5) {
-                    diasEl.innerText = `⚠️ Vence em ${dias} dia${dias !== 1 ? 's' : ''}!`;
+                    diasEl.innerText = `${dias}d restantes`;
+                    diasEl.style.background = 'rgba(255,77,77,0.2)';
                     diasEl.style.color = '#ff4d4d';
-                } else if (dias <= 15) {
-                    diasEl.innerText = `Vence em ${dias} dias`;
-                    diasEl.style.color = '#ffab00';
                 } else {
-                    diasEl.innerText = `Acesso por mais ${dias} dias`;
+                    diasEl.innerText = `${dias}d restantes`;
+                    diasEl.style.background = 'rgba(0,200,83,0.2)';
                     diasEl.style.color = '#00c853';
                 }
-
-                document.getElementById('bv-vencimento').style.display = 'block';
+                document.getElementById('bv-vencimento').style.display = 'flex';
             } else {
                 document.getElementById('bv-vencimento').style.display = 'none';
             }
 
             tela.classList.add('ativo');
 
+            // Exibição mais ágil (1.8s) para liberar o player rápido
             setTimeout(() => {
                 tela.classList.add('saindo');
-
                 setTimeout(() => {
                     tela.classList.remove('ativo');
                     tela.classList.remove('saindo');
@@ -804,95 +648,41 @@
                     if (typeof AndroidApp !== 'undefined' && typeof AndroidApp.liberarAcesso === 'function') {
                         AndroidApp.liberarAcesso();
                     } else {
-                        alert("✅ Bem-vindo, " + usuario + "! Aproveite o conteúdo RedPlay.");
+                        console.log("Acesso liberado com sucesso!");
                     }
-                }, 500);
-            }, 3000);
+                }, 300);
+            }, 1800);
         }
 
-        // ==========================================
-        // 🚫 BLOQUEIO GERAL (inativo / vencido)
-        // ==========================================
-        function bloquearEFechar(motivo, aviso1, aviso2) {
-            limparCredenciaisSalvas();
-
-            document.getElementById('icone-bloqueio').innerText = '🔒';
-            document.getElementById('titulo-bloqueio').innerText = 'Acesso Bloqueado';
-            document.getElementById('aviso-principal').innerText = aviso1 || '⚠️ Sua conta está inativa';
-            document.getElementById('aviso-secundario').innerText = aviso2 || 'Para reativar, CONTATE O SUPORTE';
+        function bloquearEFechar(motivo) {
             document.getElementById('motivo-bloqueio').innerText = motivo;
-
-            const texto = encodeURIComponent("Olá! Minha conta RedPlay foi bloqueada. Motivo: " + motivo + ". Podem me ajudar?");
-            document.getElementById('btn-whatsapp-bloqueio').href = "https://wa.me/55997340723?text=" + texto;
-
-            document.getElementById('texto-contador').style.display = 'block';
             document.getElementById('overlay-bloqueio').classList.add('ativo');
-
-            let segundos = 25;
-            const contador = document.getElementById('contador-fechar');
-            if (contador) contador.innerText = segundos;
-
-            const intervalo = setInterval(() => {
-                segundos--;
-                if (contador) contador.innerText = segundos;
-
-                if (segundos <= 0) {
-                    clearInterval(intervalo);
-                    fecharApp();
-                }
-            }, 1000);
+            setTimeout(fecharApp, 25000);
         }
 
-        // ==========================================
-        // 🚫 JÁ LOGADO EM OUTRO DISPOSITIVO
-        // (não fecha — só mostra a mensagem e o WhatsApp)
-        // ==========================================
         function mostrarJaLogado(deviceNome, deviceId, ultimoAcesso) {
             document.getElementById('icone-bloqueio').innerText = '📱';
             document.getElementById('titulo-bloqueio').innerText = 'Você já está logado';
             document.getElementById('aviso-principal').innerText = '⚠️ Conta ativa em outro dispositivo';
-            document.getElementById('aviso-secundario').innerText = 'Para usar aqui, libere com o suporte';
+            document.getElementById('aviso-secundario').innerText = 'Para usar aqui, deslogue do outro aparelho';
 
-            const dataAcesso = ultimoAcesso
-                ? new Date(ultimoAcesso).toLocaleString('pt-BR')
-                : 'desconhecida';
+            const dataAcesso = ultimoAcesso ? new Date(ultimoAcesso).toLocaleString('pt-BR') : 'agora';
 
             document.getElementById('motivo-bloqueio').innerHTML =
-                `Sua conta já está ativa em:<br>` +
-                `<strong>${deviceNome}</strong><br>` +
+                `Ativo em: <strong>${deviceNome}</strong><br>` +
                 `ID: <code>${deviceId || 'sem ID'}</code><br>` +
                 `Último acesso: ${dataAcesso}`;
 
-            const texto = encodeURIComponent(
-                `Olá! Estou tentando logar minha conta RedPlay em outro aparelho, mas aparece "já logado em ${deviceNome} (${deviceId})". Podem liberar para eu usar nesta TV?`
-            );
-            document.getElementById('btn-whatsapp-bloqueio').href = "https://wa.me/55997340723?text=" + texto;
-
-            // Esconde o contador (não fecha)
             document.getElementById('texto-contador').style.display = 'none';
             document.getElementById('overlay-bloqueio').classList.add('ativo');
         }
 
-        // ==========================================
-        // FECHAR APP
-        // ==========================================
         function fecharApp() {
-            console.log("🔴 Fechando o app...");
-
             if (typeof AndroidApp !== 'undefined' && typeof AndroidApp.fecharApp === 'function') {
-                try {
-                    AndroidApp.fecharApp();
-                    return;
-                } catch (e) {
-                    console.warn("Erro AndroidApp.fecharApp:", e);
-                }
+                AndroidApp.fecharApp();
+            } else {
+                window.close();
             }
-
-            try { window.close(); } catch (e) {}
-
-            setTimeout(() => {
-                try { window.location.href = "about:blank"; } catch (e) {}
-            }, 100);
         }
 
         function formatarData(iso) {
