@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Admin V5 - RedPlay</title>
+    <title>RedPlay Admin V5 MAX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -17,13 +18,14 @@
             --verde: #00c853;
             --amarelo: #ffab00;
             --azul: #1976d2;
+            --roxo: #8e24aa;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
 
         body { background: var(--preto); color: var(--texto); min-height: 100vh; }
 
-        /* ============ TELA DE LOGIN ============ */
+        /* ============ LOGIN ADMIN ============ */
         #tela-login {
             position: fixed; inset: 0;
             background: var(--preto);
@@ -48,17 +50,15 @@
             width: 100%; padding: 15px; margin-bottom: 15px;
             background: #000; border: 2px solid var(--borda);
             border-radius: 10px; color: white; font-size: 16px; outline: none;
-            transition: 0.2s;
         }
-        .login-admin input:focus { border-color: var(--vermelho); box-shadow: 0 0 15px rgba(229, 9, 20, 0.3); }
+        .login-admin input:focus { border-color: var(--vermelho); }
         .login-admin button {
             width: 100%; padding: 15px;
             background: linear-gradient(90deg, var(--vermelho), var(--vermelho-escuro));
             color: white; border: none; border-radius: 10px;
             font-size: 15px; font-weight: 700; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 1px; transition: 0.2s;
+            text-transform: uppercase; letter-spacing: 1px;
         }
-        .login-admin button:hover { transform: scale(1.02); box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4); }
         .login-erro { color: #ff4d4d; font-size: 13px; margin-top: 15px; display: none; }
 
         /* ============ PAINEL ============ */
@@ -79,14 +79,17 @@
         .btn {
             padding: 11px 20px; border: none; border-radius: 8px;
             font-weight: 700; font-size: 13px; cursor: pointer;
-            transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            transition: 0.2s;
         }
         .btn-primario { background: var(--vermelho); color: white; }
-        .btn-primario:hover { background: var(--vermelho-escuro); transform: translateY(-2px); }
+        .btn-primario:hover { background: var(--vermelho-escuro); }
         .btn-sair { background: transparent; color: var(--texto-suave); border: 1px solid var(--borda); }
         .btn-sair:hover { color: white; border-color: var(--vermelho); }
+        .btn-pesquisa { background: var(--amarelo); color: black; }
+        .btn-pesquisa:hover { background: #ff8f00; }
 
-        /* ============ ESTATÍSTICAS ============ */
+        /* ============ STATS ============ */
         .stats {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: 15px; padding: 25px 30px 0;
@@ -96,7 +99,7 @@
             border-radius: 12px; padding: 20px;
             transition: 0.2s;
         }
-        .stat-card:hover { border-color: var(--vermelho); transform: translateY(-3px); }
+        .stat-card:hover { border-color: var(--vermelho); }
         .stat-card .num { font-size: 32px; font-weight: 900; color: var(--vermelho); }
         .stat-card .lbl {
             color: var(--texto-suave); font-size: 12px;
@@ -123,50 +126,55 @@
             background: var(--painel); border-radius: 12px; overflow: hidden;
         }
         th {
-            background: #1a1a1a; padding: 15px; text-align: left;
-            font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
+            background: #1a1a1a; padding: 14px 12px; text-align: left;
+            font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
             color: var(--texto-suave); border-bottom: 1px solid var(--borda);
             white-space: nowrap;
         }
-        td { padding: 15px; border-bottom: 1px solid var(--borda); font-size: 14px; }
+        td { padding: 12px; border-bottom: 1px solid var(--borda); font-size: 13px; }
         tr:last-child td { border-bottom: none; }
         tr:hover td { background: rgba(229, 9, 20, 0.05); }
 
         .badge-status {
             display: inline-block; padding: 5px 12px;
-            border-radius: 20px; font-size: 11px; font-weight: 700;
+            border-radius: 20px; font-size: 10px; font-weight: 700;
             text-transform: uppercase;
         }
         .badge-ativo { background: rgba(0, 200, 83, 0.15); color: var(--verde); }
         .badge-inativo { background: rgba(229, 9, 20, 0.15); color: #ff4d4d; }
 
-        .senha-cell {
-            display: flex; align-items: center; gap: 8px;
-        }
+        .senha-cell { display: flex; align-items: center; gap: 6px; }
         .senha-texto {
             font-family: monospace; color: var(--texto-suave);
-            font-size: 13px; min-width: 60px;
+            font-size: 12px; min-width: 55px;
         }
-        .btn-olho-mini {
-            background: transparent; border: none;
-            color: #666; cursor: pointer; font-size: 14px;
-            padding: 2px 5px; border-radius: 4px;
-            transition: 0.2s;
-        }
-        .btn-olho-mini:hover { color: var(--vermelho); background: rgba(229,9,20,0.1); }
-
-        .btn-copiar {
+        .btn-mini-icon {
             background: transparent; border: none;
             color: #666; cursor: pointer; font-size: 13px;
-            padding: 2px 5px; border-radius: 4px;
+            padding: 3px 6px; border-radius: 4px;
             transition: 0.2s;
         }
-        .btn-copiar:hover { color: var(--azul); background: rgba(25,118,210,0.1); }
+        .btn-mini-icon:hover { color: var(--vermelho); background: rgba(229,9,20,0.1); }
 
-        .acoes { display: flex; gap: 6px; flex-wrap: wrap; }
+        .device-cell {
+            font-size: 11px;
+            color: var(--texto-suave);
+            max-width: 120px;
+        }
+        .device-cell .dev-id {
+            display: block;
+            font-family: monospace;
+            font-size: 10px;
+            color: #666;
+            margin-top: 2px;
+        }
+        .device-cell .dev-ok { color: var(--verde); }
+        .device-cell .dev-off { color: #666; }
+
+        .acoes { display: flex; gap: 5px; flex-wrap: wrap; }
         .btn-mini {
-            padding: 6px 10px; border: none; border-radius: 6px;
-            font-size: 11px; font-weight: 700; cursor: pointer;
+            padding: 6px 9px; border: none; border-radius: 6px;
+            font-size: 10px; font-weight: 700; cursor: pointer;
             text-transform: uppercase; transition: 0.2s;
             white-space: nowrap;
         }
@@ -178,6 +186,8 @@
         .btn-excluir:hover { background: #8e0000; }
         .btn-whats { background: #25D366; color: white; }
         .btn-whats:hover { background: #128C7E; }
+        .btn-liberar { background: var(--roxo); color: white; }
+        .btn-liberar:hover { background: #6a1b9a; }
 
         /* ============ MODAL ============ */
         .modal-overlay {
@@ -232,14 +242,42 @@
         .vazio { text-align: center; padding: 40px; color: var(--texto-suave); font-style: italic; }
         .loading-tabela { text-align: center; padding: 60px 20px; color: var(--texto-suave); }
 
-        @media (max-width: 700px) {
+        /* ============ MODAL PESQUISAS ============ */
+        .pesquisa-item {
+            background: #1a1a1a; border-radius: 10px;
+            padding: 15px; margin-bottom: 12px;
+            border-left: 4px solid var(--amarelo);
+        }
+        .pesquisa-item .estrelas { color: var(--amarelo); font-size: 16px; }
+        .pesquisa-item .user { color: white; font-weight: 700; margin-left: 10px; }
+        .pesquisa-item .data { color: #666; font-size: 11px; float: right; }
+        .pesquisa-item .comentario {
+            color: #ccc; font-style: italic;
+            margin-top: 8px; font-size: 13px;
+            padding-left: 10px; border-left: 2px solid #333;
+        }
+        .media-box {
+            text-align: center; padding: 20px;
+            background: var(--painel); border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .media-box .nota {
+            font-size: 48px; font-weight: 900;
+            color: var(--amarelo);
+        }
+        .media-box .label {
+            color: var(--texto-suave); font-size: 13px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
             header { padding: 15px; }
             header h1 { font-size: 18px; }
             header h1 span { display: block; margin: 4px 0 0 0; font-size: 12px; }
             .stats, .toolbar, .tabela-wrap { padding-left: 15px; padding-right: 15px; }
             .stats { grid-template-columns: repeat(2, 1fr); }
-            th, td { padding: 10px; font-size: 12px; }
-            .btn-mini { padding: 5px 8px; font-size: 10px; }
+            th, td { padding: 10px 8px; font-size: 12px; }
+            .btn-mini { padding: 5px 7px; font-size: 9px; }
             #toast { bottom: 15px; right: 15px; left: 15px; }
         }
     </style>
@@ -260,9 +298,10 @@
     <!-- ============ PAINEL PRINCIPAL ============ -->
     <div id="painel-principal">
         <header>
-            <h1>RedPlay Admin <span>V5 - Gerenciamento de Clientes</span></h1>
+            <h1>RedPlay Admin <span>V5 MAX - Gerenciamento Completo</span></h1>
             <div class="header-actions">
                 <button class="btn btn-primario" onclick="abrirModalNovo()">+ Novo Cliente</button>
+                <button class="btn btn-pesquisa" onclick="verPesquisas()">⭐ Pesquisas</button>
                 <button class="btn btn-sair" onclick="sairAdmin()">Sair</button>
             </div>
         </header>
@@ -272,6 +311,7 @@
             <div class="stat-card"><div class="num" id="stat-ativos" style="color: var(--verde);">0</div><div class="lbl">Ativos</div></div>
             <div class="stat-card"><div class="num" id="stat-inativos" style="color: #ff4d4d;">0</div><div class="lbl">Inativos</div></div>
             <div class="stat-card"><div class="num" id="stat-vencidos" style="color: var(--amarelo);">0</div><div class="lbl">Vencidos</div></div>
+            <div class="stat-card"><div class="num" id="stat-online" style="color: var(--azul);">0</div><div class="lbl">🔒 1 Device</div></div>
         </div>
 
         <div class="toolbar">
@@ -281,6 +321,7 @@
                 <option value="ativos">Só ativos</option>
                 <option value="inativos">Só inativos</option>
                 <option value="vencidos">Só vencidos</option>
+                <option value="online">Com device ativo</option>
             </select>
         </div>
 
@@ -293,12 +334,13 @@
                         <th>Senha</th>
                         <th>Status</th>
                         <th>Vencimento</th>
+                        <th>Dispositivo</th>
                         <th>Criado</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody id="corpo-tabela">
-                    <tr><td colspan="7" class="loading-tabela">Carregando clientes...</td></tr>
+                    <tr><td colspan="8" class="loading-tabela">Carregando clientes...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -331,10 +373,22 @@
         </div>
     </div>
 
+    <!-- ============ MODAL PESQUISAS ============ -->
+    <div class="modal-overlay" id="modal-pesquisas">
+        <div class="modal" style="max-width: 600px;">
+            <h2>⭐ Pesquisas de Satisfação</h2>
+            <div id="conteudo-pesquisas">
+                <p style="color: #888; text-align: center; padding: 20px;">Carregando...</p>
+            </div>
+            <div class="modal-botoes" style="margin-top: 15px;">
+                <button class="btn btn-cancelar" onclick="fecharPesquisas()">Fechar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ============ TOAST ============ -->
     <div id="toast"></div>
 
-    <!-- BIBLIOTECA SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
@@ -344,18 +398,15 @@
         const SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
 
-        // 🔑 TROQUE ESTA SENHA!
         const SENHA_ADMIN = "admin@redplay2026";
-
-        // 📱 Número do WhatsApp (com DDI + DDD + número, sem espaços)
         const WHATSAPP_NUMERO = "55997340723";
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         let clientes = [];
-        let senhasVisiveis = {}; // guarda quais senhas estão visíveis por id
+        let senhasVisiveis = {};
 
         // ==========================================
-        // LOGIN DO ADMIN
+        // LOGIN
         // ==========================================
         function entrarAdmin() {
             const senha = document.getElementById("senha-admin").value;
@@ -393,7 +444,7 @@
         // ==========================================
         async function carregarClientes() {
             const tbody = document.getElementById("corpo-tabela");
-            tbody.innerHTML = '<tr><td colspan="7" class="loading-tabela">Carregando clientes...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8" class="loading-tabela">Carregando clientes...</td></tr>';
 
             const { data, error } = await supabaseClient
                 .from('utilizadores')
@@ -402,7 +453,7 @@
 
             if (error) {
                 console.error(error);
-                tbody.innerHTML = '<tr><td colspan="7" class="vazio">Erro ao carregar. Verifique a consola (F12).</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" class="vazio">Erro ao carregar. Verifique a consola (F12).</td></tr>';
                 toast("Erro ao carregar clientes", true);
                 return;
             }
@@ -417,6 +468,7 @@
         // ==========================================
         function atualizarStats() {
             const hoje = new Date(); hoje.setHours(0,0,0,0);
+
             document.getElementById("stat-total").innerText = clientes.length;
             document.getElementById("stat-ativos").innerText = clientes.filter(c => c.ativo).length;
             document.getElementById("stat-inativos").innerText = clientes.filter(c => !c.ativo).length;
@@ -424,6 +476,7 @@
                 if (!c.vencimento) return false;
                 return new Date(c.vencimento + "T00:00:00") < hoje;
             }).length;
+            document.getElementById("stat-online").innerText = clientes.filter(c => c.device_id).length;
         }
 
         // ==========================================
@@ -443,11 +496,12 @@
                     if (!c.vencimento) return false;
                     if (new Date(c.vencimento + "T00:00:00") >= hoje) return false;
                 }
+                if (filtro === "online" && !c.device_id) return false;
                 return true;
             });
 
             if (lista.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" class="vazio">Nenhum cliente encontrado.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" class="vazio">Nenhum cliente encontrado.</td></tr>';
                 return;
             }
 
@@ -458,6 +512,17 @@
                 const senhaVisivel = senhasVisiveis[c.id];
                 const senhaMostrada = senhaVisivel ? escapeHtml(c.senha) : "••••••";
 
+                const deviceNome = c.device_nome || '';
+                const deviceId = c.device_id || '';
+                const temDevice = !!deviceId;
+
+                let deviceHtml = '<span class="dev-off">— sem device —</span>';
+                if (temDevice) {
+                    const idCurto = deviceId.length > 12 ? deviceId.substring(0, 12) + '...' : deviceId;
+                    deviceHtml = `<span class="dev-ok">📱 ${escapeHtml(deviceNome || 'Desconhecido')}</span>` +
+                                 `<span class="dev-id">${escapeHtml(idCurto)}</span>`;
+                }
+
                 return `
                     <tr>
                         <td>${c.id}</td>
@@ -465,20 +530,22 @@
                         <td>
                             <div class="senha-cell">
                                 <span class="senha-texto">${senhaMostrada}</span>
-                                <button class="btn-olho-mini" onclick="toggleSenhaTabela(${c.id})" title="${senhaVisivel ? 'Esconder' : 'Mostrar'} senha">
+                                <button class="btn-mini-icon" onclick="toggleSenhaTabela(${c.id})">
                                     ${senhaVisivel ? '🙈' : '👁️'}
                                 </button>
-                                <button class="btn-copiar" onclick="copiarSenha(${c.id})" title="Copiar senha">📋</button>
+                                <button class="btn-mini-icon" onclick="copiarSenha(${c.id})" title="Copiar">📋</button>
                             </div>
                         </td>
                         <td><span class="badge-status ${c.ativo ? 'badge-ativo' : 'badge-inativo'}">${c.ativo ? 'Ativo' : 'Inativo'}</span></td>
                         <td style="${vencido ? 'color: var(--amarelo); font-weight: 700;' : ''}">${venc} ${vencido ? '⚠️' : ''}</td>
-                        <td style="color: var(--texto-suave); font-size: 12px;">${criado}</td>
+                        <td class="device-cell">${deviceHtml}</td>
+                        <td style="color: var(--texto-suave); font-size: 11px;">${criado}</td>
                         <td>
                             <div class="acoes">
                                 <button class="btn-mini btn-editar" onclick="abrirModalEditar(${c.id})">Editar</button>
                                 <button class="btn-mini btn-toggle" onclick="toggleAtivo(${c.id})">${c.ativo ? 'Desativar' : 'Ativar'}</button>
-                                <button class="btn-mini btn-whats" onclick="abrirWhats(${c.id})" title="Enviar credenciais no WhatsApp">💬</button>
+                                <button class="btn-mini btn-whats" onclick="abrirWhats(${c.id})" title="Enviar credenciais">💬</button>
+                                ${temDevice ? `<button class="btn-mini btn-liberar" onclick="liberarDispositivo(${c.id})" title="Liberar para outro dispositivo">🔓</button>` : ''}
                                 <button class="btn-mini btn-excluir" onclick="excluirCliente(${c.id})">Excluir</button>
                             </div>
                         </td>
@@ -488,7 +555,7 @@
         }
 
         // ==========================================
-        // MOSTRAR/ESCONDER SENHA NA TABELA
+        // MOSTRAR/ESCONDER SENHA
         // ==========================================
         function toggleSenhaTabela(id) {
             senhasVisiveis[id] = !senhasVisiveis[id];
@@ -496,7 +563,7 @@
         }
 
         // ==========================================
-        // COPIAR SENHA PARA ÁREA DE TRANSFERÊNCIA
+        // COPIAR SENHA
         // ==========================================
         async function copiarSenha(id) {
             const c = clientes.find(x => x.id === id);
@@ -506,7 +573,6 @@
                 await navigator.clipboard.writeText(c.senha);
                 toast("Senha copiada!");
             } catch (err) {
-                // Fallback para navegadores antigos
                 const input = document.createElement("input");
                 input.value = c.senha;
                 document.body.appendChild(input);
@@ -518,25 +584,49 @@
         }
 
         // ==========================================
-        // WHATSAPP RÁPIDO PARA O CLIENTE
+        // WHATSAPP RÁPIDO
         // ==========================================
         function abrirWhats(id) {
             const c = clientes.find(x => x.id === id);
             if (!c) return;
 
             const texto = encodeURIComponent(
-                "Olá! Aqui estão suas credenciais RedPlay MAX:\n\n" +
+                "Olá! Aqui estão suas credenciais RedPlay:\n\n" +
                 "👤 Utilizador: " + c.usuario + "\n" +
                 "🔑 Senha: " + c.senha + "\n\n" +
                 "Bom entretenimento! 🎬"
             );
 
-            // Abre o WhatsApp Web/app com uma mensagem pronta (sem número definido — você escolhe o contato)
             window.open("https://wa.me/?text=" + texto, "_blank");
         }
 
         // ==========================================
-        // MODAL NOVO / EDITAR
+        // LIBERAR DISPOSITIVO
+        // ==========================================
+        async function liberarDispositivo(id) {
+            const c = clientes.find(x => x.id === id);
+            if (!c) return;
+
+            const deviceInfo = c.device_nome ? `${c.device_nome} (${c.device_id})` : 'desconhecido';
+
+            if (!confirm(`Liberar "${c.usuario}" para logar em outro dispositivo?\n\nDevice atual: ${deviceInfo}\n\nO aparelho atual será desvinculado.`)) return;
+
+            const { error } = await supabaseClient
+                .from('utilizadores')
+                .update({
+                    device_id: null,
+                    device_nome: null,
+                    session_token: null
+                })
+                .eq('id', id);
+
+            if (error) { toast("Erro ao liberar.", true); return; }
+            toast("✅ Cliente liberado para novo dispositivo!");
+            carregarClientes();
+        }
+
+        // ==========================================
+        // MODAL
         // ==========================================
         function abrirModalNovo() {
             document.getElementById("modal-titulo").innerText = "Novo Cliente";
@@ -566,7 +656,7 @@
         }
 
         // ==========================================
-        // SALVAR (CRIAR OU ATUALIZAR)
+        // SALVAR
         // ==========================================
         async function salvarCliente() {
             const id = document.getElementById("edit-id").value;
@@ -586,11 +676,11 @@
                 if (id) {
                     const { error } = await supabaseClient.from('utilizadores').update(payload).eq('id', id);
                     if (error) throw error;
-                    toast("Cliente atualizado com sucesso!");
+                    toast("Cliente atualizado!");
                 } else {
                     const { error } = await supabaseClient.from('utilizadores').insert([payload]);
                     if (error) throw error;
-                    toast("Cliente criado com sucesso!");
+                    toast("Cliente criado!");
                 }
                 fecharModal();
                 carregarClientes();
@@ -605,7 +695,7 @@
         }
 
         // ==========================================
-        // ATIVAR / DESATIVAR
+        // TOGGLE ATIVO
         // ==========================================
         async function toggleAtivo(id) {
             const c = clientes.find(x => x.id === id);
@@ -630,6 +720,60 @@
         }
 
         // ==========================================
+        // ⭐ VER PESQUISAS
+        // ==========================================
+        async function verPesquisas() {
+            document.getElementById("modal-pesquisas").classList.add("ativo");
+            const container = document.getElementById("conteudo-pesquisas");
+            container.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">Carregando...</p>';
+
+            const { data, error } = await supabaseClient
+                .from('satisfacao')
+                .select('*')
+                .order('created_at', { ascending: false })
+                .limit(50);
+
+            if (error) {
+                container.innerHTML = '<p style="color: #ff4d4d; text-align: center; padding: 20px;">Erro ao carregar pesquisas.</p>';
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                container.innerHTML = '<p style="color: #888; text-align: center; padding: 30px;">Nenhuma pesquisa respondida ainda.</p>';
+                return;
+            }
+
+            const media = (data.reduce((s, p) => s + p.estrelas, 0) / data.length).toFixed(1);
+
+            let html = `
+                <div class="media-box">
+                    <div class="nota">${media} ⭐</div>
+                    <div class="label">${data.length} resposta${data.length !== 1 ? 's' : ''}</div>
+                </div>
+            `;
+
+            data.forEach(p => {
+                const estrelas = '★'.repeat(p.estrelas) + '☆'.repeat(5 - p.estrelas);
+                const dataStr = new Date(p.created_at).toLocaleString('pt-BR');
+
+                html += `
+                    <div class="pesquisa-item">
+                        <span class="estrelas">${estrelas}</span>
+                        <span class="user">${escapeHtml(p.usuario)}</span>
+                        <span class="data">${dataStr}</span>
+                        ${p.comentario ? `<div class="comentario">"${escapeHtml(p.comentario)}"</div>` : ''}
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function fecharPesquisas() {
+            document.getElementById("modal-pesquisas").classList.remove("ativo");
+        }
+
+        // ==========================================
         // UTILITÁRIOS
         // ==========================================
         function formatarData(iso) {
@@ -650,8 +794,12 @@
             window._toastTimer = setTimeout(() => t.classList.remove("ativo"), 3000);
         }
 
+        // Fechar modal clicando fora
         document.getElementById("modal").addEventListener("click", (e) => {
             if (e.target.id === "modal") fecharModal();
+        });
+        document.getElementById("modal-pesquisas").addEventListener("click", (e) => {
+            if (e.target.id === "modal-pesquisas") fecharPesquisas();
         });
     </script>
 </body>
