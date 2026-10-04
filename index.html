@@ -61,11 +61,11 @@
         /* ========== TERMOS DE USO ========== */
         .termos-titulo {
             color: var(--vermelho-redplay);
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .termos-sub {
             color: #888;
@@ -78,12 +78,12 @@
             background: #000;
             border: 1px solid #2a2a2a;
             border-radius: 12px;
-            padding: 18px 20px;
-            max-height: 240px;
+            padding: 20px 22px;
+            max-height: 260px;
             overflow-y: auto;
             text-align: left;
             margin-bottom: 15px;
-            font-size: 12.5px;
+            font-size: 13px;
             line-height: 1.65;
             color: #b8b8b8;
         }
@@ -93,18 +93,18 @@
 
         .termos-scroll h3 {
             color: #fff;
-            font-size: 13px;
+            font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-top: 14px;
+            margin-top: 16px;
             margin-bottom: 6px;
         }
         .termos-scroll h3:first-child { margin-top: 0; }
 
         .termos-scroll p { margin-bottom: 8px; }
         .termos-scroll strong { color: #fff; }
-        .termos-scroll ul { padding-left: 20px; margin-bottom: 8px; }
-        .termos-scroll li { margin-bottom: 4px; }
+        .termos-scroll ul { padding-left: 20px; margin-bottom: 8px; list-style: none; }
+        .termos-scroll li { margin-bottom: 5px; }
 
         .check-termo {
             display: flex;
@@ -114,7 +114,7 @@
             margin-bottom: 15px;
             cursor: pointer;
             user-select: none;
-            padding: 10px;
+            padding: 12px;
             border-radius: 10px;
             transition: background 0.2s;
         }
@@ -126,9 +126,10 @@
         }
         .check-termo label {
             font-size: 13px;
-            color: #ccc;
+            color: #ddd;
             cursor: pointer;
             text-transform: none;
+            font-weight: 600;
         }
 
         /* ========== INPUTS ========== */
@@ -174,7 +175,7 @@
 
         /* ========== BOTÕES ========== */
         button.btn-principal {
-            width: 100%; padding: 15px; margin-top: 8px;
+            width: 100%; padding: 16px; margin-top: 8px;
             background: linear-gradient(90deg, var(--vermelho-redplay), var(--vermelho-escuro));
             color: white; border: none; border-radius: 10px;
             font-size: 16px; font-weight: 700; cursor: pointer;
@@ -296,46 +297,61 @@
 
     <div class="bg-glow"></div>
 
-    <!-- ========== TELA 1: TERMOS DE USO ========== -->
+    <!-- ========== TELA 1: BEM-VINDO / CONDIÇÕES ========== -->
     <div class="box hidden" id="caixa-termos">
-        <span class="badge">BEM-VINDO</span>
-        <h1 class="termos-titulo">Termos de Uso</h1>
-        <p class="termos-sub">Leia com atenção antes de continuar</p>
+        <span class="badge">BEM-VINDO À REDPLAY</span>
+        <h1 class="termos-titulo">A Melhor TV do Brasil</h1>
+        <p class="termos-sub">Leia antes de começar</p>
 
         <div class="termos-scroll">
-            <h3>1. Sobre o aplicativo</h3>
-            <p>Este aplicativo é um <strong>agregador de conteúdo de múltiplos servidores</strong>, coletados automaticamente por sistemas de busca (bots) disponíveis publicamente na internet.</p>
+            <h3>🎬 Bem-vindo à RedPlay</h3>
+            <p>A <strong>RedPlay</strong> é a plataforma definitiva de entretenimento. Aqui você encontra <strong>tudo em um só lugar</strong>: filmes, séries, novelas, animes, doramas, canais ao vivo e esportes — sem limites, sem complicação, sem propaganda.</p>
 
-            <h3>2. Origem do conteúdo</h3>
-            <p>O conteúdo exibido <strong>não é hospedado</strong>, armazenado ou produzido por nós. Ele é indexado automaticamente de fontes públicas de terceiros.</p>
-            <p>Não temos controle sobre a disponibilidade, qualidade, legalidade ou permanência de qualquer conteúdo.</p>
+            <h3>🌐 Multiservidor Inteligente</h3>
+            <p>Nosso sistema é conectado a <strong>dezenas de servidores espalhados pelo mundo</strong>, todos monitorados 24 horas por dia. Se um servidor oscilar, o sistema <strong>troca para outro automaticamente em milissegundos</strong>.</p>
+            <p style="color: #ffcc00; font-weight: 700;">💡 Traduzindo: você nunca fica sem sinal. Nunca.</p>
 
-            <h3>3. Isenção de responsabilidade</h3>
-            <p>Não nos responsabilizamos por:</p>
+            <h3>🔄 Catálogo Atualizado Todos os Dias</h3>
+            <p><strong>Todos os dias, pontualmente às 11h da manhã</strong>, nosso sistema faz uma varredura completa em todas as fontes e atualiza o catálogo. Lançamentos, episódios novos, temporadas completas — <strong>tudo entra automaticamente</strong> antes mesmo de você procurar.</p>
+
+            <h3>📺 O que você recebe</h3>
             <ul>
-                <li>Conteúdo de terceiros exibido no app;</li>
-                <li>Interrupções, falhas ou remoção de servidores;</li>
-                <li>Direitos autorais de terceiros — todo o conteúdo pertence aos seus respectivos proprietários;</li>
-                <li>Uso indevido por parte do usuário.</li>
+                <li>🎥 Filmes lançamentos e clássicos</li>
+                <li>📺 Séries, novelas, animes e doramas</li>
+                <li>⚽ Futebol ao vivo — Brasileirão, Libertadores, Champions</li>
+                <li>📡 Canais ao vivo 24h — esportes, notícias, filmes, infantis</li>
+                <li>🎞️ Qualidade até 4K quando disponível</li>
+                <li>🚫 Zero anúncios, zero interrupções</li>
+                <li>📱 Funciona em TV Box, Smart TV, celular, tablet e PC</li>
             </ul>
 
-            <h3>4. Uso pessoal</h3>
-            <p>Este aplicativo destina-se a <strong>uso pessoal e não comercial</strong>. O compartilhamento de credenciais é proibido e pode resultar em bloqueio imediato.</p>
+            <h3>💰 Nossos Planos</h3>
+            <p><strong>📅 Plano Anual — R$ 150,00</strong></p>
+            <p style="font-size: 12px; color: #888; margin-left: 15px; margin-bottom: 12px;">Acesso completo por 12 meses. Menos de R$ 13 por mês. Praticamente de graça.</p>
 
-            <h3>5. Privacidade</h3>
-            <p>Coletamos apenas as informações estritamente necessárias para o funcionamento do serviço (usuário, senha, status da conta e dispositivo). Nenhum dado é compartilhado com terceiros.</p>
+            <p><strong>💎 Plano Vitalício — R$ 390,00</strong></p>
+            <p style="font-size: 12px; color: #888; margin-left: 15px;">Pague uma única vez e tenha acesso <strong>para sempre</strong>. Sem mensalidade, sem renovação, sem surpresa. Um pagamento, entretenimento pra vida toda.</p>
 
-            <h3>6. Aceitação</h3>
-            <p>Ao marcar a caixa abaixo e continuar, você <strong>declara ter lido, entendido e aceito</strong> todos os termos acima.</p>
+            <h3>⚡ Estabilidade Garantida</h3>
+            <p>Esqueça "servidor caiu". Nosso sistema <strong>multiservidor troca de fonte sozinho</strong>, automaticamente. Sua programação <strong>não para</strong> — nem em final de campeonato, nem em lançamento de série.</p>
+
+            <h3>🔒 Conta Pessoal e Segura</h3>
+            <p>Sua conta é <strong>pessoal e intransferível</strong>. Para garantir a qualidade pra todos, o compartilhamento de login é bloqueado automaticamente pelo sistema.</p>
+
+            <h3>📞 Suporte Todos os Dias</h3>
+            <p>Atendimento direto pelo WhatsApp, todos os dias. Qualquer dúvida, problema ou sugestão — <strong>é só chamar, respondemos rápido</strong>.</p>
+
+            <h3>✅ Tudo Pronto?</h3>
+            <p>Marque a caixa abaixo para confirmar que <strong>concorda com as condições</strong> e começar a assistir agora.</p>
         </div>
 
         <div class="check-termo">
             <input type="checkbox" id="aceito-termos">
-            <label for="aceito-termos">Li e aceito os Termos de Uso</label>
+            <label for="aceito-termos">Concordo e quero começar a assistir</label>
         </div>
 
         <button class="btn-principal" id="btn-continuar" onclick="aceitarTermos()" disabled>
-            Continuar
+            ▶ Começar Agora
         </button>
     </div>
 
@@ -406,7 +422,7 @@
         // CONFIGURAÇÃO SUPABASE
         // ==========================================
         const SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rkWrk7fTegOk6m_4";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const STORAGE_KEY = "redplay_credenciais";
@@ -424,14 +440,11 @@
                 setTimeout(() => {
                     splash.style.display = 'none';
 
-                    // Decide qual tela mostrar
                     const termosJaAceitos = localStorage.getItem(TERMOS_KEY) === "1";
 
                     if (termosJaAceitos) {
-                        // Já aceitou antes → vai direto pro login
                         mostrarLogin();
                     } else {
-                        // Primeira vez → mostra termos
                         mostrarTermos();
                     }
                 }, 800);
@@ -474,10 +487,7 @@
         function aceitarTermos() {
             if (!chkTermos.checked) return;
 
-            // Salva que aceitou
             localStorage.setItem(TERMOS_KEY, "1");
-
-            // Vai pro login
             mostrarLogin();
         }
 
@@ -636,7 +646,6 @@
 
             document.getElementById("overlay-bloqueio").classList.add("ativo");
 
-            // Contador regressivo de 15 segundos
             let segundos = 15;
             const contador = document.getElementById("contador-fechar");
 
