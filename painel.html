@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RedPlay Admin V5 MAX</title>
+    <title>RedPlay Admin V6 MAX</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
@@ -19,31 +19,24 @@
             --amarelo: #ffab00;
             --azul: #1976d2;
             --roxo: #8e24aa;
+            --dourado: #ffc107;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
-
         body { background: var(--preto); color: var(--texto); min-height: 100vh; }
 
-        /* ============ LOGIN ADMIN ============ */
+        /* ============ LOGIN ============ */
         #tela-login {
-            position: fixed; inset: 0;
-            background: var(--preto);
+            position: fixed; inset: 0; background: var(--preto);
             display: flex; justify-content: center; align-items: center;
             z-index: 1000; padding: 20px;
         }
         #tela-login.escondida { display: none; }
-
         .login-admin {
-            background: var(--painel);
-            padding: 50px 40px;
-            border-radius: 20px;
-            border: 1px solid var(--borda);
-            width: 100%; max-width: 400px;
-            text-align: center;
+            background: var(--painel); padding: 50px 40px;
+            border-radius: 20px; border: 1px solid var(--borda);
+            width: 100%; max-width: 400px; text-align: center;
             box-shadow: 0 20px 60px rgba(229, 9, 20, 0.15);
         }
-
         .login-admin h1 { color: var(--vermelho); font-size: 26px; font-weight: 900; margin-bottom: 8px; }
         .login-admin p { color: var(--texto-suave); font-size: 13px; margin-bottom: 30px; }
         .login-admin input {
@@ -65,17 +58,67 @@
         #painel-principal { display: none; }
         #painel-principal.ativo { display: block; }
 
+        /* ============ BANNER IMPERSONAÇÃO ============ */
+        #banner-impersonate {
+            background: linear-gradient(90deg, var(--dourado), #ff9800);
+            color: #000; padding: 12px 25px;
+            display: none; justify-content: space-between;
+            align-items: center; font-weight: 700; font-size: 14px;
+            position: sticky; top: 0; z-index: 200;
+        }
+        #banner-impersonate.ativo { display: flex; }
+        #banner-impersonate button {
+            background: #000; color: white; border: none;
+            padding: 8px 16px; border-radius: 6px;
+            font-weight: 700; cursor: pointer; font-size: 12px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
         header {
             background: var(--painel); border-bottom: 1px solid var(--borda);
             padding: 20px 30px; display: flex; justify-content: space-between;
             align-items: center; flex-wrap: wrap; gap: 15px;
-            position: sticky; top: 0; z-index: 100;
         }
         header h1 { color: var(--vermelho); font-size: 22px; font-weight: 900; }
-        header h1 span { color: white; font-weight: 400; font-size: 14px; margin-left: 10px; }
+        header h1 span { color: white; font-weight: 400; font-size: 13px; margin-left: 10px; }
+        header .user-info {
+            background: rgba(229,9,20,0.1); padding: 8px 15px;
+            border-radius: 8px; border: 1px solid rgba(229,9,20,0.3);
+            font-size: 12px;
+        }
+        header .user-info strong { color: var(--vermelho); }
+        header .user-info .tag-admin {
+            background: var(--dourado); color: #000;
+            padding: 2px 8px; border-radius: 4px;
+            font-size: 10px; font-weight: 900;
+            letter-spacing: 1px; margin-left: 8px;
+        }
 
-        .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .header-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 
+        /* ============ ABAS ============ */
+        .tabs {
+            display: flex; gap: 0; padding: 0 30px;
+            background: var(--painel); border-bottom: 1px solid var(--borda);
+            overflow-x: auto;
+        }
+        .tab {
+            padding: 15px 22px; cursor: pointer;
+            font-weight: 700; font-size: 13px;
+            text-transform: uppercase; letter-spacing: 1px;
+            color: var(--texto-suave);
+            border-bottom: 3px solid transparent;
+            transition: 0.2s; white-space: nowrap;
+            background: transparent; border-top: none;
+            border-left: none; border-right: none;
+        }
+        .tab:hover { color: white; }
+        .tab.ativa { color: var(--vermelho); border-bottom-color: var(--vermelho); }
+
+        .conteudo-tab { display: none; }
+        .conteudo-tab.ativa { display: block; }
+
+        /* ============ BOTÕES ============ */
         .btn {
             padding: 11px 20px; border: none; border-radius: 8px;
             font-weight: 700; font-size: 13px; cursor: pointer;
@@ -87,7 +130,8 @@
         .btn-sair { background: transparent; color: var(--texto-suave); border: 1px solid var(--borda); }
         .btn-sair:hover { color: white; border-color: var(--vermelho); }
         .btn-pesquisa { background: var(--amarelo); color: black; }
-        .btn-pesquisa:hover { background: #ff8f00; }
+        .btn-dourado { background: var(--dourado); color: black; }
+        .btn-dourado:hover { background: #ff9800; }
 
         /* ============ STATS ============ */
         .stats {
@@ -96,21 +140,17 @@
         }
         .stat-card {
             background: var(--painel); border: 1px solid var(--borda);
-            border-radius: 12px; padding: 20px;
-            transition: 0.2s;
+            border-radius: 12px; padding: 20px; transition: 0.2s;
         }
         .stat-card:hover { border-color: var(--vermelho); }
-        .stat-card .num { font-size: 32px; font-weight: 900; color: var(--vermelho); }
+        .stat-card .num { font-size: 30px; font-weight: 900; color: var(--vermelho); }
         .stat-card .lbl {
-            color: var(--texto-suave); font-size: 12px;
+            color: var(--texto-suave); font-size: 11px;
             text-transform: uppercase; letter-spacing: 1px; margin-top: 5px;
         }
 
         /* ============ TOOLBAR ============ */
-        .toolbar {
-            padding: 25px 30px 15px;
-            display: flex; gap: 12px; flex-wrap: wrap;
-        }
+        .toolbar { padding: 20px 30px 15px; display: flex; gap: 12px; flex-wrap: wrap; }
         .toolbar input, .toolbar select {
             padding: 12px 15px; background: var(--painel);
             border: 1px solid var(--borda); border-radius: 8px;
@@ -142,89 +182,83 @@
         }
         .badge-ativo { background: rgba(0, 200, 83, 0.15); color: var(--verde); }
         .badge-inativo { background: rgba(229, 9, 20, 0.15); color: #ff4d4d; }
+        .badge-admin {
+            background: linear-gradient(45deg, var(--dourado), #ff9800);
+            color: #000; padding: 3px 10px; border-radius: 4px;
+            font-size: 9px; font-weight: 900; letter-spacing: 1px;
+        }
 
         .senha-cell { display: flex; align-items: center; gap: 6px; }
-        .senha-texto {
-            font-family: monospace; color: var(--texto-suave);
-            font-size: 12px; min-width: 55px;
-        }
+        .senha-texto { font-family: monospace; color: var(--texto-suave); font-size: 12px; min-width: 55px; }
         .btn-mini-icon {
-            background: transparent; border: none;
-            color: #666; cursor: pointer; font-size: 13px;
-            padding: 3px 6px; border-radius: 4px;
-            transition: 0.2s;
+            background: transparent; border: none; color: #666; cursor: pointer;
+            font-size: 13px; padding: 3px 6px; border-radius: 4px; transition: 0.2s;
         }
         .btn-mini-icon:hover { color: var(--vermelho); background: rgba(229,9,20,0.1); }
 
-        .device-cell {
-            font-size: 11px;
-            color: var(--texto-suave);
-            max-width: 120px;
+        .device-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            background: rgba(0, 200, 83, 0.1); color: var(--verde);
+            padding: 4px 8px; border-radius: 6px; font-weight: 700; font-size: 11px;
+            cursor: pointer; border: 1px solid rgba(0, 200, 83, 0.2);
         }
-        .device-cell .dev-id {
-            display: block;
-            font-family: monospace;
-            font-size: 10px;
-            color: #666;
-            margin-top: 2px;
-        }
-        .device-cell .dev-ok { color: var(--verde); }
-        .device-cell .dev-off { color: #666; }
+        .dev-off { color: #666; font-size: 11px; }
 
         .acoes { display: flex; gap: 5px; flex-wrap: wrap; }
         .btn-mini {
             padding: 6px 9px; border: none; border-radius: 6px;
             font-size: 10px; font-weight: 700; cursor: pointer;
-            text-transform: uppercase; transition: 0.2s;
-            white-space: nowrap;
+            text-transform: uppercase; transition: 0.2s; white-space: nowrap;
         }
         .btn-editar { background: var(--azul); color: white; }
-        .btn-editar:hover { background: #0d47a1; }
         .btn-toggle { background: var(--amarelo); color: black; }
-        .btn-toggle:hover { background: #ff8f00; }
         .btn-excluir { background: #c62828; color: white; }
-        .btn-excluir:hover { background: #8e0000; }
         .btn-whats { background: #25D366; color: white; }
-        .btn-whats:hover { background: #128C7E; }
         .btn-liberar { background: var(--roxo); color: white; }
-        .btn-liberar:hover { background: #6a1b9a; }
+        .btn-entrar-como { background: var(--dourado); color: #000; }
+        .btn-entrar-como:hover { background: #ff9800; }
 
         /* ============ MODAL ============ */
         .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85);
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.9);
             display: none; justify-content: center; align-items: center;
             z-index: 500; padding: 20px;
         }
         .modal-overlay.ativo { display: flex; }
-
         .modal {
             background: var(--painel); border: 1px solid var(--borda);
-            border-radius: 16px; padding: 30px; width: 100%; max-width: 450px;
-            animation: fadeUp 0.3s ease;
-            max-height: 90vh; overflow-y: auto;
+            border-radius: 16px; padding: 30px; width: 100%; max-width: 480px;
+            animation: fadeUp 0.3s ease; max-height: 90vh; overflow-y: auto;
         }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
         .modal h2 { color: var(--vermelho); margin-bottom: 20px; font-size: 20px; }
         .modal label {
-            display: block; font-size: 12px; text-transform: uppercase;
+            display: block; font-size: 11px; text-transform: uppercase;
             color: var(--texto-suave); margin-bottom: 6px; letter-spacing: 0.5px;
         }
-        .modal input {
+        .modal input, .modal textarea, .modal select {
             width: 100%; padding: 12px 15px; margin-bottom: 15px;
             background: #000; border: 1px solid var(--borda); border-radius: 8px;
             color: white; font-size: 14px; outline: none;
+            font-family: inherit;
         }
-        .modal input:focus { border-color: var(--vermelho); }
-        .modal .checkbox-row {
-            display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
-        }
+        .modal input:focus, .modal textarea:focus, .modal select:focus { border-color: var(--vermelho); }
+        .modal textarea { min-height: 80px; resize: vertical; }
+        .modal .checkbox-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
         .modal .checkbox-row input { width: auto; margin: 0; accent-color: var(--vermelho); }
         .modal .checkbox-row label { margin: 0; text-transform: none; color: white; font-size: 14px; }
         .modal-botoes { display: flex; gap: 10px; margin-top: 10px; }
         .modal-botoes .btn { flex: 1; }
         .btn-cancelar { background: transparent; color: var(--texto-suave); border: 1px solid var(--borda); }
-        .btn-cancelar:hover { color: white; border-color: var(--vermelho); }
+
+        .disp-card {
+            background: #181818; border: 1px solid var(--borda);
+            border-radius: 10px; padding: 12px 15px; margin-bottom: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .disp-info { display: flex; flex-direction: column; gap: 2px; }
+        .disp-nome { font-weight: 700; color: white; font-size: 13px; }
+        .disp-id { font-family: monospace; font-size: 10px; color: #888; word-break: break-all; }
 
         /* ============ TOAST ============ */
         #toast {
@@ -242,41 +276,26 @@
         .vazio { text-align: center; padding: 40px; color: var(--texto-suave); font-style: italic; }
         .loading-tabela { text-align: center; padding: 60px 20px; color: var(--texto-suave); }
 
-        /* ============ MODAL PESQUISAS ============ */
-        .pesquisa-item {
-            background: #1a1a1a; border-radius: 10px;
-            padding: 15px; margin-bottom: 12px;
-            border-left: 4px solid var(--amarelo);
-        }
-        .pesquisa-item .estrelas { color: var(--amarelo); font-size: 16px; }
-        .pesquisa-item .user { color: white; font-weight: 700; margin-left: 10px; }
-        .pesquisa-item .data { color: #666; font-size: 11px; float: right; }
-        .pesquisa-item .comentario {
-            color: #ccc; font-style: italic;
-            margin-top: 8px; font-size: 13px;
-            padding-left: 10px; border-left: 2px solid #333;
-        }
-        .media-box {
-            text-align: center; padding: 20px;
-            background: var(--painel); border-radius: 12px;
-            margin-bottom: 20px;
-        }
-        .media-box .nota {
-            font-size: 48px; font-weight: 900;
+        .aviso-limite {
+            background: rgba(255, 171, 0, 0.1);
+            border: 1px solid var(--amarelo);
             color: var(--amarelo);
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 0 30px 15px;
+            font-size: 13px;
+            font-weight: 600;
         }
-        .media-box .label {
-            color: var(--texto-suave); font-size: 13px;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
+        .aviso-limite strong { color: #fff; }
 
         @media (max-width: 768px) {
             header { padding: 15px; }
-            header h1 { font-size: 18px; }
-            header h1 span { display: block; margin: 4px 0 0 0; font-size: 12px; }
+            header h1 { font-size: 16px; }
+            .tabs { padding: 0 10px; }
+            .tab { padding: 12px 14px; font-size: 11px; }
             .stats, .toolbar, .tabela-wrap { padding-left: 15px; padding-right: 15px; }
             .stats { grid-template-columns: repeat(2, 1fr); }
-            th, td { padding: 10px 8px; font-size: 12px; }
+            th, td { padding: 10px 8px; font-size: 11px; }
             .btn-mini { padding: 5px 7px; font-size: 9px; }
             #toast { bottom: 15px; right: 15px; left: 15px; }
         }
@@ -284,109 +303,244 @@
 </head>
 <body>
 
-    <!-- ============ LOGIN ADMIN ============ -->
+    <!-- ============ LOGIN ============ -->
     <div id="tela-login">
         <div class="login-admin">
-            <h1>🔐 Painel Admin</h1>
-            <p>RedPlay MAX V5 - Área Restrita</p>
-            <input type="password" id="senha-admin" placeholder="Senha do administrador" onkeypress="if(event.key==='Enter')entrarAdmin()">
+            <h1>🔐 Painel Admin V6</h1>
+            <p>RedPlay - Sistema Multi-Revenda</p>
+            <input type="text" id="login-usuario" placeholder="Usuário" onkeypress="if(event.key==='Enter')document.getElementById('login-senha').focus()">
+            <input type="password" id="login-senha" placeholder="Senha" onkeypress="if(event.key==='Enter')entrarAdmin()">
             <button onclick="entrarAdmin()">Entrar</button>
-            <span class="login-erro" id="login-erro">Senha incorreta.</span>
+            <span class="login-erro" id="login-erro">Usuário ou senha incorretos.</span>
         </div>
     </div>
 
-    <!-- ============ PAINEL PRINCIPAL ============ -->
+    <!-- ============ BANNER IMPERSONAÇÃO ============ -->
+    <div id="banner-impersonate">
+        <span>👁️ Você está vendo como: <strong id="nome-impersonate">—</strong></span>
+        <button onclick="sairImpersonate()">✕ Voltar para Admin</button>
+    </div>
+
+    <!-- ============ PAINEL ============ -->
     <div id="painel-principal">
         <header>
-            <h1>RedPlay Admin <span>V5 MAX - Gerenciamento Completo</span></h1>
+            <h1>RedPlay Admin <span id="subtitulo-painel">V6 MAX</span></h1>
+            <div class="user-info">
+                <strong id="nome-logado">—</strong>
+                <span id="tag-admin" class="tag-admin" style="display: none;">👑 SUPER ADMIN</span>
+            </div>
             <div class="header-actions">
-                <button class="btn btn-primario" onclick="abrirModalNovo()">+ Novo Cliente</button>
-                <button class="btn btn-pesquisa" onclick="verPesquisas()">⭐ Pesquisas</button>
                 <button class="btn btn-sair" onclick="sairAdmin()">Sair</button>
             </div>
         </header>
 
-        <div class="stats">
-            <div class="stat-card"><div class="num" id="stat-total">0</div><div class="lbl">Total</div></div>
-            <div class="stat-card"><div class="num" id="stat-ativos" style="color: var(--verde);">0</div><div class="lbl">Ativos</div></div>
-            <div class="stat-card"><div class="num" id="stat-inativos" style="color: #ff4d4d;">0</div><div class="lbl">Inativos</div></div>
-            <div class="stat-card"><div class="num" id="stat-vencidos" style="color: var(--amarelo);">0</div><div class="lbl">Vencidos</div></div>
-            <div class="stat-card"><div class="num" id="stat-online" style="color: var(--azul);">0</div><div class="lbl">🔒 1 Device</div></div>
+        <div class="tabs">
+            <button class="tab ativa" data-tab="clientes" onclick="mudarTab('clientes')">👥 Clientes</button>
+            <button class="tab" id="tab-revendedores-btn" data-tab="revendedores" onclick="mudarTab('revendedores')" style="display: none;">🏪 Revendedores</button>
+            <button class="tab" data-tab="pagamentos" onclick="mudarTab('pagamentos')">💰 Pagamentos</button>
+            <button class="tab" data-tab="pesquisas" onclick="mudarTab('pesquisas')">⭐ Pesquisas</button>
         </div>
 
-        <div class="toolbar">
-            <input type="text" id="busca" placeholder="🔍 Buscar por utilizador..." oninput="renderizarTabela()">
-            <select id="filtro" onchange="renderizarTabela()">
-                <option value="todos">Todos</option>
-                <option value="ativos">Só ativos</option>
-                <option value="inativos">Só inativos</option>
-                <option value="vencidos">Só vencidos</option>
-                <option value="online">Com device ativo</option>
-            </select>
+        <!-- ============ TAB CLIENTES ============ -->
+        <div class="conteudo-tab ativa" id="tab-clientes">
+            <div class="stats">
+                <div class="stat-card"><div class="num" id="stat-total">0</div><div class="lbl">Total</div></div>
+                <div class="stat-card"><div class="num" id="stat-ativos" style="color: var(--verde);">0</div><div class="lbl">Ativos</div></div>
+                <div class="stat-card"><div class="num" id="stat-inativos" style="color: #ff4d4d;">0</div><div class="lbl">Inativos</div></div>
+                <div class="stat-card"><div class="num" id="stat-vencidos" style="color: var(--amarelo);">0</div><div class="lbl">Vencidos</div></div>
+                <div class="stat-card"><div class="num" id="stat-vitalicios" style="color: var(--dourado);">0</div><div class="lbl">💎 Vitalícios</div></div>
+            </div>
+
+            <div id="aviso-limite-container"></div>
+
+            <div class="toolbar">
+                <input type="text" id="busca" placeholder="🔍 Buscar por utilizador..." oninput="renderizarTabelaClientes()">
+                <select id="filtro" onchange="renderizarTabelaClientes()">
+                    <option value="todos">Todos</option>
+                    <option value="ativos">Só ativos</option>
+                    <option value="inativos">Só inativos</option>
+                    <option value="vencidos">Só vencidos</option>
+                    <option value="vitalicios">Só vitalícios</option>
+                </select>
+                <button class="btn btn-primario" onclick="abrirModalNovoCliente()">+ Novo Cliente</button>
+            </div>
+
+            <div class="tabela-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Utilizador</th>
+                            <th>Senha</th>
+                            <th>Status</th>
+                            <th>Plano</th>
+                            <th>Vencimento</th>
+                            <th>Telas</th>
+                            <th>Dispositivos</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpo-clientes">
+                        <tr><td colspan="9" class="loading-tabela">Carregando clientes...</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div class="tabela-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Utilizador</th>
-                        <th>Senha</th>
-                        <th>Status</th>
-                        <th>Vencimento</th>
-                        <th>Dispositivo</th>
-                        <th>Criado</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="corpo-tabela">
-                    <tr><td colspan="8" class="loading-tabela">Carregando clientes...</td></tr>
-                </tbody>
-            </table>
+        <!-- ============ TAB REVENDEDORES (SÓ ADMIN) ============ -->
+        <div class="conteudo-tab" id="tab-revendedores">
+            <div class="toolbar">
+                <input type="text" id="busca-rev" placeholder="🔍 Buscar revendedor..." oninput="renderizarTabelaRevendedores()">
+                <button class="btn btn-dourado" onclick="abrirModalNovoRevendedor()">+ Novo Revendedor</button>
+            </div>
+            <div class="tabela-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Usuário</th>
+                            <th>WhatsApp</th>
+                            <th>Status</th>
+                            <th>Limite</th>
+                            <th>Clientes</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpo-revendedores">
+                        <tr><td colspan="8" class="loading-tabela">Carregando revendedores...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ============ TAB PAGAMENTOS ============ -->
+        <div class="conteudo-tab" id="tab-pagamentos">
+            <div class="stats">
+                <div class="stat-card"><div class="num" id="stat-fat-total" style="color: var(--verde);">R$ 0</div><div class="lbl">Faturamento Total</div></div>
+                <div class="stat-card"><div class="num" id="stat-fat-mes" style="color: var(--azul);">R$ 0</div><div class="lbl">Este Mês</div></div>
+                <div class="stat-card"><div class="num" id="stat-pag-count">0</div><div class="lbl">Pagamentos</div></div>
+            </div>
+            <div class="tabela-wrap" style="padding-top: 20px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Cliente</th>
+                            <th>Tipo</th>
+                            <th>Valor</th>
+                            <th>Método</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpo-pagamentos">
+                        <tr><td colspan="6" class="loading-tabela">Carregando pagamentos...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ============ TAB PESQUISAS ============ -->
+        <div class="conteudo-tab" id="tab-pesquisas">
+            <div class="tabela-wrap" style="padding-top: 20px;">
+                <div id="conteudo-pesquisas">
+                    <p style="color: #888; text-align: center; padding: 40px;">Carregando...</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- ============ MODAL NOVO/EDITAR ============ -->
-    <div class="modal-overlay" id="modal">
+    <!-- ============ MODAL CLIENTE ============ -->
+    <div class="modal-overlay" id="modal-cliente">
         <div class="modal">
-            <h2 id="modal-titulo">Novo Cliente</h2>
-            <input type="hidden" id="edit-id">
+            <h2 id="modal-cliente-titulo">Novo Cliente</h2>
+            <input type="hidden" id="cliente-id">
 
             <label>Utilizador</label>
-            <input type="text" id="edit-usuario" placeholder="ex: cliente01">
+            <input type="text" id="cliente-usuario" placeholder="ex: cliente01">
 
             <label>Senha</label>
-            <input type="text" id="edit-senha" placeholder="ex: 123456">
+            <input type="text" id="cliente-senha" placeholder="ex: 123456">
+
+            <label>Plano</label>
+            <select id="cliente-plano">
+                <option value="anual">📅 Anual - R$ 150 (12 meses)</option>
+                <option value="vitalicio">💎 Vitalício - R$ 390</option>
+                <option value="tela_extra">➕ Tela Extra - R$ 130</option>
+            </select>
+
+            <label>Telas Permitidas (1 a 3)</label>
+            <input type="number" id="cliente-telas" min="1" max="3" value="1">
 
             <label>Vencimento (opcional)</label>
-            <input type="date" id="edit-vencimento">
+            <input type="date" id="cliente-vencimento">
 
             <div class="checkbox-row">
-                <input type="checkbox" id="edit-ativo" checked>
-                <label for="edit-ativo">Conta ativa</label>
+                <input type="checkbox" id="cliente-ativo" checked>
+                <label for="cliente-ativo">Conta ativa</label>
             </div>
 
             <div class="modal-botoes">
-                <button class="btn btn-cancelar" onclick="fecharModal()">Cancelar</button>
+                <button class="btn btn-cancelar" onclick="fecharModalCliente()">Cancelar</button>
                 <button class="btn btn-primario" onclick="salvarCliente()">Salvar</button>
             </div>
         </div>
     </div>
 
-    <!-- ============ MODAL PESQUISAS ============ -->
-    <div class="modal-overlay" id="modal-pesquisas">
-        <div class="modal" style="max-width: 600px;">
-            <h2>⭐ Pesquisas de Satisfação</h2>
-            <div id="conteudo-pesquisas">
-                <p style="color: #888; text-align: center; padding: 20px;">Carregando...</p>
+    <!-- ============ MODAL REVENDEDOR (SÓ ADMIN) ============ -->
+    <div class="modal-overlay" id="modal-revendedor">
+        <div class="modal">
+            <h2 id="modal-revendedor-titulo">Novo Revendedor</h2>
+            <input type="hidden" id="rev-id">
+
+            <label>Nome Completo</label>
+            <input type="text" id="rev-nome" placeholder="ex: João da Silva">
+
+            <label>Usuário (login)</label>
+            <input type="text" id="rev-usuario" placeholder="ex: joao">
+
+            <label>Senha</label>
+            <input type="text" id="rev-senha" placeholder="ex: senha123">
+
+            <label>WhatsApp (com DDI)</label>
+            <input type="text" id="rev-whatsapp" placeholder="ex: 55997340723">
+
+            <label>Email</label>
+            <input type="email" id="rev-email" placeholder="ex: joao@email.com">
+
+            <label>Limite de Clientes</label>
+            <input type="number" id="rev-limite" min="1" value="10">
+
+            <label>Observações</label>
+            <textarea id="rev-obs" placeholder="Anotações sobre este revendedor..."></textarea>
+
+            <div class="checkbox-row">
+                <input type="checkbox" id="rev-ativo" checked>
+                <label for="rev-ativo">Revendedor ativo</label>
             </div>
-            <div class="modal-botoes" style="margin-top: 15px;">
-                <button class="btn btn-cancelar" onclick="fecharPesquisas()">Fechar</button>
+
+            <div class="modal-botoes">
+                <button class="btn btn-cancelar" onclick="fecharModalRevendedor()">Cancelar</button>
+                <button class="btn btn-dourado" onclick="salvarRevendedor()">Salvar</button>
             </div>
         </div>
     </div>
 
-    <!-- ============ TOAST ============ -->
+    <!-- ============ MODAL DISPOSITIVOS ============ -->
+    <div class="modal-overlay" id="modal-dispositivos">
+        <div class="modal">
+            <h2 id="modal-disp-titulo">📱 Dispositivos</h2>
+            <p style="color: var(--texto-suave); font-size: 12px; margin-bottom: 20px;">
+                Remova um aparelho para liberar vaga (até o limite de telas do cliente).
+            </p>
+            <div id="lista-dispositivos-conteudo"></div>
+            <div class="modal-botoes" style="margin-top: 20px;">
+                <button class="btn btn-excluir" onclick="limparTodosDispositivos()">Limpar Todos</button>
+                <button class="btn btn-cancelar" onclick="fecharModalDispositivos()">Fechar</button>
+            </div>
+        </div>
+    </div>
+
     <div id="toast"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -398,75 +552,232 @@
         const SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
 
-        const SENHA_ADMIN = "admin@redplay2026";
-        const WHATSAPP_NUMERO = "55997340723";
-
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ==========================================
+        // ESTADO
+        // ==========================================
+        let usuarioLogado = null;      // O usuário real logado
+        let revendedorAtual = null;    // Qual revendedor estamos "vendo" (pode ser diferente se admin impersonando)
+        let souSuperAdmin = false;
+        let impersonando = false;      // Se o admin está vendo como outro revendedor
+
         let clientes = [];
+        let revendedores = [];
+        let pagamentos = [];
         let senhasVisiveis = {};
+        let clienteSelecionadoDisp = null;
 
         // ==========================================
         // LOGIN
         // ==========================================
-        function entrarAdmin() {
-            const senha = document.getElementById("senha-admin").value;
+        async function entrarAdmin() {
+            const usuario = document.getElementById("login-usuario").value.trim();
+            const senha = document.getElementById("login-senha").value;
             const erro = document.getElementById("login-erro");
 
-            if (senha === SENHA_ADMIN) {
-                sessionStorage.setItem("admin_logado", "1");
-                document.getElementById("tela-login").classList.add("escondida");
-                document.getElementById("painel-principal").classList.add("ativo");
-                carregarClientes();
-            } else {
+            if (!usuario || !senha) {
+                erro.innerText = "Preencha usuário e senha.";
                 erro.style.display = "block";
-                document.getElementById("senha-admin").value = "";
-                document.getElementById("senha-admin").focus();
+                return;
             }
-        }
 
-        function sairAdmin() {
-            sessionStorage.removeItem("admin_logado");
-            location.reload();
-        }
+            erro.style.display = "none";
 
-        window.addEventListener("load", () => {
-            if (sessionStorage.getItem("admin_logado") === "1") {
-                document.getElementById("tela-login").classList.add("escondida");
-                document.getElementById("painel-principal").classList.add("ativo");
-                carregarClientes();
-            } else {
-                document.getElementById("senha-admin").focus();
-            }
-        });
-
-        // ==========================================
-        // CARREGAR CLIENTES
-        // ==========================================
-        async function carregarClientes() {
-            const tbody = document.getElementById("corpo-tabela");
-            tbody.innerHTML = '<tr><td colspan="8" class="loading-tabela">Carregando clientes...</td></tr>';
-
+            // Busca no banco de revendedores
             const { data, error } = await supabaseClient
-                .from('utilizadores')
+                .from('revendedores')
                 .select('*')
-                .order('id', { ascending: true });
+                .eq('usuario', usuario)
+                .eq('senha', senha)
+                .maybeSingle();
 
             if (error) {
                 console.error(error);
-                tbody.innerHTML = '<tr><td colspan="8" class="vazio">Erro ao carregar. Verifique a consola (F12).</td></tr>';
-                toast("Erro ao carregar clientes", true);
+                erro.innerText = "Erro de conexão. Tente novamente.";
+                erro.style.display = "block";
+                return;
+            }
+
+            if (!data) {
+                erro.innerText = "Usuário ou senha incorretos.";
+                erro.style.display = "block";
+                return;
+            }
+
+            if (!data.ativo) {
+                erro.innerText = "Conta de revendedor desativada.";
+                erro.style.display = "block";
+                return;
+            }
+
+            // Login OK
+            usuarioLogado = data;
+            revendedorAtual = data;
+            souSuperAdmin = (data.usuario === 'admin');
+            impersonando = false;
+
+            // Atualiza último acesso
+            await supabaseClient
+                .from('revendedores')
+                .update({ ultimo_acesso: new Date().toISOString() })
+                .eq('id', data.id);
+
+            // Salva sessão
+            sessionStorage.setItem('redplay_admin', JSON.stringify({
+                id: data.id,
+                usuario: data.usuario,
+                nome: data.nome,
+                souSuperAdmin: souSuperAdmin
+            }));
+
+            iniciarPainel();
+        }
+
+        async function sairAdmin() {
+            sessionStorage.removeItem('redplay_admin');
+            location.reload();
+        }
+
+        // ==========================================
+        // AUTO LOGIN (se já logado na sessão)
+        // ==========================================
+        window.addEventListener('load', async () => {
+            const salvo = sessionStorage.getItem('redplay_admin');
+
+            if (salvo) {
+                try {
+                    const dados = JSON.parse(salvo);
+
+                    // Recarrega dados do revendedor
+                    const { data } = await supabaseClient
+                        .from('revendedores')
+                        .select('*')
+                        .eq('id', dados.id)
+                        .maybeSingle();
+
+                    if (data && data.ativo) {
+                        usuarioLogado = data;
+                        revendedorAtual = data;
+                        souSuperAdmin = (data.usuario === 'admin');
+                        iniciarPainel();
+                        return;
+                    }
+                } catch (e) {}
+            }
+
+            // Se não logado, foca no campo
+            document.getElementById('login-usuario').focus();
+        });
+
+        // ==========================================
+        // INICIAR PAINEL
+        // ==========================================
+        async function iniciarPainel() {
+            document.getElementById('tela-login').classList.add('escondida');
+            document.getElementById('painel-principal').classList.add('ativo');
+
+            // Atualiza header
+            document.getElementById('nome-logado').innerText = usuarioLogado.nome;
+            document.getElementById('subtitulo-painel').innerText = 
+                souSuperAdmin ? 'V6 MAX - Super Admin' : `Revenda: ${usuarioLogado.nome}`;
+
+            // Mostra tag de Super Admin
+            if (souSuperAdmin && !impersonando) {
+                document.getElementById('tag-admin').style.display = 'inline-block';
+            } else {
+                document.getElementById('tag-admin').style.display = 'none';
+            }
+
+            // Mostra aba de revendedores (só se for admin e não estiver impersonando)
+            if (souSuperAdmin && !impersonando) {
+                document.getElementById('tab-revendedores-btn').style.display = 'block';
+            } else {
+                document.getElementById('tab-revendedores-btn').style.display = 'none';
+            }
+
+            // Atualiza banner de impersonate
+            atualizarBannerImpersonate();
+
+            // Carrega dados
+            await Promise.all([
+                carregarClientes(),
+                carregarPagamentos(),
+                carregarPesquisas()
+            ]);
+
+            if (souSuperAdmin && !impersonando) {
+                await carregarRevendedores();
+            }
+        }
+
+        // ==========================================
+        // BANNER DE IMPERSONATE
+        // ==========================================
+        function atualizarBannerImpersonate() {
+            const banner = document.getElementById('banner-impersonate');
+            if (impersonando) {
+                document.getElementById('nome-impersonate').innerText = revendedorAtual.nome;
+                banner.classList.add('ativo');
+            } else {
+                banner.classList.remove('ativo');
+            }
+        }
+
+        // ==========================================
+        // MUDAR DE ABA
+        // ==========================================
+        function mudarTab(nome) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('ativa'));
+            document.querySelectorAll('.conteudo-tab').forEach(t => t.classList.remove('ativa'));
+
+            document.querySelector(`.tab[data-tab="${nome}"]`).classList.add('ativa');
+            document.getElementById(`tab-${nome}`).classList.add('ativa');
+
+            // Se mudou para revendedores, recarrega
+            if (nome === 'revendedores' && souSuperAdmin && !impersonando) {
+                carregarRevendedores();
+            }
+            if (nome === 'pesquisas') {
+                carregarPesquisas();
+            }
+            if (nome === 'pagamentos') {
+                carregarPagamentos();
+            }
+        }
+
+        // ==========================================
+        // CARREGAR CLIENTES (COM ISOLAMENTO)
+        // ==========================================
+        async function carregarClientes() {
+            const tbody = document.getElementById("corpo-clientes");
+            tbody.innerHTML = '<tr><td colspan="9" class="loading-tabela">Carregando clientes...</td></tr>';
+
+            let query = supabaseClient.from('utilizadores').select('*').order('id', { ascending: true });
+
+            // 🔒 ISOLAMENTO: se não for Super Admin SEM impersonar, filtra
+            if (!souSuperAdmin || impersonando) {
+                query = query.eq('revendedor_id', revendedorAtual.id);
+            }
+
+            const { data, error } = await query;
+
+            if (error) {
+                console.error(error);
+                tbody.innerHTML = '<tr><td colspan="9" class="vazio">Erro ao carregar.</td></tr>';
                 return;
             }
 
             clientes = data || [];
-            atualizarStats();
-            renderizarTabela();
+            atualizarStatsClientes();
+            atualizarAvisoLimite();
+            renderizarTabelaClientes();
         }
 
         // ==========================================
-        // ESTATÍSTICAS
+        // STATS CLIENTES
         // ==========================================
-        function atualizarStats() {
+        function atualizarStatsClientes() {
             const hoje = new Date(); hoje.setHours(0,0,0,0);
 
             document.getElementById("stat-total").innerText = clientes.length;
@@ -476,14 +787,55 @@
                 if (!c.vencimento) return false;
                 return new Date(c.vencimento + "T00:00:00") < hoje;
             }).length;
-            document.getElementById("stat-online").innerText = clientes.filter(c => c.device_id).length;
+            document.getElementById("stat-vitalicios").innerText = clientes.filter(c => c.plano === 'vitalicio').length;
         }
 
         // ==========================================
-        // RENDERIZAR TABELA
+        // AVISO DE LIMITE
         // ==========================================
-        function renderizarTabela() {
-            const tbody = document.getElementById("corpo-tabela");
+        function atualizarAvisoLimite() {
+            const container = document.getElementById('aviso-limite-container');
+
+            if (souSuperAdmin && !impersonando) {
+                container.innerHTML = '';
+                return;
+            }
+
+            const limite = revendedorAtual.limite_clientes || 0;
+            const atual = clientes.length;
+            const restante = limite - atual;
+
+            if (restante <= 0) {
+                container.innerHTML = `<div class="aviso-limite">⚠️ <strong>Limite atingido!</strong> Você tem ${atual}/${limite} clientes. Contate o administrador para aumentar o limite.</div>`;
+            } else if (restante <= 5) {
+                container.innerHTML = `<div class="aviso-limite">📊 <strong>Atenção:</strong> ${atual}/${limite} clientes. Restam apenas ${restante} vagas.</div>`;
+            } else {
+                container.innerHTML = '';
+            }
+        }
+
+        // ==========================================
+        // OBTER DISPOSITIVOS (compatível com legado)
+        // ==========================================
+        function obterDispositivos(c) {
+            if (Array.isArray(c.devices) && c.devices.length > 0) return c.devices;
+            if (c.devices && typeof c.devices === 'string') {
+                try {
+                    const p = JSON.parse(c.devices);
+                    if (Array.isArray(p) && p.length > 0) return p;
+                } catch(e) {}
+            }
+            if (c.device_id) {
+                return [{ id: c.device_id, nome: c.device_nome || 'Aparelho Antigo' }];
+            }
+            return [];
+        }
+
+        // ==========================================
+        // RENDERIZAR TABELA CLIENTES
+        // ==========================================
+        function renderizarTabelaClientes() {
+            const tbody = document.getElementById("corpo-clientes");
             const busca = document.getElementById("busca").value.toLowerCase().trim();
             const filtro = document.getElementById("filtro").value;
             const hoje = new Date(); hoje.setHours(0,0,0,0);
@@ -496,31 +848,32 @@
                     if (!c.vencimento) return false;
                     if (new Date(c.vencimento + "T00:00:00") >= hoje) return false;
                 }
-                if (filtro === "online" && !c.device_id) return false;
+                if (filtro === "vitalicios" && c.plano !== 'vitalicio') return false;
                 return true;
             });
 
             if (lista.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" class="vazio">Nenhum cliente encontrado.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="9" class="vazio">Nenhum cliente encontrado.</td></tr>';
                 return;
             }
 
             tbody.innerHTML = lista.map(c => {
                 const venc = c.vencimento ? formatarData(c.vencimento) : "—";
                 const vencido = c.vencimento && new Date(c.vencimento + "T00:00:00") < hoje;
-                const criado = c.created_at ? new Date(c.created_at).toLocaleDateString('pt-BR') : "—";
                 const senhaVisivel = senhasVisiveis[c.id];
                 const senhaMostrada = senhaVisivel ? escapeHtml(c.senha) : "••••••";
+                const listaDisp = obterDispositivos(c);
+                const qtdDisp = listaDisp.length;
+                const telasMax = c.telas_permitidas || 1;
 
-                const deviceNome = c.device_nome || '';
-                const deviceId = c.device_id || '';
-                const temDevice = !!deviceId;
+                let badgePlano = '';
+                if (c.plano === 'vitalicio') badgePlano = '<span class="badge-status" style="background:rgba(255,193,7,0.15);color:#ffc107;">💎 Vitalício</span>';
+                else if (c.plano === 'tela_extra') badgePlano = '<span class="badge-status" style="background:rgba(142,36,170,0.15);color:#ba68c8;">➕ Tela</span>';
+                else badgePlano = '<span class="badge-status" style="background:rgba(25,118,210,0.15);color:#64b5f6;">📅 Anual</span>';
 
                 let deviceHtml = '<span class="dev-off">— sem device —</span>';
-                if (temDevice) {
-                    const idCurto = deviceId.length > 12 ? deviceId.substring(0, 12) + '...' : deviceId;
-                    deviceHtml = `<span class="dev-ok">📱 ${escapeHtml(deviceNome || 'Desconhecido')}</span>` +
-                                 `<span class="dev-id">${escapeHtml(idCurto)}</span>`;
+                if (qtdDisp > 0) {
+                    deviceHtml = `<div class="device-badge" onclick="abrirModalDispositivos(${c.id})">📱 ${qtdDisp} ⚙️</div>`;
                 }
 
                 return `
@@ -530,23 +883,21 @@
                         <td>
                             <div class="senha-cell">
                                 <span class="senha-texto">${senhaMostrada}</span>
-                                <button class="btn-mini-icon" onclick="toggleSenhaTabela(${c.id})">
-                                    ${senhaVisivel ? '🙈' : '👁️'}
-                                </button>
-                                <button class="btn-mini-icon" onclick="copiarSenha(${c.id})" title="Copiar">📋</button>
+                                <button class="btn-mini-icon" onclick="toggleSenhaTabela(${c.id})">${senhaVisivel ? '🙈' : '👁️'}</button>
+                                <button class="btn-mini-icon" onclick="copiarSenha(${c.id})">📋</button>
                             </div>
                         </td>
                         <td><span class="badge-status ${c.ativo ? 'badge-ativo' : 'badge-inativo'}">${c.ativo ? 'Ativo' : 'Inativo'}</span></td>
+                        <td>${badgePlano}</td>
                         <td style="${vencido ? 'color: var(--amarelo); font-weight: 700;' : ''}">${venc} ${vencido ? '⚠️' : ''}</td>
-                        <td class="device-cell">${deviceHtml}</td>
-                        <td style="color: var(--texto-suave); font-size: 11px;">${criado}</td>
+                        <td style="text-align:center;"><strong>${qtdDisp}/${telasMax}</strong></td>
+                        <td>${deviceHtml}</td>
                         <td>
                             <div class="acoes">
-                                <button class="btn-mini btn-editar" onclick="abrirModalEditar(${c.id})">Editar</button>
-                                <button class="btn-mini btn-toggle" onclick="toggleAtivo(${c.id})">${c.ativo ? 'Desativar' : 'Ativar'}</button>
-                                <button class="btn-mini btn-whats" onclick="abrirWhats(${c.id})" title="Enviar credenciais">💬</button>
-                                ${temDevice ? `<button class="btn-mini btn-liberar" onclick="liberarDispositivo(${c.id})" title="Liberar para outro dispositivo">🔓</button>` : ''}
-                                <button class="btn-mini btn-excluir" onclick="excluirCliente(${c.id})">Excluir</button>
+                                <button class="btn-mini btn-editar" onclick="abrirModalEditarCliente(${c.id})">Editar</button>
+                                <button class="btn-mini btn-toggle" onclick="toggleAtivo(${c.id})">${c.ativo ? 'Off' : 'On'}</button>
+                                <button class="btn-mini btn-whats" onclick="abrirWhats(${c.id})">💬</button>
+                                <button class="btn-mini btn-excluir" onclick="excluirCliente(${c.id})">X</button>
                             </div>
                         </td>
                     </tr>
@@ -555,122 +906,138 @@
         }
 
         // ==========================================
-        // MOSTRAR/ESCONDER SENHA
+        // MODAL DISPOSITIVOS
         // ==========================================
-        function toggleSenhaTabela(id) {
-            senhasVisiveis[id] = !senhasVisiveis[id];
-            renderizarTabela();
-        }
-
-        // ==========================================
-        // COPIAR SENHA
-        // ==========================================
-        async function copiarSenha(id) {
+        function abrirModalDispositivos(id) {
             const c = clientes.find(x => x.id === id);
             if (!c) return;
+            clienteSelecionadoDisp = c;
+            document.getElementById("modal-disp-titulo").innerText = `📱 Devices: ${c.usuario}`;
+            renderizarListaModalDispositivos();
+            document.getElementById("modal-dispositivos").classList.add("ativo");
+        }
 
-            try {
-                await navigator.clipboard.writeText(c.senha);
-                toast("Senha copiada!");
-            } catch (err) {
-                const input = document.createElement("input");
-                input.value = c.senha;
-                document.body.appendChild(input);
-                input.select();
-                document.execCommand("copy");
-                document.body.removeChild(input);
-                toast("Senha copiada!");
+        function renderizarListaModalDispositivos() {
+            const container = document.getElementById("lista-dispositivos-conteudo");
+            const lista = obterDispositivos(clienteSelecionadoDisp);
+
+            if (lista.length === 0) {
+                container.innerHTML = '<p class="vazio">Nenhum dispositivo cadastrado.</p>';
+                return;
             }
+
+            container.innerHTML = lista.map(d => `
+                <div class="disp-card">
+                    <div class="disp-info">
+                        <span class="disp-nome">📺 ${escapeHtml(d.nome || 'Aparelho')}</span>
+                        <span class="disp-id">ID: ${escapeHtml(d.id || 'N/A')}</span>
+                    </div>
+                    <button class="btn-mini btn-excluir" onclick="removerDispositivoUnico('${d.id}')">Remover</button>
+                </div>
+            `).join('');
         }
 
-        // ==========================================
-        // WHATSAPP RÁPIDO
-        // ==========================================
-        function abrirWhats(id) {
-            const c = clientes.find(x => x.id === id);
-            if (!c) return;
-
-            const texto = encodeURIComponent(
-                "Olá! Aqui estão suas credenciais RedPlay:\n\n" +
-                "👤 Utilizador: " + c.usuario + "\n" +
-                "🔑 Senha: " + c.senha + "\n\n" +
-                "Bom entretenimento! 🎬"
-            );
-
-            window.open("https://wa.me/?text=" + texto, "_blank");
+        function fecharModalDispositivos() {
+            document.getElementById("modal-dispositivos").classList.remove("ativo");
+            clienteSelecionadoDisp = null;
         }
 
-        // ==========================================
-        // LIBERAR DISPOSITIVO
-        // ==========================================
-        async function liberarDispositivo(id) {
-            const c = clientes.find(x => x.id === id);
-            if (!c) return;
+        async function removerDispositivoUnico(deviceId) {
+            if (!clienteSelecionadoDisp) return;
+            const c = clienteSelecionadoDisp;
+            const listaAtual = obterDispositivos(c);
+            const novaLista = listaAtual.filter(d => d.id !== deviceId);
 
-            const deviceInfo = c.device_nome ? `${c.device_nome} (${c.device_id})` : 'desconhecido';
+            const payload = {
+                devices: novaLista,
+                device_id: novaLista.length > 0 ? novaLista[0].id : null,
+                device_nome: novaLista.length > 0 ? novaLista[0].nome : null
+            };
 
-            if (!confirm(`Liberar "${c.usuario}" para logar em outro dispositivo?\n\nDevice atual: ${deviceInfo}\n\nO aparelho atual será desvinculado.`)) return;
+            const { error } = await supabaseClient.from('utilizadores').update(payload).eq('id', c.id);
+            if (error) { toast("Erro ao remover.", true); return; }
+            toast("Dispositivo desvinculado!");
+            c.devices = novaLista;
+            renderizarListaModalDispositivos();
+            carregarClientes();
+        }
 
-            const { error } = await supabaseClient
-                .from('utilizadores')
-                .update({
-                    device_id: null,
-                    device_nome: null,
-                    session_token: null
-                })
-                .eq('id', id);
+        async function limparTodosDispositivos() {
+            if (!clienteSelecionadoDisp) return;
+            const c = clienteSelecionadoDisp;
+            if (!confirm(`Remover TODOS os dispositivos de "${c.usuario}"?`)) return;
 
-            if (error) { toast("Erro ao liberar.", true); return; }
-            toast("✅ Cliente liberado para novo dispositivo!");
+            const payload = { devices: [], device_id: null, device_nome: null, session_token: null };
+            const { error } = await supabaseClient.from('utilizadores').update(payload).eq('id', c.id);
+            if (error) { toast("Erro.", true); return; }
+            toast("Todos os dispositivos removidos!");
+            fecharModalDispositivos();
             carregarClientes();
         }
 
         // ==========================================
-        // MODAL
+        // MODAL CLIENTE
         // ==========================================
-        function abrirModalNovo() {
-            document.getElementById("modal-titulo").innerText = "Novo Cliente";
-            document.getElementById("edit-id").value = "";
-            document.getElementById("edit-usuario").value = "";
-            document.getElementById("edit-senha").value = "";
-            document.getElementById("edit-vencimento").value = "";
-            document.getElementById("edit-ativo").checked = true;
-            document.getElementById("modal").classList.add("ativo");
-            setTimeout(() => document.getElementById("edit-usuario").focus(), 100);
-        }
-
-        function abrirModalEditar(id) {
-            const c = clientes.find(x => x.id === id);
-            if (!c) return;
-            document.getElementById("modal-titulo").innerText = "Editar Cliente";
-            document.getElementById("edit-id").value = c.id;
-            document.getElementById("edit-usuario").value = c.usuario;
-            document.getElementById("edit-senha").value = c.senha;
-            document.getElementById("edit-vencimento").value = c.vencimento || "";
-            document.getElementById("edit-ativo").checked = c.ativo;
-            document.getElementById("modal").classList.add("ativo");
-        }
-
-        function fecharModal() {
-            document.getElementById("modal").classList.remove("ativo");
-        }
-
-        // ==========================================
-        // SALVAR
-        // ==========================================
-        async function salvarCliente() {
-            const id = document.getElementById("edit-id").value;
-            const usuario = document.getElementById("edit-usuario").value.trim();
-            const senha = document.getElementById("edit-senha").value.trim();
-            const vencimento = document.getElementById("edit-vencimento").value || null;
-            const ativo = document.getElementById("edit-ativo").checked;
-
-            if (!usuario || !senha) {
-                toast("Preencha utilizador e senha.", true);
-                return;
+        function abrirModalNovoCliente() {
+            // Valida limite
+            if (!souSuperAdmin || impersonando) {
+                if (clientes.length >= (revendedorAtual.limite_clientes || 0)) {
+                    toast("Limite de clientes atingido!", true);
+                    return;
+                }
             }
 
-            const payload = { usuario, senha, vencimento, ativo };
+            document.getElementById("modal-cliente-titulo").innerText = "Novo Cliente";
+            document.getElementById("cliente-id").value = "";
+            document.getElementById("cliente-usuario").value = "";
+            document.getElementById("cliente-senha").value = "";
+            document.getElementById("cliente-plano").value = "anual";
+            document.getElementById("cliente-telas").value = "1";
+            document.getElementById("cliente-vencimento").value = "";
+            document.getElementById("cliente-ativo").checked = true;
+            document.getElementById("modal-cliente").classList.add("ativo");
+            setTimeout(() => document.getElementById("cliente-usuario").focus(), 100);
+        }
+
+        function abrirModalEditarCliente(id) {
+            const c = clientes.find(x => x.id === id);
+            if (!c) return;
+            document.getElementById("modal-cliente-titulo").innerText = "Editar Cliente";
+            document.getElementById("cliente-id").value = c.id;
+            document.getElementById("cliente-usuario").value = c.usuario;
+            document.getElementById("cliente-senha").value = c.senha;
+            document.getElementById("cliente-plano").value = c.plano || "anual";
+            document.getElementById("cliente-telas").value = c.telas_permitidas || 1;
+            document.getElementById("cliente-vencimento").value = c.vencimento || "";
+            document.getElementById("cliente-ativo").checked = c.ativo;
+            document.getElementById("modal-cliente").classList.add("ativo");
+        }
+
+        function fecharModalCliente() {
+            document.getElementById("modal-cliente").classList.remove("ativo");
+        }
+
+        async function salvarCliente() {
+            const id = document.getElementById("cliente-id").value;
+            const usuario = document.getElementById("cliente-usuario").value.trim();
+            const senha = document.getElementById("cliente-senha").value.trim();
+            const plano = document.getElementById("cliente-plano").value;
+            const telas = parseInt(document.getElementById("cliente-telas").value) || 1;
+            const vencimento = document.getElementById("cliente-vencimento").value || null;
+            const ativo = document.getElementById("cliente-ativo").checked;
+
+            if (!usuario || !senha) { toast("Preencha usuário e senha.", true); return; }
+            if (telas < 1 || telas > 3) { toast("Telas deve ser entre 1 e 3.", true); return; }
+
+            const payload = {
+                usuario, senha, plano, vencimento, ativo,
+                telas_permitidas: telas
+            };
+
+            // Se for novo, vincula ao revendedor atual
+            if (!id) {
+                payload.revendedor_id = revendedorAtual.id;
+            }
 
             try {
                 if (id) {
@@ -682,15 +1049,11 @@
                     if (error) throw error;
                     toast("Cliente criado!");
                 }
-                fecharModal();
+                fecharModalCliente();
                 carregarClientes();
             } catch (err) {
                 console.error(err);
-                if (err.message && err.message.includes("duplicate")) {
-                    toast("Este utilizador já existe.", true);
-                } else {
-                    toast("Erro: " + err.message, true);
-                }
+                toast("Erro: " + err.message, true);
             }
         }
 
@@ -701,7 +1064,7 @@
             const c = clientes.find(x => x.id === id);
             if (!c) return;
             const { error } = await supabaseClient.from('utilizadores').update({ ativo: !c.ativo }).eq('id', id);
-            if (error) { toast("Erro ao atualizar.", true); return; }
+            if (error) { toast("Erro.", true); return; }
             toast(!c.ativo ? "Cliente ativado!" : "Cliente desativado!");
             carregarClientes();
         }
@@ -712,56 +1075,363 @@
         async function excluirCliente(id) {
             const c = clientes.find(x => x.id === id);
             if (!c) return;
-            if (!confirm(`Apagar DEFINITIVAMENTE o cliente "${c.usuario}"?\n\nEsta ação não pode ser desfeita.`)) return;
+            if (!confirm(`Apagar DEFINITIVAMENTE "${c.usuario}"?`)) return;
             const { error } = await supabaseClient.from('utilizadores').delete().eq('id', id);
-            if (error) { toast("Erro ao excluir.", true); return; }
+            if (error) { toast("Erro.", true); return; }
             toast("Cliente excluído.");
             carregarClientes();
         }
 
         // ==========================================
-        // ⭐ VER PESQUISAS
+        // CARREGAR REVENDEDORES (SÓ ADMIN)
         // ==========================================
-        async function verPesquisas() {
-            document.getElementById("modal-pesquisas").classList.add("ativo");
-            const container = document.getElementById("conteudo-pesquisas");
-            container.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">Carregando...</p>';
+        async function carregarRevendedores() {
+            if (!souSuperAdmin || impersonando) return;
+
+            const tbody = document.getElementById("corpo-revendedores");
+            tbody.innerHTML = '<tr><td colspan="8" class="loading-tabela">Carregando...</td></tr>';
 
             const { data, error } = await supabaseClient
+                .from('revendedores')
+                .select('*')
+                .order('id', { ascending: true });
+
+            if (error) { tbody.innerHTML = '<tr><td colspan="8" class="vazio">Erro.</td></tr>'; return; }
+
+            // Conta clientes de cada revendedor
+            const contagens = {};
+            const { data: clientesTodos } = await supabaseClient.from('utilizadores').select('revendedor_id');
+            (clientesTodos || []).forEach(c => {
+                contagens[c.revendedor_id] = (contagens[c.revendedor_id] || 0) + 1;
+            });
+
+            revendedores = (data || []).map(r => ({
+                ...r,
+                clientes_count: contagens[r.id] || 0
+            }));
+
+            renderizarTabelaRevendedores();
+        }
+
+        function renderizarTabelaRevendedores() {
+            const tbody = document.getElementById("corpo-revendedores");
+            const busca = document.getElementById("busca-rev").value.toLowerCase().trim();
+
+            let lista = revendedores.filter(r => {
+                if (busca && !r.nome.toLowerCase().includes(busca) && !r.usuario.toLowerCase().includes(busca)) return false;
+                return true;
+            });
+
+            if (lista.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="vazio">Nenhum revendedor encontrado.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = lista.map(r => {
+                const isAdmin = r.usuario === 'admin';
+                const qtd = r.clientes_count || 0;
+                const lim = r.limite_clientes || 0;
+                const porcentagem = lim > 0 ? Math.round((qtd / lim) * 100) : 0;
+
+                let corLimite = 'var(--verde)';
+                if (porcentagem >= 90) corLimite = '#ff4d4d';
+                else if (porcentagem >= 70) corLimite = 'var(--amarelo)';
+
+                return `
+                    <tr>
+                        <td>${r.id}</td>
+                        <td><strong>${escapeHtml(r.nome)}</strong> ${isAdmin ? '<span class="badge-admin">👑 VOCÊ</span>' : ''}</td>
+                        <td><code style="color: var(--texto-suave);">${escapeHtml(r.usuario)}</code></td>
+                        <td style="font-size: 12px;">${r.whatsapp || '—'}</td>
+                        <td><span class="badge-status ${r.ativo ? 'badge-ativo' : 'badge-inativo'}">${r.ativo ? 'Ativo' : 'Inativo'}</span></td>
+                        <td style="text-align:center;"><strong style="color:${corLimite};">${qtd}/${lim}</strong></td>
+                        <td style="text-align:center;">${qtd}</td>
+                        <td>
+                            <div class="acoes">
+                                ${!isAdmin ? `<button class="btn-mini btn-entrar-como" onclick="entrarComoRevendedor(${r.id})">🔑 Entrar</button>` : ''}
+                                <button class="btn-mini btn-editar" onclick="abrirModalEditarRevendedor(${r.id})">Editar</button>
+                                ${!isAdmin ? `<button class="btn-mini btn-toggle" onclick="toggleRevendedor(${r.id})">${r.ativo ? 'Off' : 'On'}</button>` : ''}
+                                ${!isAdmin ? `<button class="btn-mini btn-excluir" onclick="excluirRevendedor(${r.id})">X</button>` : ''}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ==========================================
+        // ENTRAR COMO REVENDEDOR (IMPERSONATE)
+        // ==========================================
+        async function entrarComoRevendedor(id) {
+            const r = revendedores.find(x => x.id === id);
+            if (!r) return;
+
+            if (!confirm(`Entrar no painel como "${r.nome}"?\n\nVocê verá apenas os clientes dele.`)) return;
+
+            revendedorAtual = r;
+            impersonando = true;
+
+            // Volta pra aba de clientes
+            mudarTab('clientes');
+
+            // Atualiza painel
+            document.getElementById('subtitulo-painel').innerText = `👁️ Vendo como: ${r.nome}`;
+            atualizarBannerImpersonate();
+
+            // Recarrega dados do revendedor
+            await carregarClientes();
+            await carregarPagamentos();
+            await carregarPesquisas();
+        }
+
+        function sairImpersonate() {
+            impersonando = false;
+            revendedorAtual = usuarioLogado;
+
+            document.getElementById('subtitulo-painel').innerText = 'V6 MAX - Super Admin';
+            atualizarBannerImpersonate();
+
+            // Recarrega como admin
+            carregarClientes();
+            carregarPagamentos();
+            carregarPesquisas();
+            carregarRevendedores();
+        }
+
+        // ==========================================
+        // MODAL REVENDEDOR
+        // ==========================================
+        function abrirModalNovoRevendedor() {
+            document.getElementById("modal-revendedor-titulo").innerText = "Novo Revendedor";
+            document.getElementById("rev-id").value = "";
+            document.getElementById("rev-nome").value = "";
+            document.getElementById("rev-usuario").value = "";
+            document.getElementById("rev-senha").value = "";
+            document.getElementById("rev-whatsapp").value = "";
+            document.getElementById("rev-email").value = "";
+            document.getElementById("rev-limite").value = "10";
+            document.getElementById("rev-obs").value = "";
+            document.getElementById("rev-ativo").checked = true;
+            document.getElementById("modal-revendedor").classList.add("ativo");
+        }
+
+        function abrirModalEditarRevendedor(id) {
+            const r = revendedores.find(x => x.id === id);
+            if (!r) return;
+            document.getElementById("modal-revendedor-titulo").innerText = "Editar Revendedor";
+            document.getElementById("rev-id").value = r.id;
+            document.getElementById("rev-nome").value = r.nome;
+            document.getElementById("rev-usuario").value = r.usuario;
+            document.getElementById("rev-senha").value = r.senha;
+            document.getElementById("rev-whatsapp").value = r.whatsapp || "";
+            document.getElementById("rev-email").value = r.email || "";
+            document.getElementById("rev-limite").value = r.limite_clientes;
+            document.getElementById("rev-obs").value = r.observacoes || "";
+            document.getElementById("rev-ativo").checked = r.ativo;
+            document.getElementById("modal-revendedor").classList.add("ativo");
+        }
+
+        function fecharModalRevendedor() {
+            document.getElementById("modal-revendedor").classList.remove("ativo");
+        }
+
+        async function salvarRevendedor() {
+            const id = document.getElementById("rev-id").value;
+            const nome = document.getElementById("rev-nome").value.trim();
+            const usuario = document.getElementById("rev-usuario").value.trim();
+            const senha = document.getElementById("rev-senha").value.trim();
+            const whatsapp = document.getElementById("rev-whatsapp").value.trim();
+            const email = document.getElementById("rev-email").value.trim();
+            const limite = parseInt(document.getElementById("rev-limite").value) || 10;
+            const obs = document.getElementById("rev-obs").value.trim();
+            const ativo = document.getElementById("rev-ativo").checked;
+
+            if (!nome || !usuario || !senha) {
+                toast("Preencha nome, usuário e senha.", true);
+                return;
+            }
+
+            const payload = { nome, usuario, senha, whatsapp, email, limite_clientes: limite, observacoes: obs, ativo };
+
+            try {
+                if (id) {
+                    const { error } = await supabaseClient.from('revendedores').update(payload).eq('id', id);
+                    if (error) throw error;
+                    toast("Revendedor atualizado!");
+                } else {
+                    const { error } = await supabaseClient.from('revendedores').insert([payload]);
+                    if (error) throw error;
+                    toast("Revendedor criado!");
+                }
+                fecharModalRevendedor();
+                carregarRevendedores();
+            } catch (err) {
+                console.error(err);
+                if (err.message && err.message.includes("duplicate")) {
+                    toast("Este usuário já existe.", true);
+                } else {
+                    toast("Erro: " + err.message, true);
+                }
+            }
+        }
+
+        async function toggleRevendedor(id) {
+            const r = revendedores.find(x => x.id === id);
+            if (!r) return;
+            const { error } = await supabaseClient.from('revendedores').update({ ativo: !r.ativo }).eq('id', id);
+            if (error) { toast("Erro.", true); return; }
+            toast(!r.ativo ? "Revendedor ativado!" : "Revendedor desativado!");
+            carregarRevendedores();
+        }
+
+        async function excluirRevendedor(id) {
+            const r = revendedores.find(x => x.id === id);
+            if (!r) return;
+            if (r.clientes_count > 0) {
+                toast(`Não é possível excluir: ${r.clientes_count} clientes vinculados.`, true);
+                return;
+            }
+            if (!confirm(`Excluir DEFINITIVAMENTE "${r.nome}"?`)) return;
+            const { error } = await supabaseClient.from('revendedores').delete().eq('id', id);
+            if (error) { toast("Erro.", true); return; }
+            toast("Revendedor excluído.");
+            carregarRevendedores();
+        }
+
+        // ==========================================
+        // CARREGAR PAGAMENTOS
+        // ==========================================
+        async function carregarPagamentos() {
+            const tbody = document.getElementById("corpo-pagamentos");
+            if (!tbody) return;
+            tbody.innerHTML = '<tr><td colspan="6" class="loading-tabela">Carregando...</td></tr>';
+
+            let query = supabaseClient
+                .from('pagamentos')
+                .select('*, utilizadores(usuario)')
+                .order('criado_em', { ascending: false })
+                .limit(200);
+
+            if (!souSuperAdmin || impersonando) {
+                query = query.eq('revendedor_id', revendedorAtual.id);
+            }
+
+            const { data, error } = await query;
+
+            if (error) {
+                // Se a tabela não existir ainda, mostra vazio
+                tbody.innerHTML = '<tr><td colspan="6" class="vazio">Nenhum pagamento registrado ainda.</td></tr>';
+                return;
+            }
+
+            pagamentos = data || [];
+            atualizarStatsPagamentos();
+            renderizarTabelaPagamentos();
+        }
+
+        function atualizarStatsPagamentos() {
+            const total = pagamentos.reduce((s, p) => s + (parseFloat(p.valor) || 0), 0);
+            const mesAtual = new Date().getMonth();
+            const anoAtual = new Date().getFullYear();
+            const doMes = pagamentos
+                .filter(p => {
+                    const d = new Date(p.criado_em);
+                    return d.getMonth() === mesAtual && d.getFullYear() === anoAtual;
+                })
+                .reduce((s, p) => s + (parseFloat(p.valor) || 0), 0);
+
+            document.getElementById("stat-fat-total").innerText = formatarMoeda(total);
+            document.getElementById("stat-fat-mes").innerText = formatarMoeda(doMes);
+            document.getElementById("stat-pag-count").innerText = pagamentos.length;
+        }
+
+        function renderizarTabelaPagamentos() {
+            const tbody = document.getElementById("corpo-pagamentos");
+
+            if (pagamentos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="vazio">Nenhum pagamento registrado ainda.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = pagamentos.map(p => {
+                const data = new Date(p.criado_em).toLocaleString('pt-BR');
+                const user = p.utilizadores?.usuario || 'Cliente removido';
+
+                let badgeTipo = p.tipo;
+                if (p.tipo === 'anual') badgeTipo = '📅 Anual';
+                else if (p.tipo === 'vitalicio') badgeTipo = '💎 Vitalício';
+                else if (p.tipo === 'tela_extra') badgeTipo = '➕ Tela Extra';
+
+                return `
+                    <tr>
+                        <td style="font-size: 11px;">${data}</td>
+                        <td><strong>${escapeHtml(user)}</strong></td>
+                        <td>${badgeTipo}</td>
+                        <td style="color: var(--verde); font-weight: 700;">${formatarMoeda(p.valor)}</td>
+                        <td>${p.metodo || '—'}</td>
+                        <td><span class="badge-status ${p.status === 'pago' ? 'badge-ativo' : 'badge-inativo'}">${p.status}</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ==========================================
+        // PESQUISAS
+        // ==========================================
+        async function carregarPesquisas() {
+            const container = document.getElementById("conteudo-pesquisas");
+            if (!container) return;
+            container.innerHTML = '<p style="color: #888; text-align: center; padding: 40px;">Carregando...</p>';
+
+            // Busca os IDs dos clientes do revendedor atual (se não for admin sem impersonar)
+            let clienteIds = null;
+            if (!souSuperAdmin || impersonando) {
+                clienteIds = clientes.map(c => c.usuario);
+                if (clienteIds.length === 0) {
+                    container.innerHTML = '<p style="color: #888; text-align: center; padding: 40px;">Nenhuma pesquisa respondida ainda.</p>';
+                    return;
+                }
+            }
+
+            let query = supabaseClient
                 .from('satisfacao')
                 .select('*')
                 .order('created_at', { ascending: false })
                 .limit(50);
 
-            if (error) {
-                container.innerHTML = '<p style="color: #ff4d4d; text-align: center; padding: 20px;">Erro ao carregar pesquisas.</p>';
-                return;
+            if (clienteIds) {
+                query = query.in('usuario', clienteIds);
             }
 
-            if (!data || data.length === 0) {
-                container.innerHTML = '<p style="color: #888; text-align: center; padding: 30px;">Nenhuma pesquisa respondida ainda.</p>';
+            const { data, error } = await query;
+
+            if (error || !data || data.length === 0) {
+                container.innerHTML = '<p style="color: #888; text-align: center; padding: 40px;">Nenhuma pesquisa respondida ainda.</p>';
                 return;
             }
 
             const media = (data.reduce((s, p) => s + p.estrelas, 0) / data.length).toFixed(1);
 
             let html = `
-                <div class="media-box">
-                    <div class="nota">${media} ⭐</div>
-                    <div class="label">${data.length} resposta${data.length !== 1 ? 's' : ''}</div>
+                <div style="text-align: center; background: var(--painel); padding: 25px; border-radius: 12px; margin-bottom: 20px;">
+                    <div style="font-size: 42px; font-weight: 900; color: var(--amarelo);">${media} ⭐</div>
+                    <div style="color: var(--texto-suave); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px;">
+                        ${data.length} resposta${data.length !== 1 ? 's' : ''}
+                    </div>
                 </div>
             `;
 
             data.forEach(p => {
                 const estrelas = '★'.repeat(p.estrelas) + '☆'.repeat(5 - p.estrelas);
                 const dataStr = new Date(p.created_at).toLocaleString('pt-BR');
-
                 html += `
-                    <div class="pesquisa-item">
-                        <span class="estrelas">${estrelas}</span>
-                        <span class="user">${escapeHtml(p.usuario)}</span>
-                        <span class="data">${dataStr}</span>
-                        ${p.comentario ? `<div class="comentario">"${escapeHtml(p.comentario)}"</div>` : ''}
+                    <div style="background: var(--painel); padding: 15px; margin-bottom: 12px; border-radius: 10px; border-left: 4px solid var(--amarelo);">
+                        <div>
+                            <span style="color: var(--amarelo); font-size: 16px;">${estrelas}</span>
+                            <strong style="margin-left: 10px;">${escapeHtml(p.usuario)}</strong>
+                            <span style="float: right; color: #666; font-size: 11px;">${dataStr}</span>
+                        </div>
+                        ${p.comentario ? `<p style="margin-top: 8px; font-style: italic; font-size: 13px; color: #ccc; padding-left: 10px; border-left: 2px solid #333;">"${escapeHtml(p.comentario)}"</p>` : ''}
                     </div>
                 `;
             });
@@ -769,20 +1439,55 @@
             container.innerHTML = html;
         }
 
-        function fecharPesquisas() {
-            document.getElementById("modal-pesquisas").classList.remove("ativo");
-        }
-
         // ==========================================
         // UTILITÁRIOS
         // ==========================================
+        function toggleSenhaTabela(id) {
+            senhasVisiveis[id] = !senhasVisiveis[id];
+            renderizarTabelaClientes();
+        }
+
+        async function copiarSenha(id) {
+            const c = clientes.find(x => x.id === id);
+            if (!c) return;
+            try {
+                await navigator.clipboard.writeText(c.senha);
+                toast("Senha copiada!");
+            } catch (e) {
+                const input = document.createElement("input");
+                input.value = c.senha;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand("copy");
+                document.body.removeChild(input);
+                toast("Senha copiada!");
+            }
+        }
+
+        function abrirWhats(id) {
+            const c = clientes.find(x => x.id === id);
+            if (!c) return;
+            const texto = encodeURIComponent(
+                "Olá! Suas credenciais RedPlay:\n\n" +
+                "👤 Utilizador: " + c.usuario + "\n" +
+                "🔑 Senha: " + c.senha + "\n\n" +
+                "Bom entretenimento! 🎬"
+            );
+            window.open("https://wa.me/?text=" + texto, "_blank");
+        }
+
         function formatarData(iso) {
+            if (!iso) return "—";
             const [a, m, d] = iso.split("-");
             return `${d}/${m}/${a}`;
         }
 
+        function formatarMoeda(v) {
+            return 'R$ ' + parseFloat(v || 0).toFixed(2).replace('.', ',');
+        }
+
         function escapeHtml(str) {
-            return String(str).replace(/[&<>"']/g, s => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[s]);
+            return String(str || '').replace(/[&<>"']/g, s => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[s]);
         }
 
         function toast(msg, erro = false) {
@@ -794,12 +1499,15 @@
             window._toastTimer = setTimeout(() => t.classList.remove("ativo"), 3000);
         }
 
-        // Fechar modal clicando fora
-        document.getElementById("modal").addEventListener("click", (e) => {
-            if (e.target.id === "modal") fecharModal();
-        });
-        document.getElementById("modal-pesquisas").addEventListener("click", (e) => {
-            if (e.target.id === "modal-pesquisas") fecharPesquisas();
+        // Fechar modais ao clicar fora
+        ['modal-cliente', 'modal-revendedor', 'modal-dispositivos'].forEach(id => {
+            document.getElementById(id).addEventListener("click", (e) => {
+                if (e.target.id === id) {
+                    if (id === 'modal-cliente') fecharModalCliente();
+                    if (id === 'modal-revendedor') fecharModalRevendedor();
+                    if (id === 'modal-dispositivos') fecharModalDispositivos();
+                }
+            });
         });
     </script>
 </body>
