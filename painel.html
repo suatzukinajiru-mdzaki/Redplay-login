@@ -93,7 +93,6 @@
             font-size: 10px; font-weight: 900;
             letter-spacing: 1px; margin-left: 8px;
         }
-
         .header-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 
         /* ============ ABAS ============ */
@@ -111,9 +110,17 @@
             transition: 0.2s; white-space: nowrap;
             background: transparent; border-top: none;
             border-left: none; border-right: none;
+            position: relative;
         }
         .tab:hover { color: white; }
         .tab.ativa { color: var(--vermelho); border-bottom-color: var(--vermelho); }
+        .tab .badge-num {
+            background: var(--vermelho); color: white;
+            padding: 1px 7px; border-radius: 10px;
+            font-size: 10px; margin-left: 5px;
+            display: none;
+        }
+        .tab .badge-num.ativo { display: inline-block; }
 
         .conteudo-tab { display: none; }
         .conteudo-tab.ativa { display: block; }
@@ -129,7 +136,6 @@
         .btn-primario:hover { background: var(--vermelho-escuro); }
         .btn-sair { background: transparent; color: var(--texto-suave); border: 1px solid var(--borda); }
         .btn-sair:hover { color: white; border-color: var(--vermelho); }
-        .btn-pesquisa { background: var(--amarelo); color: black; }
         .btn-dourado { background: var(--dourado); color: black; }
         .btn-dourado:hover { background: #ff9800; }
 
@@ -202,6 +208,7 @@
             padding: 4px 8px; border-radius: 6px; font-weight: 700; font-size: 11px;
             cursor: pointer; border: 1px solid rgba(0, 200, 83, 0.2);
         }
+        .device-badge:hover { background: rgba(0, 200, 83, 0.2); }
         .dev-off { color: #666; font-size: 11px; }
 
         .acoes { display: flex; gap: 5px; flex-wrap: wrap; }
@@ -214,9 +221,10 @@
         .btn-toggle { background: var(--amarelo); color: black; }
         .btn-excluir { background: #c62828; color: white; }
         .btn-whats { background: #25D366; color: white; }
-        .btn-liberar { background: var(--roxo); color: white; }
         .btn-entrar-como { background: var(--dourado); color: #000; }
         .btn-entrar-como:hover { background: #ff9800; }
+        .btn-aprovar { background: var(--verde); color: white; }
+        .btn-aprovar:hover { background: #00a844; }
 
         /* ============ MODAL ============ */
         .modal-overlay {
@@ -243,7 +251,7 @@
             font-family: inherit;
         }
         .modal input:focus, .modal textarea:focus, .modal select:focus { border-color: var(--vermelho); }
-        .modal textarea { min-height: 80px; resize: vertical; }
+        .modal textarea { min-height: 70px; resize: vertical; }
         .modal .checkbox-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
         .modal .checkbox-row input { width: auto; margin: 0; accent-color: var(--vermelho); }
         .modal .checkbox-row label { margin: 0; text-transform: none; color: white; font-size: 14px; }
@@ -256,9 +264,27 @@
             border-radius: 10px; padding: 12px 15px; margin-bottom: 10px;
             display: flex; justify-content: space-between; align-items: center;
         }
-        .disp-info { display: flex; flex-direction: column; gap: 2px; }
+        .disp-info { display: flex; flex-direction: column; gap: 2px; flex: 1; }
         .disp-nome { font-weight: 700; color: white; font-size: 13px; }
         .disp-id { font-family: monospace; font-size: 10px; color: #888; word-break: break-all; }
+
+        /* ============ CARD PENDENTE ============ */
+        .pendente-card {
+            background: var(--painel);
+            border: 2px solid var(--amarelo);
+            border-radius: 12px; padding: 20px;
+            margin-bottom: 15px;
+            animation: pulsePendente 2s infinite alternate;
+        }
+        @keyframes pulsePendente {
+            from { box-shadow: 0 0 0 rgba(255, 171, 0, 0.4); }
+            to { box-shadow: 0 0 20px rgba(255, 171, 0, 0.4); }
+        }
+        .pendente-card h3 {
+            color: var(--amarelo); font-size: 15px;
+            margin-bottom: 10px; text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
         /* ============ TOAST ============ */
         #toast {
@@ -294,6 +320,7 @@
             .tabs { padding: 0 10px; }
             .tab { padding: 12px 14px; font-size: 11px; }
             .stats, .toolbar, .tabela-wrap { padding-left: 15px; padding-right: 15px; }
+            .aviso-limite { margin-left: 15px; margin-right: 15px; }
             .stats { grid-template-columns: repeat(2, 1fr); }
             th, td { padding: 10px 8px; font-size: 11px; }
             .btn-mini { padding: 5px 7px; font-size: 9px; }
@@ -306,7 +333,7 @@
     <!-- ============ LOGIN ============ -->
     <div id="tela-login">
         <div class="login-admin">
-            <h1>🔐 Painel Admin V6</h1>
+            <h1>🔐 Painel V6 MAX</h1>
             <p>RedPlay - Sistema Multi-Revenda</p>
             <input type="text" id="login-usuario" placeholder="Usuário" onkeypress="if(event.key==='Enter')document.getElementById('login-senha').focus()">
             <input type="password" id="login-senha" placeholder="Senha" onkeypress="if(event.key==='Enter')entrarAdmin()">
@@ -336,6 +363,9 @@
 
         <div class="tabs">
             <button class="tab ativa" data-tab="clientes" onclick="mudarTab('clientes')">👥 Clientes</button>
+            <button class="tab" data-tab="pendentes" onclick="mudarTab('pendentes')">
+                🔔 Pendentes <span class="badge-num" id="badge-pendentes">0</span>
+            </button>
             <button class="tab" id="tab-revendedores-btn" data-tab="revendedores" onclick="mudarTab('revendedores')" style="display: none;">🏪 Revendedores</button>
             <button class="tab" data-tab="pagamentos" onclick="mudarTab('pagamentos')">💰 Pagamentos</button>
             <button class="tab" data-tab="pesquisas" onclick="mudarTab('pesquisas')">⭐ Pesquisas</button>
@@ -376,7 +406,7 @@
                             <th>Plano</th>
                             <th>Vencimento</th>
                             <th>Telas</th>
-                            <th>Dispositivos</th>
+                            <th>Devices</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -384,6 +414,15 @@
                         <tr><td colspan="9" class="loading-tabela">Carregando clientes...</td></tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- ============ TAB PENDENTES ============ -->
+        <div class="conteudo-tab" id="tab-pendentes">
+            <div class="tabela-wrap" style="padding-top: 20px;">
+                <div id="conteudo-pendentes">
+                    <p style="color: #888; text-align: center; padding: 40px;">Nenhuma solicitação pendente. 🎉</p>
+                </div>
             </div>
         </div>
 
@@ -466,7 +505,6 @@
             <select id="cliente-plano">
                 <option value="anual">📅 Anual - R$ 150 (12 meses)</option>
                 <option value="vitalicio">💎 Vitalício - R$ 390</option>
-                <option value="tela_extra">➕ Tela Extra - R$ 130</option>
             </select>
 
             <label>Telas Permitidas (1 a 3)</label>
@@ -487,7 +525,7 @@
         </div>
     </div>
 
-    <!-- ============ MODAL REVENDEDOR (SÓ ADMIN) ============ -->
+    <!-- ============ MODAL REVENDEDOR ============ -->
     <div class="modal-overlay" id="modal-revendedor">
         <div class="modal">
             <h2 id="modal-revendedor-titulo">Novo Revendedor</h2>
@@ -557,14 +595,15 @@
         // ==========================================
         // ESTADO
         // ==========================================
-        let usuarioLogado = null;      // O usuário real logado
-        let revendedorAtual = null;    // Qual revendedor estamos "vendo" (pode ser diferente se admin impersonando)
+        let usuarioLogado = null;
+        let revendedorAtual = null;
         let souSuperAdmin = false;
-        let impersonando = false;      // Se o admin está vendo como outro revendedor
+        let impersonando = false;
 
         let clientes = [];
         let revendedores = [];
         let pagamentos = [];
+        let pendentes = [];
         let senhasVisiveis = {};
         let clienteSelecionadoDisp = null;
 
@@ -581,10 +620,8 @@
                 erro.style.display = "block";
                 return;
             }
-
             erro.style.display = "none";
 
-            // Busca no banco de revendedores
             const { data, error } = await supabaseClient
                 .from('revendedores')
                 .select('*')
@@ -593,7 +630,6 @@
                 .maybeSingle();
 
             if (error) {
-                console.error(error);
                 erro.innerText = "Erro de conexão. Tente novamente.";
                 erro.style.display = "block";
                 return;
@@ -606,24 +642,21 @@
             }
 
             if (!data.ativo) {
-                erro.innerText = "Conta de revendedor desativada.";
+                erro.innerText = "Conta desativada. Contate o administrador.";
                 erro.style.display = "block";
                 return;
             }
 
-            // Login OK
             usuarioLogado = data;
             revendedorAtual = data;
             souSuperAdmin = (data.usuario === 'admin');
             impersonando = false;
 
-            // Atualiza último acesso
             await supabaseClient
                 .from('revendedores')
                 .update({ ultimo_acesso: new Date().toISOString() })
                 .eq('id', data.id);
 
-            // Salva sessão
             sessionStorage.setItem('redplay_admin', JSON.stringify({
                 id: data.id,
                 usuario: data.usuario,
@@ -634,28 +667,21 @@
             iniciarPainel();
         }
 
-        async function sairAdmin() {
+        function sairAdmin() {
             sessionStorage.removeItem('redplay_admin');
             location.reload();
         }
 
         // ==========================================
-        // AUTO LOGIN (se já logado na sessão)
+        // AUTO LOGIN
         // ==========================================
         window.addEventListener('load', async () => {
             const salvo = sessionStorage.getItem('redplay_admin');
-
             if (salvo) {
                 try {
                     const dados = JSON.parse(salvo);
-
-                    // Recarrega dados do revendedor
                     const { data } = await supabaseClient
-                        .from('revendedores')
-                        .select('*')
-                        .eq('id', dados.id)
-                        .maybeSingle();
-
+                        .from('revendedores').select('*').eq('id', dados.id).maybeSingle();
                     if (data && data.ativo) {
                         usuarioLogado = data;
                         revendedorAtual = data;
@@ -665,8 +691,6 @@
                     }
                 } catch (e) {}
             }
-
-            // Se não logado, foca no campo
             document.getElementById('login-usuario').focus();
         });
 
@@ -677,43 +701,28 @@
             document.getElementById('tela-login').classList.add('escondida');
             document.getElementById('painel-principal').classList.add('ativo');
 
-            // Atualiza header
             document.getElementById('nome-logado').innerText = usuarioLogado.nome;
-            document.getElementById('subtitulo-painel').innerText = 
+            document.getElementById('subtitulo-painel').innerText =
                 souSuperAdmin ? 'V6 MAX - Super Admin' : `Revenda: ${usuarioLogado.nome}`;
 
-            // Mostra tag de Super Admin
-            if (souSuperAdmin && !impersonando) {
-                document.getElementById('tag-admin').style.display = 'inline-block';
-            } else {
-                document.getElementById('tag-admin').style.display = 'none';
-            }
+            document.getElementById('tag-admin').style.display =
+                (souSuperAdmin && !impersonando) ? 'inline-block' : 'none';
 
-            // Mostra aba de revendedores (só se for admin e não estiver impersonando)
-            if (souSuperAdmin && !impersonando) {
-                document.getElementById('tab-revendedores-btn').style.display = 'block';
-            } else {
-                document.getElementById('tab-revendedores-btn').style.display = 'none';
-            }
+            document.getElementById('tab-revendedores-btn').style.display =
+                (souSuperAdmin && !impersonando) ? 'block' : 'none';
 
-            // Atualiza banner de impersonate
             atualizarBannerImpersonate();
 
-            // Carrega dados
-            await Promise.all([
-                carregarClientes(),
-                carregarPagamentos(),
-                carregarPesquisas()
-            ]);
+            await carregarClientes();
+            await carregarPendentes();
+            await carregarPagamentos();
+            await carregarPesquisas();
 
             if (souSuperAdmin && !impersonando) {
                 await carregarRevendedores();
             }
         }
 
-        // ==========================================
-        // BANNER DE IMPERSONATE
-        // ==========================================
         function atualizarBannerImpersonate() {
             const banner = document.getElementById('banner-impersonate');
             if (impersonando) {
@@ -725,7 +734,7 @@
         }
 
         // ==========================================
-        // MUDAR DE ABA
+        // MUDAR ABA
         // ==========================================
         function mudarTab(nome) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('ativa'));
@@ -734,20 +743,14 @@
             document.querySelector(`.tab[data-tab="${nome}"]`).classList.add('ativa');
             document.getElementById(`tab-${nome}`).classList.add('ativa');
 
-            // Se mudou para revendedores, recarrega
-            if (nome === 'revendedores' && souSuperAdmin && !impersonando) {
-                carregarRevendedores();
-            }
-            if (nome === 'pesquisas') {
-                carregarPesquisas();
-            }
-            if (nome === 'pagamentos') {
-                carregarPagamentos();
-            }
+            if (nome === 'revendedores' && souSuperAdmin && !impersonando) carregarRevendedores();
+            if (nome === 'pesquisas') carregarPesquisas();
+            if (nome === 'pagamentos') carregarPagamentos();
+            if (nome === 'pendentes') carregarPendentes();
         }
 
         // ==========================================
-        // CARREGAR CLIENTES (COM ISOLAMENTO)
+        // CARREGAR CLIENTES
         // ==========================================
         async function carregarClientes() {
             const tbody = document.getElementById("corpo-clientes");
@@ -755,7 +758,6 @@
 
             let query = supabaseClient.from('utilizadores').select('*').order('id', { ascending: true });
 
-            // 🔒 ISOLAMENTO: se não for Super Admin SEM impersonar, filtra
             if (!souSuperAdmin || impersonando) {
                 query = query.eq('revendedor_id', revendedorAtual.id);
             }
@@ -763,7 +765,6 @@
             const { data, error } = await query;
 
             if (error) {
-                console.error(error);
                 tbody.innerHTML = '<tr><td colspan="9" class="vazio">Erro ao carregar.</td></tr>';
                 return;
             }
@@ -774,48 +775,37 @@
             renderizarTabelaClientes();
         }
 
-        // ==========================================
-        // STATS CLIENTES
-        // ==========================================
         function atualizarStatsClientes() {
             const hoje = new Date(); hoje.setHours(0,0,0,0);
-
             document.getElementById("stat-total").innerText = clientes.length;
             document.getElementById("stat-ativos").innerText = clientes.filter(c => c.ativo).length;
             document.getElementById("stat-inativos").innerText = clientes.filter(c => !c.ativo).length;
             document.getElementById("stat-vencidos").innerText = clientes.filter(c => {
-                if (!c.vencimento) return false;
+                if (!c.vencimento || c.plano === 'vitalicio') return false;
                 return new Date(c.vencimento + "T00:00:00") < hoje;
             }).length;
             document.getElementById("stat-vitalicios").innerText = clientes.filter(c => c.plano === 'vitalicio').length;
         }
 
-        // ==========================================
-        // AVISO DE LIMITE
-        // ==========================================
         function atualizarAvisoLimite() {
             const container = document.getElementById('aviso-limite-container');
-
-            if (souSuperAdmin && !impersonando) {
-                container.innerHTML = '';
-                return;
-            }
+            if (souSuperAdmin && !impersonando) { container.innerHTML = ''; return; }
 
             const limite = revendedorAtual.limite_clientes || 0;
             const atual = clientes.length;
             const restante = limite - atual;
 
             if (restante <= 0) {
-                container.innerHTML = `<div class="aviso-limite">⚠️ <strong>Limite atingido!</strong> Você tem ${atual}/${limite} clientes. Contate o administrador para aumentar o limite.</div>`;
+                container.innerHTML = `<div class="aviso-limite">⚠️ <strong>Limite atingido!</strong> Você tem ${atual}/${limite} clientes.</div>`;
             } else if (restante <= 5) {
-                container.innerHTML = `<div class="aviso-limite">📊 <strong>Atenção:</strong> ${atual}/${limite} clientes. Restam apenas ${restante} vagas.</div>`;
+                container.innerHTML = `<div class="aviso-limite">📊 <strong>Atenção:</strong> ${atual}/${limite} clientes. Restam ${restante} vagas.</div>`;
             } else {
                 container.innerHTML = '';
             }
         }
 
         // ==========================================
-        // OBTER DISPOSITIVOS (compatível com legado)
+        // DISPOSITIVOS
         // ==========================================
         function obterDispositivos(c) {
             if (Array.isArray(c.devices) && c.devices.length > 0) return c.devices;
@@ -825,9 +815,7 @@
                     if (Array.isArray(p) && p.length > 0) return p;
                 } catch(e) {}
             }
-            if (c.device_id) {
-                return [{ id: c.device_id, nome: c.device_nome || 'Aparelho Antigo' }];
-            }
+            if (c.device_id) return [{ id: c.device_id, nome: c.device_nome || 'Aparelho Antigo' }];
             return [];
         }
 
@@ -845,7 +833,7 @@
                 if (filtro === "ativos" && !c.ativo) return false;
                 if (filtro === "inativos" && c.ativo) return false;
                 if (filtro === "vencidos") {
-                    if (!c.vencimento) return false;
+                    if (!c.vencimento || c.plano === 'vitalicio') return false;
                     if (new Date(c.vencimento + "T00:00:00") >= hoje) return false;
                 }
                 if (filtro === "vitalicios" && c.plano !== 'vitalicio') return false;
@@ -859,7 +847,7 @@
 
             tbody.innerHTML = lista.map(c => {
                 const venc = c.vencimento ? formatarData(c.vencimento) : "—";
-                const vencido = c.vencimento && new Date(c.vencimento + "T00:00:00") < hoje;
+                const vencido = c.vencimento && c.plano !== 'vitalicio' && new Date(c.vencimento + "T00:00:00") < hoje;
                 const senhaVisivel = senhasVisiveis[c.id];
                 const senhaMostrada = senhaVisivel ? escapeHtml(c.senha) : "••••••";
                 const listaDisp = obterDispositivos(c);
@@ -868,7 +856,6 @@
 
                 let badgePlano = '';
                 if (c.plano === 'vitalicio') badgePlano = '<span class="badge-status" style="background:rgba(255,193,7,0.15);color:#ffc107;">💎 Vitalício</span>';
-                else if (c.plano === 'tela_extra') badgePlano = '<span class="badge-status" style="background:rgba(142,36,170,0.15);color:#ba68c8;">➕ Tela</span>';
                 else badgePlano = '<span class="badge-status" style="background:rgba(25,118,210,0.15);color:#64b5f6;">📅 Anual</span>';
 
                 let deviceHtml = '<span class="dev-off">— sem device —</span>';
@@ -976,17 +963,129 @@
         }
 
         // ==========================================
-        // MODAL CLIENTE
+        // 🔔 PENDENTES
+        // ==========================================
+        async function carregarPendentes() {
+            let query = supabaseClient
+                .from('devices_pendentes')
+                .select('*')
+                .eq('status', 'pendente')
+                .order('tentativa_em', { ascending: false });
+
+            if (!souSuperAdmin || impersonando) {
+                query = query.eq('revendedor_id', revendedorAtual.id);
+            }
+
+            const { data, error } = await query;
+
+            if (error) {
+                pendentes = [];
+            } else {
+                pendentes = data || [];
+            }
+
+            const badge = document.getElementById('badge-pendentes');
+            if (pendentes.length > 0) {
+                badge.innerText = pendentes.length;
+                badge.classList.add('ativo');
+            } else {
+                badge.classList.remove('ativo');
+            }
+
+            renderizarPendentes();
+        }
+
+        function renderizarPendentes() {
+            const container = document.getElementById("conteudo-pendentes");
+
+            if (pendentes.length === 0) {
+                container.innerHTML = '<p style="color: #888; text-align: center; padding: 40px;">Nenhuma solicitação pendente. 🎉</p>';
+                return;
+            }
+
+            container.innerHTML = pendentes.map(p => {
+                const dataStr = new Date(p.tentativa_em).toLocaleString('pt-BR');
+
+                return `
+                    <div class="pendente-card">
+                        <h3>📱 NOVO APARELHO DETECTADO</h3>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px;">
+                            <div style="flex: 1; min-width: 250px;">
+                                <p style="font-size: 14px; margin-bottom: 5px;"><strong>Cliente:</strong> ${escapeHtml(p.usuario)}</p>
+                                <p style="font-size: 13px; color: var(--texto-suave); margin-bottom: 5px;"><strong>Aparelho:</strong> ${escapeHtml(p.device_nome || 'Desconhecido')}</p>
+                                <p style="font-size: 12px; color: var(--texto-suave); margin-bottom: 5px; font-family: monospace;"><strong>ID:</strong> ${escapeHtml(p.device_id)}</p>
+                                <p style="font-size: 11px; color: #666;">🕐 Tentou às ${dataStr}</p>
+                            </div>
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <button class="btn-mini btn-aprovar" style="padding: 10px 18px; font-size: 12px;" onclick="aprovarPendente(${p.id})">✅ Aprovar</button>
+                                <button class="btn-mini btn-excluir" style="padding: 10px 18px; font-size: 12px;" onclick="rejeitarPendente(${p.id})">❌ Rejeitar</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function aprovarPendente(id) {
+            const p = pendentes.find(x => x.id === id);
+            if (!p) return;
+
+            const { data: cliente } = await supabaseClient
+                .from('utilizadores').select('*').eq('usuario', p.usuario).single();
+
+            if (!cliente) { toast("Cliente não encontrado.", true); return; }
+
+            const listaAtual = obterDispositivos(cliente);
+            const telasMax = cliente.telas_permitidas || 1;
+
+            if (listaAtual.length >= telasMax) {
+                if (!confirm(`⚠️ Cliente já tem ${listaAtual.length}/${telasMax} aparelhos.\n\nSubstituir o mais antigo?`)) return;
+                listaAtual.shift();
+            }
+
+            listaAtual.push({
+                id: p.device_id,
+                nome: p.device_nome || 'Aparelho',
+                adicionado_em: new Date().toISOString()
+            });
+
+            const { error } = await supabaseClient
+                .from('utilizadores')
+                .update({
+                    devices: listaAtual,
+                    device_id: listaAtual[0].id,
+                    device_nome: listaAtual[0].nome,
+                    ultimo_acesso: new Date().toISOString()
+                })
+                .eq('id', cliente.id);
+
+            if (error) { toast("Erro ao aprovar.", true); return; }
+
+            await supabaseClient.from('devices_pendentes').update({ status: 'aprovado' }).eq('id', id);
+
+            toast("✅ Aparelho aprovado!");
+            carregarPendentes();
+            carregarClientes();
+        }
+
+        async function rejeitarPendente(id) {
+            if (!confirm("Rejeitar esta solicitação?")) return;
+            const { error } = await supabaseClient.from('devices_pendentes').update({ status: 'rejeitado' }).eq('id', id);
+            if (error) { toast("Erro.", true); return; }
+            toast("Solicitação rejeitada.");
+            carregarPendentes();
+        }
+
+        // ==========================================
+        // MODAIS CLIENTE
         // ==========================================
         function abrirModalNovoCliente() {
-            // Valida limite
             if (!souSuperAdmin || impersonando) {
                 if (clientes.length >= (revendedorAtual.limite_clientes || 0)) {
                     toast("Limite de clientes atingido!", true);
                     return;
                 }
             }
-
             document.getElementById("modal-cliente-titulo").innerText = "Novo Cliente";
             document.getElementById("cliente-id").value = "";
             document.getElementById("cliente-usuario").value = "";
@@ -1029,15 +1128,8 @@
             if (!usuario || !senha) { toast("Preencha usuário e senha.", true); return; }
             if (telas < 1 || telas > 3) { toast("Telas deve ser entre 1 e 3.", true); return; }
 
-            const payload = {
-                usuario, senha, plano, vencimento, ativo,
-                telas_permitidas: telas
-            };
-
-            // Se for novo, vincula ao revendedor atual
-            if (!id) {
-                payload.revendedor_id = revendedorAtual.id;
-            }
+            const payload = { usuario, senha, plano, vencimento, ativo, telas_permitidas: telas };
+            if (!id) payload.revendedor_id = revendedorAtual.id;
 
             try {
                 if (id) {
@@ -1052,13 +1144,16 @@
                 fecharModalCliente();
                 carregarClientes();
             } catch (err) {
-                console.error(err);
-                toast("Erro: " + err.message, true);
+                if (err.message && err.message.includes("duplicate")) {
+                    toast("Este usuário já existe.", true);
+                } else {
+                    toast("Erro: " + err.message, true);
+                }
             }
         }
 
         // ==========================================
-        // TOGGLE ATIVO
+        // AÇÕES CLIENTE
         // ==========================================
         async function toggleAtivo(id) {
             const c = clientes.find(x => x.id === id);
@@ -1069,9 +1164,6 @@
             carregarClientes();
         }
 
-        // ==========================================
-        // EXCLUIR
-        // ==========================================
         async function excluirCliente(id) {
             const c = clientes.find(x => x.id === id);
             if (!c) return;
@@ -1082,34 +1174,58 @@
             carregarClientes();
         }
 
+        function toggleSenhaTabela(id) {
+            senhasVisiveis[id] = !senhasVisiveis[id];
+            renderizarTabelaClientes();
+        }
+
+        async function copiarSenha(id) {
+            const c = clientes.find(x => x.id === id);
+            if (!c) return;
+            try {
+                await navigator.clipboard.writeText(c.senha);
+                toast("Senha copiada!");
+            } catch (e) {
+                const input = document.createElement("input");
+                input.value = c.senha;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand("copy");
+                document.body.removeChild(input);
+                toast("Senha copiada!");
+            }
+        }
+
+        function abrirWhats(id) {
+            const c = clientes.find(x => x.id === id);
+            if (!c) return;
+            const texto = encodeURIComponent(
+                "Olá! Suas credenciais RedPlay:\n\n" +
+                "👤 Utilizador: " + c.usuario + "\n" +
+                "🔑 Senha: " + c.senha + "\n\n" +
+                "Bom entretenimento! 🎬"
+            );
+            window.open("https://wa.me/?text=" + texto, "_blank");
+        }
+
         // ==========================================
-        // CARREGAR REVENDEDORES (SÓ ADMIN)
+        // REVENDEDORES
         // ==========================================
         async function carregarRevendedores() {
             if (!souSuperAdmin || impersonando) return;
-
             const tbody = document.getElementById("corpo-revendedores");
             tbody.innerHTML = '<tr><td colspan="8" class="loading-tabela">Carregando...</td></tr>';
 
-            const { data, error } = await supabaseClient
-                .from('revendedores')
-                .select('*')
-                .order('id', { ascending: true });
-
+            const { data, error } = await supabaseClient.from('revendedores').select('*').order('id', { ascending: true });
             if (error) { tbody.innerHTML = '<tr><td colspan="8" class="vazio">Erro.</td></tr>'; return; }
 
-            // Conta clientes de cada revendedor
             const contagens = {};
             const { data: clientesTodos } = await supabaseClient.from('utilizadores').select('revendedor_id');
             (clientesTodos || []).forEach(c => {
                 contagens[c.revendedor_id] = (contagens[c.revendedor_id] || 0) + 1;
             });
 
-            revendedores = (data || []).map(r => ({
-                ...r,
-                clientes_count: contagens[r.id] || 0
-            }));
-
+            revendedores = (data || []).map(r => ({ ...r, clientes_count: contagens[r.id] || 0 }));
             renderizarTabelaRevendedores();
         }
 
@@ -1123,7 +1239,7 @@
             });
 
             if (lista.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" class="vazio">Nenhum revendedor encontrado.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" class="vazio">Nenhum revendedor.</td></tr>';
                 return;
             }
 
@@ -1159,27 +1275,23 @@
             }).join('');
         }
 
-        // ==========================================
-        // ENTRAR COMO REVENDEDOR (IMPERSONATE)
-        // ==========================================
         async function entrarComoRevendedor(id) {
             const r = revendedores.find(x => x.id === id);
             if (!r) return;
-
             if (!confirm(`Entrar no painel como "${r.nome}"?\n\nVocê verá apenas os clientes dele.`)) return;
 
             revendedorAtual = r;
             impersonando = true;
 
-            // Volta pra aba de clientes
             mudarTab('clientes');
 
-            // Atualiza painel
             document.getElementById('subtitulo-painel').innerText = `👁️ Vendo como: ${r.nome}`;
+            document.getElementById('tag-admin').style.display = 'none';
+            document.getElementById('tab-revendedores-btn').style.display = 'none';
             atualizarBannerImpersonate();
 
-            // Recarrega dados do revendedor
             await carregarClientes();
+            await carregarPendentes();
             await carregarPagamentos();
             await carregarPesquisas();
         }
@@ -1189,18 +1301,17 @@
             revendedorAtual = usuarioLogado;
 
             document.getElementById('subtitulo-painel').innerText = 'V6 MAX - Super Admin';
+            document.getElementById('tag-admin').style.display = 'inline-block';
+            document.getElementById('tab-revendedores-btn').style.display = 'block';
             atualizarBannerImpersonate();
 
-            // Recarrega como admin
             carregarClientes();
+            carregarPendentes();
             carregarPagamentos();
             carregarPesquisas();
             carregarRevendedores();
         }
 
-        // ==========================================
-        // MODAL REVENDEDOR
-        // ==========================================
         function abrirModalNovoRevendedor() {
             document.getElementById("modal-revendedor-titulo").innerText = "Novo Revendedor";
             document.getElementById("rev-id").value = "";
@@ -1246,10 +1357,7 @@
             const obs = document.getElementById("rev-obs").value.trim();
             const ativo = document.getElementById("rev-ativo").checked;
 
-            if (!nome || !usuario || !senha) {
-                toast("Preencha nome, usuário e senha.", true);
-                return;
-            }
+            if (!nome || !usuario || !senha) { toast("Preencha nome, usuário e senha.", true); return; }
 
             const payload = { nome, usuario, senha, whatsapp, email, limite_clientes: limite, observacoes: obs, ativo };
 
@@ -1266,12 +1374,8 @@
                 fecharModalRevendedor();
                 carregarRevendedores();
             } catch (err) {
-                console.error(err);
-                if (err.message && err.message.includes("duplicate")) {
-                    toast("Este usuário já existe.", true);
-                } else {
-                    toast("Erro: " + err.message, true);
-                }
+                if (err.message && err.message.includes("duplicate")) toast("Usuário já existe.", true);
+                else toast("Erro: " + err.message, true);
             }
         }
 
@@ -1287,10 +1391,7 @@
         async function excluirRevendedor(id) {
             const r = revendedores.find(x => x.id === id);
             if (!r) return;
-            if (r.clientes_count > 0) {
-                toast(`Não é possível excluir: ${r.clientes_count} clientes vinculados.`, true);
-                return;
-            }
+            if (r.clientes_count > 0) { toast(`Não é possível: ${r.clientes_count} clientes vinculados.`, true); return; }
             if (!confirm(`Excluir DEFINITIVAMENTE "${r.nome}"?`)) return;
             const { error } = await supabaseClient.from('revendedores').delete().eq('id', id);
             if (error) { toast("Erro.", true); return; }
@@ -1299,28 +1400,19 @@
         }
 
         // ==========================================
-        // CARREGAR PAGAMENTOS
+        // PAGAMENTOS
         // ==========================================
         async function carregarPagamentos() {
             const tbody = document.getElementById("corpo-pagamentos");
             if (!tbody) return;
             tbody.innerHTML = '<tr><td colspan="6" class="loading-tabela">Carregando...</td></tr>';
 
-            let query = supabaseClient
-                .from('pagamentos')
-                .select('*, utilizadores(usuario)')
-                .order('criado_em', { ascending: false })
-                .limit(200);
-
-            if (!souSuperAdmin || impersonando) {
-                query = query.eq('revendedor_id', revendedorAtual.id);
-            }
+            let query = supabaseClient.from('pagamentos').select('*').order('criado_em', { ascending: false }).limit(200);
+            if (!souSuperAdmin || impersonando) query = query.eq('revendedor_id', revendedorAtual.id);
 
             const { data, error } = await query;
-
             if (error) {
-                // Se a tabela não existir ainda, mostra vazio
-                tbody.innerHTML = '<tr><td colspan="6" class="vazio">Nenhum pagamento registrado ainda.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="vazio">Nenhum pagamento ainda.</td></tr>';
                 return;
             }
 
@@ -1347,7 +1439,6 @@
 
         function renderizarTabelaPagamentos() {
             const tbody = document.getElementById("corpo-pagamentos");
-
             if (pagamentos.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="6" class="vazio">Nenhum pagamento registrado ainda.</td></tr>';
                 return;
@@ -1355,8 +1446,6 @@
 
             tbody.innerHTML = pagamentos.map(p => {
                 const data = new Date(p.criado_em).toLocaleString('pt-BR');
-                const user = p.utilizadores?.usuario || 'Cliente removido';
-
                 let badgeTipo = p.tipo;
                 if (p.tipo === 'anual') badgeTipo = '📅 Anual';
                 else if (p.tipo === 'vitalicio') badgeTipo = '💎 Vitalício';
@@ -1365,7 +1454,7 @@
                 return `
                     <tr>
                         <td style="font-size: 11px;">${data}</td>
-                        <td><strong>${escapeHtml(user)}</strong></td>
+                        <td><strong>${escapeHtml(p.usuario || 'Cliente')}</strong></td>
                         <td>${badgeTipo}</td>
                         <td style="color: var(--verde); font-weight: 700;">${formatarMoeda(p.valor)}</td>
                         <td>${p.metodo || '—'}</td>
@@ -1383,30 +1472,22 @@
             if (!container) return;
             container.innerHTML = '<p style="color: #888; text-align: center; padding: 40px;">Carregando...</p>';
 
-            // Busca os IDs dos clientes do revendedor atual (se não for admin sem impersonar)
             let clienteIds = null;
             if (!souSuperAdmin || impersonando) {
                 clienteIds = clientes.map(c => c.usuario);
                 if (clienteIds.length === 0) {
-                    container.innerHTML = '<p style="color: #888; text-align: center; padding: 40px;">Nenhuma pesquisa respondida ainda.</p>';
+                    container.innerHTML = '<p style="color: #888; text-align: center; padding: 40px;">Nenhuma pesquisa ainda.</p>';
                     return;
                 }
             }
 
-            let query = supabaseClient
-                .from('satisfacao')
-                .select('*')
-                .order('created_at', { ascending: false })
-                .limit(50);
-
-            if (clienteIds) {
-                query = query.in('usuario', clienteIds);
-            }
+            let query = supabaseClient.from('satisfacao').select('*').order('created_at', { ascending: false }).limit(50);
+            if (clienteIds) query = query.in('usuario', clienteIds);
 
             const { data, error } = await query;
 
             if (error || !data || data.length === 0) {
-                container.innerHTML = '<p style="color: #888; text-align: center; padding: 40px;">Nenhuma pesquisa respondida ainda.</p>';
+                container.innerHTML = '<p style="color: #888; text-align: center; padding: 40px;">Nenhuma pesquisa ainda.</p>';
                 return;
             }
 
@@ -1442,40 +1523,6 @@
         // ==========================================
         // UTILITÁRIOS
         // ==========================================
-        function toggleSenhaTabela(id) {
-            senhasVisiveis[id] = !senhasVisiveis[id];
-            renderizarTabelaClientes();
-        }
-
-        async function copiarSenha(id) {
-            const c = clientes.find(x => x.id === id);
-            if (!c) return;
-            try {
-                await navigator.clipboard.writeText(c.senha);
-                toast("Senha copiada!");
-            } catch (e) {
-                const input = document.createElement("input");
-                input.value = c.senha;
-                document.body.appendChild(input);
-                input.select();
-                document.execCommand("copy");
-                document.body.removeChild(input);
-                toast("Senha copiada!");
-            }
-        }
-
-        function abrirWhats(id) {
-            const c = clientes.find(x => x.id === id);
-            if (!c) return;
-            const texto = encodeURIComponent(
-                "Olá! Suas credenciais RedPlay:\n\n" +
-                "👤 Utilizador: " + c.usuario + "\n" +
-                "🔑 Senha: " + c.senha + "\n\n" +
-                "Bom entretenimento! 🎬"
-            );
-            window.open("https://wa.me/?text=" + texto, "_blank");
-        }
-
         function formatarData(iso) {
             if (!iso) return "—";
             const [a, m, d] = iso.split("-");
@@ -1499,7 +1546,6 @@
             window._toastTimer = setTimeout(() => t.classList.remove("ativo"), 3000);
         }
 
-        // Fechar modais ao clicar fora
         ['modal-cliente', 'modal-revendedor', 'modal-dispositivos'].forEach(id => {
             document.getElementById(id).addEventListener("click", (e) => {
                 if (e.target.id === id) {
