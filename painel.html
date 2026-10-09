@@ -383,6 +383,9 @@
 
         <div class="tabs">
             <button class="tab ativa" data-tab="clientes" onclick="mudarTab('clientes')">Clientes</button>
+            <button class="tab" data-tab="testes" onclick="mudarTab('testes')">
+                Em Teste <span class="badge-num" id="badge-testes">0</span>
+            </button>
             <button class="tab" data-tab="pendentes" onclick="mudarTab('pendentes')">
                 Pendentes <span class="badge-num" id="badge-pendentes">0</span>
             </button>
@@ -433,6 +436,45 @@
                     </thead>
                     <tbody id="corpo-clientes">
                         <tr><td colspan="9" class="loading-tabela">Carregando clientes...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ============ TAB EM TESTE ============ -->
+        <div class="conteudo-tab" id="tab-testes">
+            <div class="stats">
+                <div class="stat-card"><div class="num" id="stat-testes" style="color: var(--azul);">0</div><div class="lbl">Em Teste</div></div>
+                <div class="stat-card"><div class="num" id="stat-testes-24h" style="color: var(--amarelo);">0</div><div class="lbl">Expira em 24h</div></div>
+                <div class="stat-card"><div class="num" id="stat-testes-convertidos" style="color: var(--verde);">0</div><div class="lbl">Já Pagaram</div></div>
+            </div>
+
+            <div class="toolbar">
+                <input type="text" id="busca-testes" placeholder="Buscar por device, WhatsApp ou usuário..." oninput="renderizarTestes()">
+                <select id="filtro-testes" onchange="renderizarTestes()">
+                    <option value="todos">Todos os dispositivos</option>
+                    <option value="teste">Só em teste</option>
+                    <option value="expirando">Expirando em 24h</option>
+                    <option value="novos">Adicionados hoje</option>
+                </select>
+            </div>
+
+            <div class="tabela-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Device ID</th>
+                            <th>Status</th>
+                            <th>Dias Restantes</th>
+                            <th>Expira em</th>
+                            <th>WhatsApp</th>
+                            <th>Usuário</th>
+                            <th>Criado</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpo-testes">
+                        <tr><td colspan="8" class="loading-tabela">Carregando dispositivos...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -571,8 +613,9 @@
 
             <label>Plano</label>
             <select id="cliente-plano">
-                <option value="anual">Anual - R$ 150 (12 meses)</option>
-                <option value="vitalicio">Vitalício - R$ 390</option>
+                <option value="anual">Anual - R$ 149,90 (12 meses)</option>
+                <option value="mensal">Mensal - R$ 18,90</option>
+                <option value="lifetime">Vitalício - R$ 450,00</option>
             </select>
 
             <label>Telas Permitidas (1 a 3)</label>
@@ -673,6 +716,7 @@
         let pagamentos = [];
         let pendentes = [];
         let versoesApk = [];
+        let testes = [];
         let senhasVisiveis = {};
         let clienteSelecionadoDisp = null;
 
@@ -783,6 +827,7 @@
             atualizarBannerImpersonate();
 
             await carregarClientes();
+            await carregarTestes();
             await carregarPendentes();
             await carregarPagamentos();
             await carregarPesquisas();
@@ -818,6 +863,7 @@
             if (nome === 'pagamentos') carregarPagamentos();
             if (nome === 'pendentes') carregarPendentes();
             if (nome === 'atualizacoes') carregarVersoes();
+            if (nome === 'testes') carregarTestes();
         }
 
         // ==========================================
@@ -921,11 +967,12 @@
 
                 let badgePlano = '';
                 if (c.plano === 'vitalicio') badgePlano = '<span class="badge-status" style="background:rgba(255,193,7,0.15);color:#ffc107;">Vitalício</span>';
+                else if (c.plano === 'mensal') badgePlano = '<span class="badge-status" style="background:rgba(142,36,170,0.15);color:#ce93d8;">Mensal</span>';
                 else badgePlano = '<span class="badge-status" style="background:rgba(25,118,210,0.15);color:#64b5f6;">Anual</span>';
 
                 let deviceHtml = '<span class="dev-off">— sem device —</span>';
                 if (qtdDisp > 0) {
-                    deviceHtml = `<div class="device-badge" onclick="abrirModalDispositivos(${c.id})">${qtdDisp} Aparelho(s) ⚙</div>`;
+                    deviceHtml = `<div class="device-badge" onclick="abrirModalDispositivos(${c.id})">${qtdDisp} Aparelho(s)</div>`;
                 }
 
                 return `
@@ -955,6 +1002,167 @@
                     </tr>
                 `;
             }).join('');
+        }
+
+        // ==========================================
+        // EM TESTE (dispositivos trial)
+        // ==========================================
+        async function carregarTestes() {
+            const tbody = document.getElementById("corpo-testes");
+            if (!tbody) return;
+            tbody.innerHTML = '<tr><td colspan="8" class="loading-tabela">Carregando dispositivos...</td></tr>';
+
+            const { data, error } = await supabaseClient
+                .from('dispositivos')
+                .select('*')
+                .order('criado_em', { ascending: false })
+                .limit(500);
+
+            if (error) {
+                tbody.innerHTML = '<tr><td colspan="8" class="vazio">Erro ao carregar.</td></tr>';
+                return;
+            }
+
+            testes = data || [];
+
+            const agora = Date.now();
+            const emTeste = testes.filter(t => t.status === 'teste_gratis' && new Date(t.data_expiracao).getTime() > agora);
+            const expirando24h = emTeste.filter(t => {
+                const resta = new Date(t.data_expiracao).getTime() - agora;
+                return resta > 0 && resta < 24 * 3600000;
+            });
+            const convertidos = testes.filter(t => t.status === 'pago' || t.plano === 'lifetime');
+
+            document.getElementById("stat-testes").innerText = emTeste.length;
+            document.getElementById("stat-testes-24h").innerText = expirando24h.length;
+            document.getElementById("stat-testes-convertidos").innerText = convertidos.length;
+
+            const badge = document.getElementById('badge-testes');
+            if (emTeste.length > 0) {
+                badge.innerText = emTeste.length;
+                badge.classList.add('ativo');
+            } else {
+                badge.classList.remove('ativo');
+            }
+
+            renderizarTestes();
+        }
+
+        function renderizarTestes() {
+            const tbody = document.getElementById("corpo-testes");
+            if (!tbody) return;
+
+            const busca = document.getElementById("busca-testes").value.toLowerCase().trim();
+            const filtro = document.getElementById("filtro-testes").value;
+            const agora = Date.now();
+            const hoje = new Date(); hoje.setHours(0,0,0,0);
+
+            let lista = testes.filter(t => {
+                if (filtro === 'teste') {
+                    if (t.status !== 'teste_gratis') return false;
+                    if (new Date(t.data_expiracao).getTime() <= agora) return false;
+                }
+                if (filtro === 'expirando') {
+                    const resta = new Date(t.data_expiracao).getTime() - agora;
+                    if (resta <= 0 || resta > 24 * 3600000) return false;
+                }
+                if (filtro === 'novos') {
+                    const criado = new Date(t.criado_em);
+                    if (criado < hoje) return false;
+                }
+                if (busca) {
+                    const device = (t.android_id || '').toLowerCase();
+                    const zap = (t.whatsapp || '').toLowerCase();
+                    const user = (t.username || '').toLowerCase();
+                    if (!device.includes(busca) && !zap.includes(busca) && !user.includes(busca)) return false;
+                }
+                return true;
+            });
+
+            if (lista.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="vazio">Nenhum dispositivo encontrado.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = lista.map(t => {
+                const expira = new Date(t.data_expiracao);
+                const resta = expira.getTime() - agora;
+                const diasRestantes = Math.max(0, Math.floor(resta / 86400000));
+                const horasRestantes = Math.max(0, Math.floor((resta % 86400000) / 3600000));
+
+                let statusBadge = '';
+                let corDias = 'var(--verde)';
+
+                if (t.plano === 'lifetime') {
+                    statusBadge = '<span class="badge-status" style="background:rgba(255,193,7,0.15);color:#ffc107;">VITALÍCIO</span>';
+                } else if (t.status === 'pago') {
+                    statusBadge = '<span class="badge-status badge-ativo">PAGO</span>';
+                } else if (t.status === 'expirado' || resta <= 0) {
+                    statusBadge = '<span class="badge-status badge-inativo">EXPIRADO</span>';
+                    corDias = '#ff4d4d';
+                } else if (t.status === 'teste_gratis') {
+                    statusBadge = '<span class="badge-status" style="background:rgba(25,118,210,0.15);color:#64b5f6;">TESTE</span>';
+                    if (diasRestantes <= 1) corDias = '#ff4d4d';
+                    else if (diasRestantes <= 2) corDias = 'var(--amarelo)';
+                } else {
+                    statusBadge = `<span class="badge-status">${t.status}</span>`;
+                }
+
+                const dataStr = expira.toLocaleDateString('pt-BR');
+                const criadoStr = t.criado_em ? new Date(t.criado_em).toLocaleString('pt-BR') : '—';
+
+                let diasTxt = '—';
+                if (t.plano === 'lifetime') diasTxt = '∞';
+                else if (t.status === 'pago') diasTxt = diasRestantes + 'd';
+                else if (resta > 0) {
+                    if (diasRestantes > 0) diasTxt = diasRestantes + 'd ' + horasRestantes + 'h';
+                    else diasTxt = horasRestantes + 'h';
+                } else diasTxt = 'Expirado';
+
+                const deviceId = t.android_id || '—';
+                const deviceIdCurto = deviceId.length > 22 ? deviceId.substring(0, 22) + '...' : deviceId;
+
+                const zap = t.whatsapp || '';
+                const zapHtml = zap 
+                    ? `<a href="https://wa.me/${zap}" target="_blank" style="color: #25D366; text-decoration: none; font-weight: 700;">${zap}</a>` 
+                    : '<span style="color:#666;">—</span>';
+
+                return `
+                    <tr>
+                        <td style="font-family: monospace; font-size: 11px;">${escapeHtml(deviceIdCurto)}</td>
+                        <td>${statusBadge}</td>
+                        <td style="color:${corDias}; font-weight: 700; text-align:center;">${diasTxt}</td>
+                        <td style="font-size: 11px;">${dataStr}</td>
+                        <td style="font-size: 12px;">${zapHtml}</td>
+                        <td>${t.username ? '<strong>' + escapeHtml(t.username) + '</strong>' : '<span style="color:#666;">—</span>'}</td>
+                        <td style="font-size: 11px; color: var(--texto-suave);">${criadoStr}</td>
+                        <td>
+                            <div class="acoes">
+                                ${zap ? `<button class="btn-mini btn-whats" onclick="abrirWhatsTeste('${zap}')">WhatsApp</button>` : ''}
+                                <button class="btn-mini btn-excluir" onclick="excluirTeste('${t.android_id}')">X</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function abrirWhatsTeste(zap) {
+            const texto = encodeURIComponent("Olá! Seu período de teste RedPlay acabou. Quer continuar assistindo?");
+            window.open("https://wa.me/" + zap + "?text=" + texto, "_blank");
+        }
+
+        async function excluirTeste(androidId) {
+            if (!confirm("Apagar este dispositivo do banco?\n\nO cliente perderá o trial e o histórico.")) return;
+
+            const { error } = await supabaseClient
+                .from('dispositivos')
+                .delete()
+                .eq('android_id', androidId);
+
+            if (error) { toast("Erro ao excluir.", true); return; }
+            toast("Dispositivo excluído.");
+            carregarTestes();
         }
 
         // ==========================================
@@ -1043,11 +1251,7 @@
 
             const { data, error } = await query;
 
-            if (error) {
-                pendentes = [];
-            } else {
-                pendentes = data || [];
-            }
+            pendentes = error ? [] : (data || []);
 
             const badge = document.getElementById('badge-pendentes');
             if (pendentes.length > 0) {
@@ -1353,6 +1557,7 @@
             atualizarBannerImpersonate();
 
             await carregarClientes();
+            await carregarTestes();
             await carregarPendentes();
             await carregarPagamentos();
             await carregarPesquisas();
@@ -1368,6 +1573,7 @@
             atualizarBannerImpersonate();
 
             carregarClientes();
+            carregarTestes();
             carregarPendentes();
             carregarPagamentos();
             carregarPesquisas();
@@ -1469,9 +1675,7 @@
             if (!tbody) return;
             tbody.innerHTML = '<tr><td colspan="6" class="loading-tabela">Carregando...</td></tr>';
 
-            let query = supabaseClient.from('pagamentos').select('*').order('criado_em', { ascending: false }).limit(200);
-            if (!souSuperAdmin || impersonando) query = query.eq('revendedor_id', revendedorAtual.id);
-
+            let query = supabaseClient.from('pagamentos_mp').select('*').order('criado_em', { ascending: false }).limit(200);
             const { data, error } = await query;
             if (error) {
                 tbody.innerHTML = '<tr><td colspan="6" class="vazio">Nenhum pagamento ainda.</td></tr>';
@@ -1502,24 +1706,24 @@
         function renderizarTabelaPagamentos() {
             const tbody = document.getElementById("corpo-pagamentos");
             if (pagamentos.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="vazio">Nenhum pagamento registrado ainda.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="vazio">Nenhum pagamento registrado.</td></tr>';
                 return;
             }
 
             tbody.innerHTML = pagamentos.map(p => {
                 const data = new Date(p.criado_em).toLocaleString('pt-BR');
-                let badgeTipo = p.tipo;
-                if (p.tipo === 'anual') badgeTipo = 'Anual';
-                else if (p.tipo === 'vitalicio') badgeTipo = 'Vitalício';
-                else if (p.tipo === 'tela_extra') badgeTipo = 'Tela Extra';
+                let badgeTipo = p.plano || p.tipo || '—';
+                if (p.plano === 'anual') badgeTipo = 'Anual';
+                else if (p.plano === 'lifetime') badgeTipo = 'Vitalício';
+                else if (p.plano === 'mensal' || p.plano === 'mensal_primeiro') badgeTipo = 'Mensal';
 
                 return `
                     <tr>
                         <td style="font-size: 11px;">${data}</td>
-                        <td><strong>${escapeHtml(p.usuario || 'Cliente')}</strong></td>
+                        <td><strong>${escapeHtml(p.mp_order_id || 'Ordem MP')}</strong></td>
                         <td>${badgeTipo}</td>
                         <td style="color: var(--verde); font-weight: 700;">${formatarMoeda(p.valor)}</td>
-                        <td>${p.metodo || '—'}</td>
+                        <td>${p.mp_status || '—'}</td>
                         <td><span class="badge-status ${p.status === 'pago' ? 'badge-ativo' : 'badge-inativo'}">${p.status}</span></td>
                     </tr>
                 `;
@@ -1583,7 +1787,7 @@
         }
 
         // ==========================================
-        // ATUALIZAÇÕES DO APK
+        // VERSÕES APK
         // ==========================================
         async function carregarVersoes() {
             const tbody = document.getElementById("corpo-versoes");
@@ -1622,7 +1826,7 @@
                         <td style="font-size: 11px;">${dataStr}</td>
                         <td>
                             <div class="acoes">
-                                <button class="btn-mini btn-editar" onclick="toggleObrigatoria(${v.id})">${v.obrigatoria ? 'Tornar Opcional' : 'Tornar Obrigatória'}</button>
+                                <button class="btn-mini btn-editar" onclick="toggleObrigatoria(${v.id})">${v.obrigatoria ? 'Opcional' : 'Obrigatória'}</button>
                                 <button class="btn-mini btn-toggle" onclick="toggleVersaoAtivo(${v.id})">${v.ativo ? 'Desativar' : 'Ativar'}</button>
                                 <button class="btn-mini btn-excluir" onclick="excluirVersao(${v.id})">Excluir</button>
                             </div>
@@ -1656,7 +1860,7 @@
 
                 prog.innerHTML = `Enviando para o Supabase Storage...<br>${nomeArquivo}`;
 
-                const { data: upload, error: upError } = await supabaseClient
+                const { error: upError } = await supabaseClient
                     .storage
                     .from('apk')
                     .upload(nomeArquivo, arquivo, {
@@ -1674,9 +1878,7 @@
                     .from('apk')
                     .getPublicUrl(nomeArquivo);
 
-                const urlPublica = urlData.publicUrl;
-
-                prog.innerHTML = "Salvando registro no banco...";
+                prog.innerHTML = "Salvando registro...";
 
                 const { error: dbError } = await supabaseClient
                     .from('versoes_apk')
@@ -1684,7 +1886,7 @@
                         versao: versao,
                         versao_code: versaoCode,
                         changelog: changelog || null,
-                        url_apk: urlPublica,
+                        url_apk: urlData.publicUrl,
                         obrigatoria: obrigatoria,
                         ativo: true
                     }]);
@@ -1701,7 +1903,6 @@
                 document.getElementById('apk-obrigatoria').checked = false;
 
                 setTimeout(() => { prog.innerHTML = ''; }, 5000);
-
                 carregarVersoes();
 
             } catch (err) {
@@ -1740,7 +1941,7 @@
             try {
                 const nomeArquivo = v.url_apk.split('/').pop();
                 await supabaseClient.storage.from('apk').remove([nomeArquivo]);
-            } catch (e) { console.warn("Arquivo não encontrado no storage:", e); }
+            } catch (e) { console.warn("Arquivo não encontrado:", e); }
 
             const { error } = await supabaseClient.from('versoes_apk').delete().eq('id', id);
             if (error) { toast("Erro ao excluir.", true); return; }
