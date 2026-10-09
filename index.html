@@ -75,7 +75,7 @@
         h2 { color: #e50914; font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
         p { color: #ccc; font-size: 14px; line-height: 1.7; margin-bottom: 12px; }
 
-        /* ================= TRIAL MODERNO ================= */
+        /* ================= TRIAL ================= */
         .trial-container {
             position: relative;
             margin: 30px 0;
@@ -247,6 +247,14 @@
         .plano-tag.verde { background: #00c853; color: #fff; }
         .plano-tag.roxo { background: #8e24aa; color: #fff; }
 
+        /* ================= DIVISOR LOGIN ================= */
+        .divisor-login {
+            border-top: 1px solid #2a2a2a;
+            margin: 20px 0 0;
+            padding-top: 18px;
+        }
+        .divisor-login p { color: #888; font-size: 13px; margin-bottom: 12px; }
+
         /* ================= QR CODE ================= */
         .qr-img {
             background: #fff; border-radius: 18px;
@@ -351,7 +359,7 @@
         }
         .bv-msg { color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 3px; font-weight: 700; }
 
-        /* ================= AVISO BLOQUEIO ================= */
+        /* ================= AVISO ================= */
         .aviso-bloqueio {
             color: #ff4d4d; font-weight: 800; font-size: 15px;
             margin: 20px 0;
@@ -381,7 +389,7 @@
     <p class="splash-txt">Carregando</p>
 </div>
 
-<!-- ================= TELA: TRIAL 3 DIAS MODERNO ================= -->
+<!-- ================= TELA: TRIAL 3 DIAS ================= -->
 <div class="card hidden" id="tela-trial">
     <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
     <span class="badge badge-verde">✓ TESTE GRÁTIS LIBERADO</span>
@@ -455,7 +463,38 @@
         <div class="plano-desc">Pague uma vez e assista para sempre</div>
     </div>
 
-    <a href="https://wa.me/55997340723" target="_blank" class="btn btn-whats" style="text-decoration: none; display: block; margin-top: 15px;">Falar no WhatsApp</a>
+    <a href="https://wa.me/55997340723" target="_blank" class="btn btn-whats" style="text-decoration: none; display: block; margin-top: 5px;">Falar no WhatsApp</a>
+
+    <div class="divisor-login">
+        <p>Já tem uma conta RedPlay?</p>
+        <button class="btn btn-cinza" onclick="mostrarLoginCliente()" tabindex="0">Fazer Login</button>
+    </div>
+</div>
+
+<!-- ================= TELA: LOGIN CLIENTE ================= -->
+<div class="card hidden" id="tela-login-cliente">
+    <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
+    <span class="badge">FAZER LOGIN</span>
+    <h2>Entre na sua conta</h2>
+    <p style="color: #888; font-size: 13px; margin-bottom: 22px;">Use o usuário e senha que você criou</p>
+
+    <div class="field">
+        <label>Nome de Usuário</label>
+        <input type="text" id="login-cliente-usuario" placeholder="seu usuario" maxlength="20" autocomplete="off">
+    </div>
+
+    <div class="field">
+        <label>Senha</label>
+        <input type="password" id="login-cliente-senha" placeholder="sua senha" maxlength="30" autocomplete="off">
+    </div>
+
+    <button class="btn btn-primario" id="btn-login-cliente" onclick="fazerLoginCliente()" tabindex="0">Entrar</button>
+    <span class="msg-erro" id="erro-login-cliente"></span>
+
+    <div class="divisor-login">
+        <p>Não tem conta ainda?</p>
+        <button class="btn btn-cinza" onclick="voltarPlanos()" tabindex="0">Ver Planos</button>
+    </div>
 </div>
 
 <!-- ================= TELA: QR CODE PIX ================= -->
@@ -564,7 +603,7 @@ var MAX_POLLING = 60;
 var ultimoStatus = null;
 
 // ==========================================
-// OBTÉM ANDROID ID
+// ANDROID ID
 // ==========================================
 function obterDeviceId() {
     try {
@@ -602,13 +641,8 @@ function chamarFuncao(url, corpo, callback) {
         if (xhr.readyState === 4) {
             var resposta = null;
             try { resposta = JSON.parse(xhr.responseText); } catch(e) { resposta = { erro: "Resposta inválida" }; }
-
-            if (xhr.status >= 200 && xhr.status < 300) {
-                callback(null, resposta);
-            } else {
-                var msg = resposta && resposta.erro ? resposta.erro : ("HTTP " + xhr.status);
-                callback(msg, resposta);
-            }
+            if (xhr.status >= 200 && xhr.status < 300) callback(null, resposta);
+            else callback(resposta && resposta.erro ? resposta.erro : ("HTTP " + xhr.status), resposta);
         }
     };
     xhr.onerror = function() { callback("Falha na conexão", null); };
@@ -662,7 +696,7 @@ function iniciarApp() {
         console.log("Status:", dados);
         ultimoStatus = dados;
 
-        // BLOQUEADO MANUALMENTE → bloqueio total
+        // BLOQUEADO MANUALMENTE
         if (dados.status === 'bloqueado_painel') {
             bloquearTotal(dados.motivo || 'Sua conta foi suspensa pelo suporte.');
             return;
@@ -677,9 +711,9 @@ function iniciarApp() {
             return;
         }
 
-        // TRIAL ACABOU → mostrar planos
+        // TRIAL ACABOU
         if (dados.status === 'teste_gratis' && dados.dias_restantes <= 0) {
-            document.getElementById('aviso-planos').innerText = 'Seu período de teste acabou. Escolha um plano para continuar:';
+            document.getElementById('aviso-planos').innerText = 'Seu período de teste acabou. Escolha um plano ou faça login:';
             mostrarTela('tela-planos');
             setTimeout(function() {
                 var p = document.getElementById('plano2-mensal1');
@@ -688,9 +722,9 @@ function iniciarApp() {
             return;
         }
 
-        // EXPIRADO (pagou e venceu) → mostrar planos
+        // EXPIRADO
         if (dados.status === 'expirado') {
-            document.getElementById('aviso-planos').innerText = 'Sua assinatura venceu. Renove para continuar:';
+            document.getElementById('aviso-planos').innerText = 'Sua assinatura venceu. Renove ou faça login:';
             mostrarTela('tela-planos');
             setTimeout(function() {
                 var p = document.getElementById('plano2-mensal1');
@@ -699,7 +733,7 @@ function iniciarApp() {
             return;
         }
 
-        // PAGO MAS AINDA NÃO CRIOU CONTA
+        // PAGO MAS SEM CONTA
         if (dados.status === 'pago' && !dados.conta_criada) {
             mostrarTela('tela-criar-conta');
             setTimeout(function() {
@@ -718,13 +752,13 @@ function iniciarApp() {
             return;
         }
 
-        // PADRÃO → planos
+        // PADRÃO
         mostrarTela('tela-planos');
     });
 }
 
 // ==========================================
-// ANIMAÇÃO DA BARRA
+// BARRA ANIMADA
 // ==========================================
 function animarBarra(id, duracao) {
     var barra = document.getElementById(id);
@@ -751,6 +785,120 @@ function liberarAcessoApp() {
             console.log("Modo navegador");
         }
     } catch(e) { console.error("Erro:", e); }
+}
+
+// ==========================================
+// LOGIN DO CLIENTE
+// ==========================================
+function mostrarLoginCliente() {
+    document.getElementById('login-cliente-usuario').value = '';
+    document.getElementById('login-cliente-senha').value = '';
+    document.getElementById('erro-login-cliente').innerText = '';
+    mostrarTela('tela-login-cliente');
+    setTimeout(function() {
+        var i = document.getElementById('login-cliente-usuario');
+        if (i) i.focus();
+    }, 300);
+}
+
+function fazerLoginCliente() {
+    var usuario = document.getElementById('login-cliente-usuario').value.trim();
+    var senha = document.getElementById('login-cliente-senha').value.trim();
+    var erroEl = document.getElementById('erro-login-cliente');
+    var btn = document.getElementById('btn-login-cliente');
+
+    erroEl.innerText = '';
+
+    if (!usuario || !senha) {
+        erroEl.innerText = 'Preencha usuário e senha.';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = 'Verificando...';
+
+    var url = SUPABASE_URL + "/rest/v1/utilizadores?select=*&usuario=eq." + encodeURIComponent(usuario) + "&senha=eq." + encodeURIComponent(senha) + "&limit=1";
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.setRequestHeader("apikey", SUPABASE_ANON_KEY);
+    xhr.setRequestHeader("Authorization", "Bearer " + SUPABASE_ANON_KEY);
+    xhr.timeout = 15000;
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            btn.disabled = false;
+            btn.innerText = 'Entrar';
+
+            var data = null;
+            try { data = JSON.parse(xhr.responseText); } catch(e) {}
+
+            if (xhr.status < 200 || xhr.status >= 300 || !data) {
+                erroEl.innerText = 'Erro de conexão. Tente novamente.';
+                return;
+            }
+
+            if (!Array.isArray(data) || data.length === 0) {
+                erroEl.innerText = 'Usuário ou senha incorretos.';
+                document.getElementById('login-cliente-senha').value = '';
+                document.getElementById('login-cliente-senha').focus();
+                return;
+            }
+
+            var cliente = data[0];
+
+            if (!cliente.ativo) {
+                erroEl.innerText = 'Sua conta está inativa. Contate o suporte.';
+                return;
+            }
+
+            if (cliente.vencimento && cliente.plano !== 'vitalicio') {
+                var hoje = new Date();
+                hoje.setHours(0, 0, 0, 0);
+                var venc = new Date(cliente.vencimento + "T00:00:00");
+                if (venc < hoje) {
+                    erroEl.innerText = 'Sua assinatura venceu. Escolha um plano para renovar.';
+                    return;
+                }
+            }
+
+            erroEl.style.color = '#00c853';
+            erroEl.innerText = 'Login realizado!';
+            document.getElementById('bv-usuario').innerText = cliente.usuario;
+
+            // Atualiza o dispositivo com esse usuário
+            var device_id = obterDeviceId();
+            var xhr2 = new XMLHttpRequest();
+            xhr2.open("PATCH", SUPABASE_URL + "/rest/v1/dispositivos?android_id=eq." + encodeURIComponent(device_id), true);
+            xhr2.setRequestHeader("apikey", SUPABASE_ANON_KEY);
+            xhr2.setRequestHeader("Authorization", "Bearer " + SUPABASE_ANON_KEY);
+            xhr2.setRequestHeader("Content-Type", "application/json");
+            xhr2.send(JSON.stringify({
+                username: cliente.usuario,
+                conta_criada: true
+            }));
+
+            setTimeout(function() {
+                mostrarTela('tela-boas-vindas');
+                animarBarra('barra-bv', 4000);
+                setTimeout(liberarAcessoApp, 4500);
+            }, 800);
+        }
+    };
+
+    xhr.onerror = function() {
+        btn.disabled = false;
+        btn.innerText = 'Entrar';
+        erroEl.innerText = 'Erro de conexão.';
+    };
+
+    xhr.ontimeout = function() {
+        btn.disabled = false;
+        btn.innerText = 'Entrar';
+        erroEl.innerText = 'Tempo esgotado.';
+    };
+
+    xhr.send();
 }
 
 // ==========================================
@@ -856,19 +1004,29 @@ function copiarPix() {
         btn.innerText = "✓ Copiado!";
         setTimeout(function() { btn.innerText = "📋 Copiar Código PIX"; }, 2000);
     } catch(e) {
-        alert("Copie manualmente o código acima.");
+        alert("Copie manualmente.");
     }
 }
 
 // ==========================================
 // VOLTAR
 // ==========================================
+function voltarPlanos() {
+    pararPolling();
+    document.getElementById('aviso-planos').innerText = 'Escolha um plano para liberar o acesso';
+    mostrarTela('tela-planos');
+    setTimeout(function() {
+        var p = document.getElementById('plano2-mensal1');
+        if (p) p.focus();
+    }, 300);
+}
+
 function voltarInicio() {
     pararPolling();
     if (ultimoStatus && ultimoStatus.status === 'bloqueado_painel') {
         bloquearTotal(ultimoStatus.motivo || 'Sua conta foi suspensa.');
     } else {
-        mostrarTela('tela-planos');
+        voltarPlanos();
     }
 }
 
@@ -921,7 +1079,7 @@ function criarConta() {
 }
 
 // ==========================================
-// BLOQUEIO TOTAL (admin desativou)
+// BLOQUEIO TOTAL
 // ==========================================
 function bloquearTotal(motivo) {
     pararPolling();
@@ -975,12 +1133,33 @@ function fecharAppBloqueio() {
 }
 
 // ==========================================
-// NAVEGAÇÃO POR D-PAD
+// NAVEGAÇÃO POR D-PAD E ENTER
 // ==========================================
 document.addEventListener('keydown', function(e) {
-    var tag = document.activeElement ? document.activeElement.tagName : '';
+    var el = document.activeElement;
+    var tag = el ? el.tagName : '';
+
+    // Enter em inputs específicos
+    if (e.key === 'Enter' || e.keyCode === 13) {
+        if (el) {
+            if (el.id === 'login-cliente-usuario') {
+                e.preventDefault();
+                var s = document.getElementById('login-cliente-senha');
+                if (s) s.focus();
+                return;
+            }
+            if (el.id === 'login-cliente-senha') {
+                e.preventDefault();
+                fazerLoginCliente();
+                return;
+            }
+        }
+    }
+
+    // Inputs normais - não interfere nas setas
     if (tag === 'INPUT' && e.key !== 'Enter') return;
 
+    // Navegação entre planos
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         var todos = document.querySelectorAll('.plano-card');
         var visiveis = [];
