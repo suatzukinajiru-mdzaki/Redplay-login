@@ -4,94 +4,372 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RedPlay</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --vermelho: #e50914;
             --vermelho-escuro: #b20710;
+            --verde: #00c853;
+            --amarelo: #ffab00;
+            --dourado: #ffc107;
+            --roxo: #8e24aa;
             --preto: #000000;
             --painel: #141414;
             --borda: #2a2a2a;
             --texto: #ffffff;
             --texto-suave: #a0a0a0;
-            --verde: #00c853;
-            --amarelo: #ffab00;
-            --dourado: #ffc107;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', Arial, sans-serif; }
-        body { background: #000; color: #fff; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; }
+        body {
+            background: #000; color: #fff; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; position: relative;
+            background: radial-gradient(circle at 50% 30%, #1a0000 0%, #000 70%);
+        }
 
-        /* SPLASH */
-        #splash { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.4s; }
-        .splash-logo { width: 200px; margin-bottom: 30px; }
-        .loader { border: 4px solid rgba(229,9,20,0.2); border-top-color: #e50914; border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; -webkit-animation: spin 0.8s linear infinite; }
+        /* ================= SPLASH ================= */
+        #splash {
+            position: fixed; inset: 0;
+            background: radial-gradient(circle at 50% 50%, #1a0000 0%, #000 70%);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 99999; transition: opacity 0.5s;
+        }
+        .splash-logo { width: 220px; margin-bottom: 40px; animation: splashPulse 2s infinite alternate; -webkit-animation: splashPulse 2s infinite alternate; }
+        @keyframes splashPulse { from { transform: scale(0.95); opacity: 0.85; } to { transform: scale(1.05); opacity: 1; } }
+        @-webkit-keyframes splashPulse { from { -webkit-transform: scale(0.95); opacity: 0.85; } to { -webkit-transform: scale(1.05); opacity: 1; } }
+        .loader { border: 4px solid rgba(229,9,20,0.2); border-top-color: #e50914; border-radius: 50%; width: 45px; height: 45px; animation: spin 0.9s linear infinite; -webkit-animation: spin 0.9s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         @-webkit-keyframes spin { to { -webkit-transform: rotate(360deg); } }
+        .splash-txt { color: #666; font-size: 12px; letter-spacing: 3px; margin-top: 20px; text-transform: uppercase; }
 
-        /* CARDS */
-        .card { position: relative; z-index: 1; background: rgba(15,15,15,0.95); border: 1px solid rgba(229,9,20,0.3); border-radius: 20px; padding: 35px 30px; width: 90%; max-width: 620px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.7); max-height: 94vh; overflow-y: auto; }
+        /* ================= CARD ================= */
+        .card {
+            position: relative; z-index: 1;
+            background: rgba(15,15,15,0.96);
+            border: 1px solid rgba(229,9,20,0.3);
+            border-radius: 24px;
+            padding: 40px 35px;
+            width: 92%; max-width: 620px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 80px rgba(229,9,20,0.1);
+            max-height: 94vh; overflow-y: auto;
+            animation: fadeUp 0.5s ease;
+        }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .card.hidden { display: none; }
 
-        .logo-red { width: 130px; margin-bottom: 15px; }
-        .badge { display: inline-block; background: #e50914; font-size: 10px; font-weight: 700; padding: 4px 12px; border-radius: 12px; margin-bottom: 20px; letter-spacing: 1px; }
-        h1 { color: #e50914; font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
-        h2 { color: #e50914; font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
-        p { color: #ccc; font-size: 14px; line-height: 1.6; margin-bottom: 12px; }
+        .logo-red { width: 140px; margin-bottom: 20px; }
 
-        .destaque { color: #ffc107; font-weight: 700; }
-        .dias-grande { font-size: 60px; font-weight: 900; color: #00c853; margin: 15px 0; }
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #e50914, #b20710);
+            font-size: 10px; font-weight: 800;
+            padding: 6px 16px; border-radius: 20px;
+            margin-bottom: 22px; letter-spacing: 2px;
+            box-shadow: 0 0 20px rgba(229,9,20,0.5);
+        }
+        .badge-amarelo { background: linear-gradient(135deg, #ffab00, #ff8f00); color: #000; box-shadow: 0 0 20px rgba(255,171,0,0.5); }
+        .badge-verde { background: linear-gradient(135deg, #00c853, #00a844); box-shadow: 0 0 20px rgba(0,200,83,0.5); }
 
-        /* BOTÕES */
+        h1 { color: #e50914; font-size: 26px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 12px; }
+        h2 { color: #e50914; font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
+        p { color: #ccc; font-size: 14px; line-height: 1.7; margin-bottom: 12px; }
+
+        /* ================= TRIAL MODERNO ================= */
+        .trial-container {
+            position: relative;
+            margin: 30px 0;
+            padding: 35px 25px;
+            background: linear-gradient(135deg, rgba(229,9,20,0.15) 0%, rgba(255,171,0,0.08) 100%);
+            border: 2px solid rgba(229,9,20,0.4);
+            border-radius: 20px;
+            box-shadow: inset 0 0 60px rgba(229,9,20,0.15);
+            overflow: hidden;
+        }
+        .trial-container::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(229,9,20,0.15), transparent 30%);
+            animation: rotate 8s linear infinite;
+            -webkit-animation: rotate 8s linear infinite;
+        }
+        @keyframes rotate { to { transform: rotate(360deg); } }
+        @-webkit-keyframes rotate { to { -webkit-transform: rotate(360deg); } }
+        .trial-inner { position: relative; z-index: 1; }
+
+        .trial-icone {
+            font-size: 55px; margin-bottom: 10px;
+            animation: pulseIcone 1.5s infinite alternate;
+            -webkit-animation: pulseIcone 1.5s infinite alternate;
+        }
+        @keyframes pulseIcone { from { transform: scale(1); } to { transform: scale(1.12); } }
+        @-webkit-keyframes pulseIcone { from { -webkit-transform: scale(1); } to { -webkit-transform: scale(1.12); } }
+
+        .trial-label {
+            color: #ffc107; font-size: 11px; font-weight: 800;
+            letter-spacing: 4px; text-transform: uppercase; margin-bottom: 15px;
+        }
+        .trial-dias {
+            display: flex; justify-content: center; align-items: baseline;
+            gap: 15px; margin: 10px 0 20px;
+        }
+        .trial-numero {
+            font-size: 100px; font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 30px rgba(229,9,20,0.8), 0 0 60px rgba(229,9,20,0.5);
+            line-height: 1;
+            background: linear-gradient(180deg, #fff 0%, #e50914 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .trial-texto {
+            font-size: 20px; font-weight: 800; color: #e50914;
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+        .trial-texto small { display: block; font-size: 11px; color: #888; font-weight: 600; letter-spacing: 3px; margin-top: 5px; }
+
+        .trial-beneficios {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .trial-beneficio {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 11px;
+            color: #bbb;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+        .trial-beneficio span:first-child { font-size: 16px; }
+
+        .trial-destaque {
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 12px;
+            border-left: 4px solid #ffc107;
+            text-align: left;
+        }
+        .trial-destaque strong { color: #ffc107; }
+
+        /* ================= BOTÕES ================= */
         button { cursor: pointer; border: none; font-family: inherit; }
-        .btn { width: 100%; padding: 15px 20px; border-radius: 10px; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; margin-bottom: 10px; }
-        .btn-primario { background: #e50914; background: linear-gradient(90deg,#e50914,#b20710); color: #fff; }
-        .btn-primario:hover:not(:disabled), .btn-primario:focus:not(:disabled) { background: #e50914; outline: 3px solid #fff; outline-offset: 2px; }
+        .btn {
+            width: 100%; padding: 16px 22px;
+            border-radius: 12px; font-size: 15px; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            transition: 0.2s; margin-bottom: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+        .btn-primario {
+            background: linear-gradient(90deg, #e50914, #b20710);
+            color: #fff;
+            box-shadow: 0 6px 25px rgba(229,9,20,0.4);
+        }
+        .btn-primario:hover:not(:disabled), .btn-primario:focus:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 35px rgba(229,9,20,0.7);
+            outline: 3px solid #fff;
+            outline-offset: 3px;
+        }
         .btn-primario:disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn-whats { background: #25D366; color: #fff; }
-        .btn-whats:focus { outline: 3px solid #fff; }
-        .btn-cinza { background: transparent; color: #888; border: 1px solid #444; }
-        .btn-cinza:focus { outline: 3px solid #fff; color: #fff; }
+        .btn-whats {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: #fff;
+            box-shadow: 0 6px 25px rgba(37,211,102,0.4);
+        }
+        .btn-whats:focus { outline: 3px solid #fff; transform: scale(1.02); }
+        .btn-cinza { background: rgba(0,0,0,0.5); color: #ccc; border: 2px solid #444; }
+        .btn-cinza:focus { outline: 3px solid #fff; color: #fff; background: rgba(255,255,255,0.05); }
 
-        /* PLANOS */
-        .plano-card { background: #1a1a1a; border: 2px solid #2a2a2a; border-radius: 14px; padding: 18px 20px; margin-bottom: 12px; text-align: left; cursor: pointer; transition: 0.2s; }
-        .plano-card:hover, .plano-card:focus { border-color: #e50914; outline: none; transform: scale(1.02); background: #202020; }
-        .plano-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        /* ================= PLANOS ================= */
+        .plano-card {
+            position: relative;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+            border: 2px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 20px 22px;
+            margin-bottom: 14px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+        .plano-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: #e50914;
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+        .plano-card:hover, .plano-card:focus {
+            border-color: #e50914;
+            outline: none;
+            transform: translateY(-3px) scale(1.01);
+            background: linear-gradient(135deg, #202020 0%, #151515 100%);
+            box-shadow: 0 10px 30px rgba(229,9,20,0.3);
+        }
+        .plano-card:hover::before, .plano-card:focus::before { transform: scaleY(1); }
+        .plano-card.destaque {
+            border-color: #ffab00;
+            background: linear-gradient(135deg, rgba(255,171,0,0.1) 0%, #0f0f0f 100%);
+        }
+        .plano-card.destaque::before { background: #ffab00; }
+
+        .plano-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 10px; }
         .plano-nome { color: #fff; font-size: 16px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
-        .plano-preco { color: #00c853; font-size: 22px; font-weight: 900; }
-        .plano-desc { color: #888; font-size: 12px; }
-        .plano-tag { display: inline-block; background: #ffab00; color: #000; font-size: 9px; font-weight: 900; padding: 2px 8px; border-radius: 8px; margin-left: 8px; letter-spacing: 1px; }
-        .plano-card.destaque { border-color: #ffab00; }
+        .plano-preco { color: #00c853; font-size: 24px; font-weight: 900; white-space: nowrap; }
+        .plano-card.destaque .plano-preco { color: #ffc107; }
+        .plano-desc { color: #888; font-size: 12px; font-weight: 600; }
+        .plano-tag {
+            display: inline-block;
+            background: #ffab00; color: #000;
+            font-size: 9px; font-weight: 900;
+            padding: 3px 9px; border-radius: 8px;
+            margin-left: 8px; letter-spacing: 1px;
+            vertical-align: middle;
+        }
+        .plano-tag.verde { background: #00c853; color: #fff; }
+        .plano-tag.roxo { background: #8e24aa; color: #fff; }
 
-        /* QR CODE */
-        .qr-img { background: #fff; border-radius: 15px; padding: 15px; margin: 15px auto 20px; max-width: 280px; }
-        .qr-img img { width: 100%; display: block; }
-        .pix-code { background: #000; border: 1px solid #2a2a2a; border-radius: 10px; padding: 12px; font-family: monospace; font-size: 11px; word-break: break-all; color: #888; text-align: left; margin-bottom: 15px; max-height: 80px; overflow-y: auto; }
-        .polling-status { display: flex; align-items: center; justify-content: center; gap: 10px; color: #ffab00; font-size: 13px; margin-bottom: 15px; font-weight: 700; }
-        .mini-loader { border: 3px solid rgba(255,171,0,0.2); border-top-color: #ffab00; border-radius: 50%; width: 20px; height: 20px; animation: spin 0.8s linear infinite; -webkit-animation: spin 0.8s linear infinite; }
+        /* ================= QR CODE ================= */
+        .qr-img {
+            background: #fff; border-radius: 18px;
+            padding: 18px; margin: 20px auto;
+            max-width: 280px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: qrPulse 2s infinite alternate;
+            -webkit-animation: qrPulse 2s infinite alternate;
+        }
+        @keyframes qrPulse { from { box-shadow: 0 10px 40px rgba(0,0,0,0.5); } to { box-shadow: 0 10px 50px rgba(229,9,20,0.4); } }
+        .qr-img img { width: 100%; display: block; border-radius: 8px; }
 
-        /* FORMULÁRIO */
-        .field { margin-bottom: 15px; text-align: left; }
-        .field label { display: block; color: #888; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-        .field input { width: 100%; padding: 14px; background: #000; border: 2px solid #2a2a2a; border-radius: 10px; color: #fff; font-size: 16px; outline: none; transition: 0.2s; text-align: center; }
-        .field input:focus { border-color: #e50914; box-shadow: 0 0 20px rgba(229,9,20,0.5); }
+        .pix-code {
+            background: #000; border: 1px solid #2a2a2a;
+            border-radius: 12px; padding: 14px;
+            font-family: monospace; font-size: 11px;
+            word-break: break-all; color: #888;
+            text-align: left; margin-bottom: 15px;
+            max-height: 80px; overflow-y: auto;
+        }
+
+        .polling-status {
+            display: flex; align-items: center; justify-content: center;
+            gap: 12px; color: #ffab00; font-size: 13px;
+            margin-bottom: 15px; font-weight: 700;
+            padding: 12px;
+            background: rgba(255,171,0,0.1);
+            border: 1px solid rgba(255,171,0,0.3);
+            border-radius: 10px;
+        }
+        .mini-loader {
+            border: 3px solid rgba(255,171,0,0.2);
+            border-top-color: #ffab00;
+            border-radius: 50%;
+            width: 20px; height: 20px;
+            animation: spin 0.8s linear infinite;
+            -webkit-animation: spin 0.8s linear infinite;
+        }
+
+        /* ================= FORMULÁRIO ================= */
+        .field { margin-bottom: 16px; text-align: left; }
+        .field label {
+            display: block; color: #888; font-size: 11px;
+            font-weight: 800; text-transform: uppercase;
+            letter-spacing: 1.5px; margin-bottom: 8px;
+        }
+        .field input {
+            width: 100%; padding: 15px 18px;
+            background: #000;
+            border: 2px solid #2a2a2a;
+            border-radius: 12px;
+            color: #fff; font-size: 16px;
+            outline: none; transition: 0.2s;
+            text-align: center;
+            font-weight: 600;
+        }
+        .field input:focus {
+            border-color: #e50914;
+            box-shadow: 0 0 25px rgba(229,9,20,0.5);
+            background: rgba(0,0,0,0.8);
+        }
         .msg-erro { color: #ff4d4d; font-size: 13px; margin-top: 12px; font-weight: 700; min-height: 18px; display: block; }
-        .msg-sucesso { color: #00c853; font-size: 13px; margin-top: 12px; font-weight: 700; display: block; }
 
-        /* BOAS-VINDAS */
-        .bv-emoji { font-size: 80px; margin-bottom: 15px; animation: pulse 1.5s infinite alternate; -webkit-animation: pulse 1.5s infinite alternate; }
-        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.15); } }
-        .bv-usuario { color: #fff; font-size: 26px; font-weight: 900; margin-bottom: 20px; padding: 12px 30px; background: rgba(229,9,20,0.15); border: 2px solid rgba(229,9,20,0.4); border-radius: 50px; display: inline-block; }
-        .bv-mensagem { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 25px; }
+        /* ================= BOAS-VINDAS ================= */
+        .bv-emoji {
+            font-size: 90px; margin-bottom: 15px;
+            animation: pulseIcone 1.5s infinite alternate;
+            -webkit-animation: pulseIcone 1.5s infinite alternate;
+        }
+        .bv-usuario {
+            color: #fff; font-size: 28px; font-weight: 900;
+            margin-bottom: 22px;
+            padding: 14px 32px;
+            background: rgba(229,9,20,0.15);
+            border: 2px solid rgba(229,9,20,0.5);
+            border-radius: 50px;
+            display: inline-block;
+            box-shadow: 0 0 30px rgba(229,9,20,0.3);
+        }
+        .bv-mensagem { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 25px; line-height: 1.5; }
         .bv-mensagem span { color: #e50914; font-weight: 900; }
-        .bv-status { display: inline-block; padding: 10px 22px; background: rgba(0,200,83,0.15); border: 1px solid rgba(0,200,83,0.4); border-radius: 50px; margin-bottom: 20px; }
-        .bv-status-txt { color: #00c853; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .barra { width: 240px; height: 5px; background: rgba(229,9,20,0.2); border-radius: 5px; margin: 20px auto 12px; overflow: hidden; }
-        .barra-inner { height: 100%; background: #e50914; border-radius: 5px; width: 0%; transition: width 0.1s linear; }
-        .bv-msg { color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; }
+        .bv-status {
+            display: inline-block; padding: 12px 26px;
+            background: rgba(0,200,83,0.15);
+            border: 2px solid rgba(0,200,83,0.4);
+            border-radius: 50px;
+            margin-bottom: 25px;
+        }
+        .bv-status-txt { color: #00c853; font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* INFO PEQUENA */
-        .info-sm { color: #666; font-size: 11px; margin-top: 15px; }
-        .topo-titulo { color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; }
+        .barra {
+            width: 260px; height: 6px;
+            background: rgba(229,9,20,0.2);
+            border-radius: 6px;
+            margin: 25px auto 15px;
+            overflow: hidden;
+        }
+        .barra-inner {
+            height: 100%; background: linear-gradient(90deg, #e50914, #ff4d4d);
+            border-radius: 6px; width: 0%;
+            transition: width 0.1s linear;
+        }
+        .bv-msg { color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 3px; font-weight: 700; }
+
+        /* ================= AVISO BLOQUEIO ================= */
+        .aviso-bloqueio {
+            color: #ff4d4d; font-weight: 800; font-size: 15px;
+            margin: 20px 0;
+            padding: 15px 20px;
+            background: rgba(229,9,20,0.1);
+            border: 2px solid rgba(229,9,20,0.4);
+            border-radius: 12px;
+        }
+
+        /* ================= RESPONSIVO ================= */
+        @media (max-width: 500px) {
+            .card { padding: 30px 22px; }
+            h1 { font-size: 22px; }
+            .trial-numero { font-size: 80px; }
+            .bv-usuario { font-size: 22px; padding: 12px 24px; }
+            .plano-preco { font-size: 20px; }
+            .logo-red { width: 120px; }
+        }
     </style>
 </head>
 <body>
@@ -100,18 +378,41 @@
 <div id="splash">
     <img src="download.png" alt="RedPlay" class="splash-logo" onerror="this.style.display='none'">
     <div class="loader"></div>
+    <p class="splash-txt">Carregando</p>
 </div>
 
-<!-- ================= TELA: TRIAL ATIVO ================= -->
+<!-- ================= TELA: TRIAL 3 DIAS MODERNO ================= -->
 <div class="card hidden" id="tela-trial">
     <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
-    <span class="badge">BEM-VINDO À REDPLAY</span>
-    <h1>Período de Teste</h1>
-    <p>Você tem acesso <strong class="destaque">GRÁTIS</strong> por 3 dias!</p>
-    <div class="dias-grande" id="dias-restantes">3</div>
-    <p style="color: #888; font-size: 13px;">dias restantes</p>
-    <p style="margin-top: 20px; color: #ffc107; font-weight: 700;">Aproveite todos os filmes, séries e canais ao vivo!</p>
-    <div class="barra"><div class="barra-inner" id="barra-trial"></div></div>
+    <span class="badge badge-verde">✓ TESTE GRÁTIS LIBERADO</span>
+    <h1>Bem-vindo à RedPlay</h1>
+    <p style="color: #888; font-size: 13px;">Sua conta de teste foi ativada com sucesso</p>
+
+    <div class="trial-container">
+        <div class="trial-inner">
+            <div class="trial-icone">🎁</div>
+            <div class="trial-label">VOCÊ TEM DIREITO A</div>
+            <div class="trial-dias">
+                <div class="trial-numero" id="dias-restantes">3</div>
+                <div class="trial-texto">Dias<small>Grátis</small></div>
+            </div>
+
+            <div class="trial-beneficios">
+                <div class="trial-beneficio"><span>🎬</span><span>Filmes</span></div>
+                <div class="trial-beneficio"><span>📺</span><span>Séries</span></div>
+                <div class="trial-beneficio"><span>⚽</span><span>Esportes</span></div>
+                <div class="trial-beneficio"><span>📡</span><span>Canais</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="trial-destaque">
+        💡 <strong>Aproveite!</strong> Após 3 dias, escolha um plano para continuar assistindo.
+    </div>
+
+    <div class="barra" style="margin-top: 25px;">
+        <div class="barra-inner" id="barra-trial"></div>
+    </div>
     <p class="bv-msg">Preparando seu entretenimento...</p>
 </div>
 
@@ -119,10 +420,10 @@
 <div class="card hidden" id="tela-planos">
     <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
     <span class="badge">SELECIONE SEU PLANO</span>
-    <h2>Escolha o melhor para você</h2>
-    <p style="margin-bottom: 20px;">Assine agora e continue assistindo!</p>
+    <h2>Continue assistindo</h2>
+    <p style="margin-bottom: 22px; color: #888;" id="aviso-planos">Escolha um plano para liberar o acesso</p>
 
-    <div class="plano-card destaque" tabindex="0" onclick="escolherPlano('mensal_primeiro')" id="plano-mensal1">
+    <div class="plano-card destaque" tabindex="0" onclick="escolherPlano('mensal_primeiro')" id="plano2-mensal1">
         <div class="plano-top">
             <span class="plano-nome">Mensal <span class="plano-tag">1ª VEZ</span></span>
             <span class="plano-preco">R$ 12,90</span>
@@ -130,7 +431,7 @@
         <div class="plano-desc">Primeiro mês com desconto especial</div>
     </div>
 
-    <div class="plano-card" tabindex="0" onclick="escolherPlano('mensal')" id="plano-mensal">
+    <div class="plano-card" tabindex="0" onclick="escolherPlano('mensal')" id="plano2-mensal">
         <div class="plano-top">
             <span class="plano-nome">Mensal</span>
             <span class="plano-preco">R$ 18,90</span>
@@ -138,17 +439,17 @@
         <div class="plano-desc">Renovação automática mensal</div>
     </div>
 
-    <div class="plano-card" tabindex="0" onclick="escolherPlano('anual')" id="plano-anual">
+    <div class="plano-card" tabindex="0" onclick="escolherPlano('anual')" id="plano2-anual">
         <div class="plano-top">
-            <span class="plano-nome">Anual <span class="plano-tag">MELHOR</span></span>
+            <span class="plano-nome">Anual <span class="plano-tag verde">MELHOR</span></span>
             <span class="plano-preco">R$ 149,90</span>
         </div>
         <div class="plano-desc">12 meses com desconto. Economize R$ 76!</div>
     </div>
 
-    <div class="plano-card" tabindex="0" onclick="escolherPlano('lifetime')" id="plano-lifetime">
+    <div class="plano-card" tabindex="0" onclick="escolherPlano('lifetime')" id="plano2-lifetime">
         <div class="plano-top">
-            <span class="plano-nome">Vitalício</span>
+            <span class="plano-nome">Vitalício <span class="plano-tag roxo">PREMIUM</span></span>
             <span class="plano-preco">R$ 450,00</span>
         </div>
         <div class="plano-desc">Pague uma vez e assista para sempre</div>
@@ -159,9 +460,10 @@
 
 <!-- ================= TELA: QR CODE PIX ================= -->
 <div class="card hidden" id="tela-qrcode">
-    <h2 id="qr-titulo">Pagamento PIX</h2>
-    <p style="color: #888; font-size: 13px; margin-bottom: 5px;">Escaneie o QR Code ou copie o código:</p>
-    <p class="destaque" id="qr-valor" style="font-size: 20px; margin-bottom: 15px;">R$ 0,00</p>
+    <span class="badge">PAGAMENTO PIX</span>
+    <h2 id="qr-titulo">Escaneie o QR Code</h2>
+    <p style="color: #888; font-size: 13px; margin-bottom: 5px;">Use o app do seu banco para pagar</p>
+    <p class="destaque" id="qr-valor" style="font-size: 22px; margin-bottom: 15px; color: #00c853; font-weight: 900;">R$ 0,00</p>
 
     <div class="qr-img">
         <img id="qr-image" src="" alt="QR Code PIX">
@@ -169,21 +471,21 @@
 
     <div class="pix-code" id="qr-code-txt">Carregando código PIX...</div>
 
-    <button class="btn btn-cinza" onclick="copiarPix()" id="btn-copiar" tabindex="0">Copiar Código PIX</button>
+    <button class="btn btn-cinza" onclick="copiarPix()" id="btn-copiar" tabindex="0">📋 Copiar Código PIX</button>
 
     <div class="polling-status" id="polling-status">
         <div class="mini-loader"></div>
         <span>Aguardando pagamento...</span>
     </div>
 
-    <button class="btn btn-cinza" onclick="voltarPlanos()" tabindex="0">Voltar aos planos</button>
+    <button class="btn btn-cinza" onclick="voltarInicio()" tabindex="0">← Voltar aos planos</button>
 </div>
 
 <!-- ================= TELA: CRIAR CONTA ================= -->
 <div class="card hidden" id="tela-criar-conta">
-    <span class="badge">PAGAMENTO CONFIRMADO</span>
+    <span class="badge badge-verde">✓ PAGAMENTO CONFIRMADO</span>
     <h2>Crie sua conta</h2>
-    <p style="color: #888; font-size: 13px; margin-bottom: 20px;">Escolha um usuário e senha para acessar</p>
+    <p style="color: #888; font-size: 13px; margin-bottom: 22px;">Escolha usuário e senha para acessar</p>
 
     <div class="field">
         <label>Nome de Usuário</label>
@@ -210,9 +512,38 @@
     <h1>Bem-vindo!</h1>
     <p class="bv-usuario" id="bv-usuario">cliente</p>
     <p class="bv-mensagem"><span>Aproveite o conteúdo RedPlay!</span></p>
-    <div class="bv-status"><span class="bv-status-txt">Conta Ativa</span></div>
+    <div class="bv-status"><span class="bv-status-txt">✓ Conta Ativa</span></div>
     <div class="barra"><div class="barra-inner" id="barra-bv"></div></div>
     <p class="bv-msg">Preparando seu entretenimento...</p>
+</div>
+
+<!-- ================= TELA: BLOQUEIO TOTAL ================= -->
+<div class="card hidden" id="tela-bloqueado-puro">
+    <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
+    <span class="badge badge-amarelo">ACESSO BLOQUEADO</span>
+    <h2>Sua conta está suspensa</h2>
+
+    <div class="aviso-bloqueio" id="motivo-bloqueio">Conta suspensa pelo suporte</div>
+
+    <p style="margin-top: 20px; color: #ccc; font-size: 14px;">
+        Entre em contato pelo WhatsApp para mais informações:
+    </p>
+
+    <a href="https://wa.me/55997340723" target="_blank" class="btn btn-whats"
+       id="btn-whatsapp-bloqueio"
+       style="text-decoration: none; display: block; margin: 20px 0 15px;" tabindex="0">
+        📱 Falar no WhatsApp
+    </a>
+
+    <p style="color: #fff; font-size: 22px; font-weight: 900; letter-spacing: 2px; margin-bottom: 20px; font-family: monospace;">
+        (55) 99973-40723
+    </p>
+
+    <p style="color: #888; font-size: 13px;">
+        O aplicativo será fechado automaticamente em
+        <strong id="contador-bloqueio" style="color: #ff4d4d; font-size: 20px;">25</strong>
+        segundos
+    </p>
 </div>
 
 <script>
@@ -229,7 +560,8 @@ var FUNC_CRIAR_CONTA = SUPABASE_URL + "/functions/v1/criar-conta-cliente";
 var DEVICE_KEY = "redplay_device_id";
 var pollingTimer = null;
 var pollingTentativas = 0;
-var MAX_POLLING = 60; // 5 minutos (a cada 5s)
+var MAX_POLLING = 60;
+var ultimoStatus = null;
 
 // ==========================================
 // OBTÉM ANDROID ID
@@ -256,7 +588,7 @@ function obterDeviceId() {
 }
 
 // ==========================================
-// CHAMADA HTTP (XMLHttpRequest para TVs antigas)
+// CHAMADA HTTP
 // ==========================================
 function chamarFuncao(url, corpo, callback) {
     var xhr = new XMLHttpRequest();
@@ -294,10 +626,9 @@ function mostrarTela(id) {
 }
 
 // ==========================================
-// FLUXO INICIAL
+// INICIALIZAÇÃO
 // ==========================================
 window.addEventListener('load', function() {
-    // Reseta se URL tiver ?reset=1
     try {
         if (window.location.search.indexOf('reset=1') >= 0) {
             localStorage.clear();
@@ -311,8 +642,8 @@ window.addEventListener('load', function() {
         setTimeout(function() {
             splash.style.display = 'none';
             iniciarApp();
-        }, 400);
-    }, 1500);
+        }, 500);
+    }, 1800);
 });
 
 function iniciarApp() {
@@ -321,8 +652,7 @@ function iniciarApp() {
 
     chamarFuncao(FUNC_VERIFICAR, { android_id: device_id }, function(erro, dados) {
         if (erro) {
-            console.error("Erro verificar:", erro);
-            // Em caso de erro, libera com aviso
+            console.error("Erro:", erro);
             document.getElementById('bv-usuario').innerText = "Cliente";
             mostrarTela('tela-boas-vindas');
             setTimeout(liberarAcessoApp, 3000);
@@ -330,37 +660,72 @@ function iniciarApp() {
         }
 
         console.log("Status:", dados);
+        ultimoStatus = dados;
 
-        // Status possíveis
+        // BLOQUEADO MANUALMENTE → bloqueio total
+        if (dados.status === 'bloqueado_painel') {
+            bloquearTotal(dados.motivo || 'Sua conta foi suspensa pelo suporte.');
+            return;
+        }
+
+        // TRIAL ATIVO
         if (dados.status === 'teste_gratis' && dados.dias_restantes > 0) {
-            // Trial ativo
             document.getElementById('dias-restantes').innerText = dados.dias_restantes;
             mostrarTela('tela-trial');
-            animarBarra('barra-trial', 3000);
-            setTimeout(liberarAcessoApp, 3500);
-
-        } else if (dados.status === 'pago' && !dados.conta_criada) {
-            // Pagou mas ainda não criou conta
-            if (dados.plano === 'lifetime' || dados.dias_restantes > 0) {
-                mostrarTela('tela-criar-conta');
-            } else {
-                mostrarTela('tela-planos');
-            }
-
-        } else if ((dados.status === 'pago' && dados.conta_criada) || dados.plano === 'lifetime') {
-            // Conta ativa
-            document.getElementById('bv-usuario').innerText = dados.username || "Cliente";
-            mostrarTela('tela-boas-vindas');
-            animarBarra('barra-bv', 3000);
-            setTimeout(liberarAcessoApp, 3500);
-
-        } else {
-            // Expirado ou precisa assinar
-            mostrarTela('tela-planos');
+            animarBarra('barra-trial', 4000);
+            setTimeout(liberarAcessoApp, 4500);
+            return;
         }
+
+        // TRIAL ACABOU → mostrar planos
+        if (dados.status === 'teste_gratis' && dados.dias_restantes <= 0) {
+            document.getElementById('aviso-planos').innerText = 'Seu período de teste acabou. Escolha um plano para continuar:';
+            mostrarTela('tela-planos');
+            setTimeout(function() {
+                var p = document.getElementById('plano2-mensal1');
+                if (p) p.focus();
+            }, 300);
+            return;
+        }
+
+        // EXPIRADO (pagou e venceu) → mostrar planos
+        if (dados.status === 'expirado') {
+            document.getElementById('aviso-planos').innerText = 'Sua assinatura venceu. Renove para continuar:';
+            mostrarTela('tela-planos');
+            setTimeout(function() {
+                var p = document.getElementById('plano2-mensal1');
+                if (p) p.focus();
+            }, 300);
+            return;
+        }
+
+        // PAGO MAS AINDA NÃO CRIOU CONTA
+        if (dados.status === 'pago' && !dados.conta_criada) {
+            mostrarTela('tela-criar-conta');
+            setTimeout(function() {
+                var i = document.getElementById('novo-usuario');
+                if (i) i.focus();
+            }, 300);
+            return;
+        }
+
+        // CONTA ATIVA
+        if (dados.status === 'pago' || dados.plano === 'lifetime') {
+            document.getElementById('bv-usuario').innerText = dados.username || dados.usuario || "Cliente";
+            mostrarTela('tela-boas-vindas');
+            animarBarra('barra-bv', 4000);
+            setTimeout(liberarAcessoApp, 4500);
+            return;
+        }
+
+        // PADRÃO → planos
+        mostrarTela('tela-planos');
     });
 }
 
+// ==========================================
+// ANIMAÇÃO DA BARRA
+// ==========================================
 function animarBarra(id, duracao) {
     var barra = document.getElementById(id);
     if (!barra) return;
@@ -383,95 +748,84 @@ function liberarAcessoApp() {
         if (typeof AndroidApp !== 'undefined' && AndroidApp && typeof AndroidApp.liberarAcesso === 'function') {
             AndroidApp.liberarAcesso();
         } else {
-            console.log("AndroidApp não disponível (modo navegador)");
-            alert("Acesso liberado! Aproveite o conteúdo RedPlay.");
+            console.log("Modo navegador");
         }
-    } catch(e) { console.error("Erro liberar:", e); }
+    } catch(e) { console.error("Erro:", e); }
 }
 
 // ==========================================
 // ESCOLHER PLANO
 // ==========================================
 function escolherPlano(plano) {
-    console.log("Plano escolhido:", plano);
-
+    console.log("Plano:", plano);
     var device_id = obterDeviceId();
     mostrarTela('tela-qrcode');
     document.getElementById('qr-titulo').innerText = "Gerando PIX...";
     document.getElementById('qr-code-txt').innerText = "Aguarde...";
     document.getElementById('qr-image').src = "";
 
-    var btn = document.querySelector('.plano-card.destaque');
-    if (btn) btn.focus();
-
     chamarFuncao(FUNC_CRIAR_COBRANCA, { plano: plano, device_id: device_id }, function(erro, dados) {
         if (erro) {
-            console.error("Erro criar cobrança:", erro);
             alert("Erro ao gerar PIX: " + erro);
-            voltarPlanos();
+            voltarInicio();
             return;
         }
-
         if (!dados.sucesso || !dados.qr_code) {
-            alert("Erro: QR Code não foi gerado.");
-            voltarPlanos();
+            alert("Erro: QR Code não gerado.");
+            voltarInicio();
             return;
         }
 
-        console.log("QR gerado:", dados);
-
-        document.getElementById('qr-titulo').innerText = "Pagamento PIX";
+        document.getElementById('qr-titulo').innerText = "Escaneie o QR Code";
         document.getElementById('qr-valor').innerText = "R$ " + (dados.valor || 0).toFixed(2).replace('.', ',');
         document.getElementById('qr-code-txt').innerText = dados.qr_code;
 
-        // A imagem base64 pode vir sem prefixo ou com
         if (dados.qr_code_base64) {
             var b64 = dados.qr_code_base64;
-            if (b64.indexOf('data:image') !== 0) {
-                b64 = 'data:image/png;base64,' + b64;
-            }
+            if (b64.indexOf('data:image') !== 0) b64 = 'data:image/png;base64,' + b64;
             document.getElementById('qr-image').src = b64;
         }
 
-        // Inicia polling para detectar pagamento
-        iniciarPolling(plano);
+        iniciarPolling();
     });
 }
 
 // ==========================================
-// POLLING — VERIFICA SE PAGOU
+// POLLING
 // ==========================================
-function iniciarPolling(planoEscolhido) {
+function iniciarPolling() {
     pararPolling();
     pollingTentativas = 0;
-
     var device_id = obterDeviceId();
-    console.log("Iniciando polling...");
 
     pollingTimer = setInterval(function() {
         pollingTentativas++;
-        console.log("Polling tentativa " + pollingTentativas);
 
         chamarFuncao(FUNC_VERIFICAR, { android_id: device_id }, function(erro, dados) {
             if (erro) return;
 
-            if (dados.status === 'pago') {
-                console.log("Pagamento detectado!");
+            if (dados.status === 'pago' || dados.plano === 'lifetime') {
                 pararPolling();
-                mostrarTela('tela-criar-conta');
-                // Foca no campo usuario
-                setTimeout(function() {
-                    var input = document.getElementById('novo-usuario');
-                    if (input) input.focus();
-                }, 300);
+
+                if (dados.conta_criada || dados.username) {
+                    document.getElementById('bv-usuario').innerText = dados.username || dados.usuario || "Cliente";
+                    mostrarTela('tela-boas-vindas');
+                    animarBarra('barra-bv', 4000);
+                    setTimeout(liberarAcessoApp, 4500);
+                } else {
+                    mostrarTela('tela-criar-conta');
+                    setTimeout(function() {
+                        var i = document.getElementById('novo-usuario');
+                        if (i) i.focus();
+                    }, 300);
+                }
             }
         });
 
         if (pollingTentativas >= MAX_POLLING) {
-            console.log("Timeout do polling");
             pararPolling();
             document.getElementById('polling-status').innerHTML =
-                '<span style="color:#ff4d4d;">Pagamento não detectado. Verifique seu app do banco.</span>';
+                '<span style="color:#ff4d4d;">Pagamento não detectado. Verifique seu banco.</span>';
         }
     }, 5000);
 }
@@ -489,7 +843,6 @@ function pararPolling() {
 function copiarPix() {
     var texto = document.getElementById('qr-code-txt').innerText;
     if (!texto) return;
-
     try {
         var ta = document.createElement('textarea');
         ta.value = texto;
@@ -499,25 +852,24 @@ function copiarPix() {
         ta.select();
         document.execCommand('copy');
         document.body.removeChild(ta);
-
         var btn = document.getElementById('btn-copiar');
-        btn.innerText = "Copiado!";
-        setTimeout(function() { btn.innerText = "Copiar Código PIX"; }, 2000);
+        btn.innerText = "✓ Copiado!";
+        setTimeout(function() { btn.innerText = "📋 Copiar Código PIX"; }, 2000);
     } catch(e) {
-        alert("Não foi possível copiar automaticamente. Selecione manualmente.");
+        alert("Copie manualmente o código acima.");
     }
 }
 
 // ==========================================
-// VOLTAR AOS PLANOS
+// VOLTAR
 // ==========================================
-function voltarPlanos() {
+function voltarInicio() {
     pararPolling();
-    mostrarTela('tela-planos');
-    setTimeout(function() {
-        var primeiro = document.getElementById('plano-mensal1');
-        if (primeiro) primeiro.focus();
-    }, 300);
+    if (ultimoStatus && ultimoStatus.status === 'bloqueado_painel') {
+        bloquearTotal(ultimoStatus.motivo || 'Sua conta foi suspensa.');
+    } else {
+        mostrarTela('tela-planos');
+    }
 }
 
 // ==========================================
@@ -533,19 +885,11 @@ function criarConta() {
     erroEl.innerText = "";
     erroEl.style.color = "#ff4d4d";
 
-    if (!usuario || usuario.length < 3) {
-        erroEl.innerText = "Usuário precisa ter pelo menos 3 caracteres.";
-        return;
-    }
-    if (!senha || senha.length < 4) {
-        erroEl.innerText = "Senha precisa ter pelo menos 4 caracteres.";
-        return;
-    }
+    if (!usuario || usuario.length < 3) { erroEl.innerText = "Usuário precisa ter pelo menos 3 caracteres."; return; }
+    if (!senha || senha.length < 4) { erroEl.innerText = "Senha precisa ter pelo menos 4 caracteres."; return; }
+
     var zapLimpo = whatsapp.replace(/\D/g, '');
-    if (zapLimpo.length < 10) {
-        erroEl.innerText = "Informe um WhatsApp válido (com DDD).";
-        return;
-    }
+    if (zapLimpo.length < 10) { erroEl.innerText = "Informe um WhatsApp válido (com DDD)."; return; }
 
     btn.disabled = true;
     btn.innerText = "Criando conta...";
@@ -561,54 +905,100 @@ function criarConta() {
         btn.disabled = false;
         btn.innerText = "Criar Minha Conta";
 
-        if (erro) {
-            console.error("Erro criar conta:", erro);
-            erroEl.innerText = erro;
-            return;
-        }
+        if (erro) { erroEl.innerText = erro; return; }
+        if (!dados.sucesso) { erroEl.innerText = dados.erro || "Erro ao criar conta."; return; }
 
-        if (!dados.sucesso) {
-            erroEl.innerText = dados.erro || "Erro ao criar conta.";
-            return;
-        }
-
-        // Sucesso
         erroEl.style.color = "#00c853";
-        erroEl.innerText = "Conta criada! Entrando...";
+        erroEl.innerText = "✓ Conta criada com sucesso!";
 
         document.getElementById('bv-usuario').innerText = dados.usuario;
         setTimeout(function() {
             mostrarTela('tela-boas-vindas');
-            animarBarra('barra-bv', 3000);
-            setTimeout(liberarAcessoApp, 3500);
+            animarBarra('barra-bv', 4000);
+            setTimeout(liberarAcessoApp, 4500);
         }, 1000);
     });
 }
 
 // ==========================================
-// NAVEGAÇÃO POR CONTROLE (D-PAD) - Suporte Fire Stick / TV
+// BLOQUEIO TOTAL (admin desativou)
+// ==========================================
+function bloquearTotal(motivo) {
+    pararPolling();
+
+    var motivoEl = document.getElementById('motivo-bloqueio');
+    if (motivoEl) motivoEl.innerText = motivo;
+
+    var zapLink = document.getElementById('btn-whatsapp-bloqueio');
+    if (zapLink) {
+        var texto = encodeURIComponent(
+            "Olá! Minha conta RedPlay está bloqueada.\n\n" +
+            "Motivo: " + motivo + "\n" +
+            "Device: " + obterDeviceId() + "\n\n" +
+            "Podem me ajudar?"
+        );
+        zapLink.href = "https://wa.me/55997340723?text=" + texto;
+    }
+
+    mostrarTela('tela-bloqueado-puro');
+
+    setTimeout(function() {
+        var btn = document.getElementById('btn-whatsapp-bloqueio');
+        if (btn) btn.focus();
+    }, 300);
+
+    var segundos = 25;
+    var contadorEl = document.getElementById('contador-bloqueio');
+    if (contadorEl) contadorEl.innerText = segundos;
+
+    var intervalo = setInterval(function() {
+        segundos--;
+        if (contadorEl) contadorEl.innerText = segundos;
+        if (segundos <= 0) {
+            clearInterval(intervalo);
+            fecharAppBloqueio();
+        }
+    }, 1000);
+}
+
+function fecharAppBloqueio() {
+    try {
+        if (typeof AndroidApp !== 'undefined' && AndroidApp && typeof AndroidApp.fecharApp === 'function') {
+            AndroidApp.fecharApp();
+            return;
+        }
+    } catch(e) {}
+    try { window.close(); } catch(e) {}
+    setTimeout(function() {
+        try { window.location.href = "about:blank"; } catch(e) {}
+    }, 100);
+}
+
+// ==========================================
+// NAVEGAÇÃO POR D-PAD
 // ==========================================
 document.addEventListener('keydown', function(e) {
-    // Só processa se não for um input de texto
     var tag = document.activeElement ? document.activeElement.tagName : '';
     if (tag === 'INPUT' && e.key !== 'Enter') return;
 
-    // Setas entre planos
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-        var planos = ['plano-mensal1', 'plano-mensal', 'plano-anual', 'plano-lifetime'];
-        var atual = -1;
-        for (var i = 0; i < planos.length; i++) {
-            if (document.activeElement === document.getElementById(planos[i])) {
-                atual = i;
-                break;
-            }
+        var todos = document.querySelectorAll('.plano-card');
+        var visiveis = [];
+        for (var i = 0; i < todos.length; i++) {
+            if (todos[i].offsetParent !== null) visiveis.push(todos[i]);
         }
+
+        var atual = -1;
+        for (var j = 0; j < visiveis.length; j++) {
+            if (document.activeElement === visiveis[j]) { atual = j; break; }
+        }
+
         if (atual >= 0) {
             e.preventDefault();
             var proximo = e.key === 'ArrowDown' ? atual + 1 : atual - 1;
-            if (proximo < 0) proximo = planos.length - 1;
-            if (proximo >= planos.length) proximo = 0;
-            document.getElementById(planos[proximo]).focus();
+            if (proximo < 0) proximo = visiveis.length - 1;
+            if (proximo >= visiveis.length) proximo = 0;
+            visiveis[proximo].focus();
         }
     }
 });
