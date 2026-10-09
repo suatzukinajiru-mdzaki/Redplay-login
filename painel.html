@@ -213,8 +213,9 @@
         .acoes { display: flex; gap: 5px; flex-wrap: wrap; }
         .btn-mini {
             padding: 6px 9px; border: none; border-radius: 6px;
-            font-size: 10px; font-weight: 700; cursor: pointer;
+            font-size: 11px; font-weight: 700; cursor: pointer;
             text-transform: uppercase; transition: 0.2s; white-space: nowrap;
+            min-width: 32px;
         }
         .btn-editar { background: var(--azul); color: white; }
         .btn-toggle { background: var(--amarelo); color: black; }
@@ -343,7 +344,7 @@
             .aviso-limite { margin-left: 15px; margin-right: 15px; }
             .stats { grid-template-columns: repeat(2, 1fr); }
             th, td { padding: 10px 8px; font-size: 11px; }
-            .btn-mini { padding: 5px 7px; font-size: 9px; }
+            .btn-mini { padding: 5px 7px; font-size: 10px; min-width: 28px; }
             #toast { bottom: 15px; right: 15px; left: 15px; }
         }
     </style>
@@ -446,7 +447,8 @@
             <div class="stats">
                 <div class="stat-card"><div class="num" id="stat-testes" style="color: var(--azul);">0</div><div class="lbl">Em Teste</div></div>
                 <div class="stat-card"><div class="num" id="stat-testes-24h" style="color: var(--amarelo);">0</div><div class="lbl">Expira em 24h</div></div>
-                <div class="stat-card"><div class="num" id="stat-testes-convertidos" style="color: var(--verde);">0</div><div class="lbl">Já Pagaram</div></div>
+                <div class="stat-card"><div class="num" id="stat-testes-convertidos" style="color: var(--verde);">0</div><div class="lbl">Convertidos</div></div>
+                <div class="stat-card"><div class="num" id="stat-testes-bloqueados" style="color: #ff4d4d;">0</div><div class="lbl">Bloqueados</div></div>
             </div>
 
             <div class="toolbar">
@@ -455,6 +457,7 @@
                     <option value="todos">Todos os dispositivos</option>
                     <option value="teste">Só em teste</option>
                     <option value="expirando">Expirando em 24h</option>
+                    <option value="bloqueados">Só bloqueados</option>
                     <option value="novos">Adicionados hoje</option>
                 </select>
             </div>
@@ -528,10 +531,10 @@
                     <thead>
                         <tr>
                             <th>Data</th>
-                            <th>Cliente</th>
-                            <th>Tipo</th>
+                            <th>Ordem MP</th>
+                            <th>Plano</th>
                             <th>Valor</th>
-                            <th>Método</th>
+                            <th>Status MP</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -572,7 +575,7 @@
 
                     <div class="checkbox-row">
                         <input type="checkbox" id="apk-obrigatoria">
-                        <label for="apk-obrigatoria">Atualização obrigatória (bloqueia o app até atualizar)</label>
+                        <label for="apk-obrigatoria">Atualização obrigatória</label>
                     </div>
 
                     <button class="btn btn-primario" onclick="enviarApk()" id="btn-enviar-apk">Enviar APK</button>
@@ -661,7 +664,7 @@
             <input type="number" id="rev-limite" min="1" value="10">
 
             <label>Observações</label>
-            <textarea id="rev-obs" placeholder="Anotações sobre este revendedor..."></textarea>
+            <textarea id="rev-obs" placeholder="Anotações..."></textarea>
 
             <div class="checkbox-row">
                 <input type="checkbox" id="rev-ativo" checked>
@@ -680,7 +683,7 @@
         <div class="modal">
             <h2 id="modal-disp-titulo">Dispositivos</h2>
             <p style="color: var(--texto-suave); font-size: 12px; margin-bottom: 20px;">
-                Remova um aparelho para liberar vaga (até o limite de telas do cliente).
+                Remova um aparelho para liberar vaga.
             </p>
             <div id="lista-dispositivos-conteudo"></div>
             <div class="modal-botoes" style="margin-top: 20px;">
@@ -755,7 +758,7 @@
             }
 
             if (!data.ativo) {
-                erro.innerText = "Conta desativada. Contate o administrador.";
+                erro.innerText = "Conta desativada.";
                 erro.style.display = "block";
                 return;
             }
@@ -785,9 +788,6 @@
             location.reload();
         }
 
-        // ==========================================
-        // AUTO LOGIN
-        // ==========================================
         window.addEventListener('load', async () => {
             const salvo = sessionStorage.getItem('redplay_admin');
             if (salvo) {
@@ -807,9 +807,6 @@
             document.getElementById('login-usuario').focus();
         });
 
-        // ==========================================
-        // INICIAR PAINEL
-        // ==========================================
         async function iniciarPainel() {
             document.getElementById('tela-login').classList.add('escondida');
             document.getElementById('painel-principal').classList.add('ativo');
@@ -848,9 +845,6 @@
             }
         }
 
-        // ==========================================
-        // MUDAR ABA
-        // ==========================================
         function mudarTab(nome) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('ativa'));
             document.querySelectorAll('.conteudo-tab').forEach(t => t.classList.remove('ativa'));
@@ -867,7 +861,7 @@
         }
 
         // ==========================================
-        // CARREGAR CLIENTES
+        // CLIENTES
         // ==========================================
         async function carregarClientes() {
             const tbody = document.getElementById("corpo-clientes");
@@ -913,9 +907,9 @@
             const restante = limite - atual;
 
             if (restante <= 0) {
-                container.innerHTML = `<div class="aviso-limite"><strong>Limite atingido!</strong> Você tem ${atual}/${limite} clientes.</div>`;
+                container.innerHTML = `<div class="aviso-limite"><strong>Limite atingido!</strong> ${atual}/${limite} clientes.</div>`;
             } else if (restante <= 5) {
-                container.innerHTML = `<div class="aviso-limite"><strong>Atenção:</strong> ${atual}/${limite} clientes. Restam ${restante} vagas.</div>`;
+                container.innerHTML = `<div class="aviso-limite"><strong>Atenção:</strong> ${atual}/${limite} clientes. Restam ${restante}.</div>`;
             } else {
                 container.innerHTML = '';
             }
@@ -929,7 +923,7 @@
                     if (Array.isArray(p) && p.length > 0) return p;
                 } catch(e) {}
             }
-            if (c.device_id) return [{ id: c.device_id, nome: c.device_nome || 'Aparelho Antigo' }];
+            if (c.device_id) return [{ id: c.device_id, nome: c.device_nome || 'Antigo' }];
             return [];
         }
 
@@ -952,7 +946,7 @@
             });
 
             if (lista.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="9" class="vazio">Nenhum cliente encontrado.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="9" class="vazio">Nenhum cliente.</td></tr>';
                 return;
             }
 
@@ -988,14 +982,14 @@
                         </td>
                         <td><span class="badge-status ${c.ativo ? 'badge-ativo' : 'badge-inativo'}">${c.ativo ? 'Ativo' : 'Inativo'}</span></td>
                         <td>${badgePlano}</td>
-                        <td style="${vencido ? 'color: var(--amarelo); font-weight: 700;' : ''}">${venc} ${vencido ? '(!)' : ''}</td>
+                        <td style="${vencido ? 'color: var(--amarelo); font-weight: 700;' : ''}">${venc}</td>
                         <td style="text-align:center;"><strong>${qtdDisp}/${telasMax}</strong></td>
                         <td>${deviceHtml}</td>
                         <td>
                             <div class="acoes">
                                 <button class="btn-mini btn-editar" onclick="abrirModalEditarCliente(${c.id})">Editar</button>
                                 <button class="btn-mini btn-toggle" onclick="toggleAtivo(${c.id})">${c.ativo ? 'Off' : 'On'}</button>
-                                <button class="btn-mini btn-whats" onclick="abrirWhats(${c.id})">WhatsApp</button>
+                                <button class="btn-mini btn-whats" onclick="abrirWhats(${c.id})">💬</button>
                                 <button class="btn-mini btn-excluir" onclick="excluirCliente(${c.id})">X</button>
                             </div>
                         </td>
@@ -1005,7 +999,7 @@
         }
 
         // ==========================================
-        // EM TESTE (dispositivos trial)
+        // EM TESTE
         // ==========================================
         async function carregarTestes() {
             const tbody = document.getElementById("corpo-testes");
@@ -1032,10 +1026,12 @@
                 return resta > 0 && resta < 24 * 3600000;
             });
             const convertidos = testes.filter(t => t.status === 'pago' || t.plano === 'lifetime');
+            const bloqueados = testes.filter(t => t.status === 'bloqueado');
 
             document.getElementById("stat-testes").innerText = emTeste.length;
             document.getElementById("stat-testes-24h").innerText = expirando24h.length;
             document.getElementById("stat-testes-convertidos").innerText = convertidos.length;
+            document.getElementById("stat-testes-bloqueados").innerText = bloqueados.length;
 
             const badge = document.getElementById('badge-testes');
             if (emTeste.length > 0) {
@@ -1066,6 +1062,9 @@
                     const resta = new Date(t.data_expiracao).getTime() - agora;
                     if (resta <= 0 || resta > 24 * 3600000) return false;
                 }
+                if (filtro === 'bloqueados') {
+                    if (t.status !== 'bloqueado') return false;
+                }
                 if (filtro === 'novos') {
                     const criado = new Date(t.criado_em);
                     if (criado < hoje) return false;
@@ -1080,7 +1079,7 @@
             });
 
             if (lista.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" class="vazio">Nenhum dispositivo encontrado.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" class="vazio">Nenhum dispositivo.</td></tr>';
                 return;
             }
 
@@ -1097,6 +1096,9 @@
                     statusBadge = '<span class="badge-status" style="background:rgba(255,193,7,0.15);color:#ffc107;">VITALÍCIO</span>';
                 } else if (t.status === 'pago') {
                     statusBadge = '<span class="badge-status badge-ativo">PAGO</span>';
+                } else if (t.status === 'bloqueado') {
+                    statusBadge = '<span class="badge-status badge-inativo">BLOQUEADO</span>';
+                    corDias = '#ff4d4d';
                 } else if (t.status === 'expirado' || resta <= 0) {
                     statusBadge = '<span class="badge-status badge-inativo">EXPIRADO</span>';
                     corDias = '#ff4d4d';
@@ -1123,9 +1125,11 @@
                 const deviceIdCurto = deviceId.length > 22 ? deviceId.substring(0, 22) + '...' : deviceId;
 
                 const zap = t.whatsapp || '';
-                const zapHtml = zap 
-                    ? `<a href="https://wa.me/${zap}" target="_blank" style="color: #25D366; text-decoration: none; font-weight: 700;">${zap}</a>` 
+                const zapHtml = zap
+                    ? `<a href="https://wa.me/${zap}" target="_blank" style="color: #25D366; text-decoration: none; font-weight: 700;">${zap}</a>`
                     : '<span style="color:#666;">—</span>';
+
+                const bloqueado = t.status === 'bloqueado';
 
                 return `
                     <tr>
@@ -1138,8 +1142,14 @@
                         <td style="font-size: 11px; color: var(--texto-suave);">${criadoStr}</td>
                         <td>
                             <div class="acoes">
-                                ${zap ? `<button class="btn-mini btn-whats" onclick="abrirWhatsTeste('${zap}')">WhatsApp</button>` : ''}
-                                <button class="btn-mini btn-excluir" onclick="excluirTeste('${t.android_id}')">X</button>
+                                ${zap ? `<button class="btn-mini btn-whats" onclick="abrirWhatsTeste('${zap}')" title="Enviar WhatsApp">💬</button>` : ''}
+                                <button class="btn-mini" style="background:var(--azul);color:white;" onclick="estenderTrial('${t.android_id}', 3)" title="Estender +3 dias">+3d</button>
+                                ${!bloqueado
+                                    ? `<button class="btn-mini" style="background:var(--amarelo);color:black;" onclick="bloquearTeste('${t.android_id}')" title="Bloquear acesso">⏸</button>`
+                                    : `<button class="btn-mini" style="background:var(--verde);color:white;" onclick="desbloquearTeste('${t.android_id}')" title="Desbloquear acesso">▶</button>`
+                                }
+                                <button class="btn-mini" style="background:var(--dourado);color:black;" onclick="tornarPago('${t.android_id}')" title="Marcar como pago">💎</button>
+                                <button class="btn-mini btn-excluir" onclick="excluirTeste('${t.android_id}')" title="Excluir dispositivo">🗑</button>
                             </div>
                         </td>
                     </tr>
@@ -1148,12 +1158,125 @@
         }
 
         function abrirWhatsTeste(zap) {
-            const texto = encodeURIComponent("Olá! Seu período de teste RedPlay acabou. Quer continuar assistindo?");
+            const texto = encodeURIComponent("Olá! Seu período de teste RedPlay está chegando ao fim. Quer continuar assistindo?");
             window.open("https://wa.me/" + zap + "?text=" + texto, "_blank");
         }
 
+        // Estender trial
+        async function estenderTrial(androidId, dias) {
+            const t = testes.find(x => x.android_id === androidId);
+            if (!t) return;
+
+            if (!confirm(`Estender +${dias} dias o teste?\n\nDevice: ${androidId}`)) return;
+
+            const agora = Date.now();
+            const expAtual = new Date(t.data_expiracao).getTime();
+            const base = expAtual > agora ? expAtual : agora;
+            const novaExp = new Date(base + dias * 86400000).toISOString();
+
+            const { error } = await supabaseClient
+                .from('dispositivos')
+                .update({
+                    data_expiracao: novaExp,
+                    status: 'teste_gratis',
+                    atualizado_em: new Date().toISOString()
+                })
+                .eq('android_id', androidId);
+
+            if (error) { toast("Erro ao estender.", true); return; }
+            toast(`+${dias} dias adicionados!`);
+            carregarTestes();
+        }
+
+        // Bloquear
+        async function bloquearTeste(androidId) {
+            const t = testes.find(x => x.android_id === androidId);
+            if (!t) return;
+
+            if (!confirm(`Bloquear o acesso?\n\nDevice: ${androidId}`)) return;
+
+            const { error } = await supabaseClient
+                .from('dispositivos')
+                .update({
+                    status: 'bloqueado',
+                    atualizado_em: new Date().toISOString()
+                })
+                .eq('android_id', androidId);
+
+            if (error) { toast("Erro ao bloquear.", true); return; }
+            toast("Dispositivo bloqueado!");
+            carregarTestes();
+        }
+
+        // Desbloquear
+        async function desbloquearTeste(androidId) {
+            const t = testes.find(x => x.android_id === androidId);
+            if (!t) return;
+
+            if (!confirm(`Desbloquear o dispositivo?\n\nDevice: ${androidId}`)) return;
+
+            const novoStatus = t.plano ? 'pago' : 'teste_gratis';
+            const agora = Date.now();
+            const expAtual = new Date(t.data_expiracao).getTime();
+
+            const payload = {
+                status: novoStatus,
+                atualizado_em: new Date().toISOString()
+            };
+
+            if (novoStatus === 'teste_gratis' && expAtual < agora) {
+                payload.data_expiracao = new Date(agora + 3 * 86400000).toISOString();
+            }
+
+            const { error } = await supabaseClient
+                .from('dispositivos')
+                .update(payload)
+                .eq('android_id', androidId);
+
+            if (error) { toast("Erro ao desbloquear.", true); return; }
+            toast("Dispositivo desbloqueado!");
+            carregarTestes();
+        }
+
+        // Tornar pago
+        async function tornarPago(androidId) {
+            const t = testes.find(x => x.android_id === androidId);
+            if (!t) return;
+
+            if (!confirm(`Marcar como PAGO manualmente?\n\nDevice: ${androidId}\n\nLibera o acesso por 1 ano sem cobrança.`)) return;
+
+            const novaExp = new Date(Date.now() + 365 * 86400000).toISOString();
+
+            const { error } = await supabaseClient
+                .from('dispositivos')
+                .update({
+                    status: 'pago',
+                    plano: t.plano || 'anual',
+                    data_expiracao: novaExp,
+                    pagamento_confirmado: true,
+                    ultimo_pagamento_em: new Date().toISOString(),
+                    atualizado_em: new Date().toISOString()
+                })
+                .eq('android_id', androidId);
+
+            if (error) { toast("Erro ao marcar como pago.", true); return; }
+            toast("Marcado como PAGO!");
+            carregarTestes();
+        }
+
+        // Excluir
         async function excluirTeste(androidId) {
-            if (!confirm("Apagar este dispositivo do banco?\n\nO cliente perderá o trial e o histórico.")) return;
+            const t = testes.find(x => x.android_id === androidId);
+            if (!t) return;
+
+            const msg = `EXCLUIR PERMANENTEMENTE?\n\n` +
+                        `Device: ${androidId}\n` +
+                        `Status: ${t.status}\n` +
+                        `Usuário: ${t.username || 'não criado'}\n\n` +
+                        `O cliente perderá TODO o histórico.`;
+
+            if (!confirm(msg)) return;
+            if (!confirm("TEM CERTEZA? Clique OK para confirmar.")) return;
 
             const { error } = await supabaseClient
                 .from('dispositivos')
@@ -1166,7 +1289,7 @@
         }
 
         // ==========================================
-        // MODAL DISPOSITIVOS
+        // MODAL DISPOSITIVOS CLIENTE
         // ==========================================
         function abrirModalDispositivos(id) {
             const c = clientes.find(x => x.id === id);
@@ -1182,7 +1305,7 @@
             const lista = obterDispositivos(clienteSelecionadoDisp);
 
             if (lista.length === 0) {
-                container.innerHTML = '<p class="vazio">Nenhum dispositivo cadastrado.</p>';
+                container.innerHTML = '<p class="vazio">Nenhum dispositivo.</p>';
                 return;
             }
 
@@ -1215,7 +1338,7 @@
             };
 
             const { error } = await supabaseClient.from('utilizadores').update(payload).eq('id', c.id);
-            if (error) { toast("Erro ao remover.", true); return; }
+            if (error) { toast("Erro.", true); return; }
             toast("Dispositivo desvinculado!");
             c.devices = novaLista;
             renderizarListaModalDispositivos();
@@ -1230,7 +1353,7 @@
             const payload = { devices: [], device_id: null, device_nome: null, session_token: null };
             const { error } = await supabaseClient.from('utilizadores').update(payload).eq('id', c.id);
             if (error) { toast("Erro.", true); return; }
-            toast("Todos os dispositivos removidos!");
+            toast("Dispositivos removidos!");
             fecharModalDispositivos();
             carregarClientes();
         }
@@ -1250,7 +1373,6 @@
             }
 
             const { data, error } = await query;
-
             pendentes = error ? [] : (data || []);
 
             const badge = document.getElementById('badge-pendentes');
@@ -1328,7 +1450,7 @@
                 })
                 .eq('id', cliente.id);
 
-            if (error) { toast("Erro ao aprovar.", true); return; }
+            if (error) { toast("Erro.", true); return; }
 
             await supabaseClient.from('devices_pendentes').update({ status: 'aprovado' }).eq('id', id);
 
@@ -1338,10 +1460,10 @@
         }
 
         async function rejeitarPendente(id) {
-            if (!confirm("Rejeitar esta solicitação?")) return;
+            if (!confirm("Rejeitar?")) return;
             const { error } = await supabaseClient.from('devices_pendentes').update({ status: 'rejeitado' }).eq('id', id);
             if (error) { toast("Erro.", true); return; }
-            toast("Solicitação rejeitada.");
+            toast("Rejeitado.");
             carregarPendentes();
         }
 
@@ -1351,7 +1473,7 @@
         function abrirModalNovoCliente() {
             if (!souSuperAdmin || impersonando) {
                 if (clientes.length >= (revendedorAtual.limite_clientes || 0)) {
-                    toast("Limite de clientes atingido!", true);
+                    toast("Limite atingido!", true);
                     return;
                 }
             }
@@ -1395,7 +1517,7 @@
             const ativo = document.getElementById("cliente-ativo").checked;
 
             if (!usuario || !senha) { toast("Preencha usuário e senha.", true); return; }
-            if (telas < 1 || telas > 3) { toast("Telas deve ser entre 1 e 3.", true); return; }
+            if (telas < 1 || telas > 3) { toast("Telas deve ser 1 a 3.", true); return; }
 
             const payload = { usuario, senha, plano, vencimento, ativo, telas_permitidas: telas };
             if (!id) payload.revendedor_id = revendedorAtual.id;
@@ -1413,11 +1535,8 @@
                 fecharModalCliente();
                 carregarClientes();
             } catch (err) {
-                if (err.message && err.message.includes("duplicate")) {
-                    toast("Este usuário já existe.", true);
-                } else {
-                    toast("Erro: " + err.message, true);
-                }
+                if (err.message && err.message.includes("duplicate")) toast("Usuário já existe.", true);
+                else toast("Erro: " + err.message, true);
             }
         }
 
@@ -1426,17 +1545,17 @@
             if (!c) return;
             const { error } = await supabaseClient.from('utilizadores').update({ ativo: !c.ativo }).eq('id', id);
             if (error) { toast("Erro.", true); return; }
-            toast(!c.ativo ? "Cliente ativado!" : "Cliente desativado!");
+            toast(!c.ativo ? "Ativado!" : "Desativado!");
             carregarClientes();
         }
 
         async function excluirCliente(id) {
             const c = clientes.find(x => x.id === id);
             if (!c) return;
-            if (!confirm(`Apagar DEFINITIVAMENTE "${c.usuario}"?`)) return;
+            if (!confirm(`Apagar "${c.usuario}"?`)) return;
             const { error } = await supabaseClient.from('utilizadores').delete().eq('id', id);
             if (error) { toast("Erro.", true); return; }
-            toast("Cliente excluído.");
+            toast("Excluído.");
             carregarClientes();
         }
 
@@ -1450,7 +1569,7 @@
             if (!c) return;
             try {
                 await navigator.clipboard.writeText(c.senha);
-                toast("Senha copiada!");
+                toast("Copiada!");
             } catch (e) {
                 const input = document.createElement("input");
                 input.value = c.senha;
@@ -1458,7 +1577,7 @@
                 input.select();
                 document.execCommand("copy");
                 document.body.removeChild(input);
-                toast("Senha copiada!");
+                toast("Copiada!");
             }
         }
 
@@ -1468,8 +1587,7 @@
             const texto = encodeURIComponent(
                 "Olá! Suas credenciais RedPlay:\n\n" +
                 "Utilizador: " + c.usuario + "\n" +
-                "Senha: " + c.senha + "\n\n" +
-                "Bom entretenimento!"
+                "Senha: " + c.senha
             );
             window.open("https://wa.me/?text=" + texto, "_blank");
         }
@@ -1505,7 +1623,7 @@
             });
 
             if (lista.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" class="vazio">Nenhum revendedor.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" class="vazio">Nenhum.</td></tr>';
                 return;
             }
 
@@ -1544,7 +1662,7 @@
         async function entrarComoRevendedor(id) {
             const r = revendedores.find(x => x.id === id);
             if (!r) return;
-            if (!confirm(`Entrar no painel como "${r.nome}"?\n\nVocê verá apenas os clientes dele.`)) return;
+            if (!confirm(`Entrar como "${r.nome}"?`)) return;
 
             revendedorAtual = r;
             impersonando = true;
@@ -1633,11 +1751,11 @@
                 if (id) {
                     const { error } = await supabaseClient.from('revendedores').update(payload).eq('id', id);
                     if (error) throw error;
-                    toast("Revendedor atualizado!");
+                    toast("Atualizado!");
                 } else {
                     const { error } = await supabaseClient.from('revendedores').insert([payload]);
                     if (error) throw error;
-                    toast("Revendedor criado!");
+                    toast("Criado!");
                 }
                 fecharModalRevendedor();
                 carregarRevendedores();
@@ -1652,18 +1770,18 @@
             if (!r) return;
             const { error } = await supabaseClient.from('revendedores').update({ ativo: !r.ativo }).eq('id', id);
             if (error) { toast("Erro.", true); return; }
-            toast(!r.ativo ? "Revendedor ativado!" : "Revendedor desativado!");
+            toast(!r.ativo ? "Ativado!" : "Desativado!");
             carregarRevendedores();
         }
 
         async function excluirRevendedor(id) {
             const r = revendedores.find(x => x.id === id);
             if (!r) return;
-            if (r.clientes_count > 0) { toast(`Não é possível: ${r.clientes_count} clientes vinculados.`, true); return; }
-            if (!confirm(`Excluir DEFINITIVAMENTE "${r.nome}"?`)) return;
+            if (r.clientes_count > 0) { toast(`Não pode: ${r.clientes_count} clientes.`, true); return; }
+            if (!confirm(`Excluir "${r.nome}"?`)) return;
             const { error } = await supabaseClient.from('revendedores').delete().eq('id', id);
             if (error) { toast("Erro.", true); return; }
-            toast("Revendedor excluído.");
+            toast("Excluído.");
             carregarRevendedores();
         }
 
@@ -1706,13 +1824,13 @@
         function renderizarTabelaPagamentos() {
             const tbody = document.getElementById("corpo-pagamentos");
             if (pagamentos.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="vazio">Nenhum pagamento registrado.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="vazio">Nenhum pagamento.</td></tr>';
                 return;
             }
 
             tbody.innerHTML = pagamentos.map(p => {
                 const data = new Date(p.criado_em).toLocaleString('pt-BR');
-                let badgeTipo = p.plano || p.tipo || '—';
+                let badgeTipo = p.plano || '—';
                 if (p.plano === 'anual') badgeTipo = 'Anual';
                 else if (p.plano === 'lifetime') badgeTipo = 'Vitalício';
                 else if (p.plano === 'mensal' || p.plano === 'mensal_primeiro') badgeTipo = 'Mensal';
@@ -1720,7 +1838,7 @@
                 return `
                     <tr>
                         <td style="font-size: 11px;">${data}</td>
-                        <td><strong>${escapeHtml(p.mp_order_id || 'Ordem MP')}</strong></td>
+                        <td style="font-family: monospace; font-size: 11px;">${escapeHtml(p.mp_order_id || '—')}</td>
                         <td>${badgeTipo}</td>
                         <td style="color: var(--verde); font-weight: 700;">${formatarMoeda(p.valor)}</td>
                         <td>${p.mp_status || '—'}</td>
@@ -1738,19 +1856,8 @@
             if (!container) return;
             container.innerHTML = '<p style="color: #888; text-align: center; padding: 40px;">Carregando...</p>';
 
-            let clienteIds = null;
-            if (!souSuperAdmin || impersonando) {
-                clienteIds = clientes.map(c => c.usuario);
-                if (clienteIds.length === 0) {
-                    container.innerHTML = '<p style="color: #888; text-align: center; padding: 40px;">Nenhuma pesquisa ainda.</p>';
-                    return;
-                }
-            }
-
-            let query = supabaseClient.from('satisfacao').select('*').order('created_at', { ascending: false }).limit(50);
-            if (clienteIds) query = query.in('usuario', clienteIds);
-
-            const { data, error } = await query;
+            const { data, error } = await supabaseClient
+                .from('satisfacao').select('*').order('created_at', { ascending: false }).limit(50);
 
             if (error || !data || data.length === 0) {
                 container.innerHTML = '<p style="color: #888; text-align: center; padding: 40px;">Nenhuma pesquisa ainda.</p>';
@@ -1762,7 +1869,7 @@
             let html = `
                 <div style="text-align: center; background: var(--painel); padding: 25px; border-radius: 12px; margin-bottom: 20px;">
                     <div style="font-size: 42px; font-weight: 900; color: var(--amarelo);">${media} / 5</div>
-                    <div style="color: var(--texto-suave); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px;">
+                    <div style="color: var(--texto-suave); font-size: 13px; text-transform: uppercase; margin-top: 5px;">
                         ${data.length} resposta${data.length !== 1 ? 's' : ''}
                     </div>
                 </div>
@@ -1795,12 +1902,10 @@
             tbody.innerHTML = '<tr><td colspan="6" class="loading-tabela">Carregando...</td></tr>';
 
             const { data, error } = await supabaseClient
-                .from('versoes_apk')
-                .select('*')
-                .order('versao_code', { ascending: false });
+                .from('versoes_apk').select('*').order('versao_code', { ascending: false });
 
             if (error) {
-                tbody.innerHTML = '<tr><td colspan="6" class="vazio">Erro ao carregar.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="vazio">Erro.</td></tr>';
                 return;
             }
 
@@ -1811,7 +1916,7 @@
         function renderizarVersoes() {
             const tbody = document.getElementById("corpo-versoes");
             if (versoesApk.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="vazio">Nenhuma versão cadastrada ainda.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="vazio">Nenhuma versão.</td></tr>';
                 return;
             }
 
@@ -1827,8 +1932,8 @@
                         <td>
                             <div class="acoes">
                                 <button class="btn-mini btn-editar" onclick="toggleObrigatoria(${v.id})">${v.obrigatoria ? 'Opcional' : 'Obrigatória'}</button>
-                                <button class="btn-mini btn-toggle" onclick="toggleVersaoAtivo(${v.id})">${v.ativo ? 'Desativar' : 'Ativar'}</button>
-                                <button class="btn-mini btn-excluir" onclick="excluirVersao(${v.id})">Excluir</button>
+                                <button class="btn-mini btn-toggle" onclick="toggleVersaoAtivo(${v.id})">${v.ativo ? 'Off' : 'On'}</button>
+                                <button class="btn-mini btn-excluir" onclick="excluirVersao(${v.id})">X</button>
                             </div>
                         </td>
                     </tr>
@@ -1843,26 +1948,23 @@
             const changelog = document.getElementById('apk-changelog').value.trim();
             const obrigatoria = document.getElementById('apk-obrigatoria').checked;
 
-            if (!arquivo) { toast("Selecione um arquivo APK.", true); return; }
-            if (!versao) { toast("Preencha a versão.", true); return; }
-            if (!versaoCode || versaoCode < 1) { toast("Preencha o código da versão.", true); return; }
-            if (!arquivo.name.toLowerCase().endsWith('.apk')) { toast("O arquivo deve ser .apk", true); return; }
+            if (!arquivo) { toast("Selecione APK.", true); return; }
+            if (!versao) { toast("Preencha versão.", true); return; }
+            if (!versaoCode) { toast("Código da versão?", true); return; }
+            if (!arquivo.name.toLowerCase().endsWith('.apk')) { toast("Deve ser .apk", true); return; }
 
             const btn = document.getElementById('btn-enviar-apk');
             const prog = document.getElementById('apk-progresso');
 
             btn.disabled = true;
             btn.innerText = "Enviando...";
-            prog.innerHTML = `Preparando upload...<br>Tamanho: ${(arquivo.size / 1024 / 1024).toFixed(2)} MB`;
+            prog.innerHTML = `Enviando ${(arquivo.size / 1024 / 1024).toFixed(2)} MB...`;
 
             try {
                 const nomeArquivo = `redplay-v${versaoCode}-${Date.now()}.apk`;
 
-                prog.innerHTML = `Enviando para o Supabase Storage...<br>${nomeArquivo}`;
-
                 const { error: upError } = await supabaseClient
-                    .storage
-                    .from('apk')
+                    .storage.from('apk')
                     .upload(nomeArquivo, arquivo, {
                         cacheControl: '3600',
                         upsert: false,
@@ -1871,30 +1973,22 @@
 
                 if (upError) throw upError;
 
-                prog.innerHTML = "Gerando URL pública...";
-
                 const { data: urlData } = supabaseClient
-                    .storage
-                    .from('apk')
-                    .getPublicUrl(nomeArquivo);
-
-                prog.innerHTML = "Salvando registro...";
+                    .storage.from('apk').getPublicUrl(nomeArquivo);
 
                 const { error: dbError } = await supabaseClient
                     .from('versoes_apk')
                     .insert([{
-                        versao: versao,
-                        versao_code: versaoCode,
+                        versao, versao_code: versaoCode,
                         changelog: changelog || null,
                         url_apk: urlData.publicUrl,
-                        obrigatoria: obrigatoria,
-                        ativo: true
+                        obrigatoria, ativo: true
                     }]);
 
                 if (dbError) throw dbError;
 
-                prog.innerHTML = "APK publicado com sucesso!";
-                toast("APK enviado com sucesso!");
+                prog.innerHTML = "Publicado!";
+                toast("APK enviado!");
 
                 document.getElementById('apk-arquivo').value = '';
                 document.getElementById('apk-versao').value = '';
@@ -1902,13 +1996,12 @@
                 document.getElementById('apk-changelog').value = '';
                 document.getElementById('apk-obrigatoria').checked = false;
 
-                setTimeout(() => { prog.innerHTML = ''; }, 5000);
+                setTimeout(() => { prog.innerHTML = ''; }, 4000);
                 carregarVersoes();
 
             } catch (err) {
-                console.error(err);
                 prog.innerHTML = `<span style="color: #ff4d4d;">Erro: ${err.message}</span>`;
-                toast("Erro ao enviar: " + err.message, true);
+                toast("Erro: " + err.message, true);
             } finally {
                 btn.disabled = false;
                 btn.innerText = "Enviar APK";
@@ -1929,23 +2022,23 @@
             if (!v) return;
             const { error } = await supabaseClient.from('versoes_apk').update({ ativo: !v.ativo }).eq('id', id);
             if (error) { toast("Erro.", true); return; }
-            toast(!v.ativo ? "Versão ativada!" : "Versão desativada.");
+            toast(!v.ativo ? "Ativada!" : "Desativada.");
             carregarVersoes();
         }
 
         async function excluirVersao(id) {
             const v = versoesApk.find(x => x.id === id);
             if (!v) return;
-            if (!confirm(`Excluir versão ${v.versao}?\n\nO APK no storage também será removido.`)) return;
+            if (!confirm(`Excluir versão ${v.versao}?`)) return;
 
             try {
                 const nomeArquivo = v.url_apk.split('/').pop();
                 await supabaseClient.storage.from('apk').remove([nomeArquivo]);
-            } catch (e) { console.warn("Arquivo não encontrado:", e); }
+            } catch (e) { console.warn(e); }
 
             const { error } = await supabaseClient.from('versoes_apk').delete().eq('id', id);
-            if (error) { toast("Erro ao excluir.", true); return; }
-            toast("Versão excluída.");
+            if (error) { toast("Erro.", true); return; }
+            toast("Excluída.");
             carregarVersoes();
         }
 
