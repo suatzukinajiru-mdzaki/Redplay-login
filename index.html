@@ -7,909 +7,611 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --vermelho-redplay: #e50914;
+            --vermelho: #e50914;
             --vermelho-escuro: #b20710;
-            --fundo-preto: #000000;
-            --texto-claro: #ffffff;
+            --preto: #000000;
+            --painel: #141414;
+            --borda: #2a2a2a;
+            --texto: #ffffff;
+            --texto-suave: #a0a0a0;
+            --verde: #00c853;
+            --amarelo: #ffab00;
+            --dourado: #ffc107;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', Arial, sans-serif; }
-        body { background-color: var(--fundo-preto); color: var(--texto-claro); height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; }
+        body { background: #000; color: #fff; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; }
 
-        #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--fundo-preto);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 9999; transition: opacity 0.3s ease-out;
-        }
-        .splash-logo { width: 180px; margin-bottom: 30px; }
-        .loader { border: 4px solid rgba(229, 9, 20, 0.2); border-top: 4px solid var(--vermelho-redplay); border-radius: 50%; width: 40px; height: 40px; -webkit-animation: spin 0.8s linear infinite; animation: spin 0.8s linear infinite; }
-        .bg-glow { position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, rgba(229,9,20,0.15) 0%, rgba(0,0,0,0) 70%); top: 50%; left: 50%; margin-left: -150px; margin-top: -150px; z-index: 0; }
+        /* SPLASH */
+        #splash { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.4s; }
+        .splash-logo { width: 200px; margin-bottom: 30px; }
+        .loader { border: 4px solid rgba(229,9,20,0.2); border-top-color: #e50914; border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; -webkit-animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @-webkit-keyframes spin { to { -webkit-transform: rotate(360deg); } }
 
-        .box {
-            position: relative; z-index: 1;
-            background: rgba(15, 15, 15, 0.92);
-            border: 1px solid rgba(229, 9, 20, 0.3);
-            border-radius: 20px;
-            padding: 40px 35px;
-            width: 90%; max-width: 500px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-        }
-        .box.hidden { display: none; }
-        .login-logo { width: 140px; margin-bottom: 10px; }
-        .badge {
-            display: inline-block;
-            background: #e50914;
-            font-size: 10px; font-weight: 700;
-            padding: 3px 10px; border-radius: 12px;
-            margin-bottom: 20px;
-        }
+        /* CARDS */
+        .card { position: relative; z-index: 1; background: rgba(15,15,15,0.95); border: 1px solid rgba(229,9,20,0.3); border-radius: 20px; padding: 35px 30px; width: 90%; max-width: 620px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.7); max-height: 94vh; overflow-y: auto; }
+        .card.hidden { display: none; }
 
-        .input-container { margin-bottom: 15px; position: relative; }
-        input {
-            width: 100%; padding: 15px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid #333; border-radius: 10px;
-            color: white; font-size: 16px;
-            text-align: center; outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        input:focus {
-            border-color: var(--vermelho-redplay);
-            box-shadow: 0 0 25px rgba(229, 9, 20, 0.6);
-            background: rgba(0, 0, 0, 0.9);
-        }
-        input::placeholder { color: #666; text-transform: uppercase; font-size: 14px; }
-        .input-senha-wrap { position: relative; }
-        .input-senha-wrap input { padding-right: 50px; }
-        .btn-olho {
-            position: absolute; right: 12px; top: 50%; margin-top: -15px;
-            background: transparent; border: none; color: #888; font-size: 22px;
-            cursor: pointer; padding: 5px 8px; line-height: 1;
-        }
-        .btn-olho:hover, .btn-olho:focus { color: var(--vermelho-redplay); }
+        .logo-red { width: 130px; margin-bottom: 15px; }
+        .badge { display: inline-block; background: #e50914; font-size: 10px; font-weight: 700; padding: 4px 12px; border-radius: 12px; margin-bottom: 20px; letter-spacing: 1px; }
+        h1 { color: #e50914; font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        h2 { color: #e50914; font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
+        p { color: #ccc; font-size: 14px; line-height: 1.6; margin-bottom: 12px; }
 
-        .lembrar-wrap {
-            display: -webkit-flex; display: flex;
-            -webkit-align-items: center; align-items: center;
-            -webkit-justify-content: center; justify-content: center;
-            gap: 8px; margin-top: 5px; margin-bottom: 10px;
-            cursor: pointer; padding: 8px; border-radius: 8px;
-        }
-        .lembrar-wrap input[type="checkbox"] {
-            width: 20px; height: 20px;
-            cursor: pointer;
-        }
-        .lembrar-wrap label { font-size: 14px; color: #bbb; cursor: pointer; }
+        .destaque { color: #ffc107; font-weight: 700; }
+        .dias-grande { font-size: 60px; font-weight: 900; color: #00c853; margin: 15px 0; }
 
-        button.btn-principal {
-            width: 100%; padding: 16px; margin-top: 8px;
-            background: #b20710;
-            background: linear-gradient(90deg, #e50914, #b20710);
-            color: white; border: none; border-radius: 10px;
-            font-size: 16px; font-weight: 700; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 1px;
-            transition: 0.2s;
-        }
-        button.btn-principal:hover:not(:disabled) { background: #e50914; }
-        button.btn-principal:focus:not(:disabled) {
-            outline: 3px solid #fff;
-            outline-offset: 3px;
-            background: #e50914;
-        }
-        button.btn-principal:disabled { opacity: 0.4; cursor: not-allowed; }
-        .msg-erro { color: #ff4d4d; font-size: 13px; margin-top: 15px; font-weight: 600; opacity: 0; display: block; }
+        /* BOTÕES */
+        button { cursor: pointer; border: none; font-family: inherit; }
+        .btn { width: 100%; padding: 15px 20px; border-radius: 10px; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; margin-bottom: 10px; }
+        .btn-primario { background: #e50914; background: linear-gradient(90deg,#e50914,#b20710); color: #fff; }
+        .btn-primario:hover:not(:disabled), .btn-primario:focus:not(:disabled) { background: #e50914; outline: 3px solid #fff; outline-offset: 2px; }
+        .btn-primario:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-whats { background: #25D366; color: #fff; }
+        .btn-whats:focus { outline: 3px solid #fff; }
+        .btn-cinza { background: transparent; color: #888; border: 1px solid #444; }
+        .btn-cinza:focus { outline: 3px solid #fff; color: #fff; }
 
-        #tela-boas-vindas {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: #000000;
-            z-index: 99998; display: none;
-            -webkit-justify-content: center; justify-content: center;
-            -webkit-align-items: center; align-items: center;
-            text-align: center; padding: 30px;
-            opacity: 0; transition: opacity 0.5s ease;
-        }
-        #tela-boas-vindas.ativo { display: -webkit-flex; display: flex; opacity: 1; }
-        #tela-boas-vindas.saindo { opacity: 0; }
-        .bv-conteudo { max-width: 550px; }
-        .bv-emoji { font-size: 90px; margin-bottom: 15px; }
-        .bv-titulo { color: var(--vermelho-redplay); font-size: 32px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px; }
-        .bv-usuario { color: #fff; font-size: 26px; font-weight: 700; margin-bottom: 20px; padding: 12px 30px; background: rgba(229, 9, 20, 0.15); border: 2px solid rgba(229, 9, 20, 0.4); border-radius: 50px; display: inline-block; }
-        .bv-mensagem { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 22px; line-height: 1.4; }
-        .bv-mensagem span { color: var(--vermelho-redplay); font-weight: 900; }
-        .bv-status { display: inline-block; padding: 10px 22px; background: rgba(0, 200, 83, 0.15); border: 1px solid rgba(0, 200, 83, 0.4); border-radius: 50px; margin-bottom: 20px; }
-        .bv-status-texto { color: #00c853; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .bv-vencimento { color: #aaa; font-size: 15px; margin-bottom: 25px; }
-        .bv-venc-data { color: #fff; font-weight: 700; margin-left: 5px; }
-        .bv-venc-dias { display: block; margin-top: 5px; color: #ffab00; font-size: 13px; font-weight: 700; }
-        .bv-loader { width: 220px; height: 4px; background: rgba(229, 9, 20, 0.2); border-radius: 4px; margin: 0 auto 15px; overflow: hidden; }
-        .bv-bar { height: 100%; background: #e50914; border-radius: 4px; width: 0%; }
-        .bv-msg { color: #666; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; }
+        /* PLANOS */
+        .plano-card { background: #1a1a1a; border: 2px solid #2a2a2a; border-radius: 14px; padding: 18px 20px; margin-bottom: 12px; text-align: left; cursor: pointer; transition: 0.2s; }
+        .plano-card:hover, .plano-card:focus { border-color: #e50914; outline: none; transform: scale(1.02); background: #202020; }
+        .plano-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        .plano-nome { color: #fff; font-size: 16px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+        .plano-preco { color: #00c853; font-size: 22px; font-weight: 900; }
+        .plano-desc { color: #888; font-size: 12px; }
+        .plano-tag { display: inline-block; background: #ffab00; color: #000; font-size: 9px; font-weight: 900; padding: 2px 8px; border-radius: 8px; margin-left: 8px; letter-spacing: 1px; }
+        .plano-card.destaque { border-color: #ffab00; }
 
-        #overlay-bloqueio {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: #1a0000;
-            z-index: 99999; display: none;
-            -webkit-flex-direction: column; flex-direction: column;
-            -webkit-justify-content: center; justify-content: center;
-            -webkit-align-items: center; align-items: center;
-            text-align: center; padding: 40px 25px;
-        }
-        #overlay-bloqueio.ativo { display: -webkit-flex; display: flex; }
-        .icone-bloqueio { font-size: 80px; margin-bottom: 15px; }
-        #overlay-bloqueio h2 { color: var(--vermelho-redplay); font-size: 26px; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; }
-        .aviso-pagamento { color: #ffcc00; font-size: 15px; font-weight: 700; margin-bottom: 10px; }
-        .aviso-suporte { color: #ff4d4d; font-weight: 700; font-size: 16px; margin-bottom: 12px; }
-        #overlay-bloqueio p { color: #ccc; font-size: 15px; line-height: 1.6; max-width: 520px; margin-bottom: 10px; }
-        #overlay-bloqueio .motivo {
-            color: #ff4d4d; font-weight: 700; font-size: 15px;
-            margin-top: 5px; margin-bottom: 22px;
-            padding: 12px 22px;
-            background: rgba(229, 9, 20, 0.1);
-            border: 1px solid rgba(229, 9, 20, 0.4);
-            border-radius: 10px;
-            max-width: 550px;
-        }
-        .btn-whatsapp {
-            display: inline-block;
-            background: #25D366;
-            color: white; border: none; padding: 16px 32px;
-            border-radius: 50px; font-size: 16px; font-weight: 700;
-            text-decoration: none; text-transform: uppercase;
-            letter-spacing: 1px; cursor: pointer; margin-bottom: 18px;
-        }
-        .btn-whatsapp:focus { outline: 3px solid #fff; outline-offset: 3px; }
-        .btn-fechar-app {
-            display: inline-block;
-            background: transparent; color: #888; border: 1px solid #444;
-            padding: 12px 26px; border-radius: 50px;
-            font-size: 13px; font-weight: 700;
-            cursor: pointer; text-transform: uppercase;
-            margin-top: 5px;
-        }
-        .btn-fechar-app:hover, .btn-fechar-app:focus { color: white; border-color: #e50914; }
-        .numero-contato { color: #fff; font-size: 20px; font-weight: 900; letter-spacing: 2px; margin-bottom: 20px; }
-        .texto-contador { color: #888; font-size: 13px; margin-top: 15px; }
-        .texto-contador strong { color: #ff4d4d; font-size: 18px; }
-        .rodape-bloqueio { color: #555; font-size: 12px; position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; }
+        /* QR CODE */
+        .qr-img { background: #fff; border-radius: 15px; padding: 15px; margin: 15px auto 20px; max-width: 280px; }
+        .qr-img img { width: 100%; display: block; }
+        .pix-code { background: #000; border: 1px solid #2a2a2a; border-radius: 10px; padding: 12px; font-family: monospace; font-size: 11px; word-break: break-all; color: #888; text-align: left; margin-bottom: 15px; max-height: 80px; overflow-y: auto; }
+        .polling-status { display: flex; align-items: center; justify-content: center; gap: 10px; color: #ffab00; font-size: 13px; margin-bottom: 15px; font-weight: 700; }
+        .mini-loader { border: 3px solid rgba(255,171,0,0.2); border-top-color: #ffab00; border-radius: 50%; width: 20px; height: 20px; animation: spin 0.8s linear infinite; -webkit-animation: spin 0.8s linear infinite; }
 
-        #overlay-atualizacao {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: #1a0000;
-            z-index: 999999; display: none;
-            -webkit-justify-content: center; justify-content: center;
-            -webkit-align-items: center; align-items: center;
-            text-align: center; padding: 40px 25px;
-        }
-        #overlay-atualizacao.ativo { display: -webkit-flex; display: flex; }
-        .atualiza-conteudo { max-width: 500px; }
-        .atualiza-icone { font-size: 90px; margin-bottom: 15px; }
-        .atualiza-titulo { color: #ffcc00; font-size: 28px; font-weight: 900; text-transform: uppercase; margin-bottom: 15px; }
-        .atualiza-versao { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 20px; }
-        .atualiza-changelog {
-            background: rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,171,0,0.4);
-            border-radius: 12px;
-            padding: 15px 20px;
-            margin-bottom: 25px;
-            text-align: left;
-            font-size: 13px;
-            color: #ccc;
-            line-height: 1.6;
-            white-space: pre-line;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        .atualiza-btn {
-            display: inline-block;
-            background: #ffab00;
-            color: #000; border: none; padding: 18px 40px;
-            border-radius: 50px; font-size: 17px; font-weight: 900;
-            text-decoration: none; text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-        .atualiza-btn:focus { outline: 3px solid #fff; outline-offset: 3px; }
-        .atualiza-instrucoes { color: #888; font-size: 14px; line-height: 1.6; margin-bottom: 30px; }
-        .atualiza-rodape { color: #555; font-size: 12px; position: absolute; bottom: 25px; left: 0; right: 0; text-align: center; }
+        /* FORMULÁRIO */
+        .field { margin-bottom: 15px; text-align: left; }
+        .field label { display: block; color: #888; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .field input { width: 100%; padding: 14px; background: #000; border: 2px solid #2a2a2a; border-radius: 10px; color: #fff; font-size: 16px; outline: none; transition: 0.2s; text-align: center; }
+        .field input:focus { border-color: #e50914; box-shadow: 0 0 20px rgba(229,9,20,0.5); }
+        .msg-erro { color: #ff4d4d; font-size: 13px; margin-top: 12px; font-weight: 700; min-height: 18px; display: block; }
+        .msg-sucesso { color: #00c853; font-size: 13px; margin-top: 12px; font-weight: 700; display: block; }
 
-        @-webkit-keyframes spin { 0% { -webkit-transform: rotate(0deg); } 100% { -webkit-transform: rotate(360deg); } }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @-webkit-keyframes shake { 0%, 100% { -webkit-transform: translateX(0); } 20%, 60% { -webkit-transform: translateX(-5px); } 40%, 80% { -webkit-transform: translateX(5px); } }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
-        .shake-animation { -webkit-animation: shake 0.4s ease-in-out; animation: shake 0.4s ease-in-out; border-color: #ff4d4d !important; background: rgba(255, 77, 77, 0.1) !important; }
-        .loading { pointer-events: none; opacity: 0.7; }
+        /* BOAS-VINDAS */
+        .bv-emoji { font-size: 80px; margin-bottom: 15px; animation: pulse 1.5s infinite alternate; -webkit-animation: pulse 1.5s infinite alternate; }
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.15); } }
+        .bv-usuario { color: #fff; font-size: 26px; font-weight: 900; margin-bottom: 20px; padding: 12px 30px; background: rgba(229,9,20,0.15); border: 2px solid rgba(229,9,20,0.4); border-radius: 50px; display: inline-block; }
+        .bv-mensagem { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 25px; }
+        .bv-mensagem span { color: #e50914; font-weight: 900; }
+        .bv-status { display: inline-block; padding: 10px 22px; background: rgba(0,200,83,0.15); border: 1px solid rgba(0,200,83,0.4); border-radius: 50px; margin-bottom: 20px; }
+        .bv-status-txt { color: #00c853; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .barra { width: 240px; height: 5px; background: rgba(229,9,20,0.2); border-radius: 5px; margin: 20px auto 12px; overflow: hidden; }
+        .barra-inner { height: 100%; background: #e50914; border-radius: 5px; width: 0%; transition: width 0.1s linear; }
+        .bv-msg { color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* INFO PEQUENA */
+        .info-sm { color: #666; font-size: 11px; margin-top: 15px; }
+        .topo-titulo { color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; }
     </style>
 </head>
 <body>
 
-    <div id="splash-screen">
-        <img src="download.png" alt="RedPlay Logo" class="splash-logo">
-        <div class="loader"></div>
-    </div>
-    <div class="bg-glow"></div>
+<!-- ================= SPLASH ================= -->
+<div id="splash">
+    <img src="download.png" alt="RedPlay" class="splash-logo" onerror="this.style.display='none'">
+    <div class="loader"></div>
+</div>
 
-    <div class="box hidden" id="caixa-login">
-        <img src="download.png" alt="RedPlay" class="login-logo">
-        <br>
-        <span class="badge">V6 SECURE</span>
+<!-- ================= TELA: TRIAL ATIVO ================= -->
+<div class="card hidden" id="tela-trial">
+    <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
+    <span class="badge">BEM-VINDO À REDPLAY</span>
+    <h1>Período de Teste</h1>
+    <p>Você tem acesso <strong class="destaque">GRÁTIS</strong> por 3 dias!</p>
+    <div class="dias-grande" id="dias-restantes">3</div>
+    <p style="color: #888; font-size: 13px;">dias restantes</p>
+    <p style="margin-top: 20px; color: #ffc107; font-weight: 700;">Aproveite todos os filmes, séries e canais ao vivo!</p>
+    <div class="barra"><div class="barra-inner" id="barra-trial"></div></div>
+    <p class="bv-msg">Preparando seu entretenimento...</p>
+</div>
 
-        <div class="input-container">
-            <input type="text" id="servidor" placeholder="Utilizador" autocomplete="off">
-        </div>
-        <div class="input-container">
-            <div class="input-senha-wrap">
-                <input type="password" id="senha" placeholder="Senha" autocomplete="off">
-                <button type="button" class="btn-olho" id="btn-olho" onclick="toggleSenha()" tabindex="0">👁️</button>
-            </div>
-        </div>
-        <div class="lembrar-wrap" tabindex="0" id="wrap-lembrar">
-            <input type="checkbox" id="lembrar" tabindex="-1">
-            <label for="lembrar">Lembrar-me</label>
-        </div>
-        <button id="btn-entrar" class="btn-principal" onclick="verificarAcesso()" tabindex="0">Conectar</button>
-        <span id="msg-erro" class="msg-erro">Utilizador ou senha incorretos.</span>
-    </div>
+<!-- ================= TELA: ESCOLHA DE PLANO ================= -->
+<div class="card hidden" id="tela-planos">
+    <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
+    <span class="badge">SELECIONE SEU PLANO</span>
+    <h2>Escolha o melhor para você</h2>
+    <p style="margin-bottom: 20px;">Assine agora e continue assistindo!</p>
 
-    <div id="tela-boas-vindas">
-        <div class="bv-conteudo">
-            <div class="bv-emoji">🎬</div>
-            <h1 class="bv-titulo">Bem-vindo!</h1>
-            <p class="bv-usuario" id="bv-usuario">cliente</p>
-            <p class="bv-mensagem"><span>Aproveite o conteúdo RedPlay!</span></p>
-            <div class="bv-status">
-                <span class="bv-status-texto">Conta ativa</span>
-            </div>
-            <div class="bv-vencimento" id="bv-vencimento" style="display: none;">
-                <span>Vencimento:</span>
-                <span class="bv-venc-data" id="bv-data">—</span>
-                <span class="bv-venc-dias" id="bv-dias"></span>
-            </div>
-            <div class="bv-loader"><div class="bv-bar" id="bv-bar"></div></div>
-            <p class="bv-msg">Preparando seu entretenimento...</p>
+    <div class="plano-card destaque" tabindex="0" onclick="escolherPlano('mensal_primeiro')" id="plano-mensal1">
+        <div class="plano-top">
+            <span class="plano-nome">Mensal <span class="plano-tag">1ª VEZ</span></span>
+            <span class="plano-preco">R$ 12,90</span>
         </div>
+        <div class="plano-desc">Primeiro mês com desconto especial</div>
     </div>
 
-    <div id="overlay-bloqueio">
-        <div class="icone-bloqueio" id="icone-bloqueio">🔒</div>
-        <h2 id="titulo-bloqueio">Acesso Bloqueado</h2>
-        <p class="aviso-pagamento" id="aviso-principal">Sua conta está inativa</p>
-        <p class="aviso-suporte" id="aviso-secundario">Para reativar, CONTATE O SUPORTE</p>
-        <div class="motivo" id="motivo-bloqueio">Conta desativada</div>
-        <a href="https://wa.me/55997340723" target="_blank" class="btn-whatsapp" id="btn-whatsapp-bloqueio" tabindex="0">
-            Falar no WhatsApp
-        </a>
-        <div class="numero-contato">(55) 99973-40723</div>
-        <button class="btn-fechar-app" onclick="fecharApp()" tabindex="0">Fechar aplicativo agora</button>
-        <p class="texto-contador" id="texto-contador">
-            O aplicativo será fechado automaticamente em
-            <strong id="contador-fechar">25</strong> segundos
-        </p>
-        <div class="rodape-bloqueio">RedPlay • Suporte ao Cliente</div>
-    </div>
-
-    <div id="overlay-atualizacao">
-        <div class="atualiza-conteudo">
-            <div class="atualiza-icone">📲</div>
-            <h2 class="atualiza-titulo">Atualização Necessária</h2>
-            <p class="atualiza-versao" id="atualiza-versao">Nova versão disponível</p>
-            <div class="atualiza-changelog" id="atualiza-changelog"></div>
-            <a href="#" id="btn-baixar-apk" class="atualiza-btn" tabindex="0">Baixar Nova Versão</a>
-            <p class="atualiza-instrucoes">Após baixar, instale o APK e abra o app novamente.</p>
-            <p class="atualiza-rodape">RedPlay • Atualização de Segurança</p>
+    <div class="plano-card" tabindex="0" onclick="escolherPlano('mensal')" id="plano-mensal">
+        <div class="plano-top">
+            <span class="plano-nome">Mensal</span>
+            <span class="plano-preco">R$ 18,90</span>
         </div>
+        <div class="plano-desc">Renovação automática mensal</div>
     </div>
 
-    <script>
-        // ==========================================
-        // CONFIGURAÇÃO — SEM SDK, USANDO FETCH DIRETO
-        // ==========================================
-        var SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
-        var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
+    <div class="plano-card" tabindex="0" onclick="escolherPlano('anual')" id="plano-anual">
+        <div class="plano-top">
+            <span class="plano-nome">Anual <span class="plano-tag">MELHOR</span></span>
+            <span class="plano-preco">R$ 149,90</span>
+        </div>
+        <div class="plano-desc">12 meses com desconto. Economize R$ 76!</div>
+    </div>
 
-        var STORAGE_KEY = "redplay_credenciais";
-        var DEVICE_KEY = "redplay_device_id";
-        var VERSAO_KEY = "redplay_versao_instalada";
+    <div class="plano-card" tabindex="0" onclick="escolherPlano('lifetime')" id="plano-lifetime">
+        <div class="plano-top">
+            <span class="plano-nome">Vitalício</span>
+            <span class="plano-preco">R$ 450,00</span>
+        </div>
+        <div class="plano-desc">Pague uma vez e assista para sempre</div>
+    </div>
 
-        // ==========================================
-        // FUNÇÃO GENÉRICA DE FETCH PARA API SUPABASE
-        // ==========================================
-        function apiSupabase(caminho, metodo, corpo, callback) {
-            var url = SUPABASE_URL + "/rest/v1/" + caminho;
-            var xhr = new XMLHttpRequest();
-            xhr.open(metodo || "GET", url, true);
-            xhr.setRequestHeader("apikey", SUPABASE_ANON_KEY);
-            xhr.setRequestHeader("Authorization", "Bearer " + SUPABASE_ANON_KEY);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.setRequestHeader("Prefer", "return=representation");
+    <a href="https://wa.me/55997340723" target="_blank" class="btn btn-whats" style="text-decoration: none; display: block; margin-top: 15px;">Falar no WhatsApp</a>
+</div>
 
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4) {
-                    var resposta = null;
-                    try {
-                        resposta = JSON.parse(xhr.responseText);
-                    } catch (e) {
-                        resposta = { erro: "Resposta inválida do servidor", texto: xhr.responseText };
-                    }
+<!-- ================= TELA: QR CODE PIX ================= -->
+<div class="card hidden" id="tela-qrcode">
+    <h2 id="qr-titulo">Pagamento PIX</h2>
+    <p style="color: #888; font-size: 13px; margin-bottom: 5px;">Escaneie o QR Code ou copie o código:</p>
+    <p class="destaque" id="qr-valor" style="font-size: 20px; margin-bottom: 15px;">R$ 0,00</p>
 
-                    console.log("API Response [" + xhr.status + "]:", resposta);
+    <div class="qr-img">
+        <img id="qr-image" src="" alt="QR Code PIX">
+    </div>
 
-                    if (xhr.status >= 200 && xhr.status < 300) {
-                        callback(null, resposta);
-                    } else {
-                        var erroMsg = "Erro HTTP " + xhr.status;
-                        if (resposta && resposta.message) erroMsg = resposta.message;
-                        if (resposta && resposta.hint) erroMsg += " | " + resposta.hint;
-                        callback(erroMsg, resposta);
-                    }
-                }
-            };
+    <div class="pix-code" id="qr-code-txt">Carregando código PIX...</div>
 
-            xhr.onerror = function() {
-                console.error("Erro de rede ao chamar:", url);
-                callback("Falha na conexão com o servidor", null);
-            };
+    <button class="btn btn-cinza" onclick="copiarPix()" id="btn-copiar" tabindex="0">Copiar Código PIX</button>
 
-            xhr.ontimeout = function() {
-                callback("Tempo de conexão esgotado", null);
-            };
+    <div class="polling-status" id="polling-status">
+        <div class="mini-loader"></div>
+        <span>Aguardando pagamento...</span>
+    </div>
 
-            xhr.timeout = 15000;
+    <button class="btn btn-cinza" onclick="voltarPlanos()" tabindex="0">Voltar aos planos</button>
+</div>
 
-            if (corpo) {
-                xhr.send(JSON.stringify(corpo));
+<!-- ================= TELA: CRIAR CONTA ================= -->
+<div class="card hidden" id="tela-criar-conta">
+    <span class="badge">PAGAMENTO CONFIRMADO</span>
+    <h2>Crie sua conta</h2>
+    <p style="color: #888; font-size: 13px; margin-bottom: 20px;">Escolha um usuário e senha para acessar</p>
+
+    <div class="field">
+        <label>Nome de Usuário</label>
+        <input type="text" id="novo-usuario" placeholder="ex: joao123" maxlength="20" autocomplete="off">
+    </div>
+
+    <div class="field">
+        <label>Senha</label>
+        <input type="password" id="nova-senha" placeholder="Mínimo 4 caracteres" maxlength="30" autocomplete="off">
+    </div>
+
+    <div class="field">
+        <label>WhatsApp (com DDD)</label>
+        <input type="tel" id="novo-whatsapp" placeholder="ex: 11999998888" maxlength="15" autocomplete="off">
+    </div>
+
+    <button class="btn btn-primario" id="btn-criar-conta" onclick="criarConta()" tabindex="0">Criar Minha Conta</button>
+    <span class="msg-erro" id="erro-conta"></span>
+</div>
+
+<!-- ================= TELA: BOAS-VINDAS ================= -->
+<div class="card hidden" id="tela-boas-vindas">
+    <div class="bv-emoji">🎬</div>
+    <h1>Bem-vindo!</h1>
+    <p class="bv-usuario" id="bv-usuario">cliente</p>
+    <p class="bv-mensagem"><span>Aproveite o conteúdo RedPlay!</span></p>
+    <div class="bv-status"><span class="bv-status-txt">Conta Ativa</span></div>
+    <div class="barra"><div class="barra-inner" id="barra-bv"></div></div>
+    <p class="bv-msg">Preparando seu entretenimento...</p>
+</div>
+
+<script>
+// ==========================================
+// CONFIGURAÇÃO
+// ==========================================
+var SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
+var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
+
+var FUNC_VERIFICAR = SUPABASE_URL + "/functions/v1/verificar-dispositivo";
+var FUNC_CRIAR_COBRANCA = SUPABASE_URL + "/functions/v1/super-service";
+var FUNC_CRIAR_CONTA = SUPABASE_URL + "/functions/v1/criar-conta-cliente";
+
+var DEVICE_KEY = "redplay_device_id";
+var pollingTimer = null;
+var pollingTentativas = 0;
+var MAX_POLLING = 60; // 5 minutos (a cada 5s)
+
+// ==========================================
+// OBTÉM ANDROID ID
+// ==========================================
+function obterDeviceId() {
+    try {
+        if (typeof AndroidApp !== 'undefined' && AndroidApp && typeof AndroidApp.getAndroidId === 'function') {
+            var androidId = AndroidApp.getAndroidId();
+            if (androidId && androidId !== 'ID-DESCONHECIDO' && androidId.length > 5) {
+                var deviceReal = 'DEV-' + androidId.substring(0, 12).toUpperCase();
+                try { localStorage.setItem(DEVICE_KEY, deviceReal); } catch(e) {}
+                return deviceReal;
+            }
+        }
+    } catch (e) { console.warn("Erro Android ID:", e); }
+
+    var id = null;
+    try { id = localStorage.getItem(DEVICE_KEY); } catch(e) {}
+    if (!id) {
+        id = 'DEV-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substring(2,8).toUpperCase();
+        try { localStorage.setItem(DEVICE_KEY, id); } catch(e) {}
+    }
+    return id;
+}
+
+// ==========================================
+// CHAMADA HTTP (XMLHttpRequest para TVs antigas)
+// ==========================================
+function chamarFuncao(url, corpo, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("apikey", SUPABASE_ANON_KEY);
+    xhr.setRequestHeader("Authorization", "Bearer " + SUPABASE_ANON_KEY);
+    xhr.timeout = 20000;
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            var resposta = null;
+            try { resposta = JSON.parse(xhr.responseText); } catch(e) { resposta = { erro: "Resposta inválida" }; }
+
+            if (xhr.status >= 200 && xhr.status < 300) {
+                callback(null, resposta);
             } else {
-                xhr.send();
+                var msg = resposta && resposta.erro ? resposta.erro : ("HTTP " + xhr.status);
+                callback(msg, resposta);
             }
         }
+    };
+    xhr.onerror = function() { callback("Falha na conexão", null); };
+    xhr.ontimeout = function() { callback("Tempo esgotado", null); };
+    xhr.send(JSON.stringify(corpo));
+}
 
-        // ==========================================
-        // DEVICE ID
-        // ==========================================
-        function obterDeviceId() {
-            try {
-                if (typeof AndroidApp !== 'undefined' && AndroidApp && typeof AndroidApp.getAndroidId === 'function') {
-                    var androidId = AndroidApp.getAndroidId();
-                    if (androidId && androidId !== 'ID-DESCONHECIDO' && androidId.length > 5) {
-                        var deviceReal = 'DEV-' + androidId.substring(0, 12).toUpperCase();
-                        try { localStorage.setItem(DEVICE_KEY, deviceReal); } catch (e) {}
-                        return deviceReal;
-                    }
-                }
-            } catch (e) {
-                console.warn("Erro Android ID:", e);
-            }
-            var id = null;
-            try { id = localStorage.getItem(DEVICE_KEY); } catch (e) {}
-            if (!id) {
-                id = 'DEV-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-                try { localStorage.setItem(DEVICE_KEY, id); } catch (e) {}
-            }
-            return id;
+// ==========================================
+// MOSTRAR TELA
+// ==========================================
+function mostrarTela(id) {
+    var telas = document.querySelectorAll('.card');
+    for (var i = 0; i < telas.length; i++) telas[i].classList.add('hidden');
+    document.getElementById(id).classList.remove('hidden');
+}
+
+// ==========================================
+// FLUXO INICIAL
+// ==========================================
+window.addEventListener('load', function() {
+    // Reseta se URL tiver ?reset=1
+    try {
+        if (window.location.search.indexOf('reset=1') >= 0) {
+            localStorage.clear();
+            console.log("Reset OK");
+        }
+    } catch(e) {}
+
+    setTimeout(function() {
+        var splash = document.getElementById('splash');
+        splash.style.opacity = '0';
+        setTimeout(function() {
+            splash.style.display = 'none';
+            iniciarApp();
+        }, 400);
+    }, 1500);
+});
+
+function iniciarApp() {
+    var device_id = obterDeviceId();
+    console.log("Device ID:", device_id);
+
+    chamarFuncao(FUNC_VERIFICAR, { android_id: device_id }, function(erro, dados) {
+        if (erro) {
+            console.error("Erro verificar:", erro);
+            // Em caso de erro, libera com aviso
+            document.getElementById('bv-usuario').innerText = "Cliente";
+            mostrarTela('tela-boas-vindas');
+            setTimeout(liberarAcessoApp, 3000);
+            return;
         }
 
-        function obterTipoDispositivo() {
-            var ua = navigator.userAgent.toLowerCase();
-            if (ua.indexOf("android tv") >= 0 || ua.indexOf("smarttv") >= 0 || ua.indexOf("leanback") >= 0) return "TV";
-            if (ua.indexOf("android") >= 0) return "Celular/Tablet";
-            if (ua.indexOf("iphone") >= 0 || ua.indexOf("ipad") >= 0) return "iPhone/iPad";
-            if (ua.indexOf("windows") >= 0 || ua.indexOf("mac") >= 0 || ua.indexOf("linux") >= 0) return "Computador";
-            return "Desconhecido";
-        }
+        console.log("Status:", dados);
 
-        // ==========================================
-        // VERIFICAR ATUALIZAÇÃO
-        // ==========================================
-        function verificarAtualizacao(callback) {
-            apiSupabase("versoes_apk?select=*&ativo=eq.true&order=versao_code.desc&limit=1", "GET", null, function(erro, data) {
-                if (erro) {
-                    console.warn("Erro verificar atualização:", erro);
-                    callback(false);
-                    return;
-                }
+        // Status possíveis
+        if (dados.status === 'teste_gratis' && dados.dias_restantes > 0) {
+            // Trial ativo
+            document.getElementById('dias-restantes').innerText = dados.dias_restantes;
+            mostrarTela('tela-trial');
+            animarBarra('barra-trial', 3000);
+            setTimeout(liberarAcessoApp, 3500);
 
-                if (!data || !Array.isArray(data) || data.length === 0) {
-                    callback(false);
-                    return;
-                }
-
-                var versaoInfo = data[0];
-                var versaoLocal = 0;
-                try { versaoLocal = parseInt(localStorage.getItem(VERSAO_KEY) || "0"); } catch(e) {}
-
-                var versaoServidor = versaoInfo.versao_code;
-
-                if (versaoServidor > versaoLocal && versaoInfo.obrigatoria) {
-                    mostrarAtualizacaoObrigatoria(versaoInfo);
-                    callback(true);
-                } else {
-                    callback(false);
-                }
-            });
-        }
-
-        function mostrarAtualizacaoObrigatoria(versaoData) {
-            document.getElementById('atualiza-versao').innerText = 'Nova versão ' + versaoData.versao + ' disponível';
-
-            var changeEl = document.getElementById('atualiza-changelog');
-            if (versaoData.changelog) {
-                changeEl.innerText = versaoData.changelog;
-                changeEl.style.display = 'block';
+        } else if (dados.status === 'pago' && !dados.conta_criada) {
+            // Pagou mas ainda não criou conta
+            if (dados.plano === 'lifetime' || dados.dias_restantes > 0) {
+                mostrarTela('tela-criar-conta');
             } else {
-                changeEl.style.display = 'none';
+                mostrarTela('tela-planos');
             }
 
-            document.getElementById('btn-baixar-apk').href = versaoData.url_apk;
-            document.getElementById('overlay-atualizacao').classList.add('ativo');
+        } else if ((dados.status === 'pago' && dados.conta_criada) || dados.plano === 'lifetime') {
+            // Conta ativa
+            document.getElementById('bv-usuario').innerText = dados.username || "Cliente";
+            mostrarTela('tela-boas-vindas');
+            animarBarra('barra-bv', 3000);
+            setTimeout(liberarAcessoApp, 3500);
+
+        } else {
+            // Expirado ou precisa assinar
+            mostrarTela('tela-planos');
+        }
+    });
+}
+
+function animarBarra(id, duracao) {
+    var barra = document.getElementById(id);
+    if (!barra) return;
+    barra.style.width = '0%';
+    var inicio = null;
+    function animar(tempo) {
+        if (!inicio) inicio = tempo;
+        var progresso = Math.min((tempo - inicio) / duracao, 1);
+        barra.style.width = (progresso * 100) + '%';
+        if (progresso < 1) requestAnimationFrame(animar);
+    }
+    requestAnimationFrame(animar);
+}
+
+// ==========================================
+// LIBERAR ACESSO
+// ==========================================
+function liberarAcessoApp() {
+    try {
+        if (typeof AndroidApp !== 'undefined' && AndroidApp && typeof AndroidApp.liberarAcesso === 'function') {
+            AndroidApp.liberarAcesso();
+        } else {
+            console.log("AndroidApp não disponível (modo navegador)");
+            alert("Acesso liberado! Aproveite o conteúdo RedPlay.");
+        }
+    } catch(e) { console.error("Erro liberar:", e); }
+}
+
+// ==========================================
+// ESCOLHER PLANO
+// ==========================================
+function escolherPlano(plano) {
+    console.log("Plano escolhido:", plano);
+
+    var device_id = obterDeviceId();
+    mostrarTela('tela-qrcode');
+    document.getElementById('qr-titulo').innerText = "Gerando PIX...";
+    document.getElementById('qr-code-txt').innerText = "Aguarde...";
+    document.getElementById('qr-image').src = "";
+
+    var btn = document.querySelector('.plano-card.destaque');
+    if (btn) btn.focus();
+
+    chamarFuncao(FUNC_CRIAR_COBRANCA, { plano: plano, device_id: device_id }, function(erro, dados) {
+        if (erro) {
+            console.error("Erro criar cobrança:", erro);
+            alert("Erro ao gerar PIX: " + erro);
+            voltarPlanos();
+            return;
         }
 
-        // ==========================================
-        // INICIAR (TIMEOUT DE SEGURANÇA)
-        // ==========================================
-        var splashJaSaiu = false;
+        if (!dados.sucesso || !dados.qr_code) {
+            alert("Erro: QR Code não foi gerado.");
+            voltarPlanos();
+            return;
+        }
 
-        function sairDaSplash() {
-            if (splashJaSaiu) return;
-            splashJaSaiu = true;
+        console.log("QR gerado:", dados);
 
-            var splash = document.getElementById('splash-screen');
-            if (splash) {
-                splash.style.opacity = '0';
+        document.getElementById('qr-titulo').innerText = "Pagamento PIX";
+        document.getElementById('qr-valor').innerText = "R$ " + (dados.valor || 0).toFixed(2).replace('.', ',');
+        document.getElementById('qr-code-txt').innerText = dados.qr_code;
+
+        // A imagem base64 pode vir sem prefixo ou com
+        if (dados.qr_code_base64) {
+            var b64 = dados.qr_code_base64;
+            if (b64.indexOf('data:image') !== 0) {
+                b64 = 'data:image/png;base64,' + b64;
+            }
+            document.getElementById('qr-image').src = b64;
+        }
+
+        // Inicia polling para detectar pagamento
+        iniciarPolling(plano);
+    });
+}
+
+// ==========================================
+// POLLING — VERIFICA SE PAGOU
+// ==========================================
+function iniciarPolling(planoEscolhido) {
+    pararPolling();
+    pollingTentativas = 0;
+
+    var device_id = obterDeviceId();
+    console.log("Iniciando polling...");
+
+    pollingTimer = setInterval(function() {
+        pollingTentativas++;
+        console.log("Polling tentativa " + pollingTentativas);
+
+        chamarFuncao(FUNC_VERIFICAR, { android_id: device_id }, function(erro, dados) {
+            if (erro) return;
+
+            if (dados.status === 'pago') {
+                console.log("Pagamento detectado!");
+                pararPolling();
+                mostrarTela('tela-criar-conta');
+                // Foca no campo usuario
                 setTimeout(function() {
-                    splash.style.display = 'none';
-                    mostrarLogin();
+                    var input = document.getElementById('novo-usuario');
+                    if (input) input.focus();
                 }, 300);
             }
+        });
+
+        if (pollingTentativas >= MAX_POLLING) {
+            console.log("Timeout do polling");
+            pararPolling();
+            document.getElementById('polling-status').innerHTML =
+                '<span style="color:#ff4d4d;">Pagamento não detectado. Verifique seu app do banco.</span>';
+        }
+    }, 5000);
+}
+
+function pararPolling() {
+    if (pollingTimer) {
+        clearInterval(pollingTimer);
+        pollingTimer = null;
+    }
+}
+
+// ==========================================
+// COPIAR PIX
+// ==========================================
+function copiarPix() {
+    var texto = document.getElementById('qr-code-txt').innerText;
+    if (!texto) return;
+
+    try {
+        var ta = document.createElement('textarea');
+        ta.value = texto;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+
+        var btn = document.getElementById('btn-copiar');
+        btn.innerText = "Copiado!";
+        setTimeout(function() { btn.innerText = "Copiar Código PIX"; }, 2000);
+    } catch(e) {
+        alert("Não foi possível copiar automaticamente. Selecione manualmente.");
+    }
+}
+
+// ==========================================
+// VOLTAR AOS PLANOS
+// ==========================================
+function voltarPlanos() {
+    pararPolling();
+    mostrarTela('tela-planos');
+    setTimeout(function() {
+        var primeiro = document.getElementById('plano-mensal1');
+        if (primeiro) primeiro.focus();
+    }, 300);
+}
+
+// ==========================================
+// CRIAR CONTA
+// ==========================================
+function criarConta() {
+    var usuario = document.getElementById('novo-usuario').value.trim();
+    var senha = document.getElementById('nova-senha').value.trim();
+    var whatsapp = document.getElementById('novo-whatsapp').value.trim();
+    var erroEl = document.getElementById('erro-conta');
+    var btn = document.getElementById('btn-criar-conta');
+
+    erroEl.innerText = "";
+    erroEl.style.color = "#ff4d4d";
+
+    if (!usuario || usuario.length < 3) {
+        erroEl.innerText = "Usuário precisa ter pelo menos 3 caracteres.";
+        return;
+    }
+    if (!senha || senha.length < 4) {
+        erroEl.innerText = "Senha precisa ter pelo menos 4 caracteres.";
+        return;
+    }
+    var zapLimpo = whatsapp.replace(/\D/g, '');
+    if (zapLimpo.length < 10) {
+        erroEl.innerText = "Informe um WhatsApp válido (com DDD).";
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = "Criando conta...";
+
+    var device_id = obterDeviceId();
+
+    chamarFuncao(FUNC_CRIAR_CONTA, {
+        android_id: device_id,
+        username: usuario,
+        senha: senha,
+        whatsapp: zapLimpo
+    }, function(erro, dados) {
+        btn.disabled = false;
+        btn.innerText = "Criar Minha Conta";
+
+        if (erro) {
+            console.error("Erro criar conta:", erro);
+            erroEl.innerText = erro;
+            return;
         }
 
-        // TIMEOUT DE SEGURANÇA: se em 6 segundos não sair, força o login
+        if (!dados.sucesso) {
+            erroEl.innerText = dados.erro || "Erro ao criar conta.";
+            return;
+        }
+
+        // Sucesso
+        erroEl.style.color = "#00c853";
+        erroEl.innerText = "Conta criada! Entrando...";
+
+        document.getElementById('bv-usuario').innerText = dados.usuario;
         setTimeout(function() {
-            if (!splashJaSaiu) {
-                console.warn("Timeout da splash - forçando login");
-                sairDaSplash();
-            }
-        }, 6000);
+            mostrarTela('tela-boas-vindas');
+            animarBarra('barra-bv', 3000);
+            setTimeout(liberarAcessoApp, 3500);
+        }, 1000);
+    });
+}
 
-        window.onload = function() {
-            console.log("App iniciado");
+// ==========================================
+// NAVEGAÇÃO POR CONTROLE (D-PAD) - Suporte Fire Stick / TV
+// ==========================================
+document.addEventListener('keydown', function(e) {
+    // Só processa se não for um input de texto
+    var tag = document.activeElement ? document.activeElement.tagName : '';
+    if (tag === 'INPUT' && e.key !== 'Enter') return;
 
-            try {
-                if (window.location.search.indexOf('reset=1') >= 0) {
-                    try { localStorage.clear(); } catch (e) {}
-                    console.log("localStorage limpo!");
-                }
-            } catch (e) {}
-
-            setTimeout(function() {
-                verificarAtualizacao(function(precisa) {
-                    if (precisa) {
-                        splashJaSaiu = true;
-                        return;
-                    }
-                    setTimeout(sairDaSplash, 1000);
-                });
-            }, 100);
-        };
-
-        function mostrarLogin() {
-            document.getElementById('caixa-login').classList.remove('hidden');
-            carregarCredenciaisSalvas();
-
-            var inputServidor = document.getElementById("servidor");
-            setTimeout(function() {
-                if (inputServidor.value) {
-                    document.getElementById("senha").focus();
-                } else {
-                    inputServidor.focus();
-                }
-            }, 300);
-        }
-
-        // ==========================================
-        // ELEMENTOS
-        // ==========================================
-        var inputServidor = document.getElementById("servidor");
-        var inputSenha = document.getElementById("senha");
-        var msgErro = document.getElementById("msg-erro");
-        var btnEntrar = document.getElementById("btn-entrar");
-        var chkLembrar = document.getElementById("lembrar");
-        var btnOlho = document.getElementById("btn-olho");
-        var wrapLembrar = document.getElementById("wrap-lembrar");
-
-        inputServidor.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.keyCode === 13) {
-                e.preventDefault();
-                inputSenha.focus();
-            }
-        });
-
-        inputSenha.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.keyCode === 13) {
-                e.preventDefault();
-                verificarAcesso();
-            }
-        });
-
-        wrapLembrar.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
-                e.preventDefault();
-                chkLembrar.checked = !chkLembrar.checked;
-            }
-        });
-
-        wrapLembrar.addEventListener('focus', function() {
-            wrapLembrar.style.background = 'rgba(229, 9, 20, 0.15)';
-        });
-        wrapLembrar.addEventListener('blur', function() {
-            wrapLembrar.style.background = '';
-        });
-
-        function toggleSenha() {
-            if (inputSenha.type === "password") {
-                inputSenha.type = "text";
-                btnOlho.innerText = "🙈";
-            } else {
-                inputSenha.type = "password";
-                btnOlho.innerText = "👁️";
+    // Setas entre planos
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        var planos = ['plano-mensal1', 'plano-mensal', 'plano-anual', 'plano-lifetime'];
+        var atual = -1;
+        for (var i = 0; i < planos.length; i++) {
+            if (document.activeElement === document.getElementById(planos[i])) {
+                atual = i;
+                break;
             }
         }
-
-        function carregarCredenciaisSalvas() {
-            try {
-                var salvo = localStorage.getItem(STORAGE_KEY);
-                if (salvo) {
-                    var dados = JSON.parse(salvo);
-                    inputServidor.value = dados.usuario || "";
-                    inputSenha.value = dados.senha || "";
-                    chkLembrar.checked = true;
-                }
-            } catch (e) {}
+        if (atual >= 0) {
+            e.preventDefault();
+            var proximo = e.key === 'ArrowDown' ? atual + 1 : atual - 1;
+            if (proximo < 0) proximo = planos.length - 1;
+            if (proximo >= planos.length) proximo = 0;
+            document.getElementById(planos[proximo]).focus();
         }
-
-        function salvarCredenciais() {
-            if (chkLembrar.checked) {
-                try {
-                    var dados = { usuario: inputServidor.value.trim(), senha: inputSenha.value.trim() };
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
-                } catch (e) {}
-            } else {
-                try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
-            }
-        }
-
-        function limparCredenciaisSalvas() {
-            try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
-        }
-
-        // ==========================================
-        // VERIFICAÇÃO DE LOGIN — USA FETCH DIRETO
-        // ==========================================
-        function verificarAcesso() {
-            var usuarioDigitado = inputServidor.value.trim();
-            var senhaDigitada = inputSenha.value.trim();
-
-            inputServidor.classList.remove("shake-animation");
-            inputSenha.classList.remove("shake-animation");
-            msgErro.style.opacity = "0";
-
-            if (!usuarioDigitado || !senhaDigitada) {
-                inputServidor.classList.add("shake-animation");
-                inputSenha.classList.add("shake-animation");
-                msgErro.innerText = "Preencha utilizador e senha.";
-                msgErro.style.opacity = "1";
-                return;
-            }
-
-            btnEntrar.classList.add("loading");
-            btnEntrar.innerText = "A VERIFICAR...";
-
-            // Monta a query REST — URL encode do usuário e senha
-            var usuarioEncode = encodeURIComponent(usuarioDigitado);
-            var senhaEncode = encodeURIComponent(senhaDigitada);
-
-            var caminho = "utilizadores?select=*&usuario=eq." + usuarioEncode + "&senha=eq." + senhaEncode + "&limit=1";
-
-            apiSupabase(caminho, "GET", null, function(erro, data) {
-                if (erro) {
-                    console.error("Erro API:", erro);
-                    erroLogin("Erro de conexão. [" + erro + "]");
-                    return;
-                }
-
-                if (!data || !Array.isArray(data) || data.length === 0) {
-                    limparCredenciaisSalvas();
-                    erroLogin("Utilizador ou senha incorretos.");
-                    return;
-                }
-
-                var cliente = data[0];
-
-                if (!cliente.ativo) {
-                    bloquearEFechar(
-                        "Sua conta foi desativada pelo administrador.",
-                        "Sua conta está inativa",
-                        "Para reativar, CONTATE O SUPORTE"
-                    );
-                    return;
-                }
-
-                if (cliente.vencimento && cliente.plano !== 'vitalicio') {
-                    var hoje = new Date();
-                    hoje.setHours(0, 0, 0, 0);
-                    var venc = new Date(cliente.vencimento + "T00:00:00");
-                    if (venc < hoje) {
-                        bloquearEFechar(
-                            "Sua assinatura venceu em " + formatarData(cliente.vencimento) + ".",
-                            "Sua assinatura venceu",
-                            "Para renovar, CONTATE O SUPORTE"
-                        );
-                        return;
-                    }
-                }
-
-                // Device binding
-                var deviceIdAtual = obterDeviceId();
-                var deviceNome = obterTipoDispositivo();
-                var listaDisp = obterDispositivosDoCliente(cliente);
-                var telasMax = cliente.telas_permitidas || 1;
-
-                var jaAutorizado = false;
-                for (var i = 0; i < listaDisp.length; i++) {
-                    if (listaDisp[i].id === deviceIdAtual) {
-                        jaAutorizado = true;
-                        break;
-                    }
-                }
-
-                if (!jaAutorizado) {
-                    if (listaDisp.length >= telasMax) {
-                        mostrarJaLogado(
-                            listaDisp[0] && listaDisp[0].nome ? listaDisp[0].nome : 'Desconhecido',
-                            listaDisp[0] && listaDisp[0].id ? listaDisp[0].id : 'sem ID',
-                            cliente.ultimo_acesso,
-                            cliente.usuario,
-                            cliente.revendedor_id,
-                            cliente.device_id,
-                            telasMax
-                        );
-                        return;
-                    }
-
-                    listaDisp.push({
-                        id: deviceIdAtual,
-                        nome: deviceNome,
-                        adicionado_em: new Date().toISOString()
-                    });
-                }
-
-                // Atualiza o cliente com o device
-                var caminhoUpdate = "utilizadores?usuario=eq." + usuarioEncode;
-                var corpoUpdate = {
-                    devices: listaDisp,
-                    device_id: deviceIdAtual,
-                    device_nome: deviceNome,
-                    ultimo_acesso: new Date().toISOString(),
-                    session_token: 'TKN-' + Date.now()
-                };
-
-                apiSupabase(caminhoUpdate, "PATCH", corpoUpdate, function(erroUp) {
-                    if (erroUp) {
-                        console.warn("Erro ao atualizar device:", erroUp);
-                    }
-
-                    salvarCredenciais();
-
-                    btnEntrar.classList.remove("loading");
-                    btnEntrar.innerText = "CONECTADO";
-                    btnEntrar.style.background = "#00c853";
-
-                    setTimeout(function() {
-                        mostrarBoasVindas(cliente.usuario, cliente.vencimento, cliente.plano);
-                    }, 300);
-                });
-            });
-        }
-
-        function erroLogin(mensagem) {
-            btnEntrar.classList.remove("loading");
-            btnEntrar.innerText = "CONECTAR";
-            btnEntrar.style.background = "";
-            inputServidor.classList.add("shake-animation");
-            inputSenha.classList.add("shake-animation");
-            msgErro.innerText = mensagem;
-            msgErro.style.opacity = "1";
-            inputSenha.value = "";
-            inputSenha.focus();
-        }
-
-        function obterDispositivosDoCliente(data) {
-            var lista = [];
-            if (data.devices) {
-                if (Array.isArray(data.devices)) {
-                    lista = data.devices.slice();
-                } else if (typeof data.devices === 'string') {
-                    try {
-                        var p = JSON.parse(data.devices);
-                        if (Array.isArray(p)) lista = p;
-                    } catch(e) {}
-                }
-            }
-            if (lista.length === 0 && data.device_id) {
-                lista = [{ id: data.device_id, nome: data.device_nome || 'Aparelho Antigo' }];
-            }
-            return lista;
-        }
-
-        // ==========================================
-        // BOAS-VINDAS
-        // ==========================================
-        function mostrarBoasVindas(usuario, vencimento, plano) {
-            var tela = document.getElementById('tela-boas-vindas');
-            document.getElementById('bv-usuario').innerText = usuario;
-
-            if (plano === 'vitalicio') {
-                document.getElementById('bv-data').innerText = 'VITALÍCIO';
-                document.getElementById('bv-dias').innerText = 'Acesso para sempre!';
-                document.getElementById('bv-dias').style.color = '#ffc107';
-                document.getElementById('bv-vencimento').style.display = 'block';
-            } else if (vencimento) {
-                var hoje = new Date(); hoje.setHours(0, 0, 0, 0);
-                var venc = new Date(vencimento + "T00:00:00");
-                var dias = Math.floor((venc - hoje) / (1000 * 60 * 60 * 24));
-
-                document.getElementById('bv-data').innerText = formatarData(vencimento);
-
-                var diasEl = document.getElementById('bv-dias');
-                if (dias <= 5) {
-                    diasEl.innerText = 'Vence em ' + dias + ' dia' + (dias !== 1 ? 's' : '') + '!';
-                    diasEl.style.color = '#ff4d4d';
-                } else if (dias <= 15) {
-                    diasEl.innerText = 'Vence em ' + dias + ' dias';
-                    diasEl.style.color = '#ffab00';
-                } else {
-                    diasEl.innerText = 'Acesso por mais ' + dias + ' dias';
-                    diasEl.style.color = '#00c853';
-                }
-                document.getElementById('bv-vencimento').style.display = 'block';
-            } else {
-                document.getElementById('bv-vencimento').style.display = 'none';
-            }
-
-            tela.classList.add('ativo');
-
-            var bar = document.getElementById('bv-bar');
-            var prog = 0;
-            var intervaloBar = setInterval(function() {
-                prog += 2;
-                if (prog >= 100) {
-                    prog = 100;
-                    clearInterval(intervaloBar);
-                }
-                bar.style.width = prog + '%';
-            }, 60);
-
-            setTimeout(function() {
-                tela.classList.add('saindo');
-                setTimeout(function() {
-                    tela.classList.remove('ativo');
-                    tela.classList.remove('saindo');
-                    if (typeof AndroidApp !== 'undefined' && AndroidApp && typeof AndroidApp.liberarAcesso === 'function') {
-                        try {
-                            AndroidApp.liberarAcesso();
-                        } catch (e) {
-                            console.warn("Erro liberarAcesso:", e);
-                        }
-                    } else {
-                        alert("Bem-vindo, " + usuario + "! Aproveite o conteúdo RedPlay.");
-                    }
-                }, 500);
-            }, 3000);
-        }
-
-        // ==========================================
-        // BLOQUEIO
-        // ==========================================
-        function bloquearEFechar(motivo, aviso1, aviso2) {
-            limparCredenciaisSalvas();
-
-            document.getElementById('icone-bloqueio').innerText = '🔒';
-            document.getElementById('titulo-bloqueio').innerText = 'Acesso Bloqueado';
-            document.getElementById('aviso-principal').innerText = aviso1 || 'Sua conta está inativa';
-            document.getElementById('aviso-secundario').innerText = aviso2 || 'Para reativar, CONTATE O SUPORTE';
-            document.getElementById('motivo-bloqueio').innerText = motivo;
-
-            var texto = encodeURIComponent("Olá! Minha conta RedPlay foi bloqueada. Motivo: " + motivo + ". Podem me ajudar?");
-            document.getElementById('btn-whatsapp-bloqueio').href = "https://wa.me/55997340723?text=" + texto;
-
-            document.getElementById('texto-contador').style.display = 'block';
-            document.getElementById('overlay-bloqueio').classList.add('ativo');
-
-            setTimeout(function() {
-                document.getElementById('btn-whatsapp-bloqueio').focus();
-            }, 300);
-
-            var segundos = 25;
-            var contador = document.getElementById('contador-fechar');
-            if (contador) contador.innerText = segundos;
-
-            var intervalo = setInterval(function() {
-                segundos--;
-                if (contador) contador.innerText = segundos;
-                if (segundos <= 0) {
-                    clearInterval(intervalo);
-                    fecharApp();
-                }
-            }, 1000);
-        }
-
-        function mostrarJaLogado(deviceNomeAntigo, deviceIdAntigo, ultimoAcesso, usuario, revendedorId, deviceIdSalvo, telasMax) {
-            var deviceIdAtual = obterDeviceId();
-            var deviceNomeAtual = obterTipoDispositivo();
-
-            // Salva tentativa
-            try {
-                apiSupabase("devices_pendentes", "POST", {
-                    usuario: usuario,
-                    device_id: deviceIdAtual,
-                    device_nome: deviceNomeAtual,
-                    revendedor_id: revendedorId,
-                    status: 'pendente',
-                    observacoes: 'Tentou com device_id: ' + deviceIdAtual
-                }, function() {});
-            } catch (e) {}
-
-            document.getElementById('icone-bloqueio').innerText = '📱';
-            document.getElementById('titulo-bloqueio').innerText = 'Limite de telas atingido';
-            document.getElementById('aviso-principal').innerText = 'Sua conta já está ativa em outro aparelho';
-            document.getElementById('aviso-secundario').innerText = 'Aguarde aprovação do suporte';
-
-            var dataAcesso = ultimoAcesso ? new Date(ultimoAcesso).toLocaleString('pt-BR') : 'desconhecida';
-
-            document.getElementById('motivo-bloqueio').innerHTML =
-                '<strong>Sua conta já está ativa em:</strong><br>' +
-                deviceNomeAntigo + '<br>' +
-                'ID: ' + (deviceIdSalvo || deviceIdAntigo || 'sem ID') + '<br>' +
-                'Último acesso: ' + dataAcesso + '<br><br>' +
-                '<span style="color: #ffcc00; font-size: 13px;">' +
-                '<strong>Novo aparelho detectado:</strong><br>' +
-                deviceNomeAtual + '<br>' +
-                'ID: ' + deviceIdAtual + '<br><br>' +
-                '<strong>Aguarde aprovação do suporte</strong>' +
-                '</span>';
-
-            var texto = encodeURIComponent(
-                'Olá! Estou logando minha conta RedPlay em um novo aparelho.\n\n' +
-                'Usuário: ' + usuario + '\n' +
-                'Aparelho: ' + deviceNomeAtual + '\n' +
-                'ID: ' + deviceIdAtual + '\n\n' +
-                'Podem liberar?'
-            );
-            document.getElementById('btn-whatsapp-bloqueio').href = "https://wa.me/55997340723?text=" + texto;
-
-            document.getElementById('texto-contador').style.display = 'none';
-            document.getElementById('overlay-bloqueio').classList.add('ativo');
-
-            setTimeout(function() {
-                document.getElementById('btn-whatsapp-bloqueio').focus();
-            }, 300);
-        }
-
-        function fecharApp() {
-            if (typeof AndroidApp !== 'undefined' && AndroidApp && typeof AndroidApp.fecharApp === 'function') {
-                try {
-                    AndroidApp.fecharApp();
-                    return;
-                } catch (e) {}
-            }
-            try { window.close(); } catch (e) {}
-            setTimeout(function() {
-                try { window.location.href = "about:blank"; } catch (e) {}
-            }, 100);
-        }
-
-        function formatarData(iso) {
-            var parts = iso.split("-");
-            return parts[2] + '/' + parts[1] + '/' + parts[0];
-        }
-    </script>
+    }
+});
+</script>
 </body>
 </html>
