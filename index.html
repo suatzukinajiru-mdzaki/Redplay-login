@@ -13,6 +13,7 @@
             --verde: #00c853;
             --amarelo: #ffab00;
             --dourado: #ffc107;
+            --roxo: #8e24aa;
             --preto: #000000;
             --painel: #141414;
             --borda: #2a2a2a;
@@ -51,11 +52,11 @@
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             z-index: 99999;
-            transition: opacity 0.6s ease-out;
+            transition: opacity 0.5s ease-out;
         }
         .splash-logo {
             width: 280px; max-width: 30vw;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             animation: splashFloat 2.5s ease-in-out infinite;
             filter: drop-shadow(0 0 40px rgba(229,9,20,0.6));
         }
@@ -80,7 +81,7 @@
         }
         @keyframes pulseTxt { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
-        /* ================= CARD PRINCIPAL ================= */
+        /* ================= CARD ================= */
         .card {
             position: relative;
             background: linear-gradient(135deg, rgba(20,20,20,0.98) 0%, rgba(10,10,10,0.98) 100%);
@@ -90,7 +91,7 @@
             width: 100%;
             max-width: min(1000px, 92vw);
             max-height: 100%;
-            overflow-y: auto; overflow-x: hidden;
+            overflow-y: auto;
             text-align: center;
             box-shadow: 
                 0 30px 90px rgba(0,0,0,0.9),
@@ -108,7 +109,6 @@
         }
 
         .card::-webkit-scrollbar { width: 6px; }
-        .card::-webkit-scrollbar-track { background: transparent; }
         .card::-webkit-scrollbar-thumb { 
             background: linear-gradient(180deg, #e50914, #b20710);
             border-radius: 3px;
@@ -186,8 +186,8 @@
         .trial-container {
             position: relative;
             margin: clamp(15px, 2.5vh, 30px) 0;
-            padding: clamp(25px, 3.5vh, 45px) clamp(20px, 3vw, 40px);
-            background: linear-gradient(135deg, rgba(229,9,20,0.2) 0%, rgba(255,171,0,0.08) 100%);
+            padding: clamp(25px, 3.5vh, -color45px) clamp(20px, :3vw, # 40px);
+            background:e linear-gradient(135deg509, rgba(229,149,20,0.2) 0%, rgba(255,171,0,0.08) 100%);
             border: 3px solid rgba(229,9,20,0.5);
             border-radius: 26px;
             overflow: hidden;
@@ -225,7 +225,6 @@
             letter-spacing: 6px;
             margin-bottom: clamp(8px, 1.2vh, 18px);
             text-transform: uppercase;
-            text-shadow: 0 0 20px rgba(255,193,7,0.6);
         }
         
         .trial-dias {
@@ -258,7 +257,6 @@
             color: #e50914;
             text-transform: uppercase;
             letter-spacing: 3px;
-            text-shadow: 0 0 30px rgba(229,9,20,0.6);
             line-height: 1.1;
         }
         .trial-texto small {
@@ -268,7 +266,6 @@
             font-weight: 700;
             letter-spacing: 5px;
             margin-top: 6px;
-            text-shadow: none;
         }
         
         .trial-beneficios {
@@ -302,7 +299,6 @@
             color: #fff;
             font-weight: 700;
             margin-top: clamp(15px, 2vh, 25px);
-            box-shadow: 0 0 30px rgba(255,193,7,0.2);
             line-height: 1.5;
         }
         .trial-destaque strong { color: #ffc107; }
@@ -328,23 +324,18 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.5);
             outline: none;
             border: 3px solid transparent;
-            position: relative;
         }
         
         .btn-primario {
             background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
             color: #fff;
-            box-shadow: 
-                0 8px 35px rgba(229,9,20,0.5),
-                inset 0 1px 0 rgba(255,255,255,0.2);
+            box-shadow: 0 8px 35px rgba(229,9,20,0.5);
         }
         
         .btn-whats {
             background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
             color: #fff;
-            box-shadow: 
-                0 8px 35px rgba(37,211,102,0.4),
-                inset 0 1px 0 rgba(255,255,255,0.2);
+            box-shadow: 0 8px 35px rgba(37,211,102,0.4);
             text-decoration: none;
             display: inline-block;
             text-align: center;
@@ -356,13 +347,8 @@
             border: 3px solid #333;
         }
 
-        /* ============ FOCO TV (D-PAD) ============ */
         .btn:focus,
-        .btn.foco,
-        .plano-card:focus,
-        .plano-card.foco,
-        .lembrar-wrap:focus,
-        .lembrar-wrap.foco {
+        .btn.foco {
             transform: scale(1.03);
             border-color: #fff !important;
             box-shadow: 
@@ -388,8 +374,7 @@
             margin-bottom: clamp(6px, 0.8vh, 10px);
         }
         
-        input[type="text"],
-        input[type="password"] {
+        input {
             width: 100%;
             padding: clamp(15px, 2.2vh, 22px) clamp(18px, 2vw, 26px);
             background: rgba(0,0,0,0.7);
@@ -403,13 +388,10 @@
             outline: none;
             letter-spacing: 1px;
         }
-        input[type="text"]:focus,
-        input[type="password"]:focus,
+        input:focus,
         input.foco {
             border-color: #e50914 !important;
-            box-shadow: 
-                0 0 0 4px rgba(229,9,20,0.4),
-                0 0 45px rgba(229,9,20,0.6);
+            box-shadow: 0 0 0 4px rgba(229,9,20,0.4), 0 0 45px rgba(229,9,20,0.6);
             background: rgba(0,0,0,0.9);
             transform: scale(1.02);
         }
@@ -439,6 +421,15 @@
         .lembrar-wrap:hover {
             border-color: #444;
             background: rgba(0,0,0,0.6);
+        }
+        .lembrar-wrap:focus,
+        .lembrar-wrap.foco {
+            border !important;
+            background: rgba(229,9,20,0.15) !important;
+            box-shadow: 
+                0 0 0 4px rgba(255,255,255,0.95),
+                0 0 45px rgba(229,9,20,0.5) !important;
+            transform: scale(1.02);
         }
         .lembrar-wrap input[type="checkbox"] {
             width: clamp(22px, 2.8vh, 28px);
@@ -488,6 +479,16 @@
             transform: scaleY(0);
             transition: transform 0.25s;
         }
+        .plano-card:focus,
+        .plano-card.foco {
+            transform: scale(1.03);
+            border-color: #fff !important;
+            background: linear-gradient(135deg, #262626 0%, #1a1a1a 100%) !important;
+            box-shadow: 
+                0 0 0 4px rgba(255,255,255,0.95),
+                0 0 60px rgba(255,255,255,0.6),
+                0 15px 45px rgba(0,0,0,0.9) !important;
+        }
         .plano-card:focus::before,
         .plano-card.foco::before { transform: scaleY(1); }
         
@@ -508,9 +509,12 @@
         .plano-card.lifetime::before { 
             background: linear-gradient(180deg, #ffc107, #ff5722);
         }
-        .plano-card.lifetime:hover {
-            box-shadow: 0 0 50px rgba(255,193,7,0.5);
-            border-color: #ffd54f;
+        .plano-card.lifetime:focus,
+        .plano-card.lifetime.foco {
+            box-shadow: 
+                0 0 0 4px rgba(255,255,255,0.95),
+                0 0 70px rgba(255,193,7,0.8),
+                0 15px 45px rgba(0,0,0,0.9) !important;
         }
 
         .plano-top {
@@ -533,12 +537,8 @@
             font-size: clamp(19px, 2.8vh, 32px);
             font-weight: 900;
             white-space: nowrap;
-            text-shadow: 0 0 25px rgba(0,200,83,0.5);
         }
-        .plano-card.destaque .plano-preco { 
-            color: #ffc107;
-            text-shadow: 0 0 25px rgba(255,193,7,0.5);
-        }
+        .plano-card.destaque .plano-preco { color: #ffc107; }
         .plano-card.lifetime .plano-preco { 
             color: #ffc107;
             text-shadow: 0 0 30px rgba(255,193,7,0.8);
@@ -662,7 +662,6 @@
             border: 3px solid rgba(229,9,20,0.6);
             border-radius: 60px;
             display: inline-block;
-            box-shadow: 0 0 50px rgba(229,9,20,0.5);
             letter-spacing: 3px;
             text-transform: uppercase;
         }
@@ -676,7 +675,6 @@
         .bv-mensagem span {
             color: #e50914;
             font-weight: 900;
-            text-shadow: 0 0 30px rgba(229,9,20,0.6);
         }
         .bv-status {
             display: inline-block;
@@ -685,7 +683,6 @@
             border: 3px solid rgba(0,200,83,0.6);
             border-radius: 60px;
             margin-bottom: clamp(20px, 2.5vh, 30px);
-            box-shadow: 0 0 40px rgba(0,200,83,0.3);
         }
         .bv-status-txt {
             color: #00c853;
@@ -709,7 +706,6 @@
             border-radius: 8px;
             width: 0%;
             transition: width 0.1s linear;
-            box-shadow: 0 0 20px rgba(229,9,20,0.8);
         }
         .bv-msg {
             color: #666;
@@ -757,8 +753,10 @@
             <div class="trial-icone">⭐</div>
             <div class="trial-label">Você tem direito a</div>
             <div class="trial-dias">
-                <div class="trial-numero">3</div>
+                <div class="trial-numero" id="dias-restantes">3</div>
                 <div class="trial-texto">Dias Grátis<small>Acesso Completo</small></div>
             </div>
             <div class="trial-beneficios">
-                <div class
+                <div class="trial-beneficio"><span>🎬</span><span>Filmes 4K</span></div>
+                <div class="trial-beneficio"><span>📺</span><span>Séries HD</span></div>
+                <
