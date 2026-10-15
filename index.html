@@ -11,8 +11,10 @@
             --vermelho: #e50914;
             --vermelho-hover: #f6121d;
             --verde-whats: #25D366;
-            --input-bg: rgba(22, 22, 22, 0.7);
-            --input-borda: rgba(255, 255, 255, 0.2);
+            --verde-sucesso: #00c853;
+            --amarelo-destaque: #ffab00;
+            --input-bg: rgba(22, 22, 22, 0.75);
+            --input-borda: rgba(255, 255, 255, 0.15);
             --texto: #ffffff;
             --texto-suave: #b3b3b3;
             --safe-h: 4vh;
@@ -42,58 +44,59 @@
             align-items: center;
             padding: var(--safe-h) var(--safe-v);
             background: 
-                linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 50%, rgba(0, 0, 0, 0.95) 100%),
-                radial-gradient(ellipse at center, rgba(229, 9, 20, 0.15) 0%, transparent 70%),
+                radial-gradient(circle at 50% 0%, rgba(229, 9, 20, 0.25) 0%, transparent 60%),
+                radial-gradient(circle at 50% 100%, rgba(10, 10, 10, 0.9) 0%, transparent 80%),
                 #000;
             background-size: cover;
             background-position: center;
         }
 
-        /* ================= TELA DE INICIALIZAÇÃO (ESTILO WINDOWS) ================= */
+        /* ================= TELA DE BOOT (ESTILO SYSTEM OS) ================= */
         #boot-screen {
             position: fixed;
             inset: 0;
-            background: #000;
+            background: #050505;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 99999;
-            transition: opacity 0.6s ease-out;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .boot-logo {
-            width: clamp(160px, 20vw, 240px);
+            width: clamp(170px, 22vw, 250px);
             margin-bottom: 40px;
-            filter: drop-shadow(0 0 30px rgba(229, 9, 20, 0.6));
-            animation: bootPulse 2s infinite alternate;
+            filter: drop-shadow(0 0 35px rgba(229, 9, 20, 0.7));
+            animation: bootPulse 2s ease-in-out infinite alternate;
         }
 
         @keyframes bootPulse {
-            0% { transform: scale(0.98); opacity: 0.8; }
-            100% { transform: scale(1.03); opacity: 1; }
+            0% { transform: scale(0.97); opacity: 0.85; }
+            100% { transform: scale(1.02); opacity: 1; filter: drop-shadow(0 0 50px rgba(229, 9, 20, 0.9)); }
         }
 
         .win-spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(255, 255, 255, 0.1);
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(255, 255, 255, 0.08);
             border-top-color: var(--vermelho);
             border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            box-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+            animation: spin 0.8s cubic-bezier(0.6, 0.2, 0.4, 0.8) infinite;
+            box-shadow: 0 0 25px rgba(229, 9, 20, 0.5);
             margin-bottom: 25px;
         }
 
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .boot-progress-bar {
-            width: clamp(200px, 30vw, 360px);
+            width: clamp(220px, 32vw, 380px);
             height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .boot-progress-fill {
@@ -101,21 +104,22 @@
             width: 0%;
             background: linear-gradient(90deg, var(--vermelho), #ff4d4d);
             box-shadow: 0 0 15px var(--vermelho);
-            transition: width 0.2s linear;
+            transition: width 0.3s ease-out;
+            border-radius: 10px;
         }
 
         .boot-status-txt {
             font-size: clamp(11px, 1.4vh, 13px);
-            color: #777;
+            color: #888;
             text-transform: uppercase;
             letter-spacing: 3px;
             font-weight: 700;
         }
 
-        /* ================= CONTAINER DA APLICAÇÃO ================= */
+        /* ================= WRAPPER DA APLICAÇÃO ================= */
         .wrapper {
             width: 100%;
-            max-width: min(520px, 92vw);
+            max-width: min(500px, 92vw);
             max-height: 100%;
             overflow-y: auto;
             display: flex;
@@ -125,7 +129,7 @@
         }
 
         .wrapper::-webkit-scrollbar { width: 4px; }
-        .wrapper::-webkit-scrollbar-thumb { background: #e50914; border-radius: 4px; }
+        .wrapper::-webkit-scrollbar-thumb { background: var(--vermelho); border-radius: 4px; }
 
         .logo-container {
             margin-bottom: clamp(15px, 2.5vh, 25px);
@@ -141,21 +145,21 @@
         .tela {
             display: none;
             width: 100%;
-            animation: fadeIn 0.4s ease-out;
+            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .tela.ativa { display: block; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(18px) scale(0.99); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         h1, h2 {
             color: var(--texto);
             font-size: clamp(22px, 3vh, 30px);
             font-weight: 800;
-            margin-bottom: clamp(15px, 2vh, 25px);
+            margin-bottom: clamp(12px, 2vh, 22px);
             text-align: left;
             letter-spacing: -0.5px;
         }
@@ -167,7 +171,7 @@
             margin-bottom: 15px;
         }
 
-        /* FORMULÁRIO DE INPUTS */
+        /* INPUTS ESTILO NETFLIX / TV */
         .input-group {
             position: relative;
             margin-bottom: 16px;
@@ -179,12 +183,12 @@
             padding: 22px 18px 8px;
             background: var(--input-bg);
             border: 1.5px solid var(--input-borda);
-            border-radius: 8px;
+            border-radius: 10px;
             color: #fff;
             font-size: clamp(14px, 1.8vh, 16px);
             font-weight: 600;
             outline: none;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             transition: all 0.25s ease;
         }
 
@@ -210,17 +214,21 @@
             letter-spacing: 1.5px;
         }
 
+        /* FOCO D-PAD (TV BOX & CONTROLE) */
         .input-group input:focus,
         .btn:focus,
         .plano-card:focus,
         .btn-link:focus,
         .auxiliar-links label:focus,
         .auxiliar-links a:focus {
-            border-color: #fff !important;
-            background: rgba(40, 40, 40, 0.9) !important;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9), 0 0 30px rgba(229, 9, 20, 0.6) !important;
+            border-color: #ffffff !important;
+            background: rgba(35, 35, 35, 0.95) !important;
+            box-shadow: 
+                0 0 0 3px rgba(255, 255, 255, 0.9), 
+                0 0 35px rgba(229, 9, 20, 0.7) !important;
             transform: scale(1.02);
             outline: none;
+            z-index: 10;
         }
 
         /* BOTÕES */
@@ -228,13 +236,13 @@
             width: 100%;
             padding: clamp(15px, 2vh, 18px);
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: clamp(14px, 1.8vh, 16px);
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             margin-top: 10px;
             margin-bottom: 15px;
             outline: none;
@@ -244,19 +252,19 @@
         }
 
         .btn-primario {
-            background: var(--vermelho);
+            background: linear-gradient(135deg, var(--vermelho) 0%, #b20710 100%);
             color: #fff;
             box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
         }
 
         .btn-secundario {
-            background: transparent;
+            background: rgba(255, 255, 255, 0.05);
             color: #ccc;
             border: 2px solid #333;
         }
 
         .btn-whats {
-            background: var(--verde-whats);
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
             color: #fff;
             box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
         }
@@ -276,7 +284,7 @@
             gap: 8px;
             cursor: pointer;
             font-weight: 600;
-            padding: 4px 8px;
+            padding: 6px 10px;
             border-radius: 6px;
         }
 
@@ -291,7 +299,7 @@
             text-decoration: none;
             font-weight: 700;
             cursor: pointer;
-            padding: 4px 8px;
+            padding: 6px 10px;
             border-radius: 6px;
         }
 
@@ -302,22 +310,23 @@
 
         /* PLANOS DE ASSINATURA */
         .plano-card {
-            background: rgba(20, 20, 20, 0.8);
+            background: rgba(20, 20, 20, 0.85);
             border: 2px solid var(--input-borda);
-            border-radius: 12px;
-            padding: 16px 20px;
+            border-radius: 14px;
+            padding: 18px 22px;
             margin-bottom: 12px;
             cursor: pointer;
             text-align: left;
-            transition: all 0.25s ease;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            backdrop-filter: blur(10px);
         }
 
         .plano-card.destaque {
-            border-color: #ffab00;
-            background: linear-gradient(135deg, rgba(255,171,0,0.15) 0%, rgba(20,20,20,0.8) 100%);
+            border-color: var(--amarelo-destaque);
+            background: linear-gradient(135deg, rgba(255,171,0,0.18) 0%, rgba(20,20,20,0.9) 100%);
         }
 
         .plano-nome {
@@ -329,13 +338,13 @@
         .plano-preco {
             font-size: clamp(18px, 2.3vh, 22px);
             font-weight: 900;
-            color: #00c853;
+            color: var(--verde-sucesso);
         }
 
-        .plano-card.destaque .plano-preco { color: #ffab00; }
+        .plano-card.destaque .plano-preco { color: var(--amarelo-destaque); }
 
         .plano-tag {
-            background: #ffab00;
+            background: var(--amarelo-destaque);
             color: #000;
             font-size: 10px;
             font-weight: 900;
@@ -345,23 +354,24 @@
             text-transform: uppercase;
         }
 
-        /* TELA DE BLOQUEIO */
+        /* CARD BLOQUEIO */
         .card-bloqueio {
             background: rgba(30, 10, 10, 0.85);
             border: 2px solid #ff4d4d;
             border-radius: 16px;
             padding: 25px;
             text-align: center;
+            backdrop-filter: blur(15px);
         }
 
         .motivo-bloqueio {
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 10px;
             color: #ff4d4d;
             font-weight: 700;
             font-size: 14px;
-            margin: 15px 0;
+            margin: 18px 0;
             border-left: 4px solid #ff4d4d;
             text-align: left;
         }
@@ -370,21 +380,22 @@
         .qr-box {
             background: #fff;
             padding: 16px;
-            border-radius: 12px;
+            border-radius: 16px;
             width: clamp(180px, 25vh, 240px);
             margin: 20px auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
         .qr-box img { width: 100%; display: block; }
 
         .pix-code {
-            background: #111;
-            border: 1px solid #333;
-            padding: 12px;
-            border-radius: 8px;
+            background: #0d0d0d;
+            border: 1px solid #2a2a2a;
+            padding: 14px;
+            border-radius: 10px;
             font-family: monospace;
             font-size: 11px;
-            color: #888;
+            color: #999;
             word-break: break-all;
             margin-bottom: 15px;
         }
@@ -411,7 +422,7 @@
 </head>
 <body>
 
-    <!-- ================= BOOT SCREEN (ESTILO WINDOWS) ================= -->
+    <!-- ================= BOOT SCREEN (ESTILO WINDOWS/OS) ================= -->
     <div id="boot-screen">
         <img src="download.png" alt="RedPlay" class="boot-logo" onerror="this.src='https://via.placeholder.com/200x60/e50914/ffffff?text=RedPlay'">
         <div class="win-spinner"></div>
@@ -555,7 +566,7 @@
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.setRequestHeader("apikey", SUPABASE_ANON_KEY);
             xhr.setRequestHeader("Authorization", "Bearer " + SUPABASE_ANON_KEY);
-            xhr.timeout = 15000;
+            xhr.timeout = 10000;
 
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
@@ -565,17 +576,19 @@
                     else callback("Erro de Conexão", resp);
                 }
             };
+            xhr.ontimeout = function() { callback("Timeout", null); };
+            xhr.onerror = function() { callback("Erro de Rede", null); };
             xhr.send(JSON.stringify(corpo));
         }
 
-        // SEQUÊNCIA DE CARREGAMENTO ESTILO WINDOWS / CARREGANDO OS
+        // CARREGAMENTO DA TELA DE BOOT
         window.addEventListener('load', function() {
             var fill = document.getElementById('boot-fill');
             var txt = document.getElementById('boot-status');
             
             var etapas = [
-                { pct: 20, msg: "Iniciando módulos do sistema..." },
-                { pct: 50, msg: "Verificando parâmetros do dispositivo..." },
+                { pct: 25, msg: "Iniciando módulos do sistema..." },
+                { pct: 55, msg: "Verificando parâmetros do dispositivo..." },
                 { pct: 85, msg: "Autenticando com o servidor..." },
                 { pct: 100, msg: "Carregando interface..." }
             ];
@@ -590,19 +603,17 @@
                     clearInterval(timer);
                     verificarStatusEIniciar();
                 }
-            }, 600);
+            }, 500);
         });
 
         function verificarStatusEIniciar() {
             var device_id = obterDeviceId();
 
             chamarAPI(FUNC_VERIFICAR, { android_id: device_id }, function(erro, dados) {
-                // Esconde a tela de Boot
                 var boot = document.getElementById('boot-screen');
                 boot.style.opacity = '0';
                 setTimeout(function() { boot.style.display = 'none'; }, 600);
 
-                // RECONHECIMENTO DE BLOQUEIO
                 if (dados && dados.status === 'bloqueado_painel') {
                     if (dados.motivo) {
                         document.getElementById('motivo-bloqueio-txt').innerText = "Motivo: " + dados.motivo;
@@ -611,13 +622,9 @@
                     return;
                 }
 
-                // STATUS ATIVO / TRIAL / COMPRA
                 if (dados && dados.status === 'ativo') {
-                    alert("Acesso Liberado para a TV!");
-                } else if (dados && dados.status === 'trial') {
-                    alert("Você tem " + (dados.dias_restantes || 3) + " dias de teste!");
+                    alert("Acesso Liberado!");
                 } else {
-                    // Padrão: Abre a Tela de Planos para Compra
                     navegarPara('tela-planos');
                 }
             });
@@ -668,20 +675,31 @@
                 'anual': 'R$ 149,90'
             };
 
+            var chavePixExemplo = "00020126580014BR.GOV.BCB.PIX0136123e4567-e89b-12d3-a456-426614174000520400005303986540512.905802BR5913RedPlay TV6008BRASILIA62070503***6304E2CA";
+
             document.getElementById('qr-valor').innerText = precos[tipoPlano] || 'R$ 0,00';
-            document.getElementById('pix-copia-cola').innerText = "00020126580014BR.GOV.BCB.PIX0136123e4567-e89b-12d3-a456-426614174000520400005303986540512.905802BR5913RedPlay TV6008BRASILIA62070503***6304E2CA";
-            document.getElementById('qr-img').src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=RedPlayPIX";
+            document.getElementById('pix-copia-cola').innerText = chavePixExemplo;
+            document.getElementById('qr-img').src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(chavePixExemplo);
 
             navegarPara('tela-qrcode');
         }
 
         function copiarPix() {
+            var txt = document.getElementById('pix-copia-cola').innerText;
             var btn = document.getElementById('btn-copiar');
-            btn.innerText = "Chave Copiada!";
-            setTimeout(function() { btn.innerText = "Copiar Chave PIX"; }, 2000);
+            
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(txt).then(function() {
+                    btn.innerText = "Chave Copiada!";
+                    setTimeout(function() { btn.innerText = "Copiar Chave PIX"; }, 2000);
+                });
+            } else {
+                btn.innerText = "Chave Copiada!";
+                setTimeout(function() { btn.innerText = "Copiar Chave PIX"; }, 2000);
+            }
         }
 
-        /* NAVEGAÇÃO CONTROLE REMOTO (D-PAD TV) */
+        /* NAVEGAÇÃO CONTROLE REMOTO D-PAD */
         document.addEventListener('keydown', function(e) {
             var telaAtiva = document.querySelector('.tela.ativa');
             if (!telaAtiva) return;
