@@ -1,762 +1,528 @@
 <!DOCTYPE html>
 <html lang="pt-PT">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#000000">
-    <title>RedPlay TV</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --vermelho: #e50914;
-            --vermelho-escuro: #b20710;
-            --verde: #00c853;
-            --amarelo: #ffab00;
-            --dourado: #ffc107;
-            --roxo: #8e24aa;
-            --preto: #000000;
-            --painel: #141414;
-            --borda: #2a2a2a;
-            --texto: #ffffff;
-            --texto-suave: #a0a0a0;
-            --safe-h: 4vh;
-            --safe-v: 4vw;
-        }
-
-        * { 
-            margin: 0; padding: 0; box-sizing: border-box; 
-            font-family: 'Montserrat', Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html, body {
-            height: 100vh; width: 100vw; overflow: hidden;
-            background: #000; color: #fff;
-            user-select: none; -webkit-user-select: none;
-        }
-
-        body {
-            display: flex; justify-content: center; align-items: center;
-            padding: var(--safe-h) var(--safe-v);
-            background: 
-                radial-gradient(ellipse at top, rgba(229,9,20,0.18) 0%, transparent 50%),
-                radial-gradient(ellipse at bottom, rgba(139,0,0,0.12) 0%, transparent 50%),
-                #000;
-            background-attachment: fixed;
-        }
-
-        /* ================= SPLASH ================= */
-        #splash {
-            position: fixed; inset: 0;
-            background: radial-gradient(ellipse at center, #1a0000 0%, #000 70%);
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            z-index: 99999;
-            transition: opacity 0.5s ease-out;
-        }
-        .splash-logo {
-            width: 280px; max-width: 30vw;
-            margin-bottom: 50px;
-            animation: splashFloat 2.5s ease-in-out infinite;
-            filter: drop-shadow(0 0 40px rgba(229,9,20,0.6));
-        }
-        @keyframes splashFloat {
-            0%, 100% { transform: scale(1) translateY(0); opacity: 0.9; }
-            50% { transform: scale(1.05) translateY(-10px); opacity: 1; }
-        }
-        .loader {
-            width: 65px; height: 65px;
-            border: 6px solid rgba(229,9,20,0.15);
-            border-top-color: #e50914;
-            border-radius: 50%;
-            animation: spin 0.9s linear infinite;
-            box-shadow: 0 0 40px rgba(229,9,20,0.4);
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .splash-txt {
-            color: #666; font-size: 14px;
-            letter-spacing: 6px; margin-top: 28px;
-            text-transform: uppercase; font-weight: 800;
-            animation: pulseTxt 1.5s ease-in-out infinite;
-        }
-        @keyframes pulseTxt { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-
-        /* ================= CARD ================= */
-        .card {
-            position: relative;
-            background: linear-gradient(135deg, rgba(20,20,20,0.98) 0%, rgba(10,10,10,0.98) 100%);
-            border: 2px solid rgba(229,9,20,0.3);
-            border-radius: 30px;
-            padding: clamp(30px, 4vh, 55px) clamp(35px, 5vw, 65px);
-            width: 100%;
-            max-width: min(1000px, 92vw);
-            max-height: 100%;
-            overflow-y: auto;
-            text-align: center;
-            box-shadow: 
-                0 30px 90px rgba(0,0,0,0.9),
-                0 0 150px rgba(229,9,20,0.15),
-                inset 0 1px 0 rgba(255,255,255,0.05);
-            animation: cardFadeIn 0.4s ease;
-            display: none;
-            margin: auto;
-            scroll-behavior: smooth;
-        }
-        .card.ativo { display: block; }
-        @keyframes cardFadeIn {
-            from { opacity: 0; transform: translateY(20px) scale(0.99); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .card::-webkit-scrollbar { width: 6px; }
-        .card::-webkit-scrollbar-thumb { 
-            background: linear-gradient(180deg, #e50914, #b20710);
-            border-radius: 3px;
-        }
-
-        .logo-red {
-            width: clamp(120px, 14vw, 180px);
-            margin-bottom: clamp(15px, 2vh, 25px);
-            display: inline-block;
-            filter: drop-shadow(0 0 20px rgba(229,9,20,0.5));
-        }
-
-        .badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #e50914, #b20710);
-            font-size: clamp(10px, 1vh, 12px);
-            font-weight: 800;
-            padding: clamp(6px, 0.8vh, 10px) clamp(16px, 2vw, 26px);
-            border-radius: 25px;
-            margin-bottom: clamp(15px, 2vh, 25px);
-            letter-spacing: 4px;
-            box-shadow: 0 0 40px rgba(229,9,20,0.6);
-        }
-        .badge-amarelo { 
-            background: linear-gradient(135deg, #ffab00, #ff8f00); 
-            color: #000; box-shadow: 0 0 40px rgba(255,171,0,0.6);
-        }
-        .badge-verde { 
-            background: linear-gradient(135deg, #00c853, #00a844);
-            box-shadow: 0 0 40px rgba(0,200,83,0.6);
-        }
-        .badge-lifetime {
-            background: linear-gradient(135deg, #ffc107, #ff5722);
-            color: #000;
-            box-shadow: 0 0 50px rgba(255,193,7,0.8);
-            animation: badgePulse 2s ease-in-out infinite;
-        }
-        @keyframes badgePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        h1 {
-            color: #fff;
-            font-size: clamp(24px, 3.5vh, 42px);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-bottom: clamp(8px, 1.2vh, 15px);
-            background: linear-gradient(180deg, #fff 0%, #e50914 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 4px 20px rgba(229,9,20,0.4));
-            line-height: 1.1;
-        }
-        h2 {
-            color: #fff;
-            font-size: clamp(20px, 2.8vh, 34px);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: clamp(10px, 1.5vh, 18px);
-            line-height: 1.2;
-        }
-        p {
-            color: #ccc;
-            font-size: clamp(13px, 1.7vh, 17px);
-            line-height: 1.5;
-            margin-bottom: clamp(8px, 1vh, 14px);
-            font-weight: 500;
-        }
-
-        /* ================= TRIAL ================= */
-        .trial-container {
-            position: relative;
-            margin: clamp(15px, 2.5vh, 30px) 0;
-            padding: clamp(25px, 3.5vh, -color45px) clamp(20px, :3vw, # 40px);
-            background:e linear-gradient(135deg509, rgba(229,149,20,0.2) 0%, rgba(255,171,0,0.08) 100%);
-            border: 3px solid rgba(229,9,20,0.5);
-            border-radius: 26px;
-            overflow: hidden;
-            box-shadow: 
-                inset 0 0 80px rgba(229,9,20,0.15),
-                0 0 60px rgba(229,9,20,0.2);
-        }
-        .trial-container::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: conic-gradient(from 0deg, transparent, rgba(229,9,20,0.25), transparent 30%);
-            animation: rotate 10s linear infinite;
-        }
-        @keyframes rotate { to { transform: rotate(360deg); } }
-        .trial-inner { position: relative; z-index: 1; }
-        
-        .trial-icone {
-            font-size: clamp(50px, 7vh, 80px);
-            margin-bottom: clamp(8px, 1vh, 15px);
-            animation: pulseIcone 1.8s infinite alternate;
-            filter: drop-shadow(0 0 30px rgba(255,171,0,0.6));
-            line-height: 1;
-        }
-        @keyframes pulseIcone { 
-            from { transform: scale(1); } 
-            to { transform: scale(1.12); } 
-        }
-        
-        .trial-label {
-            color: #ffc107;
-            font-size: clamp(10px, 1.3vh, 14px);
-            font-weight: 800;
-            letter-spacing: 6px;
-            margin-bottom: clamp(8px, 1.2vh, 18px);
-            text-transform: uppercase;
-        }
-        
-        .trial-dias {
-            display: flex;
-            justify-content: center;
-            align-items: baseline;
-            gap: clamp(12px, 1.5vw, 22px);
-            margin: clamp(8px, 1vh, 15px) 0 clamp(15px, 2vh, 28px);
-        }
-        
-        .trial-numero {
-            font-size: clamp(70px, 13vh, 130px);
-            font-weight: 900;
-            line-height: 1;
-            background: linear-gradient(180deg, #fff 0%, #e50914 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 50px rgba(229,9,20,0.9));
-            animation: numeroPulse 2s ease-in-out infinite;
-        }
-        @keyframes numeroPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.04); }
-        }
-        
-        .trial-texto {
-            font-size: clamp(18px, 2.5vh, 28px);
-            font-weight: 900;
-            color: #e50914;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            line-height: 1.1;
-        }
-        .trial-texto small {
-            display: block;
-            font-size: clamp(10px, 1.2vh, 13px);
-            color: #888;
-            font-weight: 700;
-            letter-spacing: 5px;
-            margin-top: 6px;
-        }
-        
-        .trial-beneficios {
-            margin-top: clamp(15px, 2vh, 25px);
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: clamp(8px, 1vh, 14px);
-        }
-        .trial-beneficio {
-            background: rgba(0,0,0,0.6);
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 14px;
-            padding: clamp(8px, 1.2vh, 14px) clamp(10px, 1.5vw, 18px);
-            font-size: clamp(12px, 1.5vh, 15px);
-            color: #ddd;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            justify-content: center;
-        }
-        .trial-beneficio span:first-child { font-size: clamp(16px, 2vh, 22px); }
-
-        .trial-destaque {
-            background: rgba(0,0,0,0.6);
-            border-left: 6px solid #ffc107;
-            border-radius: 14px;
-            padding: clamp(12px, 1.6vh, 20px) clamp(15px, 2vw, 26px);
-            text-align: left;
-            font-size: clamp(12px, 1.5vh, 16px);
-            color: #fff;
-            font-weight: 700;
-            margin-top: clamp(15px, 2vh, 25px);
-            line-height: 1.5;
-        }
-        .trial-destaque strong { color: #ffc107; }
-
-        /* ================= BOTÕES ================= */
-        button {
-            cursor: pointer;
-            border: none;
-            font-family: inherit;
-            background: none;
-        }
-        
-        .btn {
-            width: 100%;
-            padding: clamp(14px, 2vh, 22px) clamp(20px, 2vw, 32px);
-            border-radius: 16px;
-            font-size: clamp(14px, 1.9vh, 19px);
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-bottom: clamp(8px, 1.2vh, 15px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-            outline: none;
-            border: 3px solid transparent;
-        }
-        
-        .btn-primario {
-            background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
-            color: #fff;
-            box-shadow: 0 8px 35px rgba(229,9,20,0.5);
-        }
-        
-        .btn-whats {
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: #fff;
-            box-shadow: 0 8px 35px rgba(37,211,102,0.4);
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-        }
-        
-        .btn-cinza {
-            background: rgba(255,255,255,0.05);
-            color: #ccc;
-            border: 3px solid #333;
-        }
-
-        .btn:focus,
-        .btn.foco {
-            transform: scale(1.03);
-            border-color: #fff !important;
-            box-shadow: 
-                0 0 0 4px rgba(255,255,255,0.95),
-                0 0 60px rgba(255,255,255,0.6),
-                0 15px 45px rgba(0,0,0,0.9) !important;
-            outline: none;
-            z-index: 10;
-        }
-
-        /* ================= INPUTS ================= */
-        .field {
-            margin-bottom: clamp(12px, 1.6vh, 20px);
-            text-align: left;
-        }
-        .field label {
-            display: block;
-            color: #999;
-            font-size: clamp(10px, 1.3vh, 13px);
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2.5px;
-            margin-bottom: clamp(6px, 0.8vh, 10px);
-        }
-        
-        input {
-            width: 100%;
-            padding: clamp(15px, 2.2vh, 22px) clamp(18px, 2vw, 26px);
-            background: rgba(0,0,0,0.7);
-            border: 3px solid #333;
-            border-radius: 14px;
-            color: #fff;
-            font-size: clamp(16px, 2.1vh, 21px);
-            font-weight: 700;
-            text-align: center;
-            transition: all 0.2s ease;
-            outline: none;
-            letter-spacing: 1px;
-        }
-        input:focus,
-        input.foco {
-            border-color: #e50914 !important;
-            box-shadow: 0 0 0 4px rgba(229,9,20,0.4), 0 0 45px rgba(229,9,20,0.6);
-            background: rgba(0,0,0,0.9);
-            transform: scale(1.02);
-        }
-        input::placeholder {
-            color: #555;
-            text-transform: uppercase;
-            font-size: clamp(11px, 1.4vh, 15px);
-            font-weight: 700;
-            letter-spacing: 3px;
-        }
-
-        /* ================= LEMBRAR SENHA ================= */
-        .lembrar-wrap {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin: clamp(12px, 1.6vh, 20px) 0;
-            padding: clamp(12px, 1.6vh, 18px) clamp(16px, 2vw, 24px);
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            outline: none;
-            border: 3px solid #2a2a2a;
-            background: rgba(0,0,0,0.4);
-        }
-        .lembrar-wrap:hover {
-            border-color: #444;
-            background: rgba(0,0,0,0.6);
-        }
-        .lembrar-wrap:focus,
-        .lembrar-wrap.foco {
-            border !important;
-            background: rgba(229,9,20,0.15) !important;
-            box-shadow: 
-                0 0 0 4px rgba(255,255,255,0.95),
-                0 0 45px rgba(229,9,20,0.5) !important;
-            transform: scale(1.02);
-        }
-        .lembrar-wrap input[type="checkbox"] {
-            width: clamp(22px, 2.8vh, 28px);
-            height: clamp(22px, 2.8vh, 28px);
-            accent-color: #e50914;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-        .lembrar-wrap label {
-            font-size: clamp(13px, 1.7vh, 16px);
-            color: #ddd;
-            font-weight: 700;
-            cursor: pointer;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .msg-erro {
-            color: #ff4d4d;
-            font-size: clamp(12px, 1.5vh, 15px);
-            margin-top: 12px;
-            font-weight: 800;
-            min-height: 20px;
-            display: block;
-        }
-
-        /* ================= PLANOS ================= */
-        .plano-card {
-            position: relative;
-            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-            border: 3px solid #2a2a2a;
-            border-radius: 20px;
-            padding: clamp(16px, 2.2vh, 28px) clamp(20px, 2.5vw, 32px);
-            margin-bottom: clamp(10px, 1.4vh, 16px);
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            outline: none;
-        }
-        .plano-card::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 0; bottom: 0;
-            width: 8px;
-            background: linear-gradient(180deg, #e50914, #b20710);
-            border-radius: 20px 0 0 20px;
-            transform: scaleY(0);
-            transition: transform 0.25s;
-        }
-        .plano-card:focus,
-        .plano-card.foco {
-            transform: scale(1.03);
-            border-color: #fff !important;
-            background: linear-gradient(135deg, #262626 0%, #1a1a1a 100%) !important;
-            box-shadow: 
-                0 0 0 4px rgba(255,255,255,0.95),
-                0 0 60px rgba(255,255,255,0.6),
-                0 15px 45px rgba(0,0,0,0.9) !important;
-        }
-        .plano-card:focus::before,
-        .plano-card.foco::before { transform: scaleY(1); }
-        
-        .plano-card.destaque {
-            border-color: #ffab00;
-            background: linear-gradient(135deg, rgba(255,171,0,0.15) 0%, #0f0f0f 100%);
-        }
-        .plano-card.destaque::before { 
-            background: linear-gradient(180deg, #ffab00, #ff8f00);
-        }
-
-        /* ============ PLANO LIFETIME (VITALÍCIO) ============ */
-        .plano-card.lifetime {
-            border-color: #ffc107;
-            background: linear-gradient(135deg, rgba(255,193,7,0.18) 0%, rgba(255,87,34,0.08) 50%, #0f0f0f 100%);
-            box-shadow: 0 0 30px rgba(255,193,7,0.25);
-        }
-        .plano-card.lifetime::before { 
-            background: linear-gradient(180deg, #ffc107, #ff5722);
-        }
-        .plano-card.lifetime:focus,
-        .plano-card.lifetime.foco {
-            box-shadow: 
-                0 0 0 4px rgba(255,255,255,0.95),
-                0 0 70px rgba(255,193,7,0.8),
-                0 15px 45px rgba(0,0,0,0.9) !important;
-        }
-
-        .plano-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: clamp(5px, 0.7vh, 10px);
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .plano-nome {
-            color: #fff;
-            font-size: clamp(15px, 2.1vh, 23px);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        .plano-preco {
-            color: #00c853;
-            font-size: clamp(19px, 2.8vh, 32px);
-            font-weight: 900;
-            white-space: nowrap;
-        }
-        .plano-card.destaque .plano-preco { color: #ffc107; }
-        .plano-card.lifetime .plano-preco { 
-            color: #ffc107;
-            text-shadow: 0 0 30px rgba(255,193,7,0.8);
-        }
-        .plano-desc {
-            color: #999;
-            font-size: clamp(11px, 1.4vh, 14px);
-            font-weight: 600;
-        }
-        .plano-card.lifetime .plano-desc {
-            color: #ffc107;
-            font-weight: 700;
-        }
-        .plano-tag {
-            display: inline-block;
-            background: linear-gradient(135deg, #ffab00, #ff8f00);
-            color: #000;
-            font-size: clamp(9px, 1vh, 11px);
-            font-weight: 900;
-            padding: 4px 12px;
-            border-radius: 10px;
-            margin-left: 10px;
-            letter-spacing: 2px;
-            vertical-align: middle;
-        }
-        .plano-tag.verde { 
-            background: linear-gradient(135deg, #00c853, #00a844);
-            color: #fff;
-        }
-        .plano-tag.lifetime-tag {
-            background: linear-gradient(135deg, #ffc107, #ff5722);
-            color: #000;
-            animation: tagPulse 1.8s ease-in-out infinite;
-            box-shadow: 0 0 20px rgba(255,193,7,0.6);
-        }
-        @keyframes tagPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        /* ================= DIVISOR ================= */
-        .divisor-login {
-            border-top: 2px solid #2a2a2a;
-            margin: clamp(20px, 2.5vh, 32px) 0 0;
-            padding-top: clamp(15px, 2vh, 25px);
-        }
-        .divisor-login p {
-            color: #999;
-            font-size: clamp(13px, 1.6vh, 16px);
-            margin-bottom: clamp(10px, 1.3vh, 16px);
-            font-weight: 700;
-        }
-
-        /* ================= QR CODE ================= */
-        .qr-img {
-            background: #fff;
-            border-radius: 22px;
-            padding: clamp(14px, 2vh, 22px);
-            margin: clamp(15px, 2vh, 28px) auto;
-            max-width: clamp(200px, 30vh, 320px);
-            box-shadow: 0 18px 55px rgba(0,0,0,0.7), 0 0 70px rgba(229,9,20,0.3);
-        }
-        .qr-img img {
-            width: 100%;
-            display: block;
-            border-radius: 12px;
-        }
-        .pix-code {
-            background: #000;
-            border: 2px solid #2a2a2a;
-            border-radius: 14px;
-            padding: clamp(12px, 1.6vh, 18px);
-            font-family: monospace;
-            font-size: clamp(10px, 1.2vh, 13px);
-            word-break: break-all;
-            color: #999;
-            text-align: left;
-            margin-bottom: clamp(12px, 1.6vh, 20px);
-            max-height: clamp(60px, 10vh, 100px);
-            overflow-y: auto;
-        }
-        .polling-status {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            color: #ffab00;
-            font-size: clamp(12px, 1.6vh, 16px);
-            margin-bottom: clamp(12px, 1.6vh, 20px);
-            font-weight: 800;
-            padding: clamp(12px, 1.6vh, 18px);
-            background: rgba(255,171,0,0.1);
-            border: 2px solid rgba(255,171,0,0.35);
-            border-radius: 14px;
-            flex-wrap: wrap;
-        }
-        .mini-loader {
-            border: 4px solid rgba(255,171,0,0.2);
-            border-top-color: #ffab00;
-            border-radius: 50%;
-            width: clamp(20px, 2.8vh, 28px);
-            height: clamp(20px, 2.8vh, 28px);
-            animation: spin 0.8s linear infinite;
-        }
-
-        /* ================= BOAS-VINDAS ================= */
-        .bv-emoji {
-            font-size: clamp(70px, 12vh, 120px);
-            margin-bottom: clamp(15px, 2vh, 25px);
-            animation: pulseIcone 1.8s infinite alternate;
-            filter: drop-shadow(0 0 50px rgba(229,9,20,0.6));
-            line-height: 1;
-        }
-        .bv-usuario {
-            color: #fff;
-            font-size: clamp(22px, 3.5vh, 42px);
-            font-weight: 900;
-            margin-bottom: clamp(20px, 2.5vh, 30px);
-            padding: clamp(12px, 1.8vh, 22px) clamp(25px, 3.5vw, 45px);
-            background: rgba(229,9,20,0.15);
-            border: 3px solid rgba(229,9,20,0.6);
-            border-radius: 60px;
-            display: inline-block;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-        .bv-mensagem {
-            color: #fff;
-            font-size: clamp(16px, 2.3vh, 28px);
-            font-weight: 800;
-            margin-bottom: clamp(20px, 2.5vh, 30px);
-            line-height: 1.4;
-        }
-        .bv-mensagem span {
-            color: #e50914;
-            font-weight: 900;
-        }
-        .bv-status {
-            display: inline-block;
-            padding: clamp(12px, 1.8vh, 18px) clamp(25px, 3vw, 38px);
-            background: rgba(0,200,83,0.15);
-            border: 3px solid rgba(0,200,83,0.6);
-            border-radius: 60px;
-            margin-bottom: clamp(20px, 2.5vh, 30px);
-        }
-        .bv-status-txt {
-            color: #00c853;
-            font-size: clamp(13px, 1.7vh, 18px);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-        }
-
-        .barra {
-            width: clamp(180px, 30vw, 340px);
-            height: 8px;
-            background: rgba(229,9,20,0.2);
-            border-radius: 8px;
-            margin: clamp(20px, 2.5vh, 30px) auto clamp(12px, 1.5vh, 20px);
-            overflow: hidden;
-        }
-        .barra-inner {
-            height: 100%;
-            background: linear-gradient(90deg, #e50914, #ff4d4d);
-            border-radius: 8px;
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-        .bv-msg {
-            color: #666;
-            font-size: clamp(10px, 1.3vh, 13px);
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-weight: 800;
-        }
-
-        /* ================= BLOQUEIO / ERRO ================= */
-        .aviso-bloqueio {
-            color: #ff4d4d;
-            font-weight: 800;
-            font-size: clamp(13px, 1.8vh, 18px);
-            margin: clamp(15px, 2vh, 26px) 0;
-            padding: clamp(15px, 2vh, 22px) clamp(20px, 2.5vw, 30px);
-            background: rgba(229,9,20,0.12);
-            border: 3px solid rgba(229,9,20,0.5);
-            border-radius: 16px;
-            line-height: 1.5;
-        }
-
-        body { cursor: none; }
-        @media (pointer: fine) { body { cursor: default; } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#000000">
+<title>RedPlay TV</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--vermelho:#e50914;--vermelho-escuro:#b20710;--verde:#00c853;--amarelo:#ffab00;--dourado:#ffc107;--roxo:#8e24aa;--preto:#000;--painel:#141414;--borda:#2a2a2a;--texto:#fff;--texto-suave:#a0a0a0;--safe-h:4vh;--safe-v:4vw;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Montserrat',Arial,sans-serif;-webkit-tap-highlight-color:transparent;}
+html,body{height:100vh;width:100vw;overflow:hidden;background:#000;color:#fff;user-select:none;-webkit-user-select:none;}
+body{display:flex;justify-content:center;align-items:center;padding:var(--safe-h) var(--safe-v);background:radial-gradient(ellipse at top,rgba(229,9,20,.18) 0%,transparent 50%),radial-gradient(ellipse at bottom,rgba(139,0,0,.12) 0%,transparent 50%),#000;background-attachment:fixed;}
+#splash{position:fixed;inset:0;background:radial-gradient(ellipse at center,#1a0000 0%,#000 70%);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:99999;transition:opacity .5s ease-out;}
+.splash-logo{width:280px;max-width:30vw;margin-bottom:50px;animation:splashFloat 2.5s ease-in-out infinite;filter:drop-shadow(0 0 40px rgba(229,9,20,.6));}
+@keyframes splashFloat{0%,100%{transform:scale(1) translateY(0);opacity:.9;}50%{transform:scale(1.05) translateY(-10px);opacity:1;}}
+.loader{width:65px;height:65px;border:6px solid rgba(229,9,20,.15);border-top-color:#e50914;border-radius:50%;animation:spin .9s linear infinite;box-shadow:0 0 40px rgba(229,9,20,.4);}
+@keyframes spin{to{transform:rotate(360deg);}}
+.splash-txt{color:#666;font-size:14px;letter-spacing:6px;margin-top:28px;text-transform:uppercase;font-weight:800;animation:pulseTxt 1.5s ease-in-out infinite;}
+@keyframes pulseTxt{0%,100%{opacity:.5;}50%{opacity:1;}}
+.card{position:relative;background:linear-gradient(135deg,rgba(20,20,20,.98) 0%,rgba(10,10,10,.98) 100%);border:2px solid rgba(229,9,20,.3);border-radius:30px;padding:clamp(30px,4vh,55px) clamp(35px,5vw,65px);width:100%;max-width:min(1000px,92vw);max-height:100%;overflow-y:auto;text-align:center;box-shadow:0 30px 90px rgba(0,0,0,.9),0 0 150px rgba(229,9,20,.15);animation:cardFadeIn .4s ease;display:none;margin:auto;scroll-behavior:smooth;}
+.card.ativo{display:block;}
+@keyframes cardFadeIn{from{opacity:0;transform:translateY(20px) scale(.99);}to{opacity:1;transform:translateY(0) scale(1);}}
+.card::-webkit-scrollbar{width:6px;}
+.card::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#e50914,#b20710);border-radius:3px;}
+.logo-red{width:clamp(120px,14vw,180px);margin-bottom:clamp(15px,2vh,25px);display:inline-block;filter:drop-shadow(0 0 20px rgba(229,9,20,.5));}
+.badge{display:inline-block;background:linear-gradient(135deg,#e50914,#b20710);font-size:clamp(10px,1vh,12px);font-weight:800;padding:clamp(6px,.8vh,10px) clamp(16px,2vw,26px);border-radius:25px;margin-bottom:clamp(15px,2vh,25px);letter-spacing:4px;box-shadow:0 0 40px rgba(229,9,20,.6);}
+.badge-amarelo{background:linear-gradient(135deg,#ffab00,#ff8f00);color:#000;box-shadow:0 0 40px rgba(255,171,0,.6);}
+.badge-verde{background:linear-gradient(135deg,#00c853,#00a844);box-shadow:0 0 40px rgba(0,200,83,.6);}
+h1{color:#fff;font-size:clamp(24px,3.5vh,42px);font-weight:900;text-transform:uppercase;letter-spacing:4px;margin-bottom:clamp(8px,1.2vh,15px);background:linear-gradient(180deg,#fff 0%,#e50914 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;}
+h2{color:#fff;font-size:clamp(20px,2.8vh,34px);font-weight:900;text-transform:uppercase;letter-spacing:3px;margin-bottom:clamp(10px,1.5vh,18px);line-height:1.2;}
+p{color:#ccc;font-size:clamp(13px,1.7vh,17px);line-height:1.5;margin-bottom:clamp(8px,1vh,14px);font-weight:500;}
+.trial-container{position:relative;margin:clamp(15px,2.5vh,30px) 0;padding:clamp(25px,3.5vh,45px) clamp(20px,3vw,40px);background:linear-gradient(135deg,rgba(229,9,20,.2) 0%,rgba(255,171,0,.08) 100%);border:3px solid rgba(229,9,20,.5);border-radius:26px;overflow:hidden;box-shadow:inset 0 0 80px rgba(229,9,20,.15),0 0 60px rgba(229,9,20,.2);}
+.trial-container::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(229,9,20,.25),transparent 30%);animation:rotate 10s linear infinite;}
+@keyframes rotate{to{transform:rotate(360deg);}}
+.trial-inner{position:relative;z-index:1;}
+.trial-icone{font-size:clamp(50px,7vh,80px);margin-bottom:clamp(8px,1vh,15px);animation:pulseIcone 1.8s infinite alternate;line-height:1;}
+@keyframes pulseIcone{from{transform:scale(1);}to{transform:scale(1.12);}}
+.trial-label{color:#ffc107;font-size:clamp(10px,1.3vh,14px);font-weight:800;letter-spacing:6px;margin-bottom:clamp(8px,1.2vh,18px);text-transform:uppercase;}
+.trial-dias{display:flex;justify-content:center;align-items:baseline;gap:clamp(12px,1.5vw,22px);margin:clamp(8px,1vh,15px) 0 clamp(15px,2vh,28px);}
+.trial-numero{font-size:clamp(70px,13vh,130px);font-weight:900;line-height:1;background:linear-gradient(180deg,#fff 0%,#e50914 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:numeroPulse 2s ease-in-out infinite;}
+@keyframes numeroPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.04);}}
+.trial-texto{font-size:clamp(18px,2.5vh,28px);font-weight:900;color:#e50914;text-transform:uppercase;letter-spacing:3px;line-height:1.1;}
+.trial-texto small{display:block;font-size:clamp(10px,1.2vh,13px);color:#888;font-weight:700;letter-spacing:5px;margin-top:6px;}
+.trial-beneficios{margin-top:clamp(15px,2vh,25px);display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(8px,1vh,14px);}
+.trial-beneficio{background:rgba(0,0,0,.6);border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:clamp(8px,1.2vh,14px) clamp(10px,1.5vw,18px);font-size:clamp(12px,1.5vh,15px);color:#ddd;font-weight:700;display:flex;align-items:center;gap:10px;justify-content:center;}
+.trial-destaque{background:rgba(0,0,0,.6);border-left:6px solid #ffc107;border-radius:14px;padding:clamp(12px,1.6vh,20px) clamp(15px,2vw,26px);text-align:left;font-size:clamp(12px,1.5vh,16px);color:#fff;font-weight:700;margin-top:clamp(15px,2vh,25px);line-height:1.5;}
+.trial-destaque strong{color:#ffc107;}
+button{cursor:pointer;border:none;font-family:inherit;background:none;}
+.btn{width:100%;padding:clamp(14px,2vh,22px) clamp(20px,2vw,32px);border-radius:16px;font-size:clamp(14px,1.9vh,19px);font-weight:800;text-transform:uppercase;letter-spacing:2px;transition:all .2s;margin-bottom:clamp(8px,1.2vh,15px);outline:none;border:3px solid transparent;}
+.btn-primario{background:linear-gradient(135deg,#e50914 0%,#b20710 100%);color:#fff;box-shadow:0 8px 35px rgba(229,9,20,.5);}
+.btn-whats{background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);color:#fff;text-decoration:none;display:inline-block;text-align:center;}
+.btn-cinza{background:rgba(255,255,255,.05);color:#ccc;border:3px solid #333;}
+.btn:focus,.btn.foco{transform:scale(1.03);border-color:#fff!important;box-shadow:0 0 0 4px rgba(255,255,255,.95),0 0 60px rgba(255,255,255,.6)!important;outline:none;z-index:10;}
+.field{margin-bottom:clamp(12px,1.6vh,20px);text-align:left;}
+.field label{display:block;color:#999;font-size:clamp(10px,1.3vh,13px);font-weight:800;text-transform:uppercase;letter-spacing:2.5px;margin-bottom:clamp(6px,.8vh,10px);}
+input{width:100%;padding:clamp(15px,2.2vh,22px) clamp(18px,2vw,26px);background:rgba(0,0,0,.7);border:3px solid #333;border-radius:14px;color:#fff;font-size:clamp(16px,2.1vh,21px);font-weight:700;text-align:center;outline:none;letter-spacing:1px;}
+input:focus,input.foco{border-color:#e50914!important;box-shadow:0 0 0 4px rgba(229,9,20,.4),0 0 45px rgba(229,9,20,.6);background:rgba(0,0,0,.9);}
+input::placeholder{color:#555;text-transform:uppercase;font-size:clamp(11px,1.4vh,15px);font-weight:700;letter-spacing:3px;}
+.lembrar-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin:clamp(12px,1.6vh,20px) 0;padding:clamp(12px,1.6vh,18px) clamp(16px,2vw,24px);border-radius:14px;cursor:pointer;outline:none;border:3px solid #2a2a2a;background:rgba(0,0,0,.4);}
+.lembrar-wrap:focus,.lembrar-wrap.foco{border-color:#e50914!important;background:rgba(229,9,20,.15)!important;box-shadow:0 0 0 4px rgba(255,255,255,.95)!important;}
+.lembrar-wrap input[type="checkbox"]{width:26px;height:26px;accent-color:#e50914;cursor:pointer;}
+.lembrar-wrap label{font-size:clamp(13px,1.7vh,16px);color:#ddd;font-weight:700;cursor:pointer;text-transform:uppercase;}
+.msg-erro{color:#ff4d4d;font-size:clamp(12px,1.5vh,15px);margin-top:12px;font-weight:800;min-height:20px;display:block;}
+.plano-card{position:relative;background:linear-gradient(135deg,#1a1a1a 0%,#0f0f0f 100%);border:3px solid #2a2a2a;border-radius:20px;padding:clamp(16px,2.2vh,28px) clamp(20px,2.5vw,32px);margin-bottom:clamp(10px,1.4vh,16px);text-align:left;cursor:pointer;outline:none;}
+.plano-card:focus,.plano-card.foco{transform:scale(1.03);border-color:#fff!important;background:linear-gradient(135deg,#262626 0%,#1a1a1a 100%)!important;box-shadow:0 0 0 4px rgba(255,255,255,.95),0 0 60px rgba(255,255,255,.6)!important;}
+.plano-card.destaque{border-color:#ffab00;background:linear-gradient(135deg,rgba(255,171,0,.15) 0%,#0f0f0f 100%);}
+.plano-card.lifetime{border-color:#ffc107;background:linear-gradient(135deg,rgba(255,193,7,.18) 0%,rgba(255,87,34,.08) 50%,#0f0f0f 100%);box-shadow:0 0 30px rgba(255,193,7,.25);}
+.plano-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:12px;flex-wrap:wrap;}
+.plano-nome{color:#fff;font-size:clamp(15px,2.1vh,23px);font-weight:900;text-transform:uppercase;letter-spacing:2px;}
+.plano-preco{color:#00c853;font-size:clamp(19px,2.8vh,32px);font-weight:900;white-space:nowrap;}
+.plano-card.destaque .plano-preco,.plano-card.lifetime .plano-preco{color:#ffc107;}
+.plano-desc{color:#999;font-size:clamp(11px,1.4vh,14px);font-weight:600;}
+.plano-tag{display:inline-block;background:linear-gradient(135deg,#ffab00,#ff8f00);color:#000;font-size:clamp(9px,1vh,11px);font-weight:900;padding:4px 12px;border-radius:10px;margin-left:10px;letter-spacing:2px;}
+.plano-tag.verde{background:linear-gradient(135deg,#00c853,#00a844);color:#fff;}
+.plano-tag.roxo{background:linear-gradient(135deg,#8e24aa,#6a1b9a);color:#fff;}
+.divisor-login{border-top:2px solid #2a2a2a;margin:clamp(20px,2.5vh,32px) 0 0;padding-top:clamp(15px,2vh,25px);}
+.divisor-login p{color:#999;font-size:clamp(13px,1.6vh,16px);margin-bottom:clamp(10px,1.3vh,16px);font-weight:700;}
+.qr-img{background:#fff;border-radius:22px;padding:15px;margin:20px auto;max-width:clamp(200px,30vh,320px);}
+.qr-img img{width:100%;display:block;border-radius:12px;}
+.pix-code{background:#000;border:2px solid #2a2a2a;border-radius:14px;padding:15px;font-family:monospace;font-size:12px;word-break:break-all;color:#999;text-align:left;margin-bottom:15px;max-height:80px;overflow-y:auto;}
+.polling-status{display:flex;align-items:center;justify-content:center;gap:12px;color:#ffab00;font-size:14px;margin-bottom:15px;font-weight:800;padding:15px;background:rgba(255,171,0,.1);border:2px solid rgba(255,171,0,.35);border-radius:14px;flex-wrap:wrap;}
+.mini-loader{border:4px solid rgba(255,171,0,.2);border-top-color:#ffab00;border-radius:50%;width:24px;height:24px;animation:spin .8s linear infinite;}
+.bv-emoji{font-size:clamp(70px,12vh,120px);margin-bottom:20px;animation:pulseIcone 1.8s infinite alternate;line-height:1;}
+.bv-usuario{color:#fff;font-size:clamp(22px,3.5vh,42px);font-weight:900;margin-bottom:25px;padding:15px 35px;background:rgba(229,9,20,.15);border:3px solid rgba(229,9,20,.6);border-radius:60px;display:inline-block;letter-spacing:3px;text-transform:uppercase;}
+.bv-mensagem{color:#fff;font-size:clamp(16px,2.3vh,28px);font-weight:800;margin-bottom:25px;line-height:1.4;}
+.bv-mensagem span{color:#e50914;font-weight:900;}
+.bv-status{display:inline-block;padding:15px 30px;background:rgba(0,200,83,.15);border:3px solid rgba(0,200,83,.6);border-radius:60px;margin-bottom:25px;}
+.bv-status-txt{color:#00c853;font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:4px;}
+.barra{width:clamp(180px,30vw,340px);height:8px;background:rgba(229,9,20,.2);border-radius:8px;margin:25px auto 15px;overflow:hidden;}
+.barra-inner{height:100%;background:linear-gradient(90deg,#e50914,#ff4d4d);border-radius:8px;width:0%;transition:width .1s linear;}
+.bv-msg{color:#666;font-size:12px;text-transform:uppercase;letter-spacing:4px;font-weight:800;}
+.aviso-bloqueio{color:#ff4d4d;font-weight:800;font-size:15px;margin:20px 0;padding:20px;background:rgba(229,9,20,.12);border:3px solid rgba(229,9,20,.5);border-radius:16px;line-height:1.5;}
+body{cursor:none;}
+@media(pointer:fine){body{cursor:default;}}
+</style>
 </head>
 <body>
 
-<!-- ================= SPLASH ================= -->
 <div id="splash">
-    <img src="download.png" alt="RedPlay" class="splash-logo" onerror="this.style.display='none'">
-    <div class="loader"></div>
-    <div class="splash-txt">Carregando RedPlay</div>
+<img src="download.png" alt="RedPlay" class="splash-logo" onerror="this.style.display='none'">
+<div class="loader"></div>
+<div class="splash-txt">Carregando RedPlay</div>
 </div>
 
-<!-- ================= TELA: TRIAL ================= -->
 <div class="card" id="tela-trial">
-    <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
-    <div class="badge badge-amarelo">🎁 Teste Grátis Liberado</div>
-    <h1>Bem-vindo à RedPlay</h1>
-    <p>Aproveite todos os recursos da nossa plataforma</p>
+<img src="download.png" class="logo-red" onerror="this.style.display='none'">
+<div class="badge badge-amarelo">🎁 Teste Grátis Liberado</div>
+<h1>Bem-vindo à RedPlay</h1>
+<p>Aproveite todos os recursos da nossa plataforma</p>
+<div class="trial-container">
+<div class="trial-inner">
+<div class="trial-icone">⭐</div>
+<div class="trial-label">Você tem direito a</div>
+<div class="trial-dias">
+<div class="trial-numero" id="dias-restantes">3</div>
+<div class="trial-texto">Dias Grátis<small>Acesso Completo</small></div>
+</div>
+<div class="trial-beneficios">
+<div class="trial-beneficio"><span>🎬</span><span>Filmes 4K</span></div>
+<div class="trial-beneficio"><span>📺</span><span>Séries HD</span></div>
+<div class="trial-beneficio"><span>⚽</span><span>Esportes</span></div>
+<div class="trial-beneficio"><span>📡</span><span>Canais Ao Vivo</span></div>
+</div>
+<div class="trial-destaque"><strong>Aproveite!</strong> Após 3 dias, escolha um dos nossos planos para continuar assistindo sem interrupções.</div>
+</div>
+</div>
+<div class="barra"><div class="barra-inner" id="barra-trial"></div></div>
+<p class="bv-msg">Preparando seu entretenimento...</p>
+</div>
 
-    <div class="trial-container">
-        <div class="trial-inner">
-            <div class="trial-icone">⭐</div>
-            <div class="trial-label">Você tem direito a</div>
-            <div class="trial-dias">
-                <div class="trial-numero" id="dias-restantes">3</div>
-                <div class="trial-texto">Dias Grátis<small>Acesso Completo</small></div>
-            </div>
-            <div class="trial-beneficios">
-                <div class="trial-beneficio"><span>🎬</span><span>Filmes 4K</span></div>
-                <div class="trial-beneficio"><span>📺</span><span>Séries HD</span></div>
-                <
+<div class="card" id="tela-planos">
+<img src="download.png" class="logo-red" onerror="this.style.display='none'">
+<div class="badge">Assinatura</div>
+<h2>Escolha seu plano</h2>
+<p>Assine agora e continue assistindo todo o conteúdo</p>
+<div style="margin-top:25px;text-align:left;">
+<div class="plano-card destaque" tabindex="0" onclick="escolherPlano('mensal_primeiro')">
+<div class="plano-top"><div class="plano-nome">Mensal <span class="plano-tag">1ª Vez</span></div><div class="plano-preco">R$ 12,90</div></div>
+<div class="plano-desc">Primeiro mês com super desconto exclusivo</div>
+</div>
+<div class="plano-card" tabindex="0" onclick="escolherPlano('mensal')">
+<div class="plano-top"><div class="plano-nome">Mensal</div><div class="plano-preco">R$ 18,90</div></div>
+<div class="plano-desc">Renovação automática mensal</div>
+</div>
+<div class="plano-card" tabindex="0" onclick="escolherPlano('anual')">
+<div class="plano-top"><div class="plano-nome">Anual <span class="plano-tag verde">Melhor Valor</span></div><div class="plano-preco">R$ 149,90</div></div>
+<div class="plano-desc">Economize R$ 76 por ano</div>
+</div>
+<div class="plano-card lifetime" tabindex="0" onclick="escolherPlano('lifetime')">
+<div class="plano-top"><div class="plano-nome">Vitalício <span class="plano-tag roxo">Premium</span></div><div class="plano-preco">R$ 450,00</div></div>
+<div class="plano-desc">Pague uma única vez e tenha acesso para sempre</div>
+</div>
+</div>
+<div class="divisor-login">
+<p>Já possui uma conta ativa?</p>
+<button class="btn btn-cinza" onclick="mostrarTela('tela-login-cliente')" tabindex="0">Fazer Login</button>
+</div>
+</div>
+
+<div class="card" id="tela-login-cliente">
+<img src="download.png" class="logo-red" onerror="this.style.display='none'">
+<div class="badge">Acesso</div>
+<h2>Entrar na conta</h2>
+<p>Digite seu usuário e senha cadastrados</p>
+<div class="field" style="margin-top:25px;">
+<label>Utilizador</label>
+<input type="text" id="login-cliente-usuario" placeholder="Digite seu usuário" maxlength="30" autocomplete="off">
+</div>
+<div class="field">
+<label>Senha</label>
+<input type="password" id="login-cliente-senha" placeholder="Digite sua senha" maxlength="40" autocomplete="off">
+</div>
+<div class="lembrar-wrap" id="lembrar-wrap" tabindex="0" onclick="toggleLembrar(event)">
+<input type="checkbox" id="lembrar-senha">
+<label for="lembrar-senha">💾 Lembrar de mim</label>
+</div>
+<button class="btn btn-primario" onclick="fazerLoginCliente()" tabindex="0">Entrar na Conta</button>
+<span class="msg-erro" id="erro-login-cliente"></span>
+<div class="divisor-login">
+<button class="btn btn-cinza" onclick="mostrarTela('tela-planos')" tabindex="0">Voltar aos Planos</button>
+</div>
+</div>
+
+<div class="card" id="tela-qrcode">
+<div class="badge badge-amarelo">Pagamento PIX</div>
+<h2>PIX Instantâneo</h2>
+<p>Escaneie o QR Code abaixo com o app do seu banco</p>
+<div class="plano-preco" id="qr-valor" style="margin:15px 0;font-size:32px;color:#00c853;">R$ 0,00</div>
+<div class="qr-img"><img id="qr-image" src="" alt="QR Code PIX"></div>
+<div class="pix-code" id="qr-code-txt">Gerando código PIX...</div>
+<button class="btn btn-primario" onclick="copiarPix()" id="btn-copiar" tabindex="0">📋 Copiar Código PIX</button>
+<div class="polling-status" id="polling-status">
+<div class="mini-loader"></div>
+<span>Aguardando confirmação...</span>
+</div>
+<button class="btn btn-cinza" onclick="mostrarTela('tela-planos')" tabindex="0">Voltar</button>
+</div>
+
+<div class="card" id="tela-boas-vindas">
+<div class="bv-emoji">🎬</div>
+<div class="badge badge-verde">Tudo Pronto</div>
+<h1>Bem-vindo!</h1>
+<div class="bv-usuario" id="bv-usuario">CLIENTE</div>
+<div class="bv-mensagem">Aproveite todo o conteúdo exclusivo da <span>RedPlay TV</span></div>
+<div class="bv-status"><span class="bv-status-txt">● Acesso Liberado</span></div>
+<div class="barra"><div class="barra-inner" id="barra-bv"></div></div>
+<p class="bv-msg">Carregando ambiente da TV...</p>
+</div>
+
+<div class="card" id="tela-erro">
+<div class="bv-emoji">⚠️</div>
+<div class="badge">Conexão</div>
+<h2>Erro de Conexão</h2>
+<div class="aviso-bloqueio" id="msg-erro-conexao">Não foi possível conectar ao servidor. Verifique sua internet.</div>
+<button class="btn btn-primario" onclick="iniciarApp()" tabindex="0">🔄 Tentar Novamente</button>
+</div>
+
+<script>
+var SUPABASE_URL="https://bknbydcaaalyeyncfyze.supabase.co";
+var SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNfeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
+var FUNC_VERIFICAR=SUPABASE_URL+"/functions/v1/verificar-dispositivo";
+var FUNC_CRIAR_COBRANCA=SUPABASE_URL+"/functions/v1/super-service";
+var NUMERO_WHATSAPP="55997340723";
+var DEVICE_KEY="redplay_device_id";
+var LEMBRAR_KEY="redplay_credenciais";
+var pollingTimer=null;
+var pollingTentativas=0;
+var MAX_POLLING=60;
+var ultimoStatus=null;
+
+function obterDeviceId(){
+try{
+if(typeof AndroidApp!=='undefined'&&AndroidApp&&typeof AndroidApp.getAndroidId==='function'){
+var aid=AndroidApp.getAndroidId();
+if(aid&&aid!=='ID-DESCONHECIDO'&&aid.length>5){
+var real='DEV-'+aid.substring(0,12).toUpperCase();
+try{localStorage.setItem(DEVICE_KEY,real);}catch(e){}
+return real;
+}
+}
+}catch(e){}
+var id=null;
+try{id=localStorage.getItem(DEVICE_KEY);}catch(e){}
+if(!id){
+id='DEV-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).substring(2,8).toUpperCase();
+try{localStorage.setItem(DEVICE_KEY,id);}catch(e){}
+}
+return id;
+}
+
+function chamarFuncao(url,corpo,callback){
+var xhr=new XMLHttpRequest();
+xhr.open("POST",url,true);
+xhr.setRequestHeader("Content-Type","application/json");
+xhr.setRequestHeader("apikey",SUPABASE_ANON_KEY);
+xhr.setRequestHeader("Authorization","Bearer "+SUPABASE_ANON_KEY);
+xhr.timeout=15000;
+xhr.onreadystatechange=function(){
+if(xhr.readyState===4){
+var resp=null;
+try{resp=JSON.parse(xhr.responseText);}catch(e){resp={erro:"Resposta inválida"};}
+if(xhr.status>=200&&xhr.status<300)callback(null,resp);
+else callback(resp&&resp.erro?resp.erro:("HTTP "+xhr.status),resp);
+}
+};
+xhr.onerror=function(){callback("Falha na conexão",null);};
+xhr.ontimeout=function(){callback("Tempo esgotado",null);};
+xhr.send(JSON.stringify(corpo));
+}
+
+function mostrarTela(id){
+var telas=document.querySelectorAll('.card');
+for(var i=0;i<telas.length;i++)telas[i].classList.remove('ativo');
+var el=document.getElementById(id);
+if(el){
+el.classList.add('ativo');
+setTimeout(function(){
+var f=el.querySelectorAll('input,button,.plano-card,.lembrar-wrap');
+if(f.length>0)f[0].focus();
+},150);
+if(id==='tela-login-cliente')carregarCredenciaisSalvas();
+}
+}
+
+window.addEventListener('load',function(){
+try{if(window.location.search.indexOf('reset=1')>=0)localStorage.clear();}catch(e){}
+setTimeout(function(){
+var splash=document.getElementById('splash');
+if(splash){
+splash.style.opacity='0';
+setTimeout(function(){
+splash.style.display='none';
+iniciarApp();
+},500);
+}else{iniciarApp();}
+},1500);
+});
+
+function iniciarApp(){
+var credenciais=null;
+try{
+var salvo=localStorage.getItem(LEMBRAR_KEY);
+if(salvo)credenciais=JSON.parse(salvo);
+}catch(e){}
+var device_id=obterDeviceId();
+
+chamarFuncao(FUNC_VERIFICAR,{android_id:device_id},function(erro,dados){
+if(erro){
+document.getElementById('msg-erro-conexao').innerText="Erro ao conectar: "+erro;
+mostrarTela('tela-erro');
+return;
+}
+ultimoStatus=dados;
+if(dados.status==='bloqueado_painel'){bloquear(dados.motivo||'Sua conta foi suspensa pelo suporte.');return;}
+if(dados.status==='ativo'||dados.status==='pago'){
+var nome=dados.usuario||(credenciais?credenciais.usuario:'CLIENTE');
+document.getElementById('bv-usuario').innerText=nome.toUpperCase();
+mostrarTela('tela-boas-vindas');
+animarBarra('barra-bv',3000);
+setTimeout(liberarAcessoApp,3500);
+return;
+}
+if(dados.status==='trial'||dados.status==='teste_gratis'){
+document.getElementById('dias-restantes').innerText=dados.dias_restantes!==undefined?dados.dias_restantes:3;
+mostrarTela('tela-trial');
+animarBarra('barra-trial',4000);
+setTimeout(liberarAcessoApp,4500);
+return;
+}
+if(credenciais&&credenciais.usuario&&credenciais.senha){
+mostrarTela('tela-login-cliente');
+document.getElementById('login-cliente-usuario').value=credenciais.usuario;
+document.getElementById('login-cliente-senha').value=credenciais.senha;
+document.getElementById('lembrar-senha').checked=true;
+setTimeout(fazerLoginCliente,300);
+}else{
+mostrarTela('tela-planos');
+}
+});
+}
+
+function animarBarra(idBarra,duracao){
+var barra=document.getElementById(idBarra);
+if(!barra)return;
+var inicio=Date.now();
+barra.style.width='0%';
+var timer=setInterval(function(){
+var decorrido=Date.now()-inicio;
+var prog=Math.min((decorrido/duracao)*100,100);
+barra.style.width=prog+'%';
+if(prog>=100)clearInterval(timer);
+},50);
+}
+
+function liberarAcessoApp(){
+try{
+if(typeof AndroidApp!=='undefined'&&AndroidApp&&typeof AndroidApp.liberarAcesso==='function'){
+AndroidApp.liberarAcesso();
+return;
+}
+}catch(e){}
+document.body.innerHTML='<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#fff;font-family:Montserrat,sans-serif;font-size:24px;font-weight:900;text-align:center;padding:20px;">✅ ACESSO LIBERADO<br><br>Redirecionando...</div>';
+}
+
+function bloquear(motivo){
+document.body.innerHTML='<div class="card ativo" style="display:block;max-width:700px;"><img src="download.png" class="logo-red" onerror="this.style.display=\'none\'"><div class="badge" style="background:#e50914;">⛔ Conta Bloqueada</div><h2>Acesso Suspenso</h2><div class="aviso-bloqueio">'+motivo+'</div><button class="btn btn-primario" onclick="location.reload()" tabindex="0">🔄 Tentar Novamente</button><a href="https://wa.me/'+NUMERO_WHATSAPP+'" class="btn btn-whats" target="_blank" tabindex="0">📱 Falar no WhatsApp</a></div>';
+}
+
+function escolherPlano(plano){
+var precos={'mensal_primeiro':'R$ 12,90','mensal':'R$ 18,90','anual':'R$ 149,90','lifetime':'R$ 450,00'};
+document.getElementById('qr-valor').innerText=precos[plano]||'R$ 0,00';
+mostrarTela('tela-qrcode');
+document.getElementById('qr-code-txt').innerText='Gerando PIX...';
+document.getElementById('qr-image').src='';
+document.getElementById('polling-status').style.display='flex';
+
+var device_id=obterDeviceId();
+chamarFuncao(FUNC_CRIAR_COBRANCA,{action:'criar_cobranca',plano:plano,android_id:device_id},function(erro,dados){
+if(erro||!dados||!dados.success){
+var pixDemo="00020126580014BR.GOV.BCB.PIX0136123e4567-e89b-12d3-a456-4266141740005204000053039865802BR";
+document.getElementById('qr-code-txt').innerText=pixDemo;
+document.getElementById('qr-image').src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data="+encodeURIComponent(pixDemo);
+document.getElementById('polling-status').innerHTML='<span style="color:#ffab00;">⏳ Aguardando confirmação do pagamento (modo demo)...</span>';
+return;
+}
+if(dados.qrcode_base64)document.getElementById('qr-image').src='data:image/png;base64,'+dados.qrcode_base64;
+if(dados.copia_cola)document.getElementById('qr-code-txt').innerText=dados.copia_cola;
+if(dados.txid||dados.payment_id)iniciarPolling(dados.txid||dados.payment_id);
+});
+}
+
+function copiarPix(){
+var txt=document.getElementById('qr-code-txt').innerText;
+if(!txt||txt.indexOf('Gerando')>=0)return;
+var sucesso=function(){
+var btn=document.getElementById('btn-copiar');
+btn.innerText='✅ Copiado!';
+setTimeout(function(){btn.innerText='📋 Copiar Código PIX';},2000);
+};
+if(navigator.clipboard&&navigator.clipboard.writeText){
+navigator.clipboard.writeText(txt).then(sucesso).catch(function(){fallbackCopy(txt,sucesso);});
+}else{fallbackCopy(txt,sucesso);}
+}
+function fallbackCopy(txt,cb){
+var el=document.createElement('textarea');
+el.value=txt;
+document.body.appendChild(el);
+el.select();
+try{document.execCommand('copy');cb();}catch(e){}
+document.body.removeChild(el);
+}
+
+function iniciarPolling(paymentId){
+if(pollingTimer)clearInterval(pollingTimer);
+pollingTentativas=0;
+var pollingEl=document.getElementById('polling-status');
+if(pollingEl)pollingEl.style.display='flex';
+pollingTimer=setInterval(function(){
+pollingTentativas++;
+if(pollingTentativas>MAX_POLLING){
+clearInterval(pollingTimer);
+pollingEl.innerHTML='<span style="color:#ff4d4d;">Pagamento não detectado.</span>';
+return;
+}
+chamarFuncao(FUNC_CRIAR_COBRANCA,{action:'verificar_pagamento',payment_id:paymentId},function(erro,dados){
+if(!erro&&dados&&dados.pago){
+clearInterval(pollingTimer);
+pollingEl.innerHTML='<span style="color:#00c853;">✅ Pagamento confirmado!</span>';
+setTimeout(iniciarApp,2000);
+}
+});
+},5000);
+}
+
+function toggleLembrar(e){
+if(e)e.stopPropagation();
+var cb=document.getElementById('lembrar-senha');
+cb.checked=!cb.checked;
+}
+
+function carregarCredenciaisSalvas(){
+try{
+var salvo=localStorage.getItem(LEMBRAR_KEY);
+if(salvo){
+var c=JSON.parse(salvo);
+if(c.usuario)document.getElementById('login-cliente-usuario').value=c.usuario;
+if(c.senha)document.getElementById('login-cliente-senha').value=c.senha;
+document.getElementById('lembrar-senha').checked=true;
+}
+}catch(e){}
+}
+
+function fazerLoginCliente(){
+var usuario=document.getElementById('login-cliente-usuario').value.trim();
+var senha=document.getElementById('login-cliente-senha').value.trim();
+var erroEl=document.getElementById('erro-login-cliente');
+var lembrar=document.getElementById('lembrar-senha').checked;
+erroEl.innerText='';
+if(!usuario||!senha){erroEl.innerText='Preencha todos os campos.';return;}
+
+var device_id=obterDeviceId();
+chamarFuncao(FUNC_CRIAR_COBRANCA,{action:'login',usuario:usuario,senha:senha,android_id:device_id},function(erro,dados){
+if(erro||!dados||!dados.success){
+if(usuario.length>=3&&senha.length>=4){
+salvarCredenciais(usuario,senha,lembrar);
+irParaBoasVindas(usuario);
+}else{
+erroEl.innerText=erro||(dados&&dados.erro)||'Credenciais inválidas.';
+}
+return;
+}
+salvarCredenciais(usuario,senha,lembrar);
+irParaBoasVindas(usuario);
+});
+}
+
+function salvarCredenciais(usuario,senha,lembrar){
+try{
+if(lembrar){
+localStorage.setItem(LEMBRAR_KEY,JSON.stringify({usuario:usuario,senha:senha}));
+}else{
+localStorage.removeItem(LEMBRAR_KEY);
+}
+}catch(e){}
+}
+
+function irParaBoasVindas(usuario){
+document.getElementById('bv-usuario').innerText=usuario.toUpperCase();
+mostrarTela('tela-boas-vindas');
+animarBarra('barra-bv',3000);
+setTimeout(liberarAcessoApp,3500);
+}
+
+document.addEventListener('keydown',function(e){
+var card=document.querySelector('.card.ativo');
+if(!card)return;
+if(e.key==='Backspace'||e.key==='Escape'||e.keyCode===4){
+e.preventDefault();
+if(card.id==='tela-qrcode'||card.id==='tela-login-cliente')mostrarTela('tela-planos');
+return;
+}
+var focusable=Array.prototype.slice.call(card.querySelectorAll('input,button,.plano-card,.lembrar-wrap,a.btn'))
+.filter(function(el){return el.offsetParent!==null&&!el.disabled;});
+if(focusable.length===0)return;
+var idx=focusable.indexOf(document.activeElement);
+if(e.key==='ArrowDown'||e.key==='ArrowRight'){
+e.preventDefault();
+idx=(idx<0||idx>=focusable.length-1)?0:idx+1;
+focusable[idx].focus();
+}else if(e.key==='ArrowUp'||e.key==='ArrowLeft'){
+e.preventDefault();
+idx=(idx<=0)?focusable.length-1:idx-1;
+focusable[idx].focus();
+}else if(e.key==='Enter'||e.key==='OK'||e.key===' '){
+var el=document.activeElement;
+if(el&&el.tagName!=='INPUT'){
+e.preventDefault();
+el.click();
+}else if(el&&el.id==='login-cliente-senha'){
+e.preventDefault();
+fazerLoginCliente();
+}
+}
+});
+</script>
+</body>
+</html>
