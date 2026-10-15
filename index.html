@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#000000">
-    <title>RedPlay TV</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#ffffff">
+    <title>Entrar - RedPlay</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --vermelho: #e50914;
             --vermelho-escuro: #b20710;
-            --verde: #00c853;
-            --amarelo: #ffab00;
-            --dourado: #ffc107;
-            --roxo: #8e24aa;
-            --preto: #000000;
-            --painel: #141414;
-            --borda: #1f1f1f;
-            --texto: #ffffff;
-            --texto-suave: #888888;
+            --fundo: #ffffff;
+            --texto: #333333;
+            --texto-suave: #666666;
+            --input-bg: #f5f5f5;
+            --input-borda: #dcdcdc;
+            --safe-h: 4vh;
+            --safe-v: 4vw;
         }
 
         * { 
@@ -33,787 +31,297 @@
             height: 100vh;
             width: 100vw;
             overflow: hidden;
-            background: #000;
-            color: #fff;
+            background: var(--fundo);
+            color: var(--texto);
             user-select: none;
-            -webkit-user-select: none;
         }
 
         body {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 5vh 5vw;
-            background: 
-                radial-gradient(ellipse at top, rgba(229,9,20,0.15) 0%, transparent 55%),
-                radial-gradient(ellipse at bottom, rgba(139,0,0,0.1) 0%, transparent 55%),
-                #000;
-            background-attachment: fixed;
+            padding: var(--safe-h) var(--safe-v);
+            /* Fundo branco com um degradê muito sutil de vermelho nas bordas (opcional) */
+            background: radial-gradient(circle at top right, rgba(229,9,20,0.03) 0%, transparent 50%),
+                        radial-gradient(circle at bottom left, rgba(229,9,20,0.03) 0%, transparent 50%),
+                        #ffffff;
         }
 
-        /* ================= SPLASH ================= */
-        #splash {
-            position: fixed;
-            inset: 0;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-            transition: opacity 0.6s ease-out;
-        }
-        .splash-logo {
-            width: clamp(200px, 24vw, 320px);
-            animation: splashEntrada 1.2s ease-out, splashFloat 3s ease-in-out infinite 1.2s;
-            filter: drop-shadow(0 0 60px rgba(229,9,20,0.7));
-        }
-        @keyframes splashEntrada {
-            0% { opacity: 0; transform: scale(0.7); }
-            60% { opacity: 1; transform: scale(1.05); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-        @keyframes splashFloat {
-            0%, 100% { transform: scale(1) translateY(0); }
-            50% { transform: scale(1.03) translateY(-8px); }
-        }
-        .splash-texto {
-            color: #666;
-            font-size: clamp(11px, 1.4vh, 14px);
-            letter-spacing: 8px;
-            text-transform: uppercase;
-            font-weight: 800;
-            margin-top: 40px;
-            animation: splashTextoPulse 1.8s ease-in-out infinite;
-        }
-        @keyframes splashTextoPulse {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
-        }
-
-        /* ================= TELAS ================= */
-        .card {
+        /* ================= CARD DE LOGIN ================= */
+        .login-card {
+            background: #ffffff;
             width: 100%;
-            height: 100%;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            max-width: min(450px, 90vw);
+            padding: clamp(30px, 5vh, 60px) clamp(25px, 4vw, 50px);
+            border-radius: 8px; /* Bordas levemente arredondadas, estilo Netflix */
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08); /* Sombra suave para dar profundidade no fundo branco */
             text-align: center;
-            padding: 2vh 2vw;
-            animation: cardFadeIn 0.5s ease;
+            animation: cardFadeIn 0.6s ease-out;
         }
-        .card.ativo { display: flex; }
+
         @keyframes cardFadeIn {
             from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .conteudo {
-            width: 100%;
-            max-width: 560px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: clamp(20px, 3vh, 36px);
+        /* Logo */
+        .logo-red {
+            width: clamp(110px, 15vw, 160px);
+            margin-bottom: clamp(20px, 3vh, 30px);
+            display: inline-block;
+            /* Se a logo for preta, pode usar filter: invert(1) para deixá-la branca, ou deixar como está */
         }
 
-        .logo-tela {
-            width: clamp(110px, 12vw, 150px);
-            margin-bottom: clamp(5px, 1vh, 15px);
-            filter: drop-shadow(0 0 25px rgba(229,9,20,0.4));
-        }
-
-        /* ================= TIPOGRAFIA ================= */
         h1 {
-            font-size: clamp(24px, 3.5vh, 38px);
+            color: var(--texto);
+            font-size: clamp(22px, 3vh, 28px);
             font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            line-height: 1.15;
-            color: #fff;
-            margin-bottom: 8px;
-        }
-        h2 {
-            font-size: clamp(20px, 2.8vh, 30px);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            line-height: 1.2;
-            color: #fff;
-            margin-bottom: 8px;
-        }
-        p {
-            font-size: clamp(13px, 1.7vh, 16px);
-            line-height: 1.5;
-            color: #aaa;
-            font-weight: 500;
+            margin-bottom: 25px;
+            text-align: left;
+            letter-spacing: -0.5px;
         }
 
-        .emoji-grande {
-            font-size: clamp(60px, 9vh, 90px);
-            line-height: 1;
-            margin-bottom: 8px;
-            animation: emojiPulse 2s ease-in-out infinite;
-        }
-        @keyframes emojiPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-        }
-
-        .subtitulo {
-            color: #888;
-            font-size: clamp(12px, 1.5vh, 14px);
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-weight: 700;
-            margin-top: 5px;
-        }
-
-        /* ================= BARRA DE PROGRESSO MODERNA ================= */
-        .barra-moderna {
-            width: 100%;
-            max-width: 340px;
-            height: 3px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 3px;
-            overflow: hidden;
+        /* ================= FORMULÁRIO ================= */
+        .input-group {
             position: relative;
-            margin-top: 10px;
-        }
-        .barra-moderna-inner {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #e50914, #ff4d4d, #e50914);
-            background-size: 200% 100%;
-            border-radius: 3px;
-            transition: width 0.15s linear;
-            animation: barraShimmer 2s linear infinite;
-            box-shadow: 0 0 15px rgba(229,9,20,0.8);
-        }
-        @keyframes barraShimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        /* ================= INPUTS ================= */
-        .field {
-            width: 100%;
+            margin-bottom: 16px;
             text-align: left;
         }
-        .field label {
-            display: block;
-            color: #666;
-            font-size: clamp(10px, 1.3vh, 12px);
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2.5px;
-            margin-bottom: 10px;
-        }
-        input {
+
+        .input-group input {
             width: 100%;
-            padding: clamp(16px, 2.2vh, 20px) clamp(18px, 2vw, 24px);
-            background: rgba(255,255,255,0.04);
-            border: 2px solid transparent;
-            border-radius: 14px;
-            color: #fff;
-            font-size: clamp(15px, 1.9vh, 18px);
-            font-weight: 700;
-            text-align: center;
-            transition: all 0.25s ease;
+            padding: 20px 18px 8px; /* Padding maior em cima para o label flutuante */
+            background: var(--input-bg);
+            border: 1px solid var(--input-borda);
+            border-radius: 6px;
+            color: var(--texto);
+            font-size: clamp(14px, 1.8vh, 16px);
+            font-weight: 600;
             outline: none;
-            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
         }
-        input:focus {
-            border-color: #e50914;
-            background: rgba(229,9,20,0.08);
-            box-shadow: 0 0 0 4px rgba(229,9,20,0.2), 0 0 40px rgba(229,9,20,0.4);
-            transform: scale(1.02);
+
+        .input-group input:focus {
+            border-color: var(--vermelho);
+            background: #ffffff;
+            box-shadow: 0 0 0 2px rgba(229,9,20,0.1);
         }
-        input::placeholder {
-            color: #444;
-            font-size: clamp(11px, 1.4vh, 14px);
+
+        /* Label flutuante (estilo Netflix) */
+        .input-group label {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: clamp(14px, 1.8vh, 16px);
+            font-weight: 500;
+            transition: all 0.2s ease;
+            pointer-events: none;
+        }
+
+        /* Quando o input está focado ou preenchido, o label sobe */
+        .input-group input:focus + label,
+        .input-group input:not(:placeholder-shown) + label {
+            top: 10px;
+            font-size: 10px;
             font-weight: 700;
-            letter-spacing: 2px;
+            color: #888;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .msg-erro {
-            color: #ff4d4d;
-            font-size: clamp(12px, 1.5vh, 14px);
-            font-weight: 800;
-            min-height: 20px;
-            display: block;
-            text-align: center;
+        /* Ajuste para o padding do input quando o label sobe */
+        .input-group input:focus,
+        .input-group input:not(:placeholder-shown) {
+            padding-top: 24px;
+            padding-bottom: 8px;
         }
 
-        /* ================= BOTÕES ================= */
-        button {
-            cursor: pointer;
+        /* ================= BOTÃO ================= */
+        .btn-entrar {
+            width: 100%;
+            padding: clamp(14px, 2vh, 18px);
+            background: var(--vermelho);
+            color: #fff;
             border: none;
-            font-family: inherit;
-            background: none;
-        }
-        .btn {
-            width: 100%;
-            padding: clamp(16px, 2.2vh, 20px) clamp(20px, 2vw, 28px);
-            border-radius: 14px;
-            font-size: clamp(14px, 1.8vh, 17px);
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            outline: none;
-            border: 3px solid transparent;
-        }
-        .btn-primario {
-            background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
-            color: #fff;
-            box-shadow: 0 8px 30px rgba(229,9,20,0.4);
-        }
-        .btn-cinza {
-            background: rgba(255,255,255,0.05);
-            color: #ccc;
-            border: 2px solid #333;
-        }
-        .btn-whats {
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: #fff;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-            box-shadow: 0 8px 30px rgba(37,211,102,0.3);
-        }
-
-        /* FOCO TV */
-        .btn:focus, .btn.foco,
-        .plano-card:focus, .plano-card.foco,
-        input:focus {
-            transform: scale(1.03);
-            border-color: #fff !important;
-            box-shadow: 
-                0 0 0 4px rgba(255,255,255,0.95),
-                0 0 50px rgba(255,255,255,0.5),
-                0 15px 40px rgba(0,0,0,0.8) !important;
-            outline: none;
-            z-index: 10;
-        }
-
-        /* ================= PLANOS ================= */
-        .lista-planos {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            border-radius: 6px;
+            font-size: clamp(15px, 2vh, 17px);
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
             margin-top: 10px;
+            margin-bottom: 20px;
         }
-        .plano-card {
-            background: rgba(255,255,255,0.03);
-            border: 2px solid transparent;
-            border-radius: 16px;
-            padding: clamp(16px, 2vh, 22px) clamp(20px, 2.2vw, 28px);
+
+        .btn-entrar:hover {
+            background: var(--vermelho-escuro);
+        }
+
+        .btn-entrar:active {
+            transform: scale(0.98);
+        }
+
+        .btn-entrar:focus {
+            outline: 3px solid #fff;
+            box-shadow: 0 0 0 4px var(--vermelho);
+        }
+
+        /* ================= LINKS AUXILIARES ================= */
+        .auxiliar-links {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 14px;
+            font-size: clamp(12px, 1.5vh, 14px);
+            color: var(--texto-suave);
+            margin-top: 10px;
+        }
+
+        .auxiliar-links label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             cursor: pointer;
-            transition: all 0.25s ease;
-            outline: none;
-            text-align: left;
-        }
-        .plano-card.destaque {
-            background: rgba(255,171,0,0.08);
-            border-color: rgba(255,171,0,0.4);
-        }
-        .plano-info {
-            flex: 1;
-            min-width: 0;
-        }
-        .plano-nome {
-            font-size: clamp(15px, 1.9vh, 18px);
-            font-weight: 900;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .plano-tag {
-            background: #e50914;
-            color: #fff;
-            font-size: clamp(9px, 1.1vh, 11px);
-            font-weight: 900;
-            padding: 4px 10px;
-            border-radius: 8px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-        .plano-tag.best { background: #ffab00; color: #000; }
-        .plano-tag.premium { background: #8e24aa; }
-        .plano-desc {
-            color: #777;
-            font-size: clamp(11px, 1.3vh, 13px);
-            font-weight: 600;
-            margin-top: 4px;
-        }
-        .plano-preco {
-            font-size: clamp(19px, 2.6vh, 24px);
-            font-weight: 900;
-            color: #00c853;
-            white-space: nowrap;
-        }
-        .plano-card.destaque .plano-preco { color: #ffc107; }
-
-        /* ================= QR CODE ================= */
-        .qr-wrap {
-            background: #fff;
-            border-radius: 20px;
-            padding: clamp(14px, 2vh, 20px);
-            max-width: clamp(200px, 28vh, 260px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 80px rgba(229,9,20,0.2);
-        }
-        .qr-wrap img {
-            width: 100%;
-            display: block;
-            border-radius: 10px;
-        }
-        .qr-valor {
-            font-size: clamp(26px, 3.6vh, 34px);
-            font-weight: 900;
-            color: #00c853;
-            letter-spacing: 1px;
-        }
-        .pix-codigo {
-            width: 100%;
-            background: rgba(0,0,0,0.6);
-            border: 1px solid #1f1f1f;
-            border-radius: 12px;
-            padding: 14px;
-            font-family: monospace;
-            font-size: clamp(10px, 1.2vh, 12px);
-            color: #666;
-            text-align: left;
-            word-break: break-all;
-            max-height: 70px;
-            overflow-y: auto;
-            line-height: 1.5;
-        }
-        .aguardando {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #888;
-            font-size: clamp(12px, 1.4vh, 14px);
-            font-weight: 700;
-        }
-        .dot-loader {
-            display: flex;
-            gap: 6px;
-        }
-        .dot-loader span {
-            width: 8px;
-            height: 8px;
-            background: #e50914;
-            border-radius: 50%;
-            animation: dotBounce 1.4s ease-in-out infinite;
-        }
-        .dot-loader span:nth-child(2) { animation-delay: 0.2s; }
-        .dot-loader span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes dotBounce {
-            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-            40% { transform: scale(1); opacity: 1; }
+            font-weight: 500;
         }
 
-        /* ================= DIVISOR ================= */
-        .divisor {
-            width: 100%;
-            height: 1px;
-            background: #1a1a1a;
-            margin: 8px 0;
+        .auxiliar-links input[type="checkbox"] {
+            accent-color: var(--vermelho);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
         }
-        .link-secundario {
-            text-align: center;
-            color: #666;
-            font-size: clamp(12px, 1.4vh, 14px);
-            font-weight: 700;
+
+        .auxiliar-links a {
+            color: var(--texto-suave);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .auxiliar-links a:hover {
+            color: var(--vermelho);
+        }
+
+        /* ================= RODAPÉ ================= */
+        .footer-login {
+            margin-top: 40px;
+            text-align: left;
+            font-size: clamp(12px, 1.5vh, 14px);
+            color: var(--texto-suave);
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .footer-login p {
             margin-bottom: 10px;
+            font-weight: 500;
         }
 
+        .footer-login a {
+            color: var(--vermelho);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .footer-login a:hover {
+            text-decoration: underline;
+        }
+
+        .recaptcha-texto {
+            font-size: 11px;
+            color: #999;
+            line-height: 1.4;
+            margin-top: 15px;
+        }
+
+        .recaptcha-texto a {
+            color: #666;
+            text-decoration: underline;
+        }
+
+        /* Cursor oculto para TV */
         body { cursor: none; }
         @media (pointer: fine) { body { cursor: default; } }
     </style>
 </head>
 <body>
 
-<!-- ================= SPLASH ================= -->
-<div id="splash">
-    <img src="download.png" alt="RedPlay" class="splash-logo" onerror="this.style.display='none'">
-    <div class="splash-texto">Iniciando aplicação</div>
-</div>
-
-<!-- ================= TELA: BOAS-VINDAS TRIAL ================= -->
-<div class="card" id="tela-trial">
-    <div class="conteudo">
-        <div class="emoji-grande">🎬</div>
-        <h1>Bem-vindo à RedPlay</h1>
-        <p class="subtitulo">Preparando seu entretenimento</p>
+    <!-- CARD DE LOGIN -->
+    <div class="login-card">
         
-        <div class="barra-moderna">
-            <div class="barra-moderna-inner" id="barra-trial"></div>
-        </div>
-    </div>
-</div>
-
-<!-- ================= TELA: PLANOS ================= -->
-<div class="card" id="tela-planos">
-    <div class="conteudo">
-        <img src="download.png" alt="RedPlay" class="logo-tela" onerror="this.style.display='none'">
-        <h2>Escolha seu plano</h2>
-        <p style="margin-bottom: 10px;">Assine agora e continue assistindo</p>
-
-        <div class="lista-planos">
-            <div class="plano-card destaque" tabindex="0" onclick="escolherPlano('mensal_primeiro')">
-                <div class="plano-info">
-                    <div class="plano-nome">Mensal <span class="plano-tag">1ª Vez</span></div>
-                    <div class="plano-desc">Primeiro mês com desconto</div>
-                </div>
-                <div class="plano-preco">R$ 12,90</div>
-            </div>
-
-            <div class="plano-card" tabindex="0" onclick="escolherPlano('mensal')">
-                <div class="plano-info">
-                    <div class="plano-nome">Mensal</div>
-                    <div class="plano-desc">Renovação mensal</div>
-                </div>
-                <div class="plano-preco">R$ 18,90</div>
-            </div>
-
-            <div class="plano-card" tabindex="0" onclick="escolherPlano('anual')">
-                <div class="plano-info">
-                    <div class="plano-nome">Anual <span class="plano-tag best">Melhor</span></div>
-                    <div class="plano-desc">Economize R$ 76/ano</div>
-                </div>
-                <div class="plano-preco">R$ 149,90</div>
-            </div>
-
-            <div class="plano-card" tabindex="0" onclick="escolherPlano('lifetime')">
-                <div class="plano-info">
-                    <div class="plano-nome">Vitalício <span class="plano-tag premium">Premium</span></div>
-                    <div class="plano-desc">Pague uma vez, para sempre</div>
-                </div>
-                <div class="plano-preco">R$ 450,00</div>
-            </div>
-        </div>
-
-        <div class="divisor"></div>
-        <p class="link-secundario">Já tem uma conta ativa?</p>
-        <button class="btn btn-cinza" onclick="mostrarLoginCliente()" tabindex="0">Fazer Login</button>
-    </div>
-</div>
-
-<!-- ================= TELA: LOGIN CLIENTE ================= -->
-<div class="card" id="tela-login-cliente">
-    <div class="conteudo">
-        <img src="download.png" alt="RedPlay" class="logo-tela" onerror="this.style.display='none'">
-        <h2>Entrar na conta</h2>
-        <p>Digite seu usuário e senha</p>
-
-        <div class="field">
-            <label>Utilizador</label>
-            <input type="text" id="login-cliente-usuario" placeholder="seu usuario" maxlength="20" autocomplete="off">
-        </div>
-
-        <div class="field">
-            <label>Senha</label>
-            <input type="password" id="login-cliente-senha" placeholder="sua senha" maxlength="30" autocomplete="off" onkeypress="if(event.key==='Enter')fazerLoginCliente()">
-        </div>
-
-        <button class="btn btn-primario" onclick="fazerLoginCliente()" tabindex="0">Entrar</button>
-        <span class="msg-erro" id="erro-login-cliente"></span>
-
-        <div class="divisor"></div>
-        <button class="btn btn-cinza" onclick="mostrarPlanos()" tabindex="0">Voltar aos planos</button>
-    </div>
-</div>
-
-<!-- ================= TELA: QR CODE ================= -->
-<div class="card" id="tela-qrcode">
-    <div class="conteudo">
-        <h2>Pagamento PIX</h2>
-        <p>Escaneie o QR Code com o app do seu banco</p>
-
-        <div class="qr-valor" id="qr-valor">R$ 0,00</div>
-
-        <div class="qr-wrap">
-            <img id="qr-image" src="" alt="QR Code PIX">
-        </div>
-
-        <div class="pix-codigo" id="qr-code-txt">Gerando código PIX...</div>
-
-        <button class="btn btn-cinza" onclick="copiarPix()" id="btn-copiar" tabindex="0">📋 Copiar código PIX</button>
-
-        <div class="aguardando" id="polling-status">
-            <div class="dot-loader">
-                <span></span><span></span><span></span>
-            </div>
-            <span>Aguardando pagamento</span>
-        </div>
-
-        <div class="divisor"></div>
-        <button class="btn btn-cinza" onclick="voltarInicio()" tabindex="0">Voltar</button>
-    </div>
-</div>
-
-<!-- ================= TELA: BOAS-VINDAS ================= -->
-<div class="card" id="tela-boas-vindas">
-    <div class="conteudo">
-        <div class="emoji-grande">🎬</div>
-        <h1>Bem-vindo!</h1>
-        <p class="subtitulo" id="bv-usuario">cliente</p>
+        <!-- Substitua pela sua logo. Se a logo for branca, ela sumirá no fundo branco. 
+             Use uma logo vermelha ou preta. -->
+        <img src="https://via.placeholder.com/150x50/e50914/ffffff?text=RedPlay" alt="RedPlay" class="logo-red">
         
-        <p style="font-size: clamp(14px, 1.8vh, 17px); color: #888; margin-top: 5px;">
-            Aproveite o conteúdo RedPlay
-        </p>
+        <h1>Entrar</h1>
 
-        <div class="barra-moderna">
-            <div class="barra-moderna-inner" id="barra-bv"></div>
+        <form id="login-form">
+            <!-- Campo de Email/Usuário -->
+            <div class="input-group">
+                <input type="text" id="usuario" placeholder=" " required autocomplete="username">
+                <label for="usuario">Email ou número de telefone</label>
+            </div>
+
+            <!-- Campo de Senha -->
+            <div class="input-group">
+                <input type="password" id="senha" placeholder=" " required autocomplete="current-password">
+                <label for="senha">Senha</label>
+            </div>
+
+            <!-- Botão Entrar -->
+            <button type="submit" class="btn-entrar" id="btn-entrar">Entrar</button>
+
+            <!-- Links Auxiliares -->
+            <div class="auxiliar-links">
+                <label>
+                    <input type="checkbox" id="lembrar">
+                    Lembrar de mim
+                </label>
+                <a href="#">Precisa de ajuda?</a>
+ => {
+                       </div>
+        </form>
+
+        <!-- Rodapé -->
+        <div class="footer-login">
+            <p>Novo na RedPlay? <a href="#">Assine agora</a>.</p>
+            <p class="recaptcha-texto">
+                Esta página é protegida pelo Google reCAPTCHA para garantir que você não é um robô. 
+                <a href="#">Saiba mais</a>.
+            </p>
         </div>
-        <p class="subtitulo" style="font-size: 11px; margin-top: 5px;">Carregando ambiente da TV</p>
+
     </div>
-</div>
 
-<!-- ================= TELA: ERRO DE CONEXÃO ================= -->
-<div class="card" id="tela-erro">
-    <div class="conteudo">
-        <div class="emoji-grande">⚠️</div>
-        <h2>Erro de Conexão</h2>
-        <p id="msg-erro-conexao" style="color: #ff4d4d; font-weight: 700;">
-            Não foi possível conectar ao servidor.
-        </p>
-        <button class="btn btn-primario" onclick="iniciarApp()" tabindex="0">Tentar novamente</button>
-    </div>
-</div>
+    <script>
+        // Lógica simples de submit para demonstração
+        document.getElementById('login-form').addEventListener('submit', (e) e.preventDefault();
+            const usuario = document.getElementById('usuario').value;
+            const senha = document.getElementById('senha').value;
 
-<script>
-// ==========================================
-// CONFIGURAÇÃO SUPABASE
-// ==========================================
-var SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
-var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
-
-var FUNC_VERIFICAR = SUPABASE_URL + "/functions/v1/verificar-dispositivo";
-var FUNC_CRIAR_COBRANCA = SUPABASE_URL + "/functions/v1/super-service";
-var FUNC_CRIAR_CONTA = SUPABASE_URL + "/functions/v1/criar-conta-cliente";
-
-var DEVICE_KEY = "redplay_device_id";
-var CRED_KEY = "redplay_credenciais_salvas";
-var pollingTimer = null;
-var pollingTentativas = 0;
-var MAX_POLLING = 60;
-var ultimoStatus = null;
-
-// ==========================================
-// ANDROID ID
-// ==========================================
-function obterDeviceId() {
-    try {
-        if (typeof AndroidApp !== 'undefined' && AndroidApp && typeof AndroidApp.getAndroidId === 'function') {
-            var androidId = AndroidApp.getAndroidId();
-            if (androidId && androidId !== 'ID-DESCONHECIDO' && androidId.length > 5) {
-                var deviceReal = 'DEV-' + androidId.substring(0, 12).toUpperCase();
-                try { localStorage.setItem(DEVICE_KEY, deviceReal); } catch(e) {}
-                return deviceReal;
+            if (usuario && senha) {
+                // Aqui você faria a chamada real para a API de login
+                alert(`Login efetuado com sucesso!\nUsuário: ${usuario}`);
+                // Redirecionar para a tela de boas-vindas (ex: tela-boas-vindas.html)
+            } else {
+                alert('Por favor, preencha todos os campos.');
             }
-        }
-    } catch (e) {}
-    var id = null;
-    try { id = localStorage.getItem(DEVICE_KEY); } catch(e) {}
-    if (!id) {
-        id = 'DEV-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substring(2,8).toUpperCase();
-        try { localStorage.setItem(DEVICE_KEY, id); } catch(e) {}
-    }
-    return id;
-}
+        });
 
-// ==========================================
-// HTTP
-// ==========================================
-function chamarFuncao(url, corpo, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.setRequestHeader("apikey", SUPABASE_ANON_KEY);
-    xhr.setRequestHeader("Authorization", "Bearer " + SUPABASE_ANON_KEY);
-    xhr.timeout = 20000;
-
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            var resposta = null;
-            try { resposta = JSON.parse(xhr.responseText); } catch(e) { resposta = { erro: "Resposta inválida" }; }
-            if (xhr.status >= 200 && xhr.status < 300) callback(null, resposta);
-            else callback(resposta && resposta.erro ? resposta.erro : ("HTTP " + xhr.status), resposta);
-        }
-    };
-    xhr.onerror = function() { callback("Falha na conexão", null); };
-    xhr.ontimeout = function() { callback("Tempo esgotado", null); };
-    xhr.send(JSON.stringify(corpo));
-}
-
-// ==========================================
-// NAVEGAÇÃO
-// ==========================================
-function mostrarTela(id) {
-    var telas = document.querySelectorAll('.card');
-    for (var i = 0; i < telas.length; i++) telas[i].classList.remove('ativo');
-    var el = document.getElementById(id);
-    if (el) {
-        el.classList.add('ativo');
-        setTimeout(function() {
-            var focusable = el.querySelectorAll('input, button, .plano-card, a.btn');
-            if (focusable.length > 0) focusable[0].focus();
-        }, 200);
-    }
-}
-
-// ==========================================
-// INICIALIZAÇÃO
-// ==========================================
-window.addEventListener('load', function() {
-    try {
-        if (window.location.search.indexOf('reset=1') >= 0) {
-            localStorage.clear();
-        }
-    } catch(e) {}
-
-    setTimeout(function() {
-        var splash = document.getElementById('splash');
-        splash.style.opacity = '0';
-        setTimeout(function() {
-            splash.style.display = 'none';
-            iniciarApp();
-        }, 600);
-    }, 2400);
-});
-
-function iniciarApp() {
-    var device_id = obterDeviceId();
-
-    chamarFuncao(FUNC_VERIFICAR, { android_id: device_id }, function(erro, dados) {
-        if (erro) {
-            var elErro = document.getElementById('msg-erro-conexao');
-            if (elErro) elErro.innerText = "Erro ao conectar: " + erro;
-            mostrarTela('tela-erro');
-            return;
-        }
-
-        ultimoStatus = dados;
-
-        if (dados.status === 'bloqueado_painel') {
-            bloquearTotal(dados.motivo || 'Sua conta foi suspensa pelo suporte.');
-            return;
-        }
-
-        if (dados.status === 'ativo' || dados.status === 'pago') {
-            var elUser = document.getElementById('bv-usuario');
-            if (elUser) elUser.innerText = dados.usuario || 'CLIENTE';
-            mostrarTela('tela-boas-vindas');
-            animarBarra('barra-bv', 3200);
-            setTimeout(liberarAcessoApp, 3600);
-            return;
-        }
-
-        if (dados.status === 'trial' || dados.status === 'teste_gratis') {
-            mostrarTela('tela-trial');
-            animarBarra('barra-trial', 3600);
-            setTimeout(liberarAcessoApp, 4000);
-            return;
-        }
-
-        // Expirou / sem trial → planos
-        mostrarTela('tela-planos');
-    });
-}
-
-// ==========================================
-// BARRA ANIMADA MODERNA
-// ==========================================
-function animarBarra(idBarra, duracao) {
-    var barra = document.getElementById(idBarra);
-    if (!barra) return;
-    var inicio = Date.now();
-    barra.style.width = '0%';
-    
-    var timer = setInterval(function() {
-        var decorrido = Date.now() - inicio;
-        var progresso = Math.min((decorrido / duracao) * 100, 100);
-        barra.style.width = progresso + '%';
-        if (progresso >= 100) clearInterval(timer);
-    }, 40);
-}
-
-// ==========================================
-// LIBERAR ACESSO (Android)
-// ==========================================
-function liberarAcessoApp() {
-    try {
-        if (typeof AndroidApp !== 'undefined' && AndroidApp) {
-            if (typeof AndroidApp.fecharSplashOuLiberar === 'function') {
-                AndroidApp.fecharSplashOuLiberar();
-                return;
-            }
-            if (typeof AndroidApp.liberarAcesso === 'function') {
-                AndroidApp.liberarAcesso();
-                return;
-            }
-        }
-    } catch(e) {}
-    
-    document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#fff;font-family:Montserrat,sans-serif;font-size:24px;font-weight:900;letter-spacing:2px;text-align:center;padding:20px;">✅ ACESSO LIBERADO</div>';
-}
-
-// ==========================================
-// BLOQUEIO TOTAL (com opções)
-// ==========================================
-function bloquearTotal(motivo) {
-    var html = 
-        '<div class="card ativo" style="display:flex;">' +
-            '<div class="conteudo">' +
-                '<div class="emoji-grande">⛔</div>' +
-                '<h2>Conta Bloqueada</h2>' +
-                '<p style="color: #ff4d4d; font-weight: 700; background: rgba(229,9,20,0.1); padding: 15px 20px; border-radius: 12px; margin-top: 10px;">' + motivo + '</p>' +
-                '<p style="margin-top: 10px;">Escolha uma das opções abaixo:</p>' +
+        // Suporte a navegação por controle remoto (TV Box)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const focused = document.activeElement;
+                // Se o foco estiver em um input, não faz nada (deixa o form enviar)
+                if (focused && focused.tagName === 'INPUT' && focused.type === 'text') return;
                 
-                '<button class="btn btn-primario" onclick="mostrarPlanos()" tabindex="0">💳 Renovar Assinatura</button>' +
-                '<button class="btn btn-cinza" onclick="mostrarLoginCliente()" tabindex="0">🔐 Fazer Login</button>' +
-                '<a href="https://wa.me/55997340723?text=' + encodeURIComponent('Olá! Minha conta RedPlay está bloqueada. Motivo: ' + motivo) + '" class="btn btn-whats" target="_blank" tabindex="0">📱 Falar no WhatsApp</a>' +
-            '</div>' +
-        '</div>';
-    
-    document.body.innerHTML = html;
-    setTimeout(function() {
-        var btn = document.querySelector('body .btn-primario');
-        if (btn) btn.focus();
-    }, 200);
-}
+                if (focused && focused.id === 'btn-entrar') {
+                    focused.click();
+                }
+            }
+        });
+    </script>
 
-// ==========================================
-// MOSTRAR PLANOS (recria se preciso)
-// ==========================================
-function mostrarPlanos() {
-    var telaPlanos = document.getElementById('tela-planos');
-    if (telaPlanos && document.querySelectorAll('.card').length > 1) {
-        mostrarTela('tela-planos');
-        return;
-    }
-
-    var html = 
-        '<div class="card ativo" id="tela-planos" style="display:flex;">' +
-            '<div class="conteudo">' +
-                '<img src="download.png" alt="RedPlay" class="logo-tela" onerror="this.style.display=\'none\'">' +
-                '<h2>Escolha seu plano</h2>' +
-                '<p>Renove agora e continue assistindo</p>' +
-                
-                '<div class="lista-planos">' +
-                    '<div class="plano-card destaque" tabindex="0" onclick="escolherPlano(\'anual\')">' +
+</body>
+</html>
