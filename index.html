@@ -5,8 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#000000">
     <title>RedPlay TV</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --vermelho: #e50914;
+            --vermelho-escuro: #b20710;
+            --fundo: #0b0e14; /* Fundo escuro sofisticado */
+            --painel: #141414;
+            --texto: #ffffff;
+            --texto-suave: #a0a0a0;
+            --borda: #2a2a2a;
+            --verde: #00c853;
+            --dourado: #ffc107;
+        }
+
         * { 
             margin: 0; 
             padding: 0; 
@@ -19,8 +31,8 @@
             height: 100vh;
             width: 100vw;
             overflow: hidden;
-            background: #000;
-            color: #fff;
+            background: var(--fundo);
+            color: var(--texto);
             user-select: none;
         }
 
@@ -28,12 +40,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 100vw;
-            height: 100vh;
-            background: #000;
+            /* Fundo com um toque sutil de vermelho no topo */
+            background: radial-gradient(circle at top center, rgba(229,9,20,0.1) 0%, transparent 60%), var(--fundo);
         }
 
-        /* TELA DE BOOT COM LOGO */
+        /* ================= BOOT SCREEN ================= */
         #boot-screen {
             position: fixed;
             inset: 0;
@@ -43,25 +54,28 @@
             justify-content: center;
             align-items: center;
             z-index: 99999;
+            transition: opacity 0.5s ease;
         }
-
         .boot-logo {
-            width: 180px;
+            width: clamp(120px, 15vw, 180px);
             margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(229,9,20,0.5));
         }
-
         .boot-txt {
-            font-size: 16px;
-            color: #aaa;
-            font-weight: 600;
-            letter-spacing: 2px;
+            font-size: 12px;
+            color: #666;
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            animation: pulse 1.5s infinite alternate;
         }
+        @keyframes pulse { from { opacity: 0.5; } to { opacity: 1; } }
 
-        /* WRAPPER */
+        /* ================= WRAPPER ================= */
         .wrapper {
             width: 100%;
             height: 100%;
-            max-width: 600px;
+            max-width: 500px; /* Largura ideal para TV/Tablet */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -73,6 +87,7 @@
             display: none;
             width: 100%;
             text-align: center;
+            animation: fadeIn 0.4s ease-out;
         }
 
         .tela.ativa {
@@ -82,183 +97,263 @@
             justify-content: center;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ================= TIPOGRAFIA ================= */
         h1, h2 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #fff;
+            font-size: clamp(22px, 3vh, 28px);
+            font-weight: 900;
+            margin-bottom: 10px;
+            color: var(--texto);
+            letter-spacing: -0.5px;
         }
 
         p {
-            font-size: 14px;
-            color: #aaa;
-            margin-bottom: 15px;
-            line-height: 1.4;
+            font-size: clamp(13px, 1.8vh, 15px);
+            color: var(--texto-suave);
+            margin-bottom: 25px;
+            line-height: 1.5;
+            font-weight: 500;
         }
 
-        /* INPUTS */
+        /* ================= INPUTS (Estilo Netflix) ================= */
         .input-group {
             width: 100%;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             text-align: left;
+            position: relative;
         }
 
         .input-group label {
             display: block;
-            font-size: 12px;
+            font-size: 11px;
             color: #888;
-            margin-bottom: 5px;
-            font-weight: 600;
+            margin-bottom: 8px;
+            font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            padding-left: 4px;
         }
 
         input {
             width: 100%;
-            padding: 14px;
-            background: #111;
-            border: 1px solid #333;
-            border-radius: 4px;
+            padding: 18px 16px;
+            background: var(--painel);
+            border: 1px solid var(--borda);
+            border-radius: 8px;
             color: #fff;
             font-size: 16px;
+            font-weight: 600;
             outline: none;
+            transition: all 0.2s ease;
         }
 
         input:focus {
-            border-color: #e50914;
+            border-color: var(--vermelho);
             background: #1a1a1a;
+            box-shadow: 0 0 0 3px rgba(229,9,20,0.2);
         }
 
-        /* BOTÕES */
+        /* ================= BOTÕES ================= */
         .btn {
             width: 100%;
-            padding: 14px;
+            padding: 18px;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             font-size: 15px;
-            font-weight: 700;
+            font-weight: 800;
             text-transform: uppercase;
+            letter-spacing: 1px;
             cursor: pointer;
             margin-top: 10px;
             margin-bottom: 10px;
             outline: none;
-            background: #e50914;
+            background: var(--vermelho);
             color: #fff;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(229,9,20,0.3);
         }
 
-        .btn:focus {
-            background: #ff1e2a;
-            outline: 2px solid #fff;
+        .btn:hover, .btn:focus {
+            background: var(--vermelho-escuro);
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(229,9,20,0.5), 0 0 0 3px #fff;
         }
 
         .btn-secundario {
-            background: #222;
-            color: #fff;
-            border: 1px solid #444;
+            background: transparent;
+            color: var(--texto-suave);
+            border: 1px solid var(--borda);
+            box-shadow: none;
         }
 
-        .btn-secundario:focus {
-            background: #333;
-            outline: 2px solid #fff;
+        .btn-secundario:hover, .btn-secundario:focus {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            border-color: #666;
+            box-shadow: 0 0 0 3px #fff;
+            transform: scale(1.02);
         }
 
         .btn-whats {
             background: #25D366;
             color: #fff;
             text-decoration: none;
-            display: block;
-            text-align: center;
-            line-height: normal;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(37,211,102,0.3);
+        }
+        .btn-whats:hover, .btn-whats:focus {
+            background: #1eb85a;
+            box-shadow: 0 8px 25px rgba(37,211,102,0.5), 0 0 0 3px #fff;
         }
 
-        /* PLANOS */
+        /* ================= PLANOS ================= */
         .plano-card {
             width: 100%;
-            background: #111;
-            border: 1px solid #333;
-            border-radius: 4px;
-            padding: 15px;
-            margin-bottom: 10px;
+            background: var(--painel);
+            border: 1px solid var(--borda);
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
             text-align: left;
             outline: none;
+            transition: all 0.2s ease;
         }
 
-        .plano-card:focus {
-            border-color: #fff;
-            background: #222;
-            outline: 2px solid #fff;
+        .plano-card:hover, .plano-card:focus {
+            border-color: var(--vermelho);
+            background: rgba(229,9,20,0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 0 3px #fff;
         }
 
         .plano-nome {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .plano-preco {
-            font-size: 16px;
-            font-weight: 700;
-            color: #00c853;
+            font-size: 17px;
+            font-weight: 900;
+            color: var(--verde);
+            text-shadow: 0 0 15px rgba(0,200,83,0.3);
+            white-space: nowrap;
         }
 
-        /* LINKS */
+        /* ================= DESTAQUE PLANO VITALÍCIO ================= */
+        .plano-destaque {
+            border-color: var(--dourado);
+            background: linear-gradient(135deg, rgba(255,193,7,0.1) 0%, var(--painel) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plano-destaque:hover, .plano-destaque:focus {
+            border-color: var(--dourado);
+            background: linear-gradient(135deg, rgba(255,193,7,0.15) 0%, #1a1a1a 100%);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 0 3px #fff, 0 0 25px rgba(255,193,7,0.4);
+        }
+
+        .tag-destaque {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            color: #000;
+            font-size: 9px;
+            font-weight: 900;
+            padding: 3px 8px;
+            border-radius: 4px;
+            letter-spacing: 1px;
+            vertical-align: middle;
+            box-shadow: 0 0 15px rgba(255,193,7,0.5);
+        }
+
+        .plano-destaque .plano-preco {
+            color: var(--dourado);
+            text-shadow: 0 0 15px rgba(255,193,7,0.3);
+        }
+
+        /* ================= LINKS AUXILIARES ================= */
         .links-aux {
             display: flex;
             justify-content: space-between;
             width: 100%;
             font-size: 13px;
-            margin-top: 10px;
+            margin-top: 20px;
+            padding: 0 5px;
         }
 
         .links-aux a, .link-txt {
-            color: #888;
+            color: var(--texto-suave);
             text-decoration: none;
             cursor: pointer;
+            font-weight: 600;
+            transition: color 0.2s;
+            outline: none;
+            padding: 5px;
+            border-radius: 4px;
         }
 
+        .links-aux a:hover, .link-txt:hover,
         .links-aux a:focus, .link-txt:focus {
             color: #fff;
-            outline: 1px solid #fff;
+            background: rgba(255,255,255,0.1);
         }
 
-        /* QR CODE */
+        /* ================= QR CODE ================= */
         .qr-box {
             background: #fff;
-            padding: 10px;
-            width: 180px;
-            height: 180px;
-            margin: 15px auto;
-            border-radius: 4px;
+            padding: 15px;
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .qr-box img {
             width: 100%;
             height: 100%;
+            border-radius: 6px;
         }
 
         .pix-code {
-            background: #111;
-            border: 1px solid #333;
-            padding: 10px;
+            background: var(--painel);
+            border: 1px solid var(--borda);
+            padding: 15px;
             font-family: monospace;
-            font-size: 11px;
-            color: #aaa;
+            font-size: 12px;
+            color: var(--texto-suave);
             word-break: break-all;
-            max-height: 60px;
+            max-height: 70px;
             overflow-y: auto;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             text-align: left;
+            border-radius: 8px;
         }
 
         .msg-erro {
             color: #ff4d4d;
             font-size: 13px;
             margin-top: 10px;
+            font-weight: 600;
+            display: block;
+            min-height: 20px;
         }
 
+        /* Cursor oculto para TV */
         body { cursor: none; }
         @media (pointer: fine) { body { cursor: default; } }
     </style>
@@ -267,6 +362,7 @@
 
     <!-- BOOT COM LOGO -->
     <div id="boot-screen">
+        <!-- Substitua o src pela sua imagem real -->
         <img src="download.png" alt="RedPlay" class="boot-logo" onerror="this.style.display='none'">
         <div class="boot-txt">Carregando sistema...</div>
     </div>
@@ -277,6 +373,7 @@
         <!-- TELA LOGIN -->
         <div class="tela" id="tela-login">
             <h1>Entrar</h1>
+            <p>Assista onde e quando quiser.</p>
 
             <div class="input-group">
                 <label>Usuário ou Email</label>
@@ -317,13 +414,22 @@
                 <div class="plano-preco">R$ 149,90</div>
             </div>
 
+            <!-- PLANO VITALÍCIO EM DESTAQUE -->
+            <div class="plano-card plano-destaque" onclick="gerarCobranca('vitalicio')" tabindex="0">
+                <div class="plano-nome">
+                    Vitalício <span class="tag-destaque">MELHOR OFERTA</span>
+                </div>
+                <div class="plano-preco">R$ 299,90</div>
+            </div>
+
             <button class="btn btn-secundario" onclick="abrirLogin()" tabindex="0">Voltar ao Login</button>
         </div>
 
         <!-- TELA QR CODE -->
         <div class="tela" id="tela-qrcode">
             <h2>Pagamento PIX</h2>
-            <div id="qr-valor" style="font-size: 20px; font-weight: bold; color: #00c853; margin-bottom: 10px;">R$ 0,00</div>
+            <div id="qr-valor" style="font-size: 24px; font-weight: 900; color: var(--verde); margin-bottom: 5px;">R$ 0,00</div>
+            <p style="margin-bottom: 10px;">Escaneie o código abaixo</p>
 
             <div class="qr-box">
                 <img id="qr-img" src="" alt="PIX">
@@ -337,7 +443,7 @@
 
         <!-- TELA BLOQUEADO -->
         <div class="tela" id="tela-bloqueado">
-            <h2>Acesso Suspenso</h2>
+            <h2 style="color: #ff4d4d;">Acesso Suspenso</h2>
             <p id="motivo-bloqueio-txt">Sua conta foi bloqueada pelo suporte.</p>
             <a href="#" class="btn btn-whats" onclick="abrirSuporteWhatsapp(event)" tabindex="0">Falar com Suporte</a>
         </div>
@@ -356,6 +462,9 @@
     </div>
 
     <script>
+        // ==========================================
+        // VARIÁVEIS E LÓGICA DE API
+        // ==========================================
         var SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
         var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNfeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
         var FUNC_VERIFICAR = SUPABASE_URL + "/functions/v1/verificar-dispositivo";
@@ -395,9 +504,12 @@
         window.addEventListener('load', function() {
             setTimeout(function() {
                 var boot = document.getElementById('boot-screen');
-                if (boot) boot.style.display = 'none';
+                if (boot) {
+                    boot.style.opacity = '0';
+                    setTimeout(function() { boot.style.display = 'none'; }, 500);
+                }
                 verificarStatusEIniciar();
-            }, 800);
+            }, 1500);
         });
 
         function verificarStatusEIniciar() {
@@ -465,9 +577,18 @@
             var precos = {
                 'mensal_primeiro': 'R$ 12,90',
                 'mensal': 'R$ 18,90',
-                'anual': 'R$ 149,90'
+                'anual': 'R$ 149,90',
+                'vitalicio': 'R$ 299,90'
             };
-            var pix = "00020126580014BR.GOV.BCB.PIX0136123e4567-e89b-12d3-a456-426614174000520400005303986540512.90";
+            
+            // Simulação do valor PIX (Em produção, isso viria do seu backend)
+            var valorPix = "12.90"; 
+            if (tipoPlano === 'mensal') valorPix = "18.90";
+            if (tipoPlano === 'anual') valorPix = "149.90";
+            if (tipoPlano === 'vitalicio') valorPix = "299.90";
+
+            // Exemplo de PIX Copia e Cola (Apenas para demonstração visual)
+            var pix = "00020126580014BR.GOV.BCB.PIX0136123e4567-e89b-12d3-a456-4266141740005204000053039865405" + valorPix + "5802BR";
 
             document.getElementById('qr-valor').innerText = precos[tipoPlano] || 'R$ 0,00';
             document.getElementById('pix-copia-cola').innerText = pix;
@@ -490,13 +611,16 @@
             }
         }
 
-        /* NAVEGAÇÃO D-PAD SIMPLIFICADA */
+        /* ==========================================
+           NAVEGAÇÃO D-PAD (CONTROLE REMOTO TV BOX)
+           ========================================== */
         document.addEventListener('keydown', function(e) {
             var telaAtiva = document.querySelector('.tela.ativa');
             if (!telaAtiva) return;
 
+            // Seleciona elementos interativos visíveis
             var focusables = Array.prototype.slice.call(
-                telaAtiva.querySelectorAll('input, button, .plano-card, a, span')
+                telaAtiva.querySelectorAll('input, button, .plano-card, a, span.link-txt')
             ).filter(function(el) { return el.offsetParent !== null; });
 
             if (focusables.length === 0) return;
@@ -510,6 +634,13 @@
                 e.preventDefault();
                 index = (index - 1 + focusables.length) % focusables.length;
                 focusables[index].focus();
+            } else if (e.key === 'Enter' || e.key === ' ') {
+                // Se o elemento focado não for um input de texto, simula o clique
+                var el = document.activeElement;
+                if (el && el.tagName !== 'INPUT') {
+                    e.preventDefault();
+                    el.click();
+                }
             }
         });
     </script>
