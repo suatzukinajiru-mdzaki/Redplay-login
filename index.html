@@ -10,11 +10,12 @@
         :root {
             --vermelho: #e50914;
             --vermelho-escuro: #b20710;
-            --fundo: #0b0e14;
-            --painel: #141414;
+            --fundo: #000000;          /* Preto puro */
+            --painel: #0d0d0d;         /* Preto escuro para cards/inputs */
+            --painel-hover: #1a1a1a;   /* Preto mais claro para hover */
             --texto: #ffffff;
-            --texto-suave: #a0a0a0;
-            --borda: #2a2a2a;
+            --texto-suave: #888888;
+            --borda: #1f1f1f;          /* Borda bem sutil */
             --verde: #00c853;
             --dourado: #ffc107;
         }
@@ -40,7 +41,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: radial-gradient(circle at top center, rgba(229,9,20,0.1) 0%, transparent 60%), var(--fundo);
+            background: var(--fundo);
         }
 
         /* ================= BOOT SCREEN ================= */
@@ -62,7 +63,7 @@
         }
         .boot-txt {
             font-size: 12px;
-            color: #666;
+            color: #555;
             font-weight: 800;
             letter-spacing: 4px;
             text-transform: uppercase;
@@ -129,7 +130,7 @@
         .input-group label {
             display: block;
             font-size: 11px;
-            color: #888;
+            color: #666;
             margin-bottom: 8px;
             font-weight: 700;
             text-transform: uppercase;
@@ -152,7 +153,7 @@
 
         input:focus {
             border-color: var(--vermelho);
-            background: #1a1a1a;
+            background: var(--painel-hover);
             box-shadow: 0 0 0 3px rgba(229,9,20,0.2);
         }
 
@@ -192,7 +193,7 @@
         .btn-secundario:hover, .btn-secundario:focus {
             background: rgba(255,255,255,0.05);
             color: #fff;
-            border-color: #666;
+            border-color: #444;
             box-shadow: 0 0 0 3px #fff;
             transform: scale(1.02);
         }
@@ -232,7 +233,7 @@
             border-color: var(--vermelho);
             background: rgba(229,9,20,0.05);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 0 3px #fff;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.8), 0 0 0 3px #fff;
         }
 
         .plano-nome {
@@ -255,15 +256,15 @@
         /* ================= DESTAQUE PLANO VITALÍCIO ================= */
         .plano-destaque {
             border-color: var(--dourado);
-            background: linear-gradient(135deg, rgba(255,193,7,0.1) 0%, var(--painel) 100%);
+            background: linear-gradient(135deg, rgba(255,193,7,0.08) 0%, var(--painel) 100%);
             position: relative;
             overflow: hidden;
         }
 
         .plano-destaque:hover, .plano-destaque:focus {
             border-color: var(--dourado);
-            background: linear-gradient(135deg, rgba(255,193,7,0.15) 0%, #1a1a1a 100%);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 0 3px #fff, 0 0 25px rgba(255,193,7,0.4);
+            background: linear-gradient(135deg, rgba(255,193,7,0.12) 0%, #1a1a1a 100%);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.8), 0 0 0 3px #fff, 0 0 25px rgba(255,193,7,0.4);
         }
 
         .tag-destaque {
@@ -319,7 +320,7 @@
             height: 200px;
             margin: 20px auto;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.9);
         }
 
         .qr-box img {
@@ -578,13 +579,11 @@
                 'vitalicio': 'R$ 450,00'
             };
             
-            // Simulação do valor PIX (Em produção, isso viria do seu backend)
             var valorPix = "12.90"; 
             if (tipoPlano === 'mensal') valorPix = "18.90";
             if (tipoPlano === 'anual') valorPix = "149.90";
             if (tipoPlano === 'vitalicio') valorPix = "450.00";
 
-            // Exemplo de PIX Copia e Cola (Apenas para demonstração visual)
             var pix = "00020126580014BR.GOV.BCB.PIX0136123e4567-e89b-12d3-a456-4266141740005204000053039865405" + valorPix + "5802BR";
 
             document.getElementById('qr-valor').innerText = precos[tipoPlano] || 'R$ 0,00';
