@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#000000">
     <title>Entrar - RedPlay</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --vermelho: #e50914;
-            --vermelho-escuro: #b20710;
-            --fundo: #ffffff;
-            --texto: #333333;
-            --texto-suave: #666666;
-            --input-bg: #f5f5f5;
-            --input-borda: #dcdcdc;
+            --vermelho-hover: #f6121d;
+            --fundo-overlay: rgba(0, 0, 0, 0.75);
+            --input-bg: rgba(22, 22, 22, 0.7);
+            --input-borda: rgba(255, 255, 255, 0.2);
+            --texto: #ffffff;
+            --texto-suave: #b3b3b3;
             --safe-h: 4vh;
             --safe-v: 4vw;
         }
@@ -31,150 +31,156 @@
             height: 100vh;
             width: 100vw;
             overflow: hidden;
-            background: var(--fundo);
+            background: #000;
             color: var(--texto);
             user-select: none;
         }
 
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: var(--safe-h) var(--safe-v);
-            /* Fundo branco com um degradê muito sutil de vermelho nas bordas (opcional) */
-            background: radial-gradient(circle at top right, rgba(229,9,20,0.03) 0%, transparent 50%),
-                        radial-gradient(circle at bottom left, rgba(229,9,20,0.03) 0%, transparent 50%),
-                        #ffffff;
+            /* Fundo estilo Netflix com gradiente e imagem simulação de catálogo */
+            background: 
+                linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.9) 100%),
+                radial-gradient(ellipse at center, rgba(229, 9, 20, 0.15) 0%, transparent 70%),
+                #000;
+            background-size: cover;
+            background-position: center;
         }
 
-        /* ================= CARD DE LOGIN ================= */
-        .login-card {
-            background: #ffffff;
+        /* Container Principal Integrado (Sem Retângulo Fechado) */
+        .login-wrapper {
             width: 100%;
-            max-width: min(450px, 90vw);
-            padding: clamp(30px, 5vh, 60px) clamp(25px, 4vw, 50px);
-            border-radius: 8px; /* Bordas levemente arredondadas, estilo Netflix */
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08); /* Sombra suave para dar profundidade no fundo branco */
-            text-align: center;
-            animation: cardFadeIn 0.6s ease-out;
+            max-width: min(420px, 92vw);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 0.6s ease-out;
+            z-index: 2;
         }
 
-        @keyframes cardFadeIn {
-            from { opacity: 0; transform: translateY(15px); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Logo */
-        .logo-red {
-            width: clamp(110px, 15vw, 160px);
-            margin-bottom: clamp(20px, 3vh, 30px);
-            display: inline-block;
-            /* Se a logo for preta, pode usar filter: invert(1) para deixá-la branca, ou deixar como está */
+        /* Header / Logo */
+        .logo-container {
+            margin-bottom: clamp(20px, 3vh, 35px);
+            text-align: center;
         }
 
-        h1 {
+        .logo-red {
+            width: clamp(140px, 18vw, 200px);
+            filter: drop-shadow(0 0 25px rgba(229, 9, 20, 0.6));
+        }
+
+        .titulo-login {
             color: var(--texto);
-            font-size: clamp(22px, 3vh, 28px);
-            font-weight: 900;
-            margin-bottom: 25px;
+            font-size: clamp(24px, 3.5vh, 32px);
+            font-weight: 800;
+            margin-bottom: clamp(20px, 3vh, 30px);
+            width: 100%;
             text-align: left;
             letter-spacing: -0.5px;
         }
 
-        /* ================= FORMULÁRIO ================= */
+        /* Form Controls */
+        #login-form {
+            width: 100%;
+        }
+
         .input-group {
             position: relative;
-            margin-bottom: 16px;
-            text-align: left;
+            margin-bottom: 18px;
+            width: 100%;
         }
 
         .input-group input {
             width: 100%;
-            padding: 20px 18px 8px; /* Padding maior em cima para o label flutuante */
+            padding: 22px 18px 8px;
             background: var(--input-bg);
-            border: 1px solid var(--input-borda);
-            border-radius: 6px;
-            color: var(--texto);
+            border: 1.5px solid var(--input-borda);
+            border-radius: 8px;
+            color: #fff;
             font-size: clamp(14px, 1.8vh, 16px);
             font-weight: 600;
             outline: none;
-            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .input-group input:focus {
-            border-color: var(--vermelho);
-            background: #ffffff;
-            box-shadow: 0 0 0 2px rgba(229,9,20,0.1);
-        }
-
-        /* Label flutuante (estilo Netflix) */
         .input-group label {
             position: absolute;
             left: 18px;
             top: 50%;
             transform: translateY(-50%);
-            color: #999;
+            color: var(--texto-suave);
             font-size: clamp(14px, 1.8vh, 16px);
             font-weight: 500;
             transition: all 0.2s ease;
             pointer-events: none;
         }
 
-        /* Quando o input está focado ou preenchido, o label sobe */
+        /* Label Flutuante Ativo */
         .input-group input:focus + label,
         .input-group input:not(:placeholder-shown) + label {
-            top: 10px;
+            top: 12px;
             font-size: 10px;
-            font-weight: 700;
-            color: #888;
+            font-weight: 800;
+            color: #aaa;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
         }
 
-        /* Ajuste para o padding do input quando o label sobe */
+        /* Foco em TV / D-pad */
         .input-group input:focus,
-        .input-group input:not(:placeholder-shown) {
-            padding-top: 24px;
-            padding-bottom: 8px;
+        .input-group input.foco {
+            border-color: #fff !important;
+            background: rgba(40, 40, 40, 0.9);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.8), 0 0 30px rgba(229, 9, 20, 0.5);
+            transform: scale(1.02);
         }
 
-        /* ================= BOTÃO ================= */
+        /* Botão Entrar */
         .btn-entrar {
             width: 100%;
-            padding: clamp(14px, 2vh, 18px);
+            padding: clamp(16px, 2.2vh, 20px);
             background: var(--vermelho);
             color: #fff;
             border: none;
-            border-radius: 6px;
-            font-size: clamp(15px, 2vh, 17px);
-            font-weight: 700;
+            border-radius: 8px;
+            font-size: clamp(15px, 2vh, 18px);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             cursor: pointer;
-            transition: background 0.2s ease, transform 0.1s ease;
+            transition: all 0.25s ease;
             margin-top: 10px;
             margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
+            outline: none;
         }
 
-        .btn-entrar:hover {
-            background: var(--vermelho-escuro);
+        .btn-entrar:hover,
+        .btn-entrar:focus,
+        .btn-entrar.foco {
+            background: var(--vermelho-hover);
+            transform: scale(1.03);
+            box-shadow: 0 0 0 4px #fff, 0 10px 35px rgba(229, 9, 20, 0.8);
         }
 
-        .btn-entrar:active {
-            transform: scale(0.98);
-        }
-
-        .btn-entrar:focus {
-            outline: 3px solid #fff;
-            box-shadow: 0 0 0 4px var(--vermelho);
-        }
-
-        /* ================= LINKS AUXILIARES ================= */
+        /* Links Auxiliares */
         .auxiliar-links {
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: clamp(12px, 1.5vh, 14px);
             color: var(--texto-suave);
-            margin-top: 10px;
+            width: 100%;
         }
 
         .auxiliar-links label {
@@ -182,44 +188,45 @@
             align-items: center;
             gap: 8px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .auxiliar-links input[type="checkbox"] {
             accent-color: var(--vermelho);
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             cursor: pointer;
         }
 
         .auxiliar-links a {
             color: var(--texto-suave);
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             transition: color 0.2s;
         }
 
-        .auxiliar-links a:hover {
-            color: var(--vermelho);
+        .auxiliar-links a:hover,
+        .auxiliar-links a:focus {
+            color: #fff;
+            text-decoration: underline;
         }
 
-        /* ================= RODAPÉ ================= */
+        /* Rodapé Integrado */
         .footer-login {
             margin-top: 40px;
+            width: 100%;
             text-align: left;
-            font-size: clamp(12px, 1.5vh, 14px);
+            font-size: clamp(13px, 1.6vh, 15px);
             color: var(--texto-suave);
-            border-top: 1px solid #eee;
-            padding-top: 20px;
         }
 
         .footer-login p {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-weight: 500;
         }
 
         .footer-login a {
-            color: var(--vermelho);
+            color: #fff;
             text-decoration: none;
             font-weight: 700;
         }
@@ -230,62 +237,61 @@
 
         .recaptcha-texto {
             font-size: 11px;
-            color: #999;
-            line-height: 1.4;
+            color: #777;
+            line-height: 1.5;
             margin-top: 15px;
         }
 
         .recaptcha-texto a {
-            color: #666;
-            text-decoration: underline;
+            color: #0071eb;
+            text-decoration: none;
         }
 
-        /* Cursor oculto para TV */
+        /* Ocultar Cursor para Android TV */
         body { cursor: none; }
         @media (pointer: fine) { body { cursor: default; } }
     </style>
 </head>
 <body>
 
-    <!-- CARD DE LOGIN -->
-    <div class="login-card">
+    <div class="login-wrapper">
         
-        <!-- Substitua pela sua logo. Se a logo for branca, ela sumirá no fundo branco. 
-             Use uma logo vermelha ou preta. -->
-        <img src="https://via.placeholder.com/150x50/e50914/ffffff?text=RedPlay" alt="RedPlay" class="logo-red">
+        <!-- Logo -->
+        <div class="logo-container">
+            <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.src='https://via.placeholder.com/200x60/e50914/ffffff?text=RedPlay'">
+        </div>
         
-        <h1>Entrar</h1>
+        <h1 class="titulo-login">Entrar</h1>
 
         <form id="login-form">
-            <!-- Campo de Email/Usuário -->
+            <!-- Email/Usuário -->
             <div class="input-group">
-                <input type="text" id="usuario" placeholder=" " required autocomplete="username">
+                <input type="text" id="usuario" placeholder=" " required autocomplete="username" tabindex="0">
                 <label for="usuario">Email ou número de telefone</label>
             </div>
 
-            <!-- Campo de Senha -->
+            <!-- Senha -->
             <div class="input-group">
-                <input type="password" id="senha" placeholder=" " required autocomplete="current-password">
+                <input type="password" id="senha" placeholder=" " required autocomplete="current-password" tabindex="0">
                 <label for="senha">Senha</label>
             </div>
 
-            <!-- Botão Entrar -->
-            <button type="submit" class="btn-entrar" id="btn-entrar">Entrar</button>
+            <!-- Botão Submit -->
+            <button type="submit" class="btn-entrar" id="btn-entrar" tabindex="0">Entrar</button>
 
-            <!-- Links Auxiliares -->
+            <!-- Auxiliares -->
             <div class="auxiliar-links">
-                <label>
+                <label tabindex="0">
                     <input type="checkbox" id="lembrar">
                     Lembrar de mim
                 </label>
-                <a href="#">Precisa de ajuda?</a>
- => {
-                       </div>
+                <a href="#" tabindex="0">Precisa de ajuda?</a>
+            </div>
         </form>
 
         <!-- Rodapé -->
         <div class="footer-login">
-            <p>Novo na RedPlay? <a href="#">Assine agora</a>.</p>
+            <p>Novo na RedPlay? <a href="#" tabindex="0">Assine agora</a>.</p>
             <p class="recaptcha-texto">
                 Esta página é protegida pelo Google reCAPTCHA para garantir que você não é um robô. 
                 <a href="#">Saiba mais</a>.
@@ -295,30 +301,41 @@
     </div>
 
     <script>
-        // Lógica simples de submit para demonstração
-        document.getElementById('login-form').addEventListener('submit', (e) e.preventDefault();
-            const usuario = document.getElementById('usuario').value;
-            const senha = document.getElementById('senha').value;
+        // Submissão do Formulário
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var usuario = document.getElementById('usuario').value.trim();
+            var senha = document.getElementById('senha').value.trim();
 
             if (usuario && senha) {
-                // Aqui você faria a chamada real para a API de login
-                alert(`Login efetuado com sucesso!\nUsuário: ${usuario}`);
-                // Redirecionar para a tela de boas-vindas (ex: tela-boas-vindas.html)
+                // Integração do Login
+                console.log("Tentativa de login com:", usuario);
             } else {
                 alert('Por favor, preencha todos os campos.');
             }
         });
 
-        // Suporte a navegação por controle remoto (TV Box)
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const focused = document.activeElement;
-                // Se o foco estiver em um input, não faz nada (deixa o form enviar)
-                if (focused && focused.tagName === 'INPUT' && focused.type === 'text') return;
-                
-                if (focused && focused.id === 'btn-entrar') {
-                    focused.click();
-                }
+        // Controle D-Pad para Smart TV / Android TV
+        document.addEventListener('keydown', function(e) {
+            var focusable = Array.prototype.slice.call(
+                document.querySelectorAll('input, button, [tabindex="0"], a')
+            ).filter(function(el) {
+                return el.offsetParent !== null;
+            });
+
+            if (focusable.length === 0) return;
+            var index = focusable.indexOf(document.activeElement);
+
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                if (document.activeElement.tagName === 'INPUT' && e.key === 'ArrowRight') return;
+                e.preventDefault();
+                index = (index + 1) % focusable.length;
+                focusable[index].focus();
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                if (document.activeElement.tagName === 'INPUT' && e.key === 'ArrowLeft') return;
+                e.preventDefault();
+                index = (index - 1 + focusable.length) % focusable.length;
+                focusable[index].focus();
             }
         });
     </script>
