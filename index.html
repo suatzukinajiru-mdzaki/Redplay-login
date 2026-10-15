@@ -10,7 +10,7 @@
         :root {
             --vermelho: #e50914;
             --vermelho-escuro: #b20710;
-            --fundo: #0b0e14; /* Fundo escuro sofisticado */
+            --fundo: #0b0e14;
             --painel: #141414;
             --texto: #ffffff;
             --texto-suave: #a0a0a0;
@@ -40,7 +40,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Fundo com um toque sutil de vermelho no topo */
             background: radial-gradient(circle at top center, rgba(229,9,20,0.1) 0%, transparent 60%), var(--fundo);
         }
 
@@ -75,7 +74,7 @@
         .wrapper {
             width: 100%;
             height: 100%;
-            max-width: 500px; /* Largura ideal para TV/Tablet */
+            max-width: 500px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -119,7 +118,7 @@
             font-weight: 500;
         }
 
-        /* ================= INPUTS (Estilo Netflix) ================= */
+        /* ================= INPUTS ================= */
         .input-group {
             width: 100%;
             margin-bottom: 16px;
@@ -353,7 +352,6 @@
             min-height: 20px;
         }
 
-        /* Cursor oculto para TV */
         body { cursor: none; }
         @media (pointer: fine) { body { cursor: default; } }
     </style>
@@ -362,7 +360,6 @@
 
     <!-- BOOT COM LOGO -->
     <div id="boot-screen">
-        <!-- Substitua o src pela sua imagem real -->
         <img src="download.png" alt="RedPlay" class="boot-logo" onerror="this.style.display='none'">
         <div class="boot-txt">Carregando sistema...</div>
     </div>
@@ -414,12 +411,12 @@
                 <div class="plano-preco">R$ 149,90</div>
             </div>
 
-            <!-- PLANO VITALÍCIO EM DESTAQUE -->
+            <!-- PLANO VITALÍCIO EM DESTAQUE (R$ 450,00) -->
             <div class="plano-card plano-destaque" onclick="gerarCobranca('vitalicio')" tabindex="0">
                 <div class="plano-nome">
                     Vitalício <span class="tag-destaque">MELHOR OFERTA</span>
                 </div>
-                <div class="plano-preco">R$ 299,90</div>
+                <div class="plano-preco">R$ 450,00</div>
             </div>
 
             <button class="btn btn-secundario" onclick="abrirLogin()" tabindex="0">Voltar ao Login</button>
@@ -578,14 +575,14 @@
                 'mensal_primeiro': 'R$ 12,90',
                 'mensal': 'R$ 18,90',
                 'anual': 'R$ 149,90',
-                'vitalicio': 'R$ 299,90'
+                'vitalicio': 'R$ 450,00'
             };
             
             // Simulação do valor PIX (Em produção, isso viria do seu backend)
             var valorPix = "12.90"; 
             if (tipoPlano === 'mensal') valorPix = "18.90";
             if (tipoPlano === 'anual') valorPix = "149.90";
-            if (tipoPlano === 'vitalicio') valorPix = "299.90";
+            if (tipoPlano === 'vitalicio') valorPix = "450.00";
 
             // Exemplo de PIX Copia e Cola (Apenas para demonstração visual)
             var pix = "00020126580014BR.GOV.BCB.PIX0136123e4567-e89b-12d3-a456-4266141740005204000053039865405" + valorPix + "5802BR";
@@ -618,7 +615,6 @@
             var telaAtiva = document.querySelector('.tela.ativa');
             if (!telaAtiva) return;
 
-            // Seleciona elementos interativos visíveis
             var focusables = Array.prototype.slice.call(
                 telaAtiva.querySelectorAll('input, button, .plano-card, a, span.link-txt')
             ).filter(function(el) { return el.offsetParent !== null; });
@@ -635,7 +631,6 @@
                 index = (index - 1 + focusables.length) % focusables.length;
                 focusables[index].focus();
             } else if (e.key === 'Enter' || e.key === ' ') {
-                // Se o elemento focado não for um input de texto, simula o clique
                 var el = document.activeElement;
                 if (el && el.tagName !== 'INPUT') {
                     e.preventDefault();
