@@ -9,40 +9,65 @@
     <style>
         :root {
             --vermelho: #e50914;
+            --vermelho-escuro: #b20710;
             --verde: #00c853;
             --amarelo: #ffab00;
             --dourado: #ffc107;
             --roxo: #8e24aa;
+            --preto: #000000;
+            --painel: #141414;
+            --borda: #2a2a2a;
+            --texto: #ffffff;
+            --texto-suave: #a0a0a0;
+            --safe-h: 4vh;
+            --safe-v: 4vw;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Montserrat', Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
 
         html, body {
-            height: 100vh; width: 100vw; overflow: hidden;
-            background: #000; color: #fff;
-            user-select: none; -webkit-user-select: none;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background: #000;
+            color: #fff;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         body {
-            display: flex; justify-content: center; align-items: center;
-            padding: 4vh 4vw;
-            background:
-                radial-gradient(ellipse at top, rgba(229,9,20,0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at bottom, rgba(139,0,0,0.1) 0%, transparent 50%),
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: var(--safe-h) var(--safe-v);
+            background: 
+                radial-gradient(ellipse at top, rgba(229,9,20,0.18) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom, rgba(139,0,0,0.12) 0%, transparent 50%),
                 #000;
             background-attachment: fixed;
         }
 
-        /* SPLASH */
+        /* ================= SPLASH ================= */
         #splash {
-            position: fixed; inset: 0;
+            position: fixed;
+            inset: 0;
             background: radial-gradient(ellipse at center, #1a0000 0%, #000 70%);
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            z-index: 99999; transition: opacity 0.5s ease-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 0.5s ease-out;
         }
         .splash-logo {
-            width: clamp(180px, 25vw, 280px);
+            width: 280px;
+            max-width: 30vw;
             margin-bottom: 50px;
             animation: splashFloat 2.5s ease-in-out infinite;
             filter: drop-shadow(0 0 40px rgba(229,9,20,0.6));
@@ -52,8 +77,8 @@
             50% { transform: scale(1.05) translateY(-10px); opacity: 1; }
         }
         .loader {
-            width: clamp(50px, 8vh, 70px);
-            height: clamp(50px, 8vh, 70px);
+            width: 65px;
+            height: 65px;
             border: 6px solid rgba(229,9,20,0.15);
             border-top-color: #e50914;
             border-radius: 50%;
@@ -62,11 +87,20 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         .splash-txt {
-            color: #666; font-size: 14px; letter-spacing: 6px;
-            margin-top: 28px; text-transform: uppercase; font-weight: 800;
+            color: #666;
+            font-size: 14px;
+            letter-spacing: 6px;
+            margin-top: 28px;
+            text-transform: uppercase;
+            font-weight: 800;
+            animation: pulseTxt 1.5s ease-in-out infinite;
+        }
+        @keyframes pulseTxt {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
 
-        /* CARD */
+        /* ================= CARD ================= */
         .card {
             position: relative;
             background: linear-gradient(135deg, rgba(20,20,20,0.98) 0%, rgba(10,10,10,0.98) 100%);
@@ -76,21 +110,28 @@
             width: 100%;
             max-width: min(1000px, 92vw);
             max-height: 100%;
-            overflow-y: auto; overflow-x: hidden;
+            overflow-y: auto;
             text-align: center;
-            box-shadow: 0 30px 90px rgba(0,0,0,0.9), 0 0 150px rgba(229,9,20,0.15);
-            animation: cardFadeIn 0.5s ease;
+            box-shadow: 
+                0 30px 90px rgba(0,0,0,0.9),
+                0 0 150px rgba(229,9,20,0.15),
+                inset 0 1px 0 rgba(255,255,255,0.05);
+            animation: cardFadeIn 0.4s ease;
             display: none;
             margin: auto;
+            scroll-behavior: smooth;
         }
         .card.ativo { display: block; }
         @keyframes cardFadeIn {
-            from { opacity: 0; transform: translateY(30px) scale(0.98); }
+            from { opacity: 0; transform: translateY(20px) scale(0.99); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
+
         .card::-webkit-scrollbar { width: 6px; }
-        .card::-webkit-scrollbar-track { background: transparent; }
-        .card::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #e50914, #b20710); border-radius: 3px; }
+        .card::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #e50914, #b20710);
+            border-radius: 3px;
+        }
 
         .logo-red {
             width: clamp(120px, 14vw, 180px);
@@ -110,27 +151,38 @@
             letter-spacing: 4px;
             box-shadow: 0 0 40px rgba(229,9,20,0.6);
         }
-        .badge-amarelo { background: linear-gradient(135deg, #ffab00, #ff8f00); color: #000; }
-        .badge-verde { background: linear-gradient(135deg, #00c853, #00a844); }
+        .badge-amarelo { 
+            background: linear-gradient(135deg, #ffab00, #ff8f00); 
+            color: #000; 
+            box-shadow: 0 0 40px rgba(255,171,0,0.6);
+        }
+        .badge-verde { 
+            background: linear-gradient(135deg, #00c853, #00a844);
+            box-shadow: 0 0 40px rgba(0,200,83,0.6);
+        }
 
         h1 {
             color: #fff;
             font-size: clamp(24px, 3.5vh, 42px);
-            font-weight: 900; text-transform: uppercase;
+            font-weight: 900;
+            text-transform: uppercase;
             letter-spacing: 4px;
             margin-bottom: clamp(8px, 1.2vh, 15px);
             background: linear-gradient(180deg, #fff 0%, #e50914 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            filter: drop-shadow(0 4px 20px rgba(229,9,20,0.4));
             line-height: 1.1;
         }
         h2 {
             color: #fff;
             font-size: clamp(20px, 2.8vh, 34px);
-            font-weight: 900; text-transform: uppercase;
+            font-weight: 900;
+            text-transform: uppercase;
             letter-spacing: 3px;
             margin-bottom: clamp(10px, 1.5vh, 18px);
+            line-height: 1.2;
         }
         p {
             color: #ccc;
@@ -140,50 +192,30 @@
             font-weight: 500;
         }
 
-        /* BARRA TOPO */
-        .barra-topo {
-            display: flex; justify-content: flex-end; align-items: center;
-            margin-bottom: clamp(15px, 2vh, 25px);
-            padding-bottom: clamp(12px, 1.5vh, 20px);
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-        }
-        .btn-entrar-topo {
-            display: inline-flex; align-items: center; gap: 10px;
-            padding: clamp(10px, 1.4vh, 14px) clamp(18px, 2vw, 26px);
-            background: transparent; color: #fff;
-            border: 2px solid #444; border-radius: 50px;
-            font-size: clamp(12px, 1.5vh, 15px);
-            font-weight: 800; text-transform: uppercase;
-            letter-spacing: 2px; cursor: pointer;
-            transition: all 0.25s ease; outline: none;
-        }
-        .btn-entrar-topo:focus, .btn-entrar-topo.foco {
-            border-color: #fff;
-            background: rgba(229,9,20,0.15);
-            color: #fff; transform: scale(1.05);
-            box-shadow: 0 0 0 3px #fff, 0 0 40px rgba(255,255,255,0.5), 0 0 30px rgba(229,9,20,0.6);
-        }
-        .btn-entrar-topo .icone { font-size: clamp(15px, 1.9vh, 19px); }
-
-        /* TRIAL */
+        /* ================= TRIAL ================= */
         .trial-container {
             position: relative;
             margin: clamp(15px, 2.5vh, 30px) 0;
             padding: clamp(25px, 3.5vh, 45px) clamp(20px, 3vw, 40px);
             background: linear-gradient(135deg, rgba(229,9,20,0.2) 0%, rgba(255,171,0,0.08) 100%);
             border: 3px solid rgba(229,9,20,0.5);
-            border-radius: 26px; overflow: hidden;
-            box-shadow: inset 0 0 80px rgba(229,9,20,0.15), 0 0 60px rgba(229,9,20,0.2);
+            border-radius: 26px;
+            overflow: hidden;
+            box-shadow: 
+                inset 0 0 80px rgba(229,9,20,0.15),
+                0 0 60px rgba(229,9,20,0.2);
         }
         .trial-container::before {
             content: '';
-            position: absolute; top: -50%; left: -50%;
+            position: absolute;
+            top: -50%; left: -50%;
             width: 200%; height: 200%;
             background: conic-gradient(from 0deg, transparent, rgba(229,9,20,0.25), transparent 30%);
             animation: rotate 10s linear infinite;
         }
         @keyframes rotate { to { transform: rotate(360deg); } }
         .trial-inner { position: relative; z-index: 1; }
+        
         .trial-icone {
             font-size: clamp(50px, 7vh, 80px);
             margin-bottom: clamp(8px, 1vh, 15px);
@@ -191,23 +223,32 @@
             filter: drop-shadow(0 0 30px rgba(255,171,0,0.6));
             line-height: 1;
         }
-        @keyframes pulseIcone { from { transform: scale(1); } to { transform: scale(1.12); } }
+        @keyframes pulseIcone { 
+            from { transform: scale(1); } 
+            to { transform: scale(1.12); } 
+        }
+        
         .trial-label {
             color: #ffc107;
             font-size: clamp(10px, 1.3vh, 14px);
-            font-weight: 800; letter-spacing: 6px;
+            font-weight: 800;
+            letter-spacing: 6px;
             margin-bottom: clamp(8px, 1.2vh, 18px);
             text-transform: uppercase;
-            text-shadow: 0 0 20px rgba(255,193,7,0.6);
         }
+        
         .trial-dias {
-            display: flex; justify-content: center; align-items: baseline;
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
             gap: clamp(12px, 1.5vw, 22px);
             margin: clamp(8px, 1vh, 15px) 0 clamp(15px, 2vh, 28px);
         }
+        
         .trial-numero {
             font-size: clamp(70px, 13vh, 130px);
-            font-weight: 900; line-height: 1;
+            font-weight: 900;
+            line-height: 1;
             background: linear-gradient(180deg, #fff 0%, #e50914 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -215,22 +256,32 @@
             filter: drop-shadow(0 0 50px rgba(229,9,20,0.9));
             animation: numeroPulse 2s ease-in-out infinite;
         }
-        @keyframes numeroPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+        @keyframes numeroPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+        }
+        
         .trial-texto {
             font-size: clamp(18px, 2.5vh, 28px);
-            font-weight: 900; color: #e50914;
-            text-transform: uppercase; letter-spacing: 3px;
+            font-weight: 900;
+            color: #e50914;
+            text-transform: uppercase;
+            letter-spacing: 3px;
             line-height: 1.1;
         }
         .trial-texto small {
             display: block;
             font-size: clamp(10px, 1.2vh, 13px);
-            color: #888; font-weight: 700;
-            letter-spacing: 5px; margin-top: 6px;
+            color: #888;
+            font-weight: 700;
+            letter-spacing: 5px;
+            margin-top: 6px;
         }
+        
         .trial-beneficios {
             margin-top: clamp(15px, 2vh, 25px);
-            display: grid; grid-template-columns: repeat(2, 1fr);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: clamp(8px, 1vh, 14px);
         }
         .trial-beneficio {
@@ -239,11 +290,15 @@
             border-radius: 14px;
             padding: clamp(8px, 1.2vh, 14px) clamp(10px, 1.5vw, 18px);
             font-size: clamp(12px, 1.5vh, 15px);
-            color: #ddd; font-weight: 700;
-            display: flex; align-items: center; gap: 10px;
+            color: #ddd;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             justify-content: center;
         }
         .trial-beneficio span:first-child { font-size: clamp(16px, 2vh, 22px); }
+
         .trial-destaque {
             background: rgba(0,0,0,0.6);
             border-left: 6px solid #ffc107;
@@ -251,165 +306,188 @@
             padding: clamp(12px, 1.6vh, 20px) clamp(15px, 2vw, 26px);
             text-align: left;
             font-size: clamp(12px, 1.5vh, 16px);
-            color: #fff; font-weight: 700;
+            color: #fff;
+            font-weight: 700;
             margin-top: clamp(15px, 2vh, 25px);
             line-height: 1.5;
         }
         .trial-destaque strong { color: #ffc107; }
 
-        /* BOTÕES */
-        button { cursor: pointer; border: none; font-family: inherit; background: none; }
+        /* ================= BOTÕES ================= */
+        button {
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            background: none;
+        }
+        
         .btn {
             width: 100%;
             padding: clamp(14px, 2vh, 22px) clamp(20px, 2vw, 32px);
             border-radius: 16px;
             font-size: clamp(14px, 1.9vh, 19px);
-            font-weight: 800; text-transform: uppercase;
-            letter-spacing: 2px; transition: all 0.25s ease;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             margin-bottom: clamp(8px, 1.2vh, 15px);
-            outline: none; border: 3px solid transparent;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            outline: none;
+            border: 3px solid transparent;
         }
+        
         .btn-primario {
             background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
-            color: #fff; box-shadow: 0 8px 35px rgba(229,9,20,0.5);
+            color: #fff;
+            box-shadow: 0 8px 35px rgba(229,9,20,0.5);
         }
+        
         .btn-whats {
             background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: #fff; text-decoration: none; display: inline-block;
+            color: #fff;
             box-shadow: 0 8px 35px rgba(37,211,102,0.4);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
         }
+        
         .btn-cinza {
             background: rgba(255,255,255,0.05);
-            color: #ccc; border: 3px solid #333;
+            color: #ccc;
+            border: 3px solid #333;
         }
-        .btn:focus, .btn.foco {
-            transform: scale(1.04); border-color: #fff;
-            box-shadow: 0 0 0 4px rgba(255,255,255,0.9), 0 0 50px rgba(255,255,255,0.6), 0 12px 40px rgba(0,0,0,0.9);
-            outline: none; z-index: 10;
-        }
-        .btn-primario:focus, .btn-primario.foco {
-            box-shadow: 0 0 0 4px #fff, 0 0 55px rgba(255,255,255,0.7), 0 15px 50px rgba(229,9,20,0.9);
-        }
-        .btn-whats:focus, .btn-whats.foco {
-            box-shadow: 0 0 0 4px #fff, 0 0 55px rgba(255,255,255,0.7), 0 15px 50px rgba(37,211,102,0.9);
-        }
-        .btn-cinza:focus, .btn-cinza.foco { color: #fff; background: rgba(255,255,255,0.1); }
 
-        /* INPUTS */
-        .input-container { margin-bottom: clamp(12px, 1.6vh, 20px); position: relative; }
+        .btn:focus,
+        .btn.foco {
+            transform: scale(1.03);
+            border-color: #fff !important;
+            box-shadow: 
+                0 0 0 4px rgba(255,255,255,0.95),
+                0 0 60px rgba(255,255,255,0.6),
+                0 15px 45px rgba(0,0,0,0.9) !important;
+            outline: none;
+            z-index: 10;
+        }
+
+        /* ================= INPUTS ================= */
+        .field {
+            margin-bottom: clamp(12px, 1.6vh, 20px);
+            text-align: left;
+        }
+        .field label {
+            display: block;
+            color: #999;
+            font-size: clamp(10px, 1.3vh, 13px);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            margin-bottom: clamp(6px, 0.8vh, 10px);
+        }
+        
         input {
             width: 100%;
             padding: clamp(15px, 2.2vh, 22px) clamp(18px, 2vw, 26px);
             background: rgba(0,0,0,0.7);
-            border: 3px solid #333; border-radius: 14px;
+            border: 3px solid #333;
+            border-radius: 14px;
             color: #fff;
             font-size: clamp(16px, 2.1vh, 21px);
-            font-weight: 700; text-align: center;
-            transition: all 0.25s ease; outline: none;
+            font-weight: 700;
+            text-align: center;
+            transition: all 0.2s ease;
+            outline: none;
+            letter-spacing: 1px;
         }
-        input:focus {
-            border-color: #e50914;
-            box-shadow: 0 0 0 4px rgba(229,9,20,0.3), 0 0 45px rgba(229,9,20,0.6);
-            background: rgba(0,0,0,0.9); transform: scale(1.02);
+        input:focus,
+        input.foco {
+            border-color: #e50914 !important;
+            box-shadow: 0 0 0 4px rgba(229,9,20,0.4), 0 0 45px rgba(229,9,20,0.6);
+            background: rgba(0,0,0,0.9);
+            transform: scale(1.02);
         }
         input::placeholder {
-            color: #555; text-transform: uppercase;
+            color: #555;
+            text-transform: uppercase;
             font-size: clamp(11px, 1.4vh, 15px);
-            font-weight: 700; letter-spacing: 3px;
-        }
-        .input-senha-wrap { position: relative; }
-        .input-senha-wrap input { padding-right: clamp(60px, 6vw, 85px); }
-        .btn-olho {
-            position: absolute;
-            right: clamp(15px, 1.5vw, 22px);
-            top: 50%; transform: translateY(-50%);
-            background: transparent; border: none;
-            color: #666;
-            font-size: clamp(20px, 2.8vh, 28px);
-            cursor: pointer; padding: 8px 12px;
-            outline: none; border-radius: 10px;
-        }
-        .btn-olho:focus {
-            color: #e50914; background: rgba(229,9,20,0.2);
-            outline: 3px solid #fff;
+            font-weight: 700;
+            letter-spacing: 3px;
         }
 
-        /* LEMBRAR */
-        .lembrar-wrap {
-            display: flex; align-items: center; justify-content: center;
-            gap: 15px;
-            margin: clamp(12px, 1.6vh, 20px) 0;
-            padding: clamp(10px, 1.2vh, 14px) clamp(16px, 2vw, 22px);
-            border-radius: 14px; cursor: pointer;
-            outline: none; border: 3px solid transparent;
-        }
-        .lembrar-wrap:focus, .lembrar-wrap.foco {
-            background: rgba(229,9,20,0.15);
-            box-shadow: 0 0 0 4px #fff, 0 0 35px rgba(255,255,255,0.5);
-            border-color: #fff; transform: scale(1.03);
-        }
-        .lembrar-wrap input[type="checkbox"] {
-            width: clamp(20px, 2.5vh, 26px);
-            height: clamp(20px, 2.5vh, 26px);
-            accent-color: #e50914; cursor: pointer;
-        }
-        .lembrar-wrap label {
-            font-size: clamp(14px, 1.8vh, 17px);
-            color: #ddd; font-weight: 700; cursor: pointer;
+        .msg-erro {
+            color: #ff4d4d;
+            font-size: clamp(12px, 1.5vh, 15px);
+            margin-top: 12px;
+            font-weight: 800;
+            min-height: 20px;
+            display: block;
         }
 
-        /* PLANOS */
+        /* ================= PLANOS ================= */
         .plano-card {
             position: relative;
             background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-            border: 3px solid #2a2a2a; border-radius: 20px;
+            border: 3px solid #2a2a2a;
+            border-radius: 20px;
             padding: clamp(16px, 2.2vh, 28px) clamp(20px, 2.5vw, 32px);
             margin-bottom: clamp(10px, 1.4vh, 16px);
-            text-align: left; cursor: pointer;
-            transition: all 0.3s ease; outline: none;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
         }
         .plano-card::before {
             content: '';
-            position: absolute; left: 0; top: 0; bottom: 0;
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
             width: 8px;
             background: linear-gradient(180deg, #e50914, #b20710);
             border-radius: 20px 0 0 20px;
-            transform: scaleY(0); transition: transform 0.3s;
+            transform: scaleY(0);
+            transition: transform 0.25s;
         }
-        .plano-card:focus, .plano-card.foco {
-            border-color: #fff;
-            transform: translateY(-4px) scale(1.02);
-            background: linear-gradient(135deg, #282828 0%, #181818 100%);
-            box-shadow: 0 0 0 4px #fff, 0 0 55px rgba(255,255,255,0.5), 0 18px 45px rgba(229,9,20,0.5);
-            z-index: 5;
+        .plano-card:focus,
+        .plano-card.foco {
+            transform: scale(1.03);
+            border-color: #fff !important;
+            background: linear-gradient(135deg, #262626 0%, #1a1a1a 100%) !important;
+            box-shadow: 
+                0 0 0 4px rgba(255,255,255,0.95),
+                0 0 60px rgba(255,255,255,0.6),
+                0 15px 45px rgba(0,0,0,0.9) !important;
         }
-        .plano-card:focus::before, .plano-card.foco::before { transform: scaleY(1); }
+        .plano-card:focus::before,
+        .plano-card.foco::before { transform: scaleY(1); }
+        
         .plano-card.destaque {
             border-color: #ffab00;
             background: linear-gradient(135deg, rgba(255,171,0,0.15) 0%, #0f0f0f 100%);
         }
-        .plano-card.destaque::before { background: linear-gradient(180deg, #ffab00, #ff8f00); }
+        .plano-card.destaque::before { 
+            background: linear-gradient(180deg, #ffab00, #ff8f00);
+        }
+
         .plano-top {
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: clamp(5px, 0.7vh, 10px);
-            gap: 12px; flex-wrap: wrap;
+            gap: 12px;
+            flex-wrap: wrap;
         }
         .plano-nome {
             color: #fff;
             font-size: clamp(15px, 2.1vh, 23px);
-            font-weight: 900; text-transform: uppercase;
+            font-weight: 900;
+            text-transform: uppercase;
             letter-spacing: 2px;
         }
         .plano-preco {
             color: #00c853;
             font-size: clamp(19px, 2.8vh, 32px);
-            font-weight: 900; white-space: nowrap;
-            text-shadow: 0 0 25px rgba(0,200,83,0.5);
+            font-weight: 900;
+            white-space: nowrap;
         }
-        .plano-card.destaque .plano-preco {
-            color: #ffc107;
-            text-shadow: 0 0 25px rgba(255,193,7,0.5);
-        }
+        .plano-card.destaque .plano-preco { color: #ffc107; }
         .plano-desc {
             color: #999;
             font-size: clamp(11px, 1.4vh, 14px);
@@ -420,14 +498,36 @@
             background: linear-gradient(135deg, #ffab00, #ff8f00);
             color: #000;
             font-size: clamp(9px, 1vh, 11px);
-            font-weight: 900; padding: 4px 12px;
-            border-radius: 10px; margin-left: 10px;
-            letter-spacing: 2px; vertical-align: middle;
+            font-weight: 900;
+            padding: 4px 12px;
+            border-radius: 10px;
+            margin-left: 10px;
+            letter-spacing: 2px;
+            vertical-align: middle;
         }
-        .plano-tag.verde { background: linear-gradient(135deg, #00c853, #00a844); color: #fff; }
-        .plano-tag.roxo { background: linear-gradient(135deg, #8e24aa, #6a1b9a); color: #fff; }
+        .plano-tag.verde { 
+            background: linear-gradient(135deg, #00c853, #00a844);
+            color: #fff;
+        }
+        .plano-tag.roxo { 
+            background: linear-gradient(135deg, #8e24aa, #6a1b9a);
+            color: #fff;
+        }
 
-        /* QR CODE */
+        /* ================= DIVISOR ================= */
+        .divisor-login {
+            border-top: 2px solid #2a2a2a;
+            margin: clamp(20px, 2.5vh, 32px) 0 0;
+            padding-top: clamp(15px, 2vh, 25px);
+        }
+        .divisor-login p {
+            color: #999;
+            font-size: clamp(13px, 1.6vh, 16px);
+            margin-bottom: clamp(10px, 1.3vh, 16px);
+            font-weight: 700;
+        }
+
+        /* ================= QR CODE ================= */
         .qr-img {
             background: #fff;
             border-radius: 22px;
@@ -436,7 +536,11 @@
             max-width: clamp(200px, 30vh, 320px);
             box-shadow: 0 18px 55px rgba(0,0,0,0.7), 0 0 70px rgba(229,9,20,0.3);
         }
-        .qr-img img { width: 100%; display: block; border-radius: 12px; }
+        .qr-img img {
+            width: 100%;
+            display: block;
+            border-radius: 12px;
+        }
         .pix-code {
             background: #000;
             border: 2px solid #2a2a2a;
@@ -444,14 +548,17 @@
             padding: clamp(12px, 1.6vh, 18px);
             font-family: monospace;
             font-size: clamp(10px, 1.2vh, 13px);
-            word-break: break-all; color: #999;
+            word-break: break-all;
+            color: #999;
             text-align: left;
             margin-bottom: clamp(12px, 1.6vh, 20px);
             max-height: clamp(60px, 10vh, 100px);
             overflow-y: auto;
         }
         .polling-status {
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             gap: 12px;
             color: #ffab00;
             font-size: clamp(12px, 1.6vh, 16px);
@@ -461,6 +568,7 @@
             background: rgba(255,171,0,0.1);
             border: 2px solid rgba(255,171,0,0.35);
             border-radius: 14px;
+            flex-wrap: wrap;
         }
         .mini-loader {
             border: 4px solid rgba(255,171,0,0.2);
@@ -470,28 +578,25 @@
             height: clamp(20px, 2.8vh, 28px);
             animation: spin 0.8s linear infinite;
         }
-
-        /* FORM */
-        .field { margin-bottom: clamp(12px, 1.6vh, 20px); text-align: left; }
-        .field label {
-            display: block;
-            color: #999;
-            font-size: clamp(10px, 1.3vh, 13px);
+        .btn-retry-polling {
+            background: #ffab00;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
             font-weight: 800;
+            cursor: pointer;
+            font-size: 14px;
             text-transform: uppercase;
-            letter-spacing: 2.5px;
-            margin-bottom: clamp(6px, 0.8vh, 10px);
+            letter-spacing: 1px;
+            font-family: inherit;
         }
-        .msg-erro {
-            color: #ff4d4d;
-            font-size: clamp(12px, 1.5vh, 15px);
-            margin-top: 12px;
-            font-weight: 800;
-            min-height: 20px;
-            display: block;
+        .btn-retry-polling:focus {
+            outline: 3px solid #fff;
+            box-shadow: 0 0 20px rgba(255,255,255,0.6);
         }
 
-        /* BOAS-VINDAS */
+        /* ================= BOAS-VINDAS ================= */
         .bv-emoji {
             font-size: clamp(70px, 12vh, 120px);
             margin-bottom: clamp(15px, 2vh, 25px);
@@ -509,8 +614,8 @@
             border: 3px solid rgba(229,9,20,0.6);
             border-radius: 60px;
             display: inline-block;
-            box-shadow: 0 0 50px rgba(229,9,20,0.5);
             letter-spacing: 3px;
+            text-transform: uppercase;
         }
         .bv-mensagem {
             color: #fff;
@@ -519,7 +624,10 @@
             margin-bottom: clamp(20px, 2.5vh, 30px);
             line-height: 1.4;
         }
-        .bv-mensagem span { color: #e50914; font-weight: 900; }
+        .bv-mensagem span {
+            color: #e50914;
+            font-weight: 900;
+        }
         .bv-status {
             display: inline-block;
             padding: clamp(12px, 1.8vh, 18px) clamp(25px, 3vw, 38px);
@@ -535,6 +643,7 @@
             text-transform: uppercase;
             letter-spacing: 4px;
         }
+
         .barra {
             width: clamp(180px, 30vw, 340px);
             height: 8px;
@@ -558,7 +667,7 @@
             font-weight: 800;
         }
 
-        /* BLOQUEIO */
+        /* ================= BLOQUEIO / ERRO ================= */
         .aviso-bloqueio {
             color: #ff4d4d;
             font-weight: 800;
@@ -568,6 +677,7 @@
             background: rgba(229,9,20,0.12);
             border: 3px solid rgba(229,9,20,0.5);
             border-radius: 16px;
+            line-height: 1.5;
         }
 
         body { cursor: none; }
@@ -580,38 +690,37 @@
 <div id="splash">
     <img src="download.png" alt="RedPlay" class="splash-logo" onerror="this.style.display='none'">
     <div class="loader"></div>
-    <p class="splash-txt">Carregando</p>
+    <div class="splash-txt">Carregando RedPlay</div>
 </div>
 
 <!-- ================= TELA: TRIAL ================= -->
 <div class="card" id="tela-trial">
     <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
-    <span class="badge badge-verde">✓ TESTE GRÁTIS LIBERADO</span>
+    <div class="badge badge-amarelo">🎁 Teste Grátis Liberado</div>
     <h1>Bem-vindo à RedPlay</h1>
-    <p style="color: #888;">Sua conta de teste foi ativada com sucesso</p>
+    <p>Aproveite todos os recursos da nossa plataforma</p>
 
     <div class="trial-container">
         <div class="trial-inner">
-            <div class="trial-icone">🎁</div>
-            <div class="trial-label">VOCÊ TEM DIREITO A</div>
+            <div class="trial-icone">⭐</div>
+            <div class="trial-label">Você tem direito a</div>
             <div class="trial-dias">
                 <div class="trial-numero" id="dias-restantes">3</div>
-                <div class="trial-texto">Dias<small>Grátis</small></div>
+                <div class="trial-texto">Dias Grátis<small>Acesso Completo</small></div>
             </div>
             <div class="trial-beneficios">
-                <div class="trial-beneficio"><span>🎬</span><span>Filmes</span></div>
-                <div class="trial-beneficio"><span>📺</span><span>Séries</span></div>
+                <div class="trial-beneficio"><span>🎬</span><span>Filmes 4K</span></div>
+                <div class="trial-beneficio"><span>📺</span><span>Séries HD</span></div>
                 <div class="trial-beneficio"><span>⚽</span><span>Esportes</span></div>
-                <div class="trial-beneficio"><span>📡</span><span>Canais</span></div>
+                <div class="trial-beneficio"><span>📡</span><span>Canais Ao Vivo</span></div>
+            </div>
+            <div class="trial-destaque">
+                <strong>Aproveite!</strong> Após 3 dias, escolha um dos nossos planos para continuar assistindo sem interrupções.
             </div>
         </div>
     </div>
 
-    <div class="trial-destaque">
-        💡 <strong>Aproveite!</strong> Após 3 dias, escolha um plano para continuar assistindo.
-    </div>
-
-    <div class="barra" style="margin-top: 40px;">
+    <div class="barra">
         <div class="barra-inner" id="barra-trial"></div>
     </div>
     <p class="bv-msg">Preparando seu entretenimento...</p>
@@ -620,154 +729,124 @@
 <!-- ================= TELA: PLANOS ================= -->
 <div class="card" id="tela-planos">
     <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
-    <span class="badge">SELECIONE SEU PLANO</span>
+    <div class="badge">Assinatura</div>
+    <h2>Escolha seu plano</h2>
+    <p>Assine agora e continue assistindo todo o conteúdo</p>
 
-    <div class="barra-topo">
-        <button class="btn-entrar-topo" onclick="mostrarLoginCliente()" tabindex="0">
-            <span class="icone">👤</span>
-            <span>Já tenho conta</span>
-        </button>
-    </div>
-
-    <h2>Continue assistindo</h2>
-    <p style="margin-bottom: 35px; color: #888;" id="aviso-planos">Escolha um plano para liberar o acesso</p>
-
-    <div class="plano-card destaque" tabindex="0" onclick="escolherPlano('mensal_primeiro')">
-        <div class="plano-top">
-            <span class="plano-nome">Mensal <span class="plano-tag">1ª VEZ</span></span>
-            <span class="plano-preco">R$ 12,90</span>
+    <div style="margin-top: 25px; text-align: left;">
+        <div class="plano-card destaque" tabindex="0" id="plano2-mensal1" onclick="escolherPlano('mensal_primeiro')">
+            <div class="plano-top">
+                <div class="plano-nome">Mensal <span class="plano-tag">1ª Vez</span></div>
+                <div class="plano-preco">R$ 12,90</div>
+            </div>
+            <div class="plano-desc">Primeiro mês com super desconto exclusivo</div>
         </div>
-        <div class="plano-desc">Primeiro mês com desconto especial</div>
-    </div>
 
-    <div class="plano-card" tabindex="0" onclick="escolherPlano('mensal')">
-        <div class="plano-top">
-            <span class="plano-nome">Mensal</span>
-            <span class="plano-preco">R$ 18,90</span>
+        <div class="plano-card" tabindex="0" id="plano2-mensal" onclick="escolherPlano('mensal')">
+            <div class="plano-top">
+                <div class="plano-nome">Mensal</div>
+                <div class="plano-preco">R$ 18,90</div>
+            </div>
+            <div class="plano-desc">Renovação automática mensal, cancele quando quiser</div>
         </div>
-        <div class="plano-desc">Renovação automática mensal</div>
-    </div>
 
-    <div class="plano-card" tabindex="0" onclick="escolherPlano('anual')">
-        <div class="plano-top">
-            <span class="plano-nome">Anual <span class="plano-tag verde">MELHOR</span></span>
-            <span class="plano-preco">R$ 149,90</span>
+        <div class="plano-card" tabindex="0" id="plano2-anual" onclick="escolherPlano('anual')">
+            <div class="plano-top">
+                <div class="plano-nome">Anual <span class="plano-tag verde">Melhor Valor</span></div>
+                <div class="plano-preco">R$ 149,90</div>
+            </div>
+            <div class="plano-desc">Economize R$ 76 por ano (R$ 12,49/mês)</div>
         </div>
-        <div class="plano-desc">12 meses com desconto. Economize R$ 76!</div>
-    </div>
 
-    <div class="plano-card" tabindex="0" onclick="escolherPlano('lifetime')">
-        <div class="plano-top">
-            <span class="plano-nome">Vitalício <span class="plano-tag roxo">PREMIUM</span></span>
-            <span class="plano-preco">R$ 450,00</span>
+        <div class="plano-card" tabindex="0" id="plano2-lifetime" onclick="escolherPlano('lifetime')">
+            <div class="plano-top">
+                <div class="plano-nome">Vitalício <span class="plano-tag roxo">Premium</span></div>
+                <div class="plano-preco">R$ 450,00</div>
+            </div>
+            <div class="plano-desc">Pague uma única vez e tenha acesso para sempre</div>
         </div>
-        <div class="plano-desc">Pague uma vez e assista para sempre</div>
     </div>
 
-    <a href="https://wa.me/55997340723" target="_blank" class="btn btn-whats" style="text-decoration: none; display: block; margin-top: 15px;">Falar no WhatsApp</a>
+    <div class="divisor-login">
+        <p>Já possui uma conta ativa?</p>
+        <button class="btn btn-cinza" onclick="mostrarLoginCliente()" tabindex="0">Fazer Login</button>
+    </div>
 </div>
 
 <!-- ================= TELA: LOGIN CLIENTE ================= -->
 <div class="card" id="tela-login-cliente">
     <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
-    <span class="badge">FAZER LOGIN</span>
-    <h2>Entre na sua conta</h2>
-    <p style="color: #888; margin-bottom: 30px;">Use o usuário e senha que você criou</p>
+    <div class="badge">Acesso</div>
+    <h2>Entrar na conta</h2>
+    <p>Digite seu usuário e senha cadastrados</p>
 
-    <div class="field">
-        <label>Nome de Usuário</label>
-        <input type="text" id="login-cliente-usuario" placeholder="seu usuario" maxlength="20" autocomplete="off">
+    <div class="field" style="margin-top: 25px;">
+        <label>Utilizador</label>
+        <input type="text" id="login-cliente-usuario" placeholder="Digite seu usuário" maxlength="20" autocomplete="off">
     </div>
 
     <div class="field">
         <label>Senha</label>
-        <input type="password" id="login-cliente-senha" placeholder="sua senha" maxlength="30" autocomplete="off" onkeypress="if(event.key==='Enter')fazerLoginCliente()">
+        <input type="password" id="login-cliente-senha" placeholder="Digite sua senha" maxlength="30" autocomplete="off" onkeypress="if(event.key==='Enter')fazerLoginCliente()">
     </div>
 
-    <button class="btn btn-primario" id="btn-login-cliente" onclick="fazerLoginCliente()" tabindex="0">Entrar</button>
+    <button class="btn btn-primario" onclick="fazerLoginCliente()" tabindex="0">Entrar na Conta</button>
     <span class="msg-erro" id="erro-login-cliente"></span>
 
-    <button class="btn btn-cinza" onclick="voltarPlanos()" tabindex="0" style="margin-top: 15px;">← Ver Planos</button>
+    <div class="divisor-login">
+        <button class="btn btn-cinza" onclick="mostrarPlanos()" tabindex="0">Voltar aos Planos</button>
+    </div>
 </div>
 
 <!-- ================= TELA: QR CODE ================= -->
 <div class="card" id="tela-qrcode">
-    <span class="badge">PAGAMENTO PIX</span>
-    <h2 id="qr-titulo">Escaneie o QR Code</h2>
-    <p style="color: #888;">Use o app do seu banco para pagar</p>
-    <p id="qr-valor" style="font-size: clamp(24px, 3vh, 34px); color: #00c853; font-weight: 900; margin-bottom: 20px;">R$ 0,00</p>
+    <div class="badge badge-amarelo">Pagamento PIX</div>
+    <h2 id="qr-titulo">PIX Instantâneo</h2>
+    <p>Escaneie o QR Code abaixo com o app do seu banco</p>
+
+    <div class="plano-preco" id="qr-valor" style="margin: 15px 0; font-size: clamp(24px, 4vh, 38px); color: #00c853;">R$ 0,00</div>
 
     <div class="qr-img">
         <img id="qr-image" src="" alt="QR Code PIX">
     </div>
 
-    <div class="pix-code" id="qr-code-txt">Carregando código PIX...</div>
+    <div class="pix-code" id="qr-code-txt">Gerando código PIX...</div>
 
-    <button class="btn btn-cinza" onclick="copiarPix()" id="btn-copiar" tabindex="0">📋 Copiar Código PIX</button>
+    <button class="btn btn-primario" onclick="copiarPix()" id="btn-copiar" tabindex="0">📋 Copiar Código PIX</button>
 
     <div class="polling-status" id="polling-status">
         <div class="mini-loader"></div>
-        <span>Aguardando pagamento...</span>
+        <span>Aguardando confirmação do pagamento...</span>
     </div>
 
-    <button class="btn btn-cinza" onclick="voltarInicio()" tabindex="0">← Voltar aos planos</button>
-</div>
-
-<!-- ================= TELA: CRIAR CONTA ================= -->
-<div class="card" id="tela-criar-conta">
-    <span class="badge badge-verde">✓ PAGAMENTO CONFIRMADO</span>
-    <h2>Crie sua conta</h2>
-    <p style="color: #888; margin-bottom: 30px;">Escolha usuário e senha para acessar</p>
-
-    <div class="field">
-        <label>Nome de Usuário</label>
-        <input type="text" id="novo-usuario" placeholder="ex: joao123" maxlength="20" autocomplete="off">
-    </div>
-
-    <div class="field">
-        <label>Senha</label>
-        <input type="password" id="nova-senha" placeholder="Mínimo 4 caracteres" maxlength="30" autocomplete="off">
-    </div>
-
-    <div class="field">
-        <label>WhatsApp (com DDD)</label>
-        <input type="tel" id="novo-whatsapp" placeholder="ex: 11999998888" maxlength="15" autocomplete="off">
-    </div>
-
-    <button class="btn btn-primario" id="btn-criar-conta" onclick="criarConta()" tabindex="0">Criar Minha Conta</button>
-    <span class="msg-erro" id="erro-conta"></span>
+    <button class="btn btn-cinza" onclick="voltarInicio()" tabindex="0">Voltar</button>
 </div>
 
 <!-- ================= TELA: BOAS-VINDAS ================= -->
 <div class="card" id="tela-boas-vindas">
     <div class="bv-emoji">🎬</div>
-    <h1>Bem-vindo!</h1>
-    <p class="bv-usuario" id="bv-usuario">cliente</p>
-    <p class="bv-mensagem"><span>Aproveite o conteúdo RedPlay!</span></p>
-    <div class="bv-status"><span class="bv-status-txt">✓ Conta Ativa</span></div>
-    <div class="barra"><div class="barra-inner" id="barra-bv"></div></div>
-    <p class="bv-msg">Preparando seu entretenimento...</p>
+    <div class="badge badge-verde">Tudo Pronto</div>
+    <h1>Bem-vindo de volta!</h1>
+    <div class="bv-usuario" id="bv-usuario">CLIENTE</div>
+    <div class="bv-mensagem">Aproveite todo o conteúdo exclusivo da <span>RedPlay TV</span></div>
+    
+    <div class="bv-status">
+        <span class="bv-status-txt">● Acesso Liberado</span>
+    </div>
+
+    <div class="barra">
+        <div class="barra-inner" id="barra-bv"></div>
+    </div>
+    <p class="bv-msg">Carregando ambiente da TV...</p>
 </div>
 
-<!-- ================= TELA: BLOQUEIO ================= -->
-<div class="card" id="tela-bloqueado">
-    <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
-    <span class="badge badge-amarelo">ACESSO BLOQUEADO</span>
-    <h2>Sua conta está suspensa</h2>
-
-    <div class="aviso-bloqueio" id="motivo-bloqueio">Conta suspensa pelo suporte</div>
-
-    <p style="margin-top: 20px; color: #ccc;">Entre em contato pelo WhatsApp:</p>
-
-    <a href="https://wa.me/55997340723" target="_blank" class="btn btn-whats" id="btn-whatsapp-bloqueio" style="text-decoration: none; display: block; margin: 20px 0 15px;" tabindex="0">📱 Falar no WhatsApp</a>
-
-    <p style="color: #fff; font-size: clamp(18px, 2.4vh, 22px); font-weight: 900; letter-spacing: 2px; margin-bottom: 20px; font-family: monospace;">(55) 99973-40723</p>
-
-    <p style="color: #888; font-size: clamp(12px, 1.5vh, 14px);">
-        O aplicativo será fechado automaticamente em
-        <strong id="contador-bloqueio" style="color: #ff4d4d; font-size: clamp(16px, 2vh, 20px);">25</strong>
-        segundos
-    </p>
+<!-- ================= TELA: ERRO DE CONEXÃO ================= -->
+<div class="card" id="tela-erro">
+    <div class="bv-emoji">⚠️</div>
+    <div class="badge" style="background:#e50914;">Conexão</div>
+    <h2>Erro de Conexão</h2>
+    <div class="aviso-bloqueio" id="msg-erro-conexao">Não foi possível conectar ao servidor. Verifique sua internet.</div>
+    <button class="btn btn-primario" onclick="iniciarApp()" tabindex="0">🔄 Tentar Novamente</button>
 </div>
 
 <script>
@@ -775,7 +854,7 @@
 // CONFIGURAÇÃO
 // ==========================================
 var SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
-var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_z96rFkWrk7fTegOk6m_4";
+var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
 
 var FUNC_VERIFICAR = SUPABASE_URL + "/functions/v1/verificar-dispositivo";
 var FUNC_CRIAR_COBRANCA = SUPABASE_URL + "/functions/v1/super-service";
@@ -786,9 +865,10 @@ var pollingTimer = null;
 var pollingTentativas = 0;
 var MAX_POLLING = 60;
 var ultimoStatus = null;
+var telaAnterior = null;
 
 // ==========================================
-// OBTÉM ANDROID ID
+// ANDROID ID
 // ==========================================
 function obterDeviceId() {
     try {
@@ -800,8 +880,7 @@ function obterDeviceId() {
                 return deviceReal;
             }
         }
-    } catch (e) { console.warn("Erro Android ID:", e); }
-
+    } catch (e) {}
     var id = null;
     try { id = localStorage.getItem(DEVICE_KEY); } catch(e) {}
     if (!id) {
@@ -812,7 +891,7 @@ function obterDeviceId() {
 }
 
 // ==========================================
-// CHAMADA HTTP (XMLHttpRequest para TVs antigas)
+// CHAMADA HTTP
 // ==========================================
 function chamarFuncao(url, corpo, callback) {
     var xhr = new XMLHttpRequest();
@@ -836,18 +915,19 @@ function chamarFuncao(url, corpo, callback) {
 }
 
 // ==========================================
-// MOSTRAR TELA
+// NAVEGAÇÃO
 // ==========================================
 function mostrarTela(id) {
     var telas = document.querySelectorAll('.card');
     for (var i = 0; i < telas.length; i++) telas[i].classList.remove('ativo');
-    document.getElementById(id).classList.add('ativo');
-
-    // Foca no primeiro elemento focável da tela
-    setTimeout(function() {
-        var focavel = document.querySelector('#' + id + ' input, #' + id + ' button, #' + id + ' .btn, #' + id + ' .plano-card, #' + id + ' .btn-entrar-topo, #' + id + ' .lembrar-wrap');
-        if (focavel) focavel.focus();
-    }, 300);
+    var el = document.getElementById(id);
+    if (el) {
+        el.classList.add('ativo');
+        setTimeout(function() {
+            var focusable = el.querySelectorAll('input, button, .plano-card');
+            if (focusable.length > 0) focusable[0].focus();
+        }, 150);
+    }
 }
 
 // ==========================================
@@ -855,10 +935,7 @@ function mostrarTela(id) {
 // ==========================================
 window.addEventListener('load', function() {
     try {
-        if (window.location.search.indexOf('reset=1') >= 0) {
-            localStorage.clear();
-            console.log("Reset OK");
-        }
+        if (window.location.search.indexOf('reset=1') >= 0) localStorage.clear();
     } catch(e) {}
 
     setTimeout(function() {
@@ -868,70 +945,48 @@ window.addEventListener('load', function() {
             splash.style.display = 'none';
             iniciarApp();
         }, 500);
-    }, 1800);
+    }, 1200);
 });
 
 function iniciarApp() {
     var device_id = obterDeviceId();
-    console.log("Device ID:", device_id);
 
     chamarFuncao(FUNC_VERIFICAR, { android_id: device_id }, function(erro, dados) {
         if (erro) {
-            console.error("Erro:", erro);
-            document.getElementById('bv-usuario').innerText = "Cliente";
-            mostrarTela('tela-boas-vindas');
-            setTimeout(liberarAcessoApp, 3000);
+            document.getElementById('msg-erro-conexao').innerText = "Erro ao conectar: " + erro;
+            mostrarTela('tela-erro');
             return;
         }
 
-        console.log("Status:", dados);
         ultimoStatus = dados;
 
-        // BLOQUEADO MANUALMENTE
         if (dados.status === 'bloqueado_painel') {
             bloquearTotal(dados.motivo || 'Sua conta foi suspensa pelo suporte.');
             return;
         }
 
-        // TRIAL ATIVO
-        if (dados.status === 'teste_gratis' && dados.dias_restantes > 0) {
-            document.getElementById('dias-restantes').innerText = dados.dias_restantes;
+        if (dados.status === 'ativo' || dados.status === 'pago') {
+            document.getElementById('bv-usuario').innerText = dados.usuario || 'CLIENTE';
+            mostrarTela('tela-boas-vindas');
+            animarBarra('barra-bv', 3000);
+            setTimeout(liberarAcessoApp, 3500);
+            return;
+        }
+
+        if (dados.status === 'trial' || dados.status === 'teste_gratis') {
+            var dias = dados.dias_restantes !== undefined ? dados.dias_restantes : 3;
+            document.getElementById('dias-restantes').innerText = dias;
             mostrarTela('tela-trial');
             animarBarra('barra-trial', 4000);
             setTimeout(liberarAcessoApp, 4500);
             return;
         }
 
-        // TRIAL ACABOU
-        if (dados.status === 'teste_gratis' && dados.dias_restantes <= 0) {
-            document.getElementById('aviso-planos').innerText = 'Seu período de teste acabou. Escolha um plano ou faça login:';
-            mostrarTela('tela-planos');
-            return;
-        }
-
-        // EXPIRADO
         if (dados.status === 'expirado') {
-            document.getElementById('aviso-planos').innerText = 'Sua assinatura venceu. Renove ou faça login:';
             mostrarTela('tela-planos');
             return;
         }
 
-        // PAGO MAS SEM CONTA
-        if (dados.status === 'pago' && !dados.conta_criada) {
-            mostrarTela('tela-criar-conta');
-            return;
-        }
-
-        // CONTA ATIVA
-        if (dados.status === 'pago' || dados.plano === 'lifetime') {
-            document.getElementById('bv-usuario').innerText = dados.username || dados.usuario || "Cliente";
-            mostrarTela('tela-boas-vindas');
-            animarBarra('barra-bv', 4000);
-            setTimeout(liberarAcessoApp, 4500);
-            return;
-        }
-
-        // PADRÃO
         mostrarTela('tela-planos');
     });
 }
@@ -939,382 +994,387 @@ function iniciarApp() {
 // ==========================================
 // BARRA ANIMADA
 // ==========================================
-function animarBarra(id, duracao) {
-    var barra = document.getElementById(id);
+function animarBarra(idBarra, duracao) {
+    var barra = document.getElementById(idBarra);
     if (!barra) return;
+    var inicio = Date.now();
     barra.style.width = '0%';
-    var inicio = null;
-    function animar(tempo) {
-        if (!inicio) inicio = tempo;
-        var progresso = Math.min((tempo - inicio) / duracao, 1);
-        barra.style.width = (progresso * 100) + '%';
-        if (progresso < 1) requestAnimationFrame(animar);
-    }
-    requestAnimationFrame(animar);
+    
+    var timer = setInterval(function() {
+        var decorrido = Date.now() - inicio;
+        var progresso = Math.min((decorrido / duracao) * 100, 100);
+        barra.style.width = progresso + '%';
+        if (progresso >= 100) clearInterval(timer);
+    }, 50);
 }
 
 // ==========================================
-// LIBERAR ACESSO
+// LIBERAR ACESSO (Android)
 // ==========================================
 function liberarAcessoApp() {
     try {
+        if (typeof AndroidApp !== 'undefined' && AndroidApp && typeof AndroidApp.fecharSplashOuLiberar === 'function') {
+            AndroidApp.fecharSplashOuLiberar();
+            return;
+        }
         if (typeof AndroidApp !== 'undefined' && AndroidApp && typeof AndroidApp.liberarAcesso === 'function') {
             AndroidApp.liberarAcesso();
-        } else {
-            console.log("Modo navegador");
+            return;
         }
-    } catch(e) { console.error("Erro:", e); }
+    } catch(e) {}
+    
+    document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#fff;font-family:Montserrat,sans-serif;font-size:26px;font-weight:900;letter-spacing:2px;text-align:center;padding:20px;">✅ ACESSO LIBERADO<br><br>Redirecionando para a RedPlay...</div>';
 }
 
 // ==========================================
-// LOGIN DO CLIENTE
+// BLOQUEIO TOTAL (com 3 opções)
 // ==========================================
-function mostrarLoginCliente() {
-    document.getElementById('login-cliente-usuario').value = '';
-    document.getElementById('login-cliente-senha').value = '';
-    document.getElementById('erro-login-cliente').innerText = '';
-    mostrarTela('tela-login-cliente');
+function bloquearTotal(motivo) {
+    var htmlBloqueio = 
+        '<div class="card ativo" style="display:block; max-width: 700px;">' +
+            '<img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display=\'none\'">' +
+            '<div class="badge" style="background:#e50914;">⛔ Conta Bloqueada</div>' +
+            '<h2>Acesso Suspenso</h2>' +
+            
+            '<div class="aviso-bloqueio">' + motivo + '</div>' +
+            
+            '<p style="margin-bottom:30px;">Para voltar a assistir, escolha uma das opções abaixo:</p>' +
+            
+            '<button class="btn btn-primario" onclick="mostrarPlanos()" tabindex="0">💳 Renovar Assinatura</button>' +
+            
+            '<button class="btn btn-cinza" onclick="mostrarLoginCliente()" tabindex="0">🔐 Fazer Login com outra conta</button>' +
+            
+            '<a href="https://wa.me/55997340723?text=' + encodeURIComponent('Olá! Minha conta RedPlay está bloqueada. Motivo: ' + motivo) + '" ' +
+               'class="btn btn-whats" target="_blank" tabindex="0">📱 Falar no WhatsApp</a>' +
+        '</div>';
+    
+    document.body.innerHTML = htmlBloqueio;
+    
+    setTimeout(function() {
+        var btn = document.querySelector('body .btn-primario');
+        if (btn) btn.focus();
+    }, 200);
 }
 
-function fazerLoginCliente() {
-    var usuario = document.getElementById('login-cliente-usuario').value.trim();
-    var senha = document.getElementById('login-cliente-senha').value.trim();
-    var erroEl = document.getElementById('erro-login-cliente');
-    var btn = document.getElementById('btn-login-cliente');
-
-    erroEl.innerText = '';
-    erroEl.style.color = '#ff4d4d';
-
-    if (!usuario || !senha) {
-        erroEl.innerText = 'Preencha usuário e senha.';
+// ==========================================
+// RECRIA PLANOS (para tela de bloqueio)
+// ==========================================
+function mostrarPlanos() {
+    var telaPlanos = document.getElementById('tela-planos');
+    if (telaPlanos && document.querySelectorAll('.card').length > 1) {
+        mostrarTela('tela-planos');
         return;
     }
 
-    btn.disabled = true;
-    btn.innerText = 'Verificando...';
+    var htmlPlanos = 
+        '<div class="card ativo" id="tela-planos" style="display:block; max-width: 700px;">' +
+            '<img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display=\'none\'">' +
+            '<div class="badge">Renovação</div>' +
+            '<h2>Escolha seu plano</h2>' +
+            '<p>Renove agora e continue assistindo</p>' +
+            
+            '<div style="margin-top: 25px; text-align: left;">' +
+                '<div class="plano-card destaque" tabindex="0" onclick="escolherPlano(\'anual\')">' +
+                    '<div class="plano-top">' +
+                        '<div class="plano-nome">Anual <span class="plano-tag verde">Melhor Valor</span></div>' +
+                        '<div class="plano-preco">R$ 149,90</div>' +
+                    '</div>' +
+                    '<div class="plano-desc">12 meses com desconto</div>' +
+                '</div>' +
+                
+                '<div class="plano-card" tabindex="0" onclick="escolherPlano(\'mensal\')">' +
+                    '<div class="plano-top">' +
+                        '<div class="plano-nome">Mensal</div>' +
+                        '<div class="plano-preco">R$ 18,90</div>' +
+                    '</div>' +
+                    '<div class="plano-desc">Renovação mensal</div>' +
+                '</div>' +
+                
+                '<div class="plano-card" tabindex="0" onclick="escolherPlano(\'lifetime\')">' +
+                    '<div class="plano-top">' +
+                        '<div class="plano-nome">Vitalício <span class="plano-tag roxo">Premium</span></div>' +
+                        '<div class="plano-preco">R$ 450,00</div>' +
+                    '</div>' +
+                    '<div class="plano-desc">Pague uma vez, para sempre</div>' +
+                '</div>' +
+            '</div>' +
+            
+            '<div class="divisor-login">' +
+                '<p>Já tem outra conta ativa?</p>' +
+                '<button class="btn btn-cinza" onclick="mostrarLoginCliente()" tabindex="0">Fazer Login</button>' +
+            '</div>' +
+        '</div>';
+    
+    document.body.innerHTML = htmlPlanos;
+    
+    setTimeout(function() {
+        var plano = document.querySelector('.plano-card.destaque');
+        if (plano) plano.focus();
+    }, 200);
+}
 
-    var url = SUPABASE_URL + "/rest/v1/utilizadores?select=*&usuario=eq." + encodeURIComponent(usuario) + "&senha=eq." + encodeURIComponent(senha) + "&limit=1";
+// ==========================================
+// RECRIA LOGIN (para tela de bloqueio)
+// ==========================================
+function mostrarLoginCliente() {
+    var telaLogin = document.getElementById('tela-login-cliente');
+    var temTodasTelas = document.getElementById('tela-boas-vindas') !== null;
+    
+    if (telaLogin && temTodasTelas) {
+        mostrarTela('tela-login-cliente');
+        return;
+    }
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
-    xhr.setRequestHeader("apikey", SUPABASE_ANON_KEY);
-    xhr.setRequestHeader("Authorization", "Bearer " + SUPABASE_ANON_KEY);
-    xhr.timeout = 15000;
-
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            btn.disabled = false;
-            btn.innerText = 'Entrar';
-
-            var data = null;
-            try { data = JSON.parse(xhr.responseText); } catch(e) {}
-
-            if (xhr.status < 200 || xhr.status >= 300 || !data) {
-                erroEl.innerText = 'Erro de conexão.';
-                return;
-            }
-
-            if (!Array.isArray(data) || data.length === 0) {
-                erroEl.innerText = 'Usuário ou senha incorretos.';
-                document.getElementById('login-cliente-senha').value = '';
-                document.getElementById('login-cliente-senha').focus();
-                return;
-            }
-
-            var cliente = data[0];
-
-            if (!cliente.ativo) {
-                erroEl.innerText = 'Conta inativa. Contate o suporte.';
-                return;
-            }
-
-            if (cliente.vencimento && cliente.plano !== 'vitalicio') {
-                var hoje = new Date();
-                hoje.setHours(0, 0, 0, 0);
-                var venc = new Date(cliente.vencimento + "T00:00:00");
-                if (venc < hoje) {
-                    erroEl.innerText = 'Assinatura venceu. Escolha um plano.';
-                    return;
-                }
-            }
-
-            erroEl.style.color = '#00c853';
-            erroEl.innerText = 'Login realizado!';
-            document.getElementById('bv-usuario').innerText = cliente.usuario;
-
-            var device_id = obterDeviceId();
-            var xhr2 = new XMLHttpRequest();
-            xhr2.open("PATCH", SUPABASE_URL + "/rest/v1/dispositivos?android_id=eq." + encodeURIComponent(device_id), true);
-            xhr2.setRequestHeader("apikey", SUPABASE_ANON_KEY);
-            xhr2.setRequestHeader("Authorization", "Bearer " + SUPABASE_ANON_KEY);
-            xhr2.setRequestHeader("Content-Type", "application/json");
-            xhr2.send(JSON.stringify({ username: cliente.usuario, conta_criada: true }));
-
-            setTimeout(function() {
-                mostrarTela('tela-boas-vindas');
-                animarBarra('barra-bv', 4000);
-                setTimeout(liberarAcessoApp, 4500);
-            }, 800);
-        }
-    };
-
-    xhr.onerror = function() {
-        btn.disabled = false;
-        btn.innerText = 'Entrar';
-        erroEl.innerText = 'Erro de conexão.';
-    };
-    xhr.ontimeout = function() {
-        btn.disabled = false;
-        btn.innerText = 'Entrar';
-        erroEl.innerText = 'Tempo esgotado.';
-    };
-    xhr.send();
+    var htmlLogin = 
+        '<div class="card ativo" id="tela-login-cliente" style="display:block; max-width: 600px;">' +
+            '<img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display=\'none\'">' +
+            '<div class="badge">Acesso</div>' +
+            '<h2>Entrar na conta</h2>' +
+            '<p>Digite seu usuário e senha cadastrados</p>' +
+            
+            '<div class="field" style="margin-top: 25px;">' +
+                '<label>Utilizador</label>' +
+                '<input type="text" id="login-cliente-usuario" placeholder="Digite seu usuário" maxlength="20" autocomplete="off">' +
+            '</div>' +
+            
+            '<div class="field">' +
+                '<label>Senha</label>' +
+                '<input type="password" id="login-cliente-senha" placeholder="Digite sua senha" maxlength="30" autocomplete="off" onkeypress="if(event.key===\'Enter\')fazerLoginCliente()">' +
+            '</div>' +
+            
+            '<button class="btn btn-primario" onclick="fazerLoginCliente()" tabindex="0">Entrar na Conta</button>' +
+            '<span class="msg-erro" id="erro-login-cliente"></span>' +
+            
+            '<div class="divisor-login">' +
+                '<button class="btn btn-cinza" onclick="mostrarPlanos()" tabindex="0">Ver Planos</button>' +
+            '</div>' +
+        '</div>';
+    
+    document.body.innerHTML = htmlLogin;
+    
+    setTimeout(function() {
+        var inp = document.getElementById('login-cliente-usuario');
+        if (inp) inp.focus();
+    }, 200);
 }
 
 // ==========================================
 // ESCOLHER PLANO
 // ==========================================
 function escolherPlano(plano) {
-    console.log("Plano:", plano);
     var device_id = obterDeviceId();
-    mostrarTela('tela-qrcode');
-    document.getElementById('qr-titulo').innerText = "Gerando PIX...";
-    document.getElementById('qr-code-txt').innerText = "Aguarde...";
-    document.getElementById('qr-image').src = "";
+    var precosFormatados = {
+        'mensal_primeiro': 'R$ 12,90',
+        'mensal': 'R$ 18,90',
+        'anual': 'R$ 149,90',
+        'lifetime': 'R$ 450,00'
+    };
 
-    chamarFuncao(FUNC_CRIAR_COBRANCA, { plano: plano, device_id: device_id }, function(erro, dados) {
-        if (erro) {
-            alert("Erro ao gerar PIX: " + erro);
-            voltarInicio();
-            return;
-        }
-        if (!dados.sucesso || !dados.qr_code) {
-            alert("Erro: QR Code não gerado.");
-            voltarInicio();
-            return;
-        }
-
-        document.getElementById('qr-titulo').innerText = "Escaneie o QR Code";
-        document.getElementById('qr-valor').innerText = "R$ " + (dados.valor || 0).toFixed(2).replace('.', ',');
-        document.getElementById('qr-code-txt').innerText = dados.qr_code;
-
-        if (dados.qr_code_base64) {
-            var b64 = dados.qr_code_base64;
-            if (b64.indexOf('data:image') !== 0) b64 = 'data:image/png;base64,' + b64;
-            document.getElementById('qr-image').src = b64;
-        }
-
-        iniciarPolling();
-    });
-}
-
-// ==========================================
-// POLLING
-// ==========================================
-function iniciarPolling() {
-    pararPolling();
-    pollingTentativas = 0;
-    var device_id = obterDeviceId();
-
-    pollingTimer = setInterval(function() {
-        pollingTentativas++;
-        chamarFuncao(FUNC_VERIFICAR, { android_id: device_id }, function(erro, dados) {
-            if (erro) return;
-            if (dados.status === 'pago' || dados.plano === 'lifetime') {
-                pararPolling();
-                if (dados.conta_criada || dados.username) {
-                    document.getElementById('bv-usuario').innerText = dados.username || dados.usuario || "Cliente";
-                    mostrarTela('tela-boas-vindas');
-                    animarBarra('barra-bv', 4000);
-                    setTimeout(liberarAcessoApp, 4500);
-                } else {
-                    mostrarTela('tela-criar-conta');
-                }
-            }
-        });
-
-        if (pollingTentativas >= MAX_POLLING) {
-            pararPolling();
-            document.getElementById('polling-status').innerHTML = '<span style="color:#ff4d4d;">Pagamento não detectado.</span>';
-        }
-    }, 5000);
-}
-
-function pararPolling() {
-    if (pollingTimer) {
-        clearInterval(pollingTimer);
-        pollingTimer = null;
+    // Recria tela do QR Code se não existir
+    if (!document.getElementById('tela-qrcode')) {
+        var htmlQr = 
+            '<div class="card ativo" id="tela-qrcode" style="display:block; max-width: 650px;">' +
+                '<div class="badge badge-amarelo">Pagamento PIX</div>' +
+                '<h2>PIX Instantâneo</h2>' +
+                '<p>Escaneie o QR Code com o app do seu banco</p>' +
+                '<div class="plano-preco" id="qr-valor" style="margin: 15px 0; font-size: clamp(24px, 4vh, 38px); color: #00c853;">' + (precosFormatados[plano] || 'R$ 0,00') + '</div>' +
+                '<div class="qr-img"><img id="qr-image" src="" alt="QR Code PIX"></div>' +
+                '<div class="pix-code" id="qr-code-txt">Gerando código PIX...</div>' +
+                '<button class="btn btn-primario" onclick="copiarPix()" id="btn-copiar" tabindex="0">📋 Copiar Código PIX</button>' +
+                '<div class="polling-status" id="polling-status"><div class="mini-loader"></div><span>Aguardando pagamento...</span></div>' +
+                '<button class="btn btn-cinza" onclick="voltarInicio()" tabindex="0">Voltar</button>' +
+            '</div>';
+        document.body.innerHTML = htmlQr;
+    } else {
+        document.getElementById('qr-valor').innerText = precosFormatados[plano] || 'R$ 0,00';
+        document.getElementById('qr-titulo').innerText = 'Pagamento PIX';
+        document.getElementById('qr-code-txt').innerText = 'Gerando código PIX...';
+        document.getElementById('qr-image').src = '';
+        mostrarTela('tela-qrcode');
     }
+
+    chamarFuncao(FUNC_CRIAR_COBRANCA, { action: 'criar_cobranca', plano: plano, android_id: device_id }, function(erro, dados) {
+        var qrCodeEl = document.getElementById('qr-code-txt');
+        var pollingEl = document.getElementById('polling-status');
+        
+        if (erro || !dados || !dados.success) {
+            if (qrCodeEl) qrCodeEl.innerText = 'Erro ao gerar PIX. Tente novamente.';
+            if (pollingEl) pollingEl.style.display = 'none';
+            return;
+        }
+
+        if (dados.qrcode_base64) {
+            var imgEl = document.getElementById('qr-image');
+            if (imgEl) imgEl.src = 'data:image/png;base64,' + dados.qrcode_base64;
+        }
+        if (dados.copia_cola && qrCodeEl) {
+            qrCodeEl.innerText = dados.copia_cola;
+        }
+
+        if (dados.txid || dados.payment_id) {
+            iniciarPolling(dados.txid || dados.payment_id);
+        }
+    });
 }
 
 // ==========================================
 // COPIAR PIX
 // ==========================================
 function copiarPix() {
-    var texto = document.getElementById('qr-code-txt').innerText;
-    if (!texto) return;
-    try {
-        var ta = document.createElement('textarea');
-        ta.value = texto;
-        ta.style.position = 'fixed';
-        ta.style.left = '-9999px';
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
+    var txt = document.getElementById('qr-code-txt').innerText;
+    if (!txt || txt.indexOf('Gerando') >= 0 || txt.indexOf('Erro') >= 0) return;
+    
+    var sucesso = function() {
         var btn = document.getElementById('btn-copiar');
-        btn.innerText = "✓ Copiado!";
-        setTimeout(function() { btn.innerText = "📋 Copiar Código PIX"; }, 2000);
-    } catch(e) { alert("Copie manualmente."); }
+        if (btn) {
+            btn.innerText = '✅ Código Copiado!';
+            setTimeout(function() { btn.innerText = '📋 Copiar Código PIX'; }, 2000);
+        }
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(sucesso).catch(function() { fallbackCopy(txt, sucesso); });
+    } else {
+        fallbackCopy(txt, sucesso);
+    }
+}
+
+function fallbackCopy(txt, cb) {
+    var el = document.createElement('textarea');
+    el.value = txt;
+    document.body.appendChild(el);
+    el.select();
+    try { document.execCommand('copy'); cb(); } catch(e) {}
+    document.body.removeChild(el);
+}
+
+// ==========================================
+// POLLING PIX
+// ==========================================
+function iniciarPolling(paymentId) {
+    if (pollingTimer) clearInterval(pollingTimer);
+    pollingTentativas = 0;
+    
+    var pollingEl = document.getElementById('polling-status');
+    if (pollingEl) pollingEl.style.display = 'flex';
+
+    pollingTimer = setInterval(function() {
+        pollingTentativas++;
+        if (pollingTentativas > MAX_POLLING) {
+            clearInterval(pollingTimer);
+            if (pollingEl) {
+                pollingEl.innerHTML = '<span style="color:#ff4d4d;">Pagamento não detectado.</span><button class="btn-retry-polling" onclick="iniciarApp()" tabindex="0">Verificar</button>';
+            }
+            return;
+        }
+
+        chamarFuncao(FUNC_CRIAR_COBRANCA, { action: 'verificar_pagamento', payment_id: paymentId }, function(erro, dados) {
+            if (!erro && dados && dados.pago) {
+                clearInterval(pollingTimer);
+                if (pollingEl) pollingEl.innerHTML = '<span style="color:#00c853;">✅ Pagamento confirmado!</span>';
+                setTimeout(function() {
+                    iniciarApp();
+                }, 2000);
+            }
+        });
+    }, 5000);
+}
+
+// ==========================================
+// LOGIN CLIENTE
+// ==========================================
+function fazerLoginCliente() {
+    var usuario = document.getElementById('login-cliente-usuario').value.trim();
+    var senha = document.getElementById('login-cliente-senha').value.trim();
+    var erroEl = document.getElementById('erro-login-cliente');
+    var device_id = obterDeviceId();
+
+    if (erroEl) erroEl.innerText = '';
+    
+    if (!usuario || !senha) {
+        if (erroEl) erroEl.innerText = 'Preencha todos os campos.';
+        return;
+    }
+
+    chamarFuncao(FUNC_CRIAR_CONTA, { action: 'login', usuario: usuario, senha: senha, android_id: device_id }, function(erro, dados) {
+        if (erro || !dados || !dados.success) {
+            if (erroEl) erroEl.innerText = erro || (dados && dados.erro) || 'Credenciais inválidas.';
+            return;
+        }
+
+        // Verifica se as telas principais existem
+        if (!document.getElementById('tela-boas-vindas')) {
+            document.body.innerHTML = 
+                '<div class="card ativo" style="display:block; max-width: 600px; text-align: center;">' +
+                    '<div class="bv-emoji">🎬</div>' +
+                    '<div class="badge badge-verde">Tudo Pronto</div>' +
+                    '<h1>Bem-vindo de volta!</h1>' +
+                    '<div class="bv-usuario">' + usuario.toUpperCase() + '</div>' +
+                    '<div class="bv-mensagem">Aproveite todo o conteúdo exclusivo da <span>RedPlay TV</span></div>' +
+                    '<div class="bv-status"><span class="bv-status-txt">● Acesso Liberado</span></div>' +
+                    '<div class="barra"><div class="barra-inner" id="barra-bv"></div></div>' +
+                    '<p class="bv-msg">Carregando ambiente da TV...</p>' +
+                '</div>';
+            animarBarra('barra-bv', 3000);
+            setTimeout(liberarAcessoApp, 3500);
+            return;
+        }
+
+        document.getElementById('bv-usuario').innerText = usuario.toUpperCase();
+        mostrarTela('tela-boas-vindas');
+        animarBarra('barra-bv', 3000);
+        setTimeout(liberarAcessoApp, 3500);
+    });
 }
 
 // ==========================================
 // VOLTAR
 // ==========================================
-function voltarPlanos() {
-    pararPolling();
-    document.getElementById('aviso-planos').innerText = 'Escolha um plano para liberar o acesso';
-    mostrarTela('tela-planos');
-}
-
 function voltarInicio() {
-    pararPolling();
-    if (ultimoStatus && ultimoStatus.status === 'bloqueado_painel') {
+    if (pollingTimer) clearInterval(pollingTimer);
+    if (ultimoStatus && (ultimoStatus.status === 'trial' || ultimoStatus.status === 'teste_gratis')) {
+        mostrarTela('tela-trial');
+    } else if (ultimoStatus && ultimoStatus.status === 'bloqueado_painel') {
         bloquearTotal(ultimoStatus.motivo || 'Sua conta foi suspensa.');
     } else {
-        voltarPlanos();
+        mostrarTela('tela-planos');
     }
 }
 
 // ==========================================
-// CRIAR CONTA
-// ==========================================
-function criarConta() {
-    var usuario = document.getElementById('novo-usuario').value.trim();
-    var senha = document.getElementById('nova-senha').value.trim();
-    var whatsapp = document.getElementById('novo-whatsapp').value.trim();
-    var erroEl = document.getElementById('erro-conta');
-    var btn = document.getElementById('btn-criar-conta');
-
-    erroEl.innerText = "";
-    erroEl.style.color = "#ff4d4d";
-
-    if (!usuario || usuario.length < 3) { erroEl.innerText = "Usuário precisa ter pelo menos 3 caracteres."; return; }
-    if (!senha || senha.length < 4) { erroEl.innerText = "Senha precisa ter pelo menos 4 caracteres."; return; }
-    var zapLimpo = whatsapp.replace(/\D/g, '');
-    if (zapLimpo.length < 10) { erroEl.innerText = "Informe um WhatsApp válido."; return; }
-
-    btn.disabled = true;
-    btn.innerText = "Criando conta...";
-
-    var device_id = obterDeviceId();
-
-    chamarFuncao(FUNC_CRIAR_CONTA, {
-        android_id: device_id,
-        username: usuario,
-        senha: senha,
-        whatsapp: zapLimpo
-    }, function(erro, dados) {
-        btn.disabled = false;
-        btn.innerText = "Criar Minha Conta";
-
-        if (erro) { erroEl.innerText = erro; return; }
-        if (!dados.sucesso) { erroEl.innerText = dados.erro || "Erro ao criar conta."; return; }
-
-        erroEl.style.color = "#00c853";
-        erroEl.innerText = "✓ Conta criada com sucesso!";
-
-        document.getElementById('bv-usuario').innerText = dados.usuario;
-        setTimeout(function() {
-            mostrarTela('tela-boas-vindas');
-            animarBarra('barra-bv', 4000);
-            setTimeout(liberarAcessoApp, 4500);
-        }, 1000);
-    });
-}
-
-// ==========================================
-// BLOQUEIO TOTAL
-// ==========================================
-function bloquearTotal(motivo) {
-    pararPolling();
-    var motivoEl = document.getElementById('motivo-bloqueio');
-    if (motivoEl) motivoEl.innerText = motivo;
-
-    var zapLink = document.getElementById('btn-whatsapp-bloqueio');
-    if (zapLink) {
-        var texto = encodeURIComponent("Olá! Minha conta RedPlay está bloqueada. Motivo: " + motivo);
-        zapLink.href = "https://wa.me/55997340723?text=" + texto;
-    }
-
-    mostrarTela('tela-bloqueado');
-
-    var segundos = 25;
-    var contadorEl = document.getElementById('contador-bloqueio');
-    if (contadorEl) contadorEl.innerText = segundos;
-
-    var intervalo = setInterval(function() {
-        segundos--;
-        if (contadorEl) contadorEl.innerText = segundos;
-        if (segundos <= 0) {
-            clearInterval(intervalo);
-            fecharAppBloqueio();
-        }
-    }, 1000);
-}
-
-function fecharAppBloqueio() {
-    try {
-        if (typeof AndroidApp !== 'undefined' && AndroidApp && typeof AndroidApp.fecharApp === 'function') {
-            AndroidApp.fecharApp();
-            return;
-        }
-    } catch(e) {}
-    try { window.close(); } catch(e) {}
-    setTimeout(function() {
-        try { window.location.href = "about:blank"; } catch(e) {}
-    }, 100);
-}
-
-// ==========================================
-// NAVEGAÇÃO POR D-PAD
+// NAVEGAÇÃO D-PAD (Controle remoto)
 // ==========================================
 document.addEventListener('keydown', function(e) {
-    var el = document.activeElement;
-    var tag = el ? el.tagName : '';
+    var cardAtivo = document.querySelector('.card.ativo');
+    if (!cardAtivo) return;
 
-    if (e.key === 'Enter' || e.keyCode === 13) {
-        if (el) {
-            if (el.id === 'login-cliente-usuario') {
-                e.preventDefault();
-                var s = document.getElementById('login-cliente-senha');
-                if (s) s.focus();
-                return;
-            }
+    // Botão VOLTAR do controle remoto
+    if (e.key === 'Backspace' || e.key === 'Escape' || e.keyCode === 4) {
+        e.preventDefault();
+        var idAtivo = cardAtivo.id;
+        if (idAtivo === 'tela-qrcode' || idAtivo === 'tela-login-cliente') {
+            voltarInicio();
         }
+        return;
     }
 
-    if (tag === 'INPUT' && e.key !== 'Enter') return;
+    var focusable = Array.prototype.slice.call(
+        cardAtivo.querySelectorAll('input, button, .plano-card, a.btn')
+    ).filter(function(el) {
+        return el.offsetParent !== null && !el.disabled;
+    });
 
-    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-        var todos = document.querySelectorAll('.plano-card');
-        var visiveis = [];
-        for (var i = 0; i < todos.length; i++) {
-            if (todos[i].offsetParent !== null) visiveis.push(todos[i]);
-        }
+    if (focusable.length === 0) return;
+    var index = focusable.indexOf(document.activeElement);
 
-        var atual = -1;
-        for (var j = 0; j < visiveis.length; j++) {
-            if (document.activeElement === visiveis[j]) { atual = j; break; }
-        }
-
-        if (atual >= 0) {
-            e.preventDefault();
-            var proximo = e.key === 'ArrowDown' ? atual + 1 : atual - 1;
-            if (proximo < 0) proximo = visiveis.length - 1;
-            if (proximo >= visiveis.length) proximo = 0;
-            visiveis[proximo].focus();
-        }
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        index = (index < 0 || index >= focusable.length - 1) ? 0 : index + 1;
+        focusable[index].focus();
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        index = (index <= 0) ? focusable.length - 1 : index - 1;
+        focusable[index].focus();
     }
 });
 </script>
