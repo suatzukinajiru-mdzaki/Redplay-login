@@ -13,52 +13,33 @@
             --amarelo: #ffab00;
             --dourado: #ffc107;
             --roxo: #8e24aa;
-            --texto: #ffffff;
-            --texto-suave: #a0a0a0;
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            font-family: 'Montserrat', Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
 
         html, body {
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            background: #000;
-            color: #fff;
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-touch-callout: none;
+            height: 100vh; width: 100vw; overflow: hidden;
+            background: #000; color: #fff;
+            user-select: none; -webkit-user-select: none;
         }
 
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: flex; justify-content: center; align-items: center;
             padding: 4vh 4vw;
-            background: 
+            background:
                 radial-gradient(ellipse at top, rgba(229,9,20,0.15) 0%, transparent 50%),
                 radial-gradient(ellipse at bottom, rgba(139,0,0,0.1) 0%, transparent 50%),
                 #000;
             background-attachment: fixed;
         }
 
-        /* ================= SPLASH ================= */
+        /* SPLASH */
         #splash {
-            position: fixed;
-            inset: 0;
+            position: fixed; inset: 0;
             background: radial-gradient(ellipse at center, #1a0000 0%, #000 70%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-            transition: opacity 0.5s ease-out;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            z-index: 99999; transition: opacity 0.5s ease-out;
         }
         .splash-logo {
             width: clamp(180px, 25vw, 280px);
@@ -81,15 +62,11 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         .splash-txt {
-            color: #666;
-            font-size: 14px;
-            letter-spacing: 6px;
-            margin-top: 28px;
-            text-transform: uppercase;
-            font-weight: 800;
+            color: #666; font-size: 14px; letter-spacing: 6px;
+            margin-top: 28px; text-transform: uppercase; font-weight: 800;
         }
 
-        /* ================= CARD ================= */
+        /* CARD */
         .card {
             position: relative;
             background: linear-gradient(135deg, rgba(20,20,20,0.98) 0%, rgba(10,10,10,0.98) 100%);
@@ -99,12 +76,9 @@
             width: 100%;
             max-width: min(1000px, 92vw);
             max-height: 100%;
-            overflow-y: auto;
-            overflow-x: hidden;
+            overflow-y: auto; overflow-x: hidden;
             text-align: center;
-            box-shadow: 
-                0 30px 90px rgba(0,0,0,0.9),
-                0 0 150px rgba(229,9,20,0.15);
+            box-shadow: 0 30px 90px rgba(0,0,0,0.9), 0 0 150px rgba(229,9,20,0.15);
             animation: cardFadeIn 0.5s ease;
             display: none;
             margin: auto;
@@ -114,13 +88,9 @@
             from { opacity: 0; transform: translateY(30px) scale(0.98); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
-
         .card::-webkit-scrollbar { width: 6px; }
         .card::-webkit-scrollbar-track { background: transparent; }
-        .card::-webkit-scrollbar-thumb { 
-            background: linear-gradient(180deg, #e50914, #b20710);
-            border-radius: 3px;
-        }
+        .card::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #e50914, #b20710); border-radius: 3px; }
 
         .logo-red {
             width: clamp(120px, 14vw, 180px);
@@ -140,19 +110,13 @@
             letter-spacing: 4px;
             box-shadow: 0 0 40px rgba(229,9,20,0.6);
         }
-        .badge-amarelo { 
-            background: linear-gradient(135deg, #ffab00, #ff8f00); 
-            color: #000; 
-        }
-        .badge-verde { 
-            background: linear-gradient(135deg, #00c853, #00a844);
-        }
+        .badge-amarelo { background: linear-gradient(135deg, #ffab00, #ff8f00); color: #000; }
+        .badge-verde { background: linear-gradient(135deg, #00c853, #00a844); }
 
         h1 {
             color: #fff;
             font-size: clamp(24px, 3.5vh, 42px);
-            font-weight: 900;
-            text-transform: uppercase;
+            font-weight: 900; text-transform: uppercase;
             letter-spacing: 4px;
             margin-bottom: clamp(8px, 1.2vh, 15px);
             background: linear-gradient(180deg, #fff 0%, #e50914 100%);
@@ -164,8 +128,7 @@
         h2 {
             color: #fff;
             font-size: clamp(20px, 2.8vh, 34px);
-            font-weight: 900;
-            text-transform: uppercase;
+            font-weight: 900; text-transform: uppercase;
             letter-spacing: 3px;
             margin-bottom: clamp(10px, 1.5vh, 18px);
         }
@@ -177,77 +140,50 @@
             font-weight: 500;
         }
 
-        /* ================= BARRA TOPO (JÁ TENHO CONTA) ================= */
+        /* BARRA TOPO */
         .barra-topo {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
+            display: flex; justify-content: flex-end; align-items: center;
             margin-bottom: clamp(15px, 2vh, 25px);
             padding-bottom: clamp(12px, 1.5vh, 20px);
             border-bottom: 1px solid rgba(255,255,255,0.08);
         }
-
         .btn-entrar-topo {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+            display: inline-flex; align-items: center; gap: 10px;
             padding: clamp(10px, 1.4vh, 14px) clamp(18px, 2vw, 26px);
-            background: transparent;
-            color: #fff;
-            border: 2px solid #444;
-            border-radius: 50px;
+            background: transparent; color: #fff;
+            border: 2px solid #444; border-radius: 50px;
             font-size: clamp(12px, 1.5vh, 15px);
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            outline: none;
+            font-weight: 800; text-transform: uppercase;
+            letter-spacing: 2px; cursor: pointer;
+            transition: all 0.25s ease; outline: none;
         }
-
-        .btn-entrar-topo:hover {
-            border-color: #e50914;
-            color: #e50914;
-        }
-
-        .btn-entrar-topo:focus,
-        .btn-entrar-topo.foco {
+        .btn-entrar-topo:focus, .btn-entrar-topo.foco {
             border-color: #fff;
             background: rgba(229,9,20,0.15);
-            color: #fff;
-            transform: scale(1.05);
-            box-shadow: 
-                0 0 0 3px #fff,
-                0 0 40px rgba(255,255,255,0.5),
-                0 0 30px rgba(229,9,20,0.6);
+            color: #fff; transform: scale(1.05);
+            box-shadow: 0 0 0 3px #fff, 0 0 40px rgba(255,255,255,0.5), 0 0 30px rgba(229,9,20,0.6);
         }
-
         .btn-entrar-topo .icone { font-size: clamp(15px, 1.9vh, 19px); }
 
-        /* ================= TRIAL ================= */
+        /* TRIAL */
         .trial-container {
             position: relative;
             margin: clamp(15px, 2.5vh, 30px) 0;
             padding: clamp(25px, 3.5vh, 45px) clamp(20px, 3vw, 40px);
             background: linear-gradient(135deg, rgba(229,9,20,0.2) 0%, rgba(255,171,0,0.08) 100%);
             border: 3px solid rgba(229,9,20,0.5);
-            border-radius: 26px;
-            overflow: hidden;
-            box-shadow: 
-                inset 0 0 80px rgba(229,9,20,0.15),
-                0 0 60px rgba(229,9,20,0.2);
+            border-radius: 26px; overflow: hidden;
+            box-shadow: inset 0 0 80px rgba(229,9,20,0.15), 0 0 60px rgba(229,9,20,0.2);
         }
         .trial-container::before {
             content: '';
-            position: absolute;
-            top: -50%; left: -50%;
+            position: absolute; top: -50%; left: -50%;
             width: 200%; height: 200%;
             background: conic-gradient(from 0deg, transparent, rgba(229,9,20,0.25), transparent 30%);
             animation: rotate 10s linear infinite;
         }
         @keyframes rotate { to { transform: rotate(360deg); } }
         .trial-inner { position: relative; z-index: 1; }
-        
         .trial-icone {
             font-size: clamp(50px, 7vh, 80px);
             margin-bottom: clamp(8px, 1vh, 15px);
@@ -255,33 +191,23 @@
             filter: drop-shadow(0 0 30px rgba(255,171,0,0.6));
             line-height: 1;
         }
-        @keyframes pulseIcone { 
-            from { transform: scale(1); } 
-            to { transform: scale(1.12); } 
-        }
-        
+        @keyframes pulseIcone { from { transform: scale(1); } to { transform: scale(1.12); } }
         .trial-label {
             color: #ffc107;
             font-size: clamp(10px, 1.3vh, 14px);
-            font-weight: 800;
-            letter-spacing: 6px;
+            font-weight: 800; letter-spacing: 6px;
             margin-bottom: clamp(8px, 1.2vh, 18px);
             text-transform: uppercase;
             text-shadow: 0 0 20px rgba(255,193,7,0.6);
         }
-        
         .trial-dias {
-            display: flex;
-            justify-content: center;
-            align-items: baseline;
+            display: flex; justify-content: center; align-items: baseline;
             gap: clamp(12px, 1.5vw, 22px);
             margin: clamp(8px, 1vh, 15px) 0 clamp(15px, 2vh, 28px);
         }
-        
         .trial-numero {
             font-size: clamp(70px, 13vh, 130px);
-            font-weight: 900;
-            line-height: 1;
+            font-weight: 900; line-height: 1;
             background: linear-gradient(180deg, #fff 0%, #e50914 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -289,32 +215,22 @@
             filter: drop-shadow(0 0 50px rgba(229,9,20,0.9));
             animation: numeroPulse 2s ease-in-out infinite;
         }
-        @keyframes numeroPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.04); }
-        }
-        
+        @keyframes numeroPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
         .trial-texto {
             font-size: clamp(18px, 2.5vh, 28px);
-            font-weight: 900;
-            color: #e50914;
-            text-transform: uppercase;
-            letter-spacing: 3px;
+            font-weight: 900; color: #e50914;
+            text-transform: uppercase; letter-spacing: 3px;
             line-height: 1.1;
         }
         .trial-texto small {
             display: block;
             font-size: clamp(10px, 1.2vh, 13px);
-            color: #888;
-            font-weight: 700;
-            letter-spacing: 5px;
-            margin-top: 6px;
+            color: #888; font-weight: 700;
+            letter-spacing: 5px; margin-top: 6px;
         }
-        
         .trial-beneficios {
             margin-top: clamp(15px, 2vh, 25px);
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            display: grid; grid-template-columns: repeat(2, 1fr);
             gap: clamp(8px, 1vh, 14px);
         }
         .trial-beneficio {
@@ -323,15 +239,11 @@
             border-radius: 14px;
             padding: clamp(8px, 1.2vh, 14px) clamp(10px, 1.5vw, 18px);
             font-size: clamp(12px, 1.5vh, 15px);
-            color: #ddd;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            color: #ddd; font-weight: 700;
+            display: flex; align-items: center; gap: 10px;
             justify-content: center;
         }
         .trial-beneficio span:first-child { font-size: clamp(16px, 2vh, 22px); }
-
         .trial-destaque {
             background: rgba(0,0,0,0.6);
             border-left: 6px solid #ffc107;
@@ -339,59 +251,41 @@
             padding: clamp(12px, 1.6vh, 20px) clamp(15px, 2vw, 26px);
             text-align: left;
             font-size: clamp(12px, 1.5vh, 16px);
-            color: #fff;
-            font-weight: 700;
+            color: #fff; font-weight: 700;
             margin-top: clamp(15px, 2vh, 25px);
             line-height: 1.5;
         }
         .trial-destaque strong { color: #ffc107; }
 
-        /* ================= BOTÕES ================= */
+        /* BOTÕES */
         button { cursor: pointer; border: none; font-family: inherit; background: none; }
-        
         .btn {
             width: 100%;
             padding: clamp(14px, 2vh, 22px) clamp(20px, 2vw, 32px);
             border-radius: 16px;
             font-size: clamp(14px, 1.9vh, 19px);
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.25s ease;
+            font-weight: 800; text-transform: uppercase;
+            letter-spacing: 2px; transition: all 0.25s ease;
             margin-bottom: clamp(8px, 1.2vh, 15px);
-            outline: none;
-            border: 3px solid transparent;
+            outline: none; border: 3px solid transparent;
         }
-        
         .btn-primario {
             background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
-            color: #fff;
-            box-shadow: 0 8px 35px rgba(229,9,20,0.5);
+            color: #fff; box-shadow: 0 8px 35px rgba(229,9,20,0.5);
         }
-        
         .btn-whats {
             background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: #fff;
-            text-decoration: none;
-            display: inline-block;
+            color: #fff; text-decoration: none; display: inline-block;
             box-shadow: 0 8px 35px rgba(37,211,102,0.4);
         }
-        
         .btn-cinza {
             background: rgba(255,255,255,0.05);
-            color: #ccc;
-            border: 3px solid #333;
+            color: #ccc; border: 3px solid #333;
         }
-
         .btn:focus, .btn.foco {
-            transform: scale(1.04);
-            border-color: #fff;
-            box-shadow: 
-                0 0 0 4px rgba(255,255,255,0.9),
-                0 0 50px rgba(255,255,255,0.6),
-                0 12px 40px rgba(0,0,0,0.9);
-            outline: none;
-            z-index: 10;
+            transform: scale(1.04); border-color: #fff;
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.9), 0 0 50px rgba(255,255,255,0.6), 0 12px 40px rgba(0,0,0,0.9);
+            outline: none; z-index: 10;
         }
         .btn-primario:focus, .btn-primario.foco {
             box-shadow: 0 0 0 4px #fff, 0 0 55px rgba(255,255,255,0.7), 0 15px 50px rgba(229,9,20,0.9);
@@ -399,120 +293,88 @@
         .btn-whats:focus, .btn-whats.foco {
             box-shadow: 0 0 0 4px #fff, 0 0 55px rgba(255,255,255,0.7), 0 15px 50px rgba(37,211,102,0.9);
         }
-        .btn-cinza:focus, .btn-cinza.foco {
-            color: #fff;
-            background: rgba(255,255,255,0.1);
-        }
+        .btn-cinza:focus, .btn-cinza.foco { color: #fff; background: rgba(255,255,255,0.1); }
 
-        /* ================= INPUTS ================= */
-        .input-container {
-            margin-bottom: clamp(12px, 1.6vh, 20px);
-            position: relative;
-        }
-        
+        /* INPUTS */
+        .input-container { margin-bottom: clamp(12px, 1.6vh, 20px); position: relative; }
         input {
             width: 100%;
             padding: clamp(15px, 2.2vh, 22px) clamp(18px, 2vw, 26px);
             background: rgba(0,0,0,0.7);
-            border: 3px solid #333;
-            border-radius: 14px;
+            border: 3px solid #333; border-radius: 14px;
             color: #fff;
             font-size: clamp(16px, 2.1vh, 21px);
-            font-weight: 700;
-            text-align: center;
-            transition: all 0.25s ease;
-            outline: none;
+            font-weight: 700; text-align: center;
+            transition: all 0.25s ease; outline: none;
         }
         input:focus {
             border-color: #e50914;
             box-shadow: 0 0 0 4px rgba(229,9,20,0.3), 0 0 45px rgba(229,9,20,0.6);
-            background: rgba(0,0,0,0.9);
-            transform: scale(1.02);
+            background: rgba(0,0,0,0.9); transform: scale(1.02);
         }
         input::placeholder {
-            color: #555;
-            text-transform: uppercase;
+            color: #555; text-transform: uppercase;
             font-size: clamp(11px, 1.4vh, 15px);
-            font-weight: 700;
-            letter-spacing: 3px;
+            font-weight: 700; letter-spacing: 3px;
         }
-
         .input-senha-wrap { position: relative; }
         .input-senha-wrap input { padding-right: clamp(60px, 6vw, 85px); }
         .btn-olho {
             position: absolute;
             right: clamp(15px, 1.5vw, 22px);
-            top: 50%;
-            transform: translateY(-50%);
-            background: transparent;
-            border: none;
+            top: 50%; transform: translateY(-50%);
+            background: transparent; border: none;
             color: #666;
             font-size: clamp(20px, 2.8vh, 28px);
-            cursor: pointer;
-            padding: 8px 12px;
-            outline: none;
-            border-radius: 10px;
+            cursor: pointer; padding: 8px 12px;
+            outline: none; border-radius: 10px;
         }
         .btn-olho:focus {
-            color: #e50914;
-            background: rgba(229,9,20,0.2);
+            color: #e50914; background: rgba(229,9,20,0.2);
             outline: 3px solid #fff;
         }
 
-        /* ================= LEMBRAR ================= */
+        /* LEMBRAR */
         .lembrar-wrap {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             gap: 15px;
             margin: clamp(12px, 1.6vh, 20px) 0;
             padding: clamp(10px, 1.2vh, 14px) clamp(16px, 2vw, 22px);
-            border-radius: 14px;
-            cursor: pointer;
-            outline: none;
-            border: 3px solid transparent;
+            border-radius: 14px; cursor: pointer;
+            outline: none; border: 3px solid transparent;
         }
         .lembrar-wrap:focus, .lembrar-wrap.foco {
             background: rgba(229,9,20,0.15);
             box-shadow: 0 0 0 4px #fff, 0 0 35px rgba(255,255,255,0.5);
-            border-color: #fff;
-            transform: scale(1.03);
+            border-color: #fff; transform: scale(1.03);
         }
         .lembrar-wrap input[type="checkbox"] {
             width: clamp(20px, 2.5vh, 26px);
             height: clamp(20px, 2.5vh, 26px);
-            accent-color: #e50914;
-            cursor: pointer;
+            accent-color: #e50914; cursor: pointer;
         }
         .lembrar-wrap label {
             font-size: clamp(14px, 1.8vh, 17px);
-            color: #ddd;
-            font-weight: 700;
-            cursor: pointer;
+            color: #ddd; font-weight: 700; cursor: pointer;
         }
 
-        /* ================= PLANOS ================= */
+        /* PLANOS */
         .plano-card {
             position: relative;
             background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-            border: 3px solid #2a2a2a;
-            border-radius: 20px;
+            border: 3px solid #2a2a2a; border-radius: 20px;
             padding: clamp(16px, 2.2vh, 28px) clamp(20px, 2.5vw, 32px);
             margin-bottom: clamp(10px, 1.4vh, 16px);
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            outline: none;
+            text-align: left; cursor: pointer;
+            transition: all 0.3s ease; outline: none;
         }
         .plano-card::before {
             content: '';
-            position: absolute;
-            left: 0; top: 0; bottom: 0;
+            position: absolute; left: 0; top: 0; bottom: 0;
             width: 8px;
             background: linear-gradient(180deg, #e50914, #b20710);
             border-radius: 20px 0 0 20px;
-            transform: scaleY(0);
-            transition: transform 0.3s;
+            transform: scaleY(0); transition: transform 0.3s;
         }
         .plano-card:focus, .plano-card.foco {
             border-color: #fff;
@@ -522,36 +384,29 @@
             z-index: 5;
         }
         .plano-card:focus::before, .plano-card.foco::before { transform: scaleY(1); }
-        
         .plano-card.destaque {
             border-color: #ffab00;
             background: linear-gradient(135deg, rgba(255,171,0,0.15) 0%, #0f0f0f 100%);
         }
         .plano-card.destaque::before { background: linear-gradient(180deg, #ffab00, #ff8f00); }
-
         .plano-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: flex; justify-content: space-between; align-items: center;
             margin-bottom: clamp(5px, 0.7vh, 10px);
-            gap: 12px;
-            flex-wrap: wrap;
+            gap: 12px; flex-wrap: wrap;
         }
         .plano-nome {
             color: #fff;
             font-size: clamp(15px, 2.1vh, 23px);
-            font-weight: 900;
-            text-transform: uppercase;
+            font-weight: 900; text-transform: uppercase;
             letter-spacing: 2px;
         }
         .plano-preco {
             color: #00c853;
             font-size: clamp(19px, 2.8vh, 32px);
-            font-weight: 900;
-            white-space: nowrap;
+            font-weight: 900; white-space: nowrap;
             text-shadow: 0 0 25px rgba(0,200,83,0.5);
         }
-        .plano-card.destaque .plano-preco { 
+        .plano-card.destaque .plano-preco {
             color: #ffc107;
             text-shadow: 0 0 25px rgba(255,193,7,0.5);
         }
@@ -565,17 +420,14 @@
             background: linear-gradient(135deg, #ffab00, #ff8f00);
             color: #000;
             font-size: clamp(9px, 1vh, 11px);
-            font-weight: 900;
-            padding: 4px 12px;
-            border-radius: 10px;
-            margin-left: 10px;
-            letter-spacing: 2px;
-            vertical-align: middle;
+            font-weight: 900; padding: 4px 12px;
+            border-radius: 10px; margin-left: 10px;
+            letter-spacing: 2px; vertical-align: middle;
         }
         .plano-tag.verde { background: linear-gradient(135deg, #00c853, #00a844); color: #fff; }
         .plano-tag.roxo { background: linear-gradient(135deg, #8e24aa, #6a1b9a); color: #fff; }
 
-        /* ================= QR CODE ================= */
+        /* QR CODE */
         .qr-img {
             background: #fff;
             border-radius: 22px;
@@ -585,7 +437,6 @@
             box-shadow: 0 18px 55px rgba(0,0,0,0.7), 0 0 70px rgba(229,9,20,0.3);
         }
         .qr-img img { width: 100%; display: block; border-radius: 12px; }
-
         .pix-code {
             background: #000;
             border: 2px solid #2a2a2a;
@@ -593,18 +444,14 @@
             padding: clamp(12px, 1.6vh, 18px);
             font-family: monospace;
             font-size: clamp(10px, 1.2vh, 13px);
-            word-break: break-all;
-            color: #999;
+            word-break: break-all; color: #999;
             text-align: left;
             margin-bottom: clamp(12px, 1.6vh, 20px);
             max-height: clamp(60px, 10vh, 100px);
             overflow-y: auto;
         }
-
         .polling-status {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             gap: 12px;
             color: #ffab00;
             font-size: clamp(12px, 1.6vh, 16px);
@@ -624,11 +471,8 @@
             animation: spin 0.8s linear infinite;
         }
 
-        /* ================= FORM ================= */
-        .field {
-            margin-bottom: clamp(12px, 1.6vh, 20px);
-            text-align: left;
-        }
+        /* FORM */
+        .field { margin-bottom: clamp(12px, 1.6vh, 20px); text-align: left; }
         .field label {
             display: block;
             color: #999;
@@ -647,7 +491,7 @@
             display: block;
         }
 
-        /* ================= BOAS-VINDAS ================= */
+        /* BOAS-VINDAS */
         .bv-emoji {
             font-size: clamp(70px, 12vh, 120px);
             margin-bottom: clamp(15px, 2vh, 25px);
@@ -675,10 +519,7 @@
             margin-bottom: clamp(20px, 2.5vh, 30px);
             line-height: 1.4;
         }
-        .bv-mensagem span {
-            color: #e50914;
-            font-weight: 900;
-        }
+        .bv-mensagem span { color: #e50914; font-weight: 900; }
         .bv-status {
             display: inline-block;
             padding: clamp(12px, 1.8vh, 18px) clamp(25px, 3vw, 38px);
@@ -694,7 +535,6 @@
             text-transform: uppercase;
             letter-spacing: 4px;
         }
-
         .barra {
             width: clamp(180px, 30vw, 340px);
             height: 8px;
@@ -718,7 +558,7 @@
             font-weight: 800;
         }
 
-        /* ================= BLOQUEIO ================= */
+        /* BLOQUEIO */
         .aviso-bloqueio {
             color: #ff4d4d;
             font-weight: 800;
@@ -758,7 +598,6 @@
                 <div class="trial-numero" id="dias-restantes">3</div>
                 <div class="trial-texto">Dias<small>Grátis</small></div>
             </div>
-
             <div class="trial-beneficios">
                 <div class="trial-beneficio"><span>🎬</span><span>Filmes</span></div>
                 <div class="trial-beneficio"><span>📺</span><span>Séries</span></div>
@@ -779,4 +618,705 @@
 </div>
 
 <!-- ================= TELA: PLANOS ================= -->
-<div class
+<div class="card" id="tela-planos">
+    <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
+    <span class="badge">SELECIONE SEU PLANO</span>
+
+    <div class="barra-topo">
+        <button class="btn-entrar-topo" onclick="mostrarLoginCliente()" tabindex="0">
+            <span class="icone">👤</span>
+            <span>Já tenho conta</span>
+        </button>
+    </div>
+
+    <h2>Continue assistindo</h2>
+    <p style="margin-bottom: 35px; color: #888;" id="aviso-planos">Escolha um plano para liberar o acesso</p>
+
+    <div class="plano-card destaque" tabindex="0" onclick="escolherPlano('mensal_primeiro')">
+        <div class="plano-top">
+            <span class="plano-nome">Mensal <span class="plano-tag">1ª VEZ</span></span>
+            <span class="plano-preco">R$ 12,90</span>
+        </div>
+        <div class="plano-desc">Primeiro mês com desconto especial</div>
+    </div>
+
+    <div class="plano-card" tabindex="0" onclick="escolherPlano('mensal')">
+        <div class="plano-top">
+            <span class="plano-nome">Mensal</span>
+            <span class="plano-preco">R$ 18,90</span>
+        </div>
+        <div class="plano-desc">Renovação automática mensal</div>
+    </div>
+
+    <div class="plano-card" tabindex="0" onclick="escolherPlano('anual')">
+        <div class="plano-top">
+            <span class="plano-nome">Anual <span class="plano-tag verde">MELHOR</span></span>
+            <span class="plano-preco">R$ 149,90</span>
+        </div>
+        <div class="plano-desc">12 meses com desconto. Economize R$ 76!</div>
+    </div>
+
+    <div class="plano-card" tabindex="0" onclick="escolherPlano('lifetime')">
+        <div class="plano-top">
+            <span class="plano-nome">Vitalício <span class="plano-tag roxo">PREMIUM</span></span>
+            <span class="plano-preco">R$ 450,00</span>
+        </div>
+        <div class="plano-desc">Pague uma vez e assista para sempre</div>
+    </div>
+
+    <a href="https://wa.me/55997340723" target="_blank" class="btn btn-whats" style="text-decoration: none; display: block; margin-top: 15px;">Falar no WhatsApp</a>
+</div>
+
+<!-- ================= TELA: LOGIN CLIENTE ================= -->
+<div class="card" id="tela-login-cliente">
+    <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
+    <span class="badge">FAZER LOGIN</span>
+    <h2>Entre na sua conta</h2>
+    <p style="color: #888; margin-bottom: 30px;">Use o usuário e senha que você criou</p>
+
+    <div class="field">
+        <label>Nome de Usuário</label>
+        <input type="text" id="login-cliente-usuario" placeholder="seu usuario" maxlength="20" autocomplete="off">
+    </div>
+
+    <div class="field">
+        <label>Senha</label>
+        <input type="password" id="login-cliente-senha" placeholder="sua senha" maxlength="30" autocomplete="off" onkeypress="if(event.key==='Enter')fazerLoginCliente()">
+    </div>
+
+    <button class="btn btn-primario" id="btn-login-cliente" onclick="fazerLoginCliente()" tabindex="0">Entrar</button>
+    <span class="msg-erro" id="erro-login-cliente"></span>
+
+    <button class="btn btn-cinza" onclick="voltarPlanos()" tabindex="0" style="margin-top: 15px;">← Ver Planos</button>
+</div>
+
+<!-- ================= TELA: QR CODE ================= -->
+<div class="card" id="tela-qrcode">
+    <span class="badge">PAGAMENTO PIX</span>
+    <h2 id="qr-titulo">Escaneie o QR Code</h2>
+    <p style="color: #888;">Use o app do seu banco para pagar</p>
+    <p id="qr-valor" style="font-size: clamp(24px, 3vh, 34px); color: #00c853; font-weight: 900; margin-bottom: 20px;">R$ 0,00</p>
+
+    <div class="qr-img">
+        <img id="qr-image" src="" alt="QR Code PIX">
+    </div>
+
+    <div class="pix-code" id="qr-code-txt">Carregando código PIX...</div>
+
+    <button class="btn btn-cinza" onclick="copiarPix()" id="btn-copiar" tabindex="0">📋 Copiar Código PIX</button>
+
+    <div class="polling-status" id="polling-status">
+        <div class="mini-loader"></div>
+        <span>Aguardando pagamento...</span>
+    </div>
+
+    <button class="btn btn-cinza" onclick="voltarInicio()" tabindex="0">← Voltar aos planos</button>
+</div>
+
+<!-- ================= TELA: CRIAR CONTA ================= -->
+<div class="card" id="tela-criar-conta">
+    <span class="badge badge-verde">✓ PAGAMENTO CONFIRMADO</span>
+    <h2>Crie sua conta</h2>
+    <p style="color: #888; margin-bottom: 30px;">Escolha usuário e senha para acessar</p>
+
+    <div class="field">
+        <label>Nome de Usuário</label>
+        <input type="text" id="novo-usuario" placeholder="ex: joao123" maxlength="20" autocomplete="off">
+    </div>
+
+    <div class="field">
+        <label>Senha</label>
+        <input type="password" id="nova-senha" placeholder="Mínimo 4 caracteres" maxlength="30" autocomplete="off">
+    </div>
+
+    <div class="field">
+        <label>WhatsApp (com DDD)</label>
+        <input type="tel" id="novo-whatsapp" placeholder="ex: 11999998888" maxlength="15" autocomplete="off">
+    </div>
+
+    <button class="btn btn-primario" id="btn-criar-conta" onclick="criarConta()" tabindex="0">Criar Minha Conta</button>
+    <span class="msg-erro" id="erro-conta"></span>
+</div>
+
+<!-- ================= TELA: BOAS-VINDAS ================= -->
+<div class="card" id="tela-boas-vindas">
+    <div class="bv-emoji">🎬</div>
+    <h1>Bem-vindo!</h1>
+    <p class="bv-usuario" id="bv-usuario">cliente</p>
+    <p class="bv-mensagem"><span>Aproveite o conteúdo RedPlay!</span></p>
+    <div class="bv-status"><span class="bv-status-txt">✓ Conta Ativa</span></div>
+    <div class="barra"><div class="barra-inner" id="barra-bv"></div></div>
+    <p class="bv-msg">Preparando seu entretenimento...</p>
+</div>
+
+<!-- ================= TELA: BLOQUEIO ================= -->
+<div class="card" id="tela-bloqueado">
+    <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
+    <span class="badge badge-amarelo">ACESSO BLOQUEADO</span>
+    <h2>Sua conta está suspensa</h2>
+
+    <div class="aviso-bloqueio" id="motivo-bloqueio">Conta suspensa pelo suporte</div>
+
+    <p style="margin-top: 20px; color: #ccc;">Entre em contato pelo WhatsApp:</p>
+
+    <a href="https://wa.me/55997340723" target="_blank" class="btn btn-whats" id="btn-whatsapp-bloqueio" style="text-decoration: none; display: block; margin: 20px 0 15px;" tabindex="0">📱 Falar no WhatsApp</a>
+
+    <p style="color: #fff; font-size: clamp(18px, 2.4vh, 22px); font-weight: 900; letter-spacing: 2px; margin-bottom: 20px; font-family: monospace;">(55) 99973-40723</p>
+
+    <p style="color: #888; font-size: clamp(12px, 1.5vh, 14px);">
+        O aplicativo será fechado automaticamente em
+        <strong id="contador-bloqueio" style="color: #ff4d4d; font-size: clamp(16px, 2vh, 20px);">25</strong>
+        segundos
+    </p>
+</div>
+
+<script>
+// ==========================================
+// CONFIGURAÇÃO
+// ==========================================
+var SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
+var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_z96rFkWrk7fTegOk6m_4";
+
+var FUNC_VERIFICAR = SUPABASE_URL + "/functions/v1/verificar-dispositivo";
+var FUNC_CRIAR_COBRANCA = SUPABASE_URL + "/functions/v1/super-service";
+var FUNC_CRIAR_CONTA = SUPABASE_URL + "/functions/v1/criar-conta-cliente";
+
+var DEVICE_KEY = "redplay_device_id";
+var pollingTimer = null;
+var pollingTentativas = 0;
+var MAX_POLLING = 60;
+var ultimoStatus = null;
+
+// ==========================================
+// OBTÉM ANDROID ID
+// ==========================================
+function obterDeviceId() {
+    try {
+        if (typeof AndroidApp !== 'undefined' && AndroidApp && typeof AndroidApp.getAndroidId === 'function') {
+            var androidId = AndroidApp.getAndroidId();
+            if (androidId && androidId !== 'ID-DESCONHECIDO' && androidId.length > 5) {
+                var deviceReal = 'DEV-' + androidId.substring(0, 12).toUpperCase();
+                try { localStorage.setItem(DEVICE_KEY, deviceReal); } catch(e) {}
+                return deviceReal;
+            }
+        }
+    } catch (e) { console.warn("Erro Android ID:", e); }
+
+    var id = null;
+    try { id = localStorage.getItem(DEVICE_KEY); } catch(e) {}
+    if (!id) {
+        id = 'DEV-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substring(2,8).toUpperCase();
+        try { localStorage.setItem(DEVICE_KEY, id); } catch(e) {}
+    }
+    return id;
+}
+
+// ==========================================
+// CHAMADA HTTP (XMLHttpRequest para TVs antigas)
+// ==========================================
+function chamarFuncao(url, corpo, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("apikey", SUPABASE_ANON_KEY);
+    xhr.setRequestHeader("Authorization", "Bearer " + SUPABASE_ANON_KEY);
+    xhr.timeout = 20000;
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            var resposta = null;
+            try { resposta = JSON.parse(xhr.responseText); } catch(e) { resposta = { erro: "Resposta inválida" }; }
+            if (xhr.status >= 200 && xhr.status < 300) callback(null, resposta);
+            else callback(resposta && resposta.erro ? resposta.erro : ("HTTP " + xhr.status), resposta);
+        }
+    };
+    xhr.onerror = function() { callback("Falha na conexão", null); };
+    xhr.ontimeout = function() { callback("Tempo esgotado", null); };
+    xhr.send(JSON.stringify(corpo));
+}
+
+// ==========================================
+// MOSTRAR TELA
+// ==========================================
+function mostrarTela(id) {
+    var telas = document.querySelectorAll('.card');
+    for (var i = 0; i < telas.length; i++) telas[i].classList.remove('ativo');
+    document.getElementById(id).classList.add('ativo');
+
+    // Foca no primeiro elemento focável da tela
+    setTimeout(function() {
+        var focavel = document.querySelector('#' + id + ' input, #' + id + ' button, #' + id + ' .btn, #' + id + ' .plano-card, #' + id + ' .btn-entrar-topo, #' + id + ' .lembrar-wrap');
+        if (focavel) focavel.focus();
+    }, 300);
+}
+
+// ==========================================
+// INICIALIZAÇÃO
+// ==========================================
+window.addEventListener('load', function() {
+    try {
+        if (window.location.search.indexOf('reset=1') >= 0) {
+            localStorage.clear();
+            console.log("Reset OK");
+        }
+    } catch(e) {}
+
+    setTimeout(function() {
+        var splash = document.getElementById('splash');
+        splash.style.opacity = '0';
+        setTimeout(function() {
+            splash.style.display = 'none';
+            iniciarApp();
+        }, 500);
+    }, 1800);
+});
+
+function iniciarApp() {
+    var device_id = obterDeviceId();
+    console.log("Device ID:", device_id);
+
+    chamarFuncao(FUNC_VERIFICAR, { android_id: device_id }, function(erro, dados) {
+        if (erro) {
+            console.error("Erro:", erro);
+            document.getElementById('bv-usuario').innerText = "Cliente";
+            mostrarTela('tela-boas-vindas');
+            setTimeout(liberarAcessoApp, 3000);
+            return;
+        }
+
+        console.log("Status:", dados);
+        ultimoStatus = dados;
+
+        // BLOQUEADO MANUALMENTE
+        if (dados.status === 'bloqueado_painel') {
+            bloquearTotal(dados.motivo || 'Sua conta foi suspensa pelo suporte.');
+            return;
+        }
+
+        // TRIAL ATIVO
+        if (dados.status === 'teste_gratis' && dados.dias_restantes > 0) {
+            document.getElementById('dias-restantes').innerText = dados.dias_restantes;
+            mostrarTela('tela-trial');
+            animarBarra('barra-trial', 4000);
+            setTimeout(liberarAcessoApp, 4500);
+            return;
+        }
+
+        // TRIAL ACABOU
+        if (dados.status === 'teste_gratis' && dados.dias_restantes <= 0) {
+            document.getElementById('aviso-planos').innerText = 'Seu período de teste acabou. Escolha um plano ou faça login:';
+            mostrarTela('tela-planos');
+            return;
+        }
+
+        // EXPIRADO
+        if (dados.status === 'expirado') {
+            document.getElementById('aviso-planos').innerText = 'Sua assinatura venceu. Renove ou faça login:';
+            mostrarTela('tela-planos');
+            return;
+        }
+
+        // PAGO MAS SEM CONTA
+        if (dados.status === 'pago' && !dados.conta_criada) {
+            mostrarTela('tela-criar-conta');
+            return;
+        }
+
+        // CONTA ATIVA
+        if (dados.status === 'pago' || dados.plano === 'lifetime') {
+            document.getElementById('bv-usuario').innerText = dados.username || dados.usuario || "Cliente";
+            mostrarTela('tela-boas-vindas');
+            animarBarra('barra-bv', 4000);
+            setTimeout(liberarAcessoApp, 4500);
+            return;
+        }
+
+        // PADRÃO
+        mostrarTela('tela-planos');
+    });
+}
+
+// ==========================================
+// BARRA ANIMADA
+// ==========================================
+function animarBarra(id, duracao) {
+    var barra = document.getElementById(id);
+    if (!barra) return;
+    barra.style.width = '0%';
+    var inicio = null;
+    function animar(tempo) {
+        if (!inicio) inicio = tempo;
+        var progresso = Math.min((tempo - inicio) / duracao, 1);
+        barra.style.width = (progresso * 100) + '%';
+        if (progresso < 1) requestAnimationFrame(animar);
+    }
+    requestAnimationFrame(animar);
+}
+
+// ==========================================
+// LIBERAR ACESSO
+// ==========================================
+function liberarAcessoApp() {
+    try {
+        if (typeof AndroidApp !== 'undefined' && AndroidApp && typeof AndroidApp.liberarAcesso === 'function') {
+            AndroidApp.liberarAcesso();
+        } else {
+            console.log("Modo navegador");
+        }
+    } catch(e) { console.error("Erro:", e); }
+}
+
+// ==========================================
+// LOGIN DO CLIENTE
+// ==========================================
+function mostrarLoginCliente() {
+    document.getElementById('login-cliente-usuario').value = '';
+    document.getElementById('login-cliente-senha').value = '';
+    document.getElementById('erro-login-cliente').innerText = '';
+    mostrarTela('tela-login-cliente');
+}
+
+function fazerLoginCliente() {
+    var usuario = document.getElementById('login-cliente-usuario').value.trim();
+    var senha = document.getElementById('login-cliente-senha').value.trim();
+    var erroEl = document.getElementById('erro-login-cliente');
+    var btn = document.getElementById('btn-login-cliente');
+
+    erroEl.innerText = '';
+    erroEl.style.color = '#ff4d4d';
+
+    if (!usuario || !senha) {
+        erroEl.innerText = 'Preencha usuário e senha.';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = 'Verificando...';
+
+    var url = SUPABASE_URL + "/rest/v1/utilizadores?select=*&usuario=eq." + encodeURIComponent(usuario) + "&senha=eq." + encodeURIComponent(senha) + "&limit=1";
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.setRequestHeader("apikey", SUPABASE_ANON_KEY);
+    xhr.setRequestHeader("Authorization", "Bearer " + SUPABASE_ANON_KEY);
+    xhr.timeout = 15000;
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            btn.disabled = false;
+            btn.innerText = 'Entrar';
+
+            var data = null;
+            try { data = JSON.parse(xhr.responseText); } catch(e) {}
+
+            if (xhr.status < 200 || xhr.status >= 300 || !data) {
+                erroEl.innerText = 'Erro de conexão.';
+                return;
+            }
+
+            if (!Array.isArray(data) || data.length === 0) {
+                erroEl.innerText = 'Usuário ou senha incorretos.';
+                document.getElementById('login-cliente-senha').value = '';
+                document.getElementById('login-cliente-senha').focus();
+                return;
+            }
+
+            var cliente = data[0];
+
+            if (!cliente.ativo) {
+                erroEl.innerText = 'Conta inativa. Contate o suporte.';
+                return;
+            }
+
+            if (cliente.vencimento && cliente.plano !== 'vitalicio') {
+                var hoje = new Date();
+                hoje.setHours(0, 0, 0, 0);
+                var venc = new Date(cliente.vencimento + "T00:00:00");
+                if (venc < hoje) {
+                    erroEl.innerText = 'Assinatura venceu. Escolha um plano.';
+                    return;
+                }
+            }
+
+            erroEl.style.color = '#00c853';
+            erroEl.innerText = 'Login realizado!';
+            document.getElementById('bv-usuario').innerText = cliente.usuario;
+
+            var device_id = obterDeviceId();
+            var xhr2 = new XMLHttpRequest();
+            xhr2.open("PATCH", SUPABASE_URL + "/rest/v1/dispositivos?android_id=eq." + encodeURIComponent(device_id), true);
+            xhr2.setRequestHeader("apikey", SUPABASE_ANON_KEY);
+            xhr2.setRequestHeader("Authorization", "Bearer " + SUPABASE_ANON_KEY);
+            xhr2.setRequestHeader("Content-Type", "application/json");
+            xhr2.send(JSON.stringify({ username: cliente.usuario, conta_criada: true }));
+
+            setTimeout(function() {
+                mostrarTela('tela-boas-vindas');
+                animarBarra('barra-bv', 4000);
+                setTimeout(liberarAcessoApp, 4500);
+            }, 800);
+        }
+    };
+
+    xhr.onerror = function() {
+        btn.disabled = false;
+        btn.innerText = 'Entrar';
+        erroEl.innerText = 'Erro de conexão.';
+    };
+    xhr.ontimeout = function() {
+        btn.disabled = false;
+        btn.innerText = 'Entrar';
+        erroEl.innerText = 'Tempo esgotado.';
+    };
+    xhr.send();
+}
+
+// ==========================================
+// ESCOLHER PLANO
+// ==========================================
+function escolherPlano(plano) {
+    console.log("Plano:", plano);
+    var device_id = obterDeviceId();
+    mostrarTela('tela-qrcode');
+    document.getElementById('qr-titulo').innerText = "Gerando PIX...";
+    document.getElementById('qr-code-txt').innerText = "Aguarde...";
+    document.getElementById('qr-image').src = "";
+
+    chamarFuncao(FUNC_CRIAR_COBRANCA, { plano: plano, device_id: device_id }, function(erro, dados) {
+        if (erro) {
+            alert("Erro ao gerar PIX: " + erro);
+            voltarInicio();
+            return;
+        }
+        if (!dados.sucesso || !dados.qr_code) {
+            alert("Erro: QR Code não gerado.");
+            voltarInicio();
+            return;
+        }
+
+        document.getElementById('qr-titulo').innerText = "Escaneie o QR Code";
+        document.getElementById('qr-valor').innerText = "R$ " + (dados.valor || 0).toFixed(2).replace('.', ',');
+        document.getElementById('qr-code-txt').innerText = dados.qr_code;
+
+        if (dados.qr_code_base64) {
+            var b64 = dados.qr_code_base64;
+            if (b64.indexOf('data:image') !== 0) b64 = 'data:image/png;base64,' + b64;
+            document.getElementById('qr-image').src = b64;
+        }
+
+        iniciarPolling();
+    });
+}
+
+// ==========================================
+// POLLING
+// ==========================================
+function iniciarPolling() {
+    pararPolling();
+    pollingTentativas = 0;
+    var device_id = obterDeviceId();
+
+    pollingTimer = setInterval(function() {
+        pollingTentativas++;
+        chamarFuncao(FUNC_VERIFICAR, { android_id: device_id }, function(erro, dados) {
+            if (erro) return;
+            if (dados.status === 'pago' || dados.plano === 'lifetime') {
+                pararPolling();
+                if (dados.conta_criada || dados.username) {
+                    document.getElementById('bv-usuario').innerText = dados.username || dados.usuario || "Cliente";
+                    mostrarTela('tela-boas-vindas');
+                    animarBarra('barra-bv', 4000);
+                    setTimeout(liberarAcessoApp, 4500);
+                } else {
+                    mostrarTela('tela-criar-conta');
+                }
+            }
+        });
+
+        if (pollingTentativas >= MAX_POLLING) {
+            pararPolling();
+            document.getElementById('polling-status').innerHTML = '<span style="color:#ff4d4d;">Pagamento não detectado.</span>';
+        }
+    }, 5000);
+}
+
+function pararPolling() {
+    if (pollingTimer) {
+        clearInterval(pollingTimer);
+        pollingTimer = null;
+    }
+}
+
+// ==========================================
+// COPIAR PIX
+// ==========================================
+function copiarPix() {
+    var texto = document.getElementById('qr-code-txt').innerText;
+    if (!texto) return;
+    try {
+        var ta = document.createElement('textarea');
+        ta.value = texto;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        var btn = document.getElementById('btn-copiar');
+        btn.innerText = "✓ Copiado!";
+        setTimeout(function() { btn.innerText = "📋 Copiar Código PIX"; }, 2000);
+    } catch(e) { alert("Copie manualmente."); }
+}
+
+// ==========================================
+// VOLTAR
+// ==========================================
+function voltarPlanos() {
+    pararPolling();
+    document.getElementById('aviso-planos').innerText = 'Escolha um plano para liberar o acesso';
+    mostrarTela('tela-planos');
+}
+
+function voltarInicio() {
+    pararPolling();
+    if (ultimoStatus && ultimoStatus.status === 'bloqueado_painel') {
+        bloquearTotal(ultimoStatus.motivo || 'Sua conta foi suspensa.');
+    } else {
+        voltarPlanos();
+    }
+}
+
+// ==========================================
+// CRIAR CONTA
+// ==========================================
+function criarConta() {
+    var usuario = document.getElementById('novo-usuario').value.trim();
+    var senha = document.getElementById('nova-senha').value.trim();
+    var whatsapp = document.getElementById('novo-whatsapp').value.trim();
+    var erroEl = document.getElementById('erro-conta');
+    var btn = document.getElementById('btn-criar-conta');
+
+    erroEl.innerText = "";
+    erroEl.style.color = "#ff4d4d";
+
+    if (!usuario || usuario.length < 3) { erroEl.innerText = "Usuário precisa ter pelo menos 3 caracteres."; return; }
+    if (!senha || senha.length < 4) { erroEl.innerText = "Senha precisa ter pelo menos 4 caracteres."; return; }
+    var zapLimpo = whatsapp.replace(/\D/g, '');
+    if (zapLimpo.length < 10) { erroEl.innerText = "Informe um WhatsApp válido."; return; }
+
+    btn.disabled = true;
+    btn.innerText = "Criando conta...";
+
+    var device_id = obterDeviceId();
+
+    chamarFuncao(FUNC_CRIAR_CONTA, {
+        android_id: device_id,
+        username: usuario,
+        senha: senha,
+        whatsapp: zapLimpo
+    }, function(erro, dados) {
+        btn.disabled = false;
+        btn.innerText = "Criar Minha Conta";
+
+        if (erro) { erroEl.innerText = erro; return; }
+        if (!dados.sucesso) { erroEl.innerText = dados.erro || "Erro ao criar conta."; return; }
+
+        erroEl.style.color = "#00c853";
+        erroEl.innerText = "✓ Conta criada com sucesso!";
+
+        document.getElementById('bv-usuario').innerText = dados.usuario;
+        setTimeout(function() {
+            mostrarTela('tela-boas-vindas');
+            animarBarra('barra-bv', 4000);
+            setTimeout(liberarAcessoApp, 4500);
+        }, 1000);
+    });
+}
+
+// ==========================================
+// BLOQUEIO TOTAL
+// ==========================================
+function bloquearTotal(motivo) {
+    pararPolling();
+    var motivoEl = document.getElementById('motivo-bloqueio');
+    if (motivoEl) motivoEl.innerText = motivo;
+
+    var zapLink = document.getElementById('btn-whatsapp-bloqueio');
+    if (zapLink) {
+        var texto = encodeURIComponent("Olá! Minha conta RedPlay está bloqueada. Motivo: " + motivo);
+        zapLink.href = "https://wa.me/55997340723?text=" + texto;
+    }
+
+    mostrarTela('tela-bloqueado');
+
+    var segundos = 25;
+    var contadorEl = document.getElementById('contador-bloqueio');
+    if (contadorEl) contadorEl.innerText = segundos;
+
+    var intervalo = setInterval(function() {
+        segundos--;
+        if (contadorEl) contadorEl.innerText = segundos;
+        if (segundos <= 0) {
+            clearInterval(intervalo);
+            fecharAppBloqueio();
+        }
+    }, 1000);
+}
+
+function fecharAppBloqueio() {
+    try {
+        if (typeof AndroidApp !== 'undefined' && AndroidApp && typeof AndroidApp.fecharApp === 'function') {
+            AndroidApp.fecharApp();
+            return;
+        }
+    } catch(e) {}
+    try { window.close(); } catch(e) {}
+    setTimeout(function() {
+        try { window.location.href = "about:blank"; } catch(e) {}
+    }, 100);
+}
+
+// ==========================================
+// NAVEGAÇÃO POR D-PAD
+// ==========================================
+document.addEventListener('keydown', function(e) {
+    var el = document.activeElement;
+    var tag = el ? el.tagName : '';
+
+    if (e.key === 'Enter' || e.keyCode === 13) {
+        if (el) {
+            if (el.id === 'login-cliente-usuario') {
+                e.preventDefault();
+                var s = document.getElementById('login-cliente-senha');
+                if (s) s.focus();
+                return;
+            }
+        }
+    }
+
+    if (tag === 'INPUT' && e.key !== 'Enter') return;
+
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        var todos = document.querySelectorAll('.plano-card');
+        var visiveis = [];
+        for (var i = 0; i < todos.length; i++) {
+            if (todos[i].offsetParent !== null) visiveis.push(todos[i]);
+        }
+
+        var atual = -1;
+        for (var j = 0; j < visiveis.length; j++) {
+            if (document.activeElement === visiveis[j]) { atual = j; break; }
+        }
+
+        if (atual >= 0) {
+            e.preventDefault();
+            var proximo = e.key === 'ArrowDown' ? atual + 1 : atual - 1;
+            if (proximo < 0) proximo = visiveis.length - 1;
+            if (proximo >= visiveis.length) proximo = 0;
+            visiveis[proximo].focus();
+        }
+    }
+});
+</script>
+</body>
+</html>
