@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#000000">
-    <title>Entrar - RedPlay</title>
+    <title>RedPlay OS</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --vermelho: #e50914;
             --vermelho-hover: #f6121d;
-            --fundo-overlay: rgba(0, 0, 0, 0.75);
+            --verde-whats: #25D366;
             --input-bg: rgba(22, 22, 22, 0.7);
             --input-borda: rgba(255, 255, 255, 0.2);
             --texto: #ffffff;
@@ -38,64 +38,139 @@
 
         body {
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: var(--safe-h) var(--safe-v);
-            /* Fundo estilo Netflix com gradiente e imagem simulação de catálogo */
             background: 
-                linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.9) 100%),
+                linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 50%, rgba(0, 0, 0, 0.95) 100%),
                 radial-gradient(ellipse at center, rgba(229, 9, 20, 0.15) 0%, transparent 70%),
                 #000;
             background-size: cover;
             background-position: center;
         }
 
-        /* Container Principal Integrado (Sem Retângulo Fechado) */
-        .login-wrapper {
+        /* ================= TELA DE INICIALIZAÇÃO (ESTILO WINDOWS) ================= */
+        #boot-screen {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 0.6s ease-out;
+        }
+
+        .boot-logo {
+            width: clamp(160px, 20vw, 240px);
+            margin-bottom: 40px;
+            filter: drop-shadow(0 0 30px rgba(229, 9, 20, 0.6));
+            animation: bootPulse 2s infinite alternate;
+        }
+
+        @keyframes bootPulse {
+            0% { transform: scale(0.98); opacity: 0.8; }
+            100% { transform: scale(1.03); opacity: 1; }
+        }
+
+        .win-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--vermelho);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+            margin-bottom: 25px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .boot-progress-bar {
+            width: clamp(200px, 30vw, 360px);
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .boot-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--vermelho), #ff4d4d);
+            box-shadow: 0 0 15px var(--vermelho);
+            transition: width 0.2s linear;
+        }
+
+        .boot-status-txt {
+            font-size: clamp(11px, 1.4vh, 13px);
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+
+        /* ================= CONTAINER DA APLICAÇÃO ================= */
+        .wrapper {
             width: 100%;
-            max-width: min(420px, 92vw);
+            max-width: min(520px, 92vw);
+            max-height: 100%;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
             align-items: center;
-            animation: fadeIn 0.6s ease-out;
             z-index: 2;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .wrapper::-webkit-scrollbar { width: 4px; }
+        .wrapper::-webkit-scrollbar-thumb { background: #e50914; border-radius: 4px; }
 
-        /* Header / Logo */
         .logo-container {
-            margin-bottom: clamp(20px, 3vh, 35px);
+            margin-bottom: clamp(15px, 2.5vh, 25px);
             text-align: center;
         }
 
         .logo-red {
-            width: clamp(140px, 18vw, 200px);
+            width: clamp(130px, 16vw, 180px);
             filter: drop-shadow(0 0 25px rgba(229, 9, 20, 0.6));
         }
 
-        .titulo-login {
-            color: var(--texto);
-            font-size: clamp(24px, 3.5vh, 32px);
-            font-weight: 800;
-            margin-bottom: clamp(20px, 3vh, 30px);
+        /* GERENCIAMENTO DE TELAS */
+        .tela {
+            display: none;
             width: 100%;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .tela.ativa { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2 {
+            color: var(--texto);
+            font-size: clamp(22px, 3vh, 30px);
+            font-weight: 800;
+            margin-bottom: clamp(15px, 2vh, 25px);
             text-align: left;
             letter-spacing: -0.5px;
         }
 
-        /* Form Controls */
-        #login-form {
-            width: 100%;
+        p {
+            color: var(--texto-suave);
+            font-size: clamp(13px, 1.6vh, 15px);
+            line-height: 1.5;
+            margin-bottom: 15px;
         }
 
+        /* FORMULÁRIO DE INPUTS */
         .input-group {
             position: relative;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             width: 100%;
         }
 
@@ -110,7 +185,7 @@
             font-weight: 600;
             outline: none;
             backdrop-filter: blur(10px);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s ease;
         }
 
         .input-group label {
@@ -125,7 +200,6 @@
             pointer-events: none;
         }
 
-        /* Label Flutuante Ativo */
         .input-group input:focus + label,
         .input-group input:not(:placeholder-shown) + label {
             top: 12px;
@@ -136,51 +210,64 @@
             letter-spacing: 1.5px;
         }
 
-        /* Foco em TV / D-pad */
         .input-group input:focus,
-        .input-group input.foco {
+        .btn:focus,
+        .plano-card:focus,
+        .btn-link:focus,
+        .auxiliar-links label:focus,
+        .auxiliar-links a:focus {
             border-color: #fff !important;
-            background: rgba(40, 40, 40, 0.9);
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.8), 0 0 30px rgba(229, 9, 20, 0.5);
+            background: rgba(40, 40, 40, 0.9) !important;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9), 0 0 30px rgba(229, 9, 20, 0.6) !important;
             transform: scale(1.02);
+            outline: none;
         }
 
-        /* Botão Entrar */
-        .btn-entrar {
+        /* BOTÕES */
+        .btn {
             width: 100%;
-            padding: clamp(16px, 2.2vh, 20px);
-            background: var(--vermelho);
-            color: #fff;
+            padding: clamp(15px, 2vh, 18px);
             border: none;
             border-radius: 8px;
-            font-size: clamp(15px, 2vh, 18px);
+            font-size: clamp(14px, 1.8vh, 16px);
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
             transition: all 0.25s ease;
             margin-top: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
+            margin-bottom: 15px;
             outline: none;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
         }
 
-        .btn-entrar:hover,
-        .btn-entrar:focus,
-        .btn-entrar.foco {
-            background: var(--vermelho-hover);
-            transform: scale(1.03);
-            box-shadow: 0 0 0 4px #fff, 0 10px 35px rgba(229, 9, 20, 0.8);
+        .btn-primario {
+            background: var(--vermelho);
+            color: #fff;
+            box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
         }
 
-        /* Links Auxiliares */
+        .btn-secundario {
+            background: transparent;
+            color: #ccc;
+            border: 2px solid #333;
+        }
+
+        .btn-whats {
+            background: var(--verde-whats);
+            color: #fff;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+        }
+
+        /* LINKS AUXILIARES */
         .auxiliar-links {
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: clamp(12px, 1.5vh, 14px);
             color: var(--texto-suave);
-            width: 100%;
         }
 
         .auxiliar-links label {
@@ -189,156 +276,435 @@
             gap: 8px;
             cursor: pointer;
             font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
         }
 
         .auxiliar-links input[type="checkbox"] {
             accent-color: var(--vermelho);
             width: 18px;
             height: 18px;
-            cursor: pointer;
         }
 
-        .auxiliar-links a {
-            color: var(--texto-suave);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s;
-        }
-
-        .auxiliar-links a:hover,
-        .auxiliar-links a:focus {
+        .auxiliar-links a, .btn-link {
             color: #fff;
-            text-decoration: underline;
+            text-decoration: none;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
         }
 
-        /* Rodapé Integrado */
+        .auxiliar-links a:hover, .btn-link:hover {
+            text-decoration: underline;
+            color: var(--vermelho);
+        }
+
+        /* PLANOS DE ASSINATURA */
+        .plano-card {
+            background: rgba(20, 20, 20, 0.8);
+            border: 2px solid var(--input-borda);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.25s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .plano-card.destaque {
+            border-color: #ffab00;
+            background: linear-gradient(135deg, rgba(255,171,0,0.15) 0%, rgba(20,20,20,0.8) 100%);
+        }
+
+        .plano-nome {
+            font-size: clamp(15px, 2vh, 18px);
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .plano-preco {
+            font-size: clamp(18px, 2.3vh, 22px);
+            font-weight: 900;
+            color: #00c853;
+        }
+
+        .plano-card.destaque .plano-preco { color: #ffab00; }
+
+        .plano-tag {
+            background: #ffab00;
+            color: #000;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 3px 8px;
+            border-radius: 6px;
+            margin-left: 8px;
+            text-transform: uppercase;
+        }
+
+        /* TELA DE BLOQUEIO */
+        .card-bloqueio {
+            background: rgba(30, 10, 10, 0.85);
+            border: 2px solid #ff4d4d;
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .motivo-bloqueio {
+            background: rgba(0,0,0,0.5);
+            padding: 15px;
+            border-radius: 8px;
+            color: #ff4d4d;
+            font-weight: 700;
+            font-size: 14px;
+            margin: 15px 0;
+            border-left: 4px solid #ff4d4d;
+            text-align: left;
+        }
+
+        /* QR CODE / PAGAMENTO */
+        .qr-box {
+            background: #fff;
+            padding: 16px;
+            border-radius: 12px;
+            width: clamp(180px, 25vh, 240px);
+            margin: 20px auto;
+        }
+
+        .qr-box img { width: 100%; display: block; }
+
+        .pix-code {
+            background: #111;
+            border: 1px solid #333;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 11px;
+            color: #888;
+            word-break: break-all;
+            margin-bottom: 15px;
+        }
+
+        .msg-erro {
+            color: #ff4d4d;
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 10px;
+            display: block;
+        }
+
         .footer-login {
-            margin-top: 40px;
+            margin-top: 30px;
             width: 100%;
             text-align: left;
             font-size: clamp(13px, 1.6vh, 15px);
             color: var(--texto-suave);
         }
 
-        .footer-login p {
-            margin-bottom: 12px;
-            font-weight: 500;
-        }
-
-        .footer-login a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-        .footer-login a:hover {
-            text-decoration: underline;
-        }
-
-        .recaptcha-texto {
-            font-size: 11px;
-            color: #777;
-            line-height: 1.5;
-            margin-top: 15px;
-        }
-
-        .recaptcha-texto a {
-            color: #0071eb;
-            text-decoration: none;
-        }
-
-        /* Ocultar Cursor para Android TV */
         body { cursor: none; }
         @media (pointer: fine) { body { cursor: default; } }
     </style>
 </head>
 <body>
 
-    <div class="login-wrapper">
+    <!-- ================= BOOT SCREEN (ESTILO WINDOWS) ================= -->
+    <div id="boot-screen">
+        <img src="download.png" alt="RedPlay" class="boot-logo" onerror="this.src='https://via.placeholder.com/200x60/e50914/ffffff?text=RedPlay'">
+        <div class="win-spinner"></div>
+        <div class="boot-progress-bar">
+            <div class="boot-progress-fill" id="boot-fill"></div>
+        </div>
+        <div class="boot-status-txt" id="boot-status">Iniciando RedPlay OS...</div>
+    </div>
+
+    <!-- ================= WRAPPER DA APLICAÇÃO ================= -->
+    <div class="wrapper">
         
         <!-- Logo -->
         <div class="logo-container">
             <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.src='https://via.placeholder.com/200x60/e50914/ffffff?text=RedPlay'">
         </div>
         
-        <h1 class="titulo-login">Entrar</h1>
+        <!-- ================= TELA: LOGIN ================= -->
+        <div class="tela" id="tela-login">
+            <h1>Entrar</h1>
 
-        <form id="login-form">
-            <!-- Email/Usuário -->
             <div class="input-group">
-                <input type="text" id="usuario" placeholder=" " required autocomplete="username" tabindex="0">
-                <label for="usuario">Email ou número de telefone</label>
+                <input type="text" id="usuario" placeholder=" " autocomplete="off" tabindex="0">
+                <label for="usuario">Usuário ou Email</label>
             </div>
 
-            <!-- Senha -->
             <div class="input-group">
-                <input type="password" id="senha" placeholder=" " required autocomplete="current-password" tabindex="0">
+                <input type="password" id="senha" placeholder=" " autocomplete="off" tabindex="0">
                 <label for="senha">Senha</label>
             </div>
 
-            <!-- Botão Submit -->
-            <button type="submit" class="btn-entrar" id="btn-entrar" tabindex="0">Entrar</button>
+            <button class="btn btn-primario" onclick="fazerLogin()" tabindex="0">Entrar</button>
+            <span class="msg-erro" id="erro-login"></span>
 
-            <!-- Auxiliares -->
             <div class="auxiliar-links">
                 <label tabindex="0">
                     <input type="checkbox" id="lembrar">
                     Lembrar de mim
                 </label>
-                <a href="#" tabindex="0">Precisa de ajuda?</a>
+                <a href="#" tabindex="0" onclick="abrirSuporteWhatsapp(event)">Precisa de ajuda?</a>
             </div>
-        </form>
 
-        <!-- Rodapé -->
-        <div class="footer-login">
-            <p>Novo na RedPlay? <a href="#" tabindex="0">Assine agora</a>.</p>
-            <p class="recaptcha-texto">
-                Esta página é protegida pelo Google reCAPTCHA para garantir que você não é um robô. 
-                <a href="#">Saiba mais</a>.
-            </p>
+            <div class="footer-login">
+                <p>Novo na RedPlay? <span class="btn-link" onclick="abrirPlanos()" tabindex="0">Assine agora</span>.</p>
+            </div>
+        </div>
+
+        <!-- ================= TELA: PLANOS ================= -->
+        <div class="tela" id="tela-planos">
+            <h2>Escolha seu Plano</h2>
+            <p>Selecione a melhor opção para sua TV</p>
+
+            <div class="plano-card destaque" onclick="gerarCobranca('mensal_primeiro')" tabindex="0">
+                <div>
+                    <div class="plano-nome">Mensal <span class="plano-tag">1ª Vez</span></div>
+                    <p style="margin:0; font-size:12px;">Desconto especial de entrada</p>
+                </div>
+                <div class="plano-preco">R$ 12,90</div>
+            </div>
+
+            <div class="plano-card" onclick="gerarCobranca('mensal')" tabindex="0">
+                <div>
+                    <div class="plano-nome">Mensal Padrão</div>
+                    <p style="margin:0; font-size:12px;">Renovação mensal</p>
+                </div>
+                <div class="plano-preco">R$ 18,90</div>
+            </div>
+
+            <div class="plano-card" onclick="gerarCobranca('anual')" tabindex="0">
+                <div>
+                    <div class="plano-nome">Anual Premium</div>
+                    <p style="margin:0; font-size:12px;">Economize R$ 76/ano</p>
+                </div>
+                <div class="plano-preco">R$ 149,90</div>
+            </div>
+
+            <button class="btn btn-secundario" onclick="abrirLogin()" tabindex="0">Já tenho uma conta (Entrar)</button>
+        </div>
+
+        <!-- ================= TELA: QR CODE PIX ================= -->
+        <div class="tela" id="tela-qrcode">
+            <h2>Pagamento PIX</h2>
+            <p>Escaneie o QR Code abaixo no app do seu banco</p>
+
+            <div class="plano-preco" id="qr-valor" style="text-align: center; font-size: 28px; margin-bottom: 10px;">R$ 0,00</div>
+
+            <div class="qr-box">
+                <img id="qr-img" src="" alt="QR Code PIX">
+            </div>
+
+            <div class="pix-code" id="pix-copia-cola">Gerando chave PIX...</div>
+
+            <button class="btn btn-primario" id="btn-copiar" onclick="copiarPix()" tabindex="0">Copiar Chave PIX</button>
+            <button class="btn btn-secundario" onclick="abrirPlanos()" tabindex="0">Voltar aos Planos</button>
+        </div>
+
+        <!-- ================= TELA: BLOQUEADO ================= -->
+        <div class="tela" id="tela-bloqueado">
+            <div class="card-bloqueio">
+                <h2 style="color:#ff4d4d; text-align:center;">Acesso Suspenso</h2>
+                <p>Seu dispositivo foi temporariamente bloqueado no sistema.</p>
+                <div class="motivo-bloqueio" id="motivo-bloqueio-txt">Motivo: Suspensão por falta de pagamento ou violação.</div>
+                <a href="#" class="btn btn-whats" onclick="abrirSuporteWhatsapp(event)" tabindex="0">Falar com Suporte</a>
+            </div>
+        </div>
+
+        <!-- ================= TELA: SUPORTE WHATSAPP ================= -->
+        <div class="tela" id="tela-suporte">
+            <h2>Suporte WhatsApp</h2>
+            <p>Escaneie o QR Code com a câmera do celular para falar conosco</p>
+
+            <div class="qr-box">
+                <img id="qr-whatsapp" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://wa.me/5511999999999?text=Preciso%20de%20ajuda" alt="WhatsApp Suporte">
+            </div>
+
+            <a href="https://wa.me/5511999999999?text=Preciso%20de%20ajuda" target="_blank" class="btn btn-whats" tabindex="0">Abrir WhatsApp Direto</a>
+            <button class="btn btn-secundario" onclick="abrirLogin()" tabindex="0">Voltar</button>
         </div>
 
     </div>
 
     <script>
-        // Submissão do Formulário
-        document.getElementById('login-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            var usuario = document.getElementById('usuario').value.trim();
-            var senha = document.getElementById('senha').value.trim();
+        var SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
+        var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNfeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
+        var FUNC_VERIFICAR = SUPABASE_URL + "/functions/v1/verificar-dispositivo";
+        var NUMERO_WHATSAPP = "5511999999999";
 
-            if (usuario && senha) {
-                // Integração do Login
-                console.log("Tentativa de login com:", usuario);
-            } else {
-                alert('Por favor, preencha todos os campos.');
-            }
+        function obterDeviceId() {
+            try {
+                if (typeof AndroidApp !== 'undefined' && AndroidApp && typeof AndroidApp.getAndroidId === 'function') {
+                    var id = AndroidApp.getAndroidId();
+                    if (id && id.length > 5) return 'DEV-' + id.substring(0, 12).toUpperCase();
+                }
+            } catch (e) {}
+            return 'DEV-DEMO-123456';
+        }
+
+        function chamarAPI(url, corpo, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.setRequestHeader("apikey", SUPABASE_ANON_KEY);
+            xhr.setRequestHeader("Authorization", "Bearer " + SUPABASE_ANON_KEY);
+            xhr.timeout = 15000;
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    var resp = null;
+                    try { resp = JSON.parse(xhr.responseText); } catch(e) {}
+                    if (xhr.status >= 200 && xhr.status < 300) callback(null, resp);
+                    else callback("Erro de Conexão", resp);
+                }
+            };
+            xhr.send(JSON.stringify(corpo));
+        }
+
+        // SEQUÊNCIA DE CARREGAMENTO ESTILO WINDOWS / CARREGANDO OS
+        window.addEventListener('load', function() {
+            var fill = document.getElementById('boot-fill');
+            var txt = document.getElementById('boot-status');
+            
+            var etapas = [
+                { pct: 20, msg: "Iniciando módulos do sistema..." },
+                { pct: 50, msg: "Verificando parâmetros do dispositivo..." },
+                { pct: 85, msg: "Autenticando com o servidor..." },
+                { pct: 100, msg: "Carregando interface..." }
+            ];
+
+            var idx = 0;
+            var timer = setInterval(function() {
+                if (idx < etapas.length) {
+                    fill.style.width = etapas[idx].pct + "%";
+                    txt.innerText = etapas[idx].msg;
+                    idx++;
+                } else {
+                    clearInterval(timer);
+                    verificarStatusEIniciar();
+                }
+            }, 600);
         });
 
-        // Controle D-Pad para Smart TV / Android TV
-        document.addEventListener('keydown', function(e) {
-            var focusable = Array.prototype.slice.call(
-                document.querySelectorAll('input, button, [tabindex="0"], a')
-            ).filter(function(el) {
-                return el.offsetParent !== null;
-            });
+        function verificarStatusEIniciar() {
+            var device_id = obterDeviceId();
 
-            if (focusable.length === 0) return;
-            var index = focusable.indexOf(document.activeElement);
+            chamarAPI(FUNC_VERIFICAR, { android_id: device_id }, function(erro, dados) {
+                // Esconde a tela de Boot
+                var boot = document.getElementById('boot-screen');
+                boot.style.opacity = '0';
+                setTimeout(function() { boot.style.display = 'none'; }, 600);
+
+                // RECONHECIMENTO DE BLOQUEIO
+                if (dados && dados.status === 'bloqueado_painel') {
+                    if (dados.motivo) {
+                        document.getElementById('motivo-bloqueio-txt').innerText = "Motivo: " + dados.motivo;
+                    }
+                    navegarPara('tela-bloqueado');
+                    return;
+                }
+
+                // STATUS ATIVO / TRIAL / COMPRA
+                if (dados && dados.status === 'ativo') {
+                    alert("Acesso Liberado para a TV!");
+                } else if (dados && dados.status === 'trial') {
+                    alert("Você tem " + (dados.dias_restantes || 3) + " dias de teste!");
+                } else {
+                    // Padrão: Abre a Tela de Planos para Compra
+                    navegarPara('tela-planos');
+                }
+            });
+        }
+
+        function navegarPara(idTela) {
+            var telas = document.querySelectorAll('.tela');
+            telas.forEach(function(t) { t.classList.remove('ativa'); });
+            var telaAlvo = document.getElementById(idTela);
+            if (telaAlvo) {
+                telaAlvo.classList.add('ativa');
+                setTimeout(function() {
+                    var primeiroFoco = telaAlvo.querySelector('input, button, .plano-card, .btn-link, a, [tabindex="0"]');
+                    if (primeiroFoco) primeiroFoco.focus();
+                }, 100);
+            }
+        }
+
+        function abrirPlanos() { navegarPara('tela-planos'); }
+        function abrirLogin() { navegarPara('tela-login'); }
+
+        function abrirSuporteWhatsapp(e) {
+            if (e) e.preventDefault();
+            if (typeof AndroidApp !== 'undefined' || window.innerWidth > 900) {
+                navegarPara('tela-suporte');
+            } else {
+                window.open('https://wa.me/' + NUMERO_WHATSAPP + '?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20com%20minha%20conta%20RedPlay', '_blank');
+            }
+        }
+
+        function fazerLogin() {
+            var user = document.getElementById('usuario').value.trim();
+            var pass = document.getElementById('senha').value.trim();
+            var erro = document.getElementById('erro-login');
+
+            if (!user || !pass) {
+                erro.innerText = "Preencha o usuário e a senha.";
+                return;
+            }
+            erro.innerText = "";
+            alert("Iniciando sessão como: " + user);
+        }
+
+        function gerarCobranca(tipoPlano) {
+            var precos = {
+                'mensal_primeiro': 'R$ 12,90',
+                'mensal': 'R$ 18,90',
+                'anual': 'R$ 149,90'
+            };
+
+            document.getElementById('qr-valor').innerText = precos[tipoPlano] || 'R$ 0,00';
+            document.getElementById('pix-copia-cola').innerText = "00020126580014BR.GOV.BCB.PIX0136123e4567-e89b-12d3-a456-426614174000520400005303986540512.905802BR5913RedPlay TV6008BRASILIA62070503***6304E2CA";
+            document.getElementById('qr-img').src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=RedPlayPIX";
+
+            navegarPara('tela-qrcode');
+        }
+
+        function copiarPix() {
+            var btn = document.getElementById('btn-copiar');
+            btn.innerText = "Chave Copiada!";
+            setTimeout(function() { btn.innerText = "Copiar Chave PIX"; }, 2000);
+        }
+
+        /* NAVEGAÇÃO CONTROLE REMOTO (D-PAD TV) */
+        document.addEventListener('keydown', function(e) {
+            var telaAtiva = document.querySelector('.tela.ativa');
+            if (!telaAtiva) return;
+
+            var focusables = Array.prototype.slice.call(
+                telaAtiva.querySelectorAll('input, button, .plano-card, .btn-link, a, label, [tabindex="0"]')
+            ).filter(function(el) { return el.offsetParent !== null; });
+
+            if (focusables.length === 0) return;
+            var index = focusables.indexOf(document.activeElement);
 
             if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
                 if (document.activeElement.tagName === 'INPUT' && e.key === 'ArrowRight') return;
                 e.preventDefault();
-                index = (index + 1) % focusable.length;
-                focusable[index].focus();
+                index = (index + 1) % focusables.length;
+                focusables[index].focus();
             } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
                 if (document.activeElement.tagName === 'INPUT' && e.key === 'ArrowLeft') return;
                 e.preventDefault();
-                index = (index - 1 + focusable.length) % focusable.length;
-                focusable[index].focus();
+                index = (index - 1 + focusables.length) % focusables.length;
+                focusables[index].focus();
             }
         });
     </script>
-
 </body>
 </html>
