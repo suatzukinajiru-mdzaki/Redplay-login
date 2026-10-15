@@ -13,7 +13,6 @@
             --verde: #00c853;
             --amarelo: #ffab00;
             --dourado: #ffc107;
-            --roxo: #8e24aa;
             --preto: #000000;
             --painel: #141414;
             --borda: #2a2a2a;
@@ -24,28 +23,19 @@
         }
 
         * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
+            margin: 0; padding: 0; box-sizing: border-box; 
             font-family: 'Montserrat', Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         html, body {
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            background: #000;
-            color: #fff;
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-touch-callout: none;
+            height: 100vh; width: 100vw; overflow: hidden;
+            background: #000; color: #fff;
+            user-select: none; -webkit-user-select: none;
         }
 
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: flex; justify-content: center; align-items: center;
             padding: var(--safe-h) var(--safe-v);
             background: 
                 radial-gradient(ellipse at top, rgba(229,9,20,0.18) 0%, transparent 50%),
@@ -56,20 +46,16 @@
 
         /* ================= SPLASH ================= */
         #splash {
-            position: fixed;
-            inset: 0;
+            position: fixed; inset: 0;
             background: radial-gradient(ellipse at center, #1a0000 0%, #000 70%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
             z-index: 99999;
-            transition: opacity 0.5s ease-out;
+            transition: opacity 0.6s ease-out;
         }
         .splash-logo {
-            width: 280px;
-            max-width: 30vw;
-            margin-bottom: 50px;
+            width: 280px; max-width: 30vw;
+            margin-bottom: 40px;
             animation: splashFloat 2.5s ease-in-out infinite;
             filter: drop-shadow(0 0 40px rgba(229,9,20,0.6));
         }
@@ -78,8 +64,7 @@
             50% { transform: scale(1.05) translateY(-10px); opacity: 1; }
         }
         .loader {
-            width: 65px;
-            height: 65px;
+            width: 65px; height: 65px;
             border: 6px solid rgba(229,9,20,0.15);
             border-top-color: #e50914;
             border-radius: 50%;
@@ -88,18 +73,12 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         .splash-txt {
-            color: #666;
-            font-size: 14px;
-            letter-spacing: 6px;
-            margin-top: 28px;
-            text-transform: uppercase;
-            font-weight: 800;
+            color: #666; font-size: 14px;
+            letter-spacing: 6px; margin-top: 28px;
+            text-transform: uppercase; font-weight: 800;
             animation: pulseTxt 1.5s ease-in-out infinite;
         }
-        @keyframes pulseTxt {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
+        @keyframes pulseTxt { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
         /* ================= CARD PRINCIPAL ================= */
         .card {
@@ -111,8 +90,7 @@
             width: 100%;
             max-width: min(1000px, 92vw);
             max-height: 100%;
-            overflow-y: auto;
-            overflow-x: hidden;
+            overflow-y: auto; overflow-x: hidden;
             text-align: center;
             box-shadow: 
                 0 30px 90px rgba(0,0,0,0.9),
@@ -156,12 +134,21 @@
         }
         .badge-amarelo { 
             background: linear-gradient(135deg, #ffab00, #ff8f00); 
-            color: #000; 
-            box-shadow: 0 0 40px rgba(255,171,0,0.6);
+            color: #000; box-shadow: 0 0 40px rgba(255,171,0,0.6);
         }
         .badge-verde { 
             background: linear-gradient(135deg, #00c853, #00a844);
             box-shadow: 0 0 40px rgba(0,200,83,0.6);
+        }
+        .badge-lifetime {
+            background: linear-gradient(135deg, #ffc107, #ff5722);
+            color: #000;
+            box-shadow: 0 0 50px rgba(255,193,7,0.8);
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         h1 {
@@ -373,10 +360,11 @@
         .btn:focus,
         .btn.foco,
         .plano-card:focus,
-        .plano-card.foco {
+        .plano-card.foco,
+        .lembrar-wrap:focus,
+        .lembrar-wrap.foco {
             transform: scale(1.03);
             border-color: #fff !important;
-            background-color: #262626 !important;
             box-shadow: 
                 0 0 0 4px rgba(255,255,255,0.95),
                 0 0 60px rgba(255,255,255,0.6),
@@ -400,7 +388,8 @@
             margin-bottom: clamp(6px, 0.8vh, 10px);
         }
         
-        input {
+        input[type="text"],
+        input[type="password"] {
             width: 100%;
             padding: clamp(15px, 2.2vh, 22px) clamp(18px, 2vw, 26px);
             background: rgba(0,0,0,0.7);
@@ -414,7 +403,8 @@
             outline: none;
             letter-spacing: 1px;
         }
-        input:focus,
+        input[type="text"]:focus,
+        input[type="password"]:focus,
         input.foco {
             border-color: #e50914 !important;
             box-shadow: 
@@ -446,14 +436,9 @@
             border: 3px solid #2a2a2a;
             background: rgba(0,0,0,0.4);
         }
-        .lembrar-wrap:focus,
-        .lembrar-wrap.foco {
-            border-color: #e50914;
-            background: rgba(229,9,20,0.15);
-            box-shadow: 
-                0 0 0 4px rgba(255,255,255,0.9),
-                0 0 40px rgba(229,9,20,0.5);
-            transform: scale(1.02);
+        .lembrar-wrap:hover {
+            border-color: #444;
+            background: rgba(0,0,0,0.6);
         }
         .lembrar-wrap input[type="checkbox"] {
             width: clamp(22px, 2.8vh, 28px);
@@ -514,6 +499,7 @@
             background: linear-gradient(180deg, #ffab00, #ff8f00);
         }
 
+        /* ============ PLANO LIFETIME (VITALÍCIO) ============ */
         .plano-card.lifetime {
             border-color: #ffc107;
             background: linear-gradient(135deg, rgba(255,193,7,0.18) 0%, rgba(255,87,34,0.08) 50%, #0f0f0f 100%);
@@ -522,13 +508,9 @@
         .plano-card.lifetime::before { 
             background: linear-gradient(180deg, #ffc107, #ff5722);
         }
-        .plano-card.lifetime:hover,
-        .plano-card.lifetime:focus,
-        .plano-card.lifetime.foco {
-            box-shadow: 
-                0 0 0 4px rgba(255,255,255,0.95),
-                0 0 60px rgba(255,193,7,0.7),
-                0 15px 45px rgba(0,0,0,0.9) !important;
+        .plano-card.lifetime:hover {
+            box-shadow: 0 0 50px rgba(255,193,7,0.5);
+            border-color: #ffd54f;
         }
 
         .plano-top {
@@ -584,10 +566,6 @@
         }
         .plano-tag.verde { 
             background: linear-gradient(135deg, #00c853, #00a844);
-            color: #fff;
-        }
-        .plano-tag.roxo { 
-            background: linear-gradient(135deg, #8e24aa, #6a1b9a);
             color: #fff;
         }
         .plano-tag.lifetime-tag {
@@ -779,9 +757,8 @@
             <div class="trial-icone">⭐</div>
             <div class="trial-label">Você tem direito a</div>
             <div class="trial-dias">
-                <div class="trial-numero" id="dias-restantes">3</div>
+                <div class="trial-numero">3</div>
                 <div class="trial-texto">Dias Grátis<small>Acesso Completo</small></div>
             </div>
             <div class="trial-beneficios">
-                <div class="trial-beneficio"><span>🎬</span><span>Filmes 4K</span></div>
-                <div class="trial-beneficio"><span>📺</span><span>Séries HD</span></div>
+                <div class
