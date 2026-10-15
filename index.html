@@ -16,11 +16,9 @@
             --roxo: #8e24aa;
             --preto: #000000;
             --painel: #141414;
-            --borda: #2a2a2a;
+            --borda: #1f1f1f;
             --texto: #ffffff;
-            --texto-suave: #a0a0a0;
-            --safe-h: 4vh;
-            --safe-v: 4vw;
+            --texto-suave: #888888;
         }
 
         * { 
@@ -45,10 +43,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: var(--safe-h) var(--safe-v);
+            padding: 5vh 5vw;
             background: 
-                radial-gradient(ellipse at top, rgba(229,9,20,0.18) 0%, transparent 50%),
-                radial-gradient(ellipse at bottom, rgba(139,0,0,0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at top, rgba(229,9,20,0.15) 0%, transparent 55%),
+                radial-gradient(ellipse at bottom, rgba(139,0,0,0.1) 0%, transparent 55%),
                 #000;
             background-attachment: fixed;
         }
@@ -57,261 +55,197 @@
         #splash {
             position: fixed;
             inset: 0;
-            background: radial-gradient(ellipse at center, #1a0000 0%, #000 70%);
+            background: #000;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 99999;
-            transition: opacity 0.5s ease-out;
+            transition: opacity 0.6s ease-out;
         }
         .splash-logo {
-            width: 280px;
-            max-width: 30vw;
-            margin-bottom: 50px;
-            animation: splashFloat 2.5s ease-in-out infinite;
-            filter: drop-shadow(0 0 40px rgba(229,9,20,0.6));
+            width: clamp(200px, 24vw, 320px);
+            animation: splashEntrada 1.2s ease-out, splashFloat 3s ease-in-out infinite 1.2s;
+            filter: drop-shadow(0 0 60px rgba(229,9,20,0.7));
+        }
+        @keyframes splashEntrada {
+            0% { opacity: 0; transform: scale(0.7); }
+            60% { opacity: 1; transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
         }
         @keyframes splashFloat {
-            0%, 100% { transform: scale(1) translateY(0); opacity: 0.9; }
-            50% { transform: scale(1.05) translateY(-10px); opacity: 1; }
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.03) translateY(-8px); }
         }
-        .loader {
-            width: 65px;
-            height: 65px;
-            border: 6px solid rgba(229,9,20,0.15);
-            border-top-color: #e50914;
-            border-radius: 50%;
-            animation: spin 0.9s linear infinite;
-            box-shadow: 0 0 40px rgba(229,9,20,0.4);
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .splash-txt {
+        .splash-texto {
             color: #666;
-            font-size: 14px;
-            letter-spacing: 6px;
-            margin-top: 28px;
+            font-size: clamp(11px, 1.4vh, 14px);
+            letter-spacing: 8px;
             text-transform: uppercase;
             font-weight: 800;
-            animation: pulseTxt 1.5s ease-in-out infinite;
+            margin-top: 40px;
+            animation: splashTextoPulse 1.8s ease-in-out infinite;
         }
-        @keyframes pulseTxt {
-            0%, 100% { opacity: 0.5; }
+        @keyframes splashTextoPulse {
+            0%, 100% { opacity: 0.4; }
             50% { opacity: 1; }
         }
 
-        /* ================= CARD ================= */
+        /* ================= TELAS ================= */
         .card {
-            position: relative;
-            background: linear-gradient(135deg, rgba(20,20,20,0.98) 0%, rgba(10,10,10,0.98) 100%);
-            border: 2px solid rgba(229,9,20,0.3);
-            border-radius: 30px;
-            padding: clamp(30px, 4vh, 55px) clamp(35px, 5vw, 65px);
             width: 100%;
-            max-width: min(1000px, 92vw);
-            max-height: 100%;
-            overflow-y: auto;
-            text-align: center;
-            box-shadow: 
-                0 30px 90px rgba(0,0,0,0.9),
-                0 0 150px rgba(229,9,20,0.15),
-                inset 0 1px 0 rgba(255,255,255,0.05);
-            animation: cardFadeIn 0.4s ease;
+            height: 100%;
             display: none;
-            margin: auto;
-            scroll-behavior: smooth;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2vh 2vw;
+            animation: cardFadeIn 0.5s ease;
         }
-        .card.ativo { display: block; }
+        .card.ativo { display: flex; }
         @keyframes cardFadeIn {
-            from { opacity: 0; transform: translateY(20px) scale(0.99); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .card::-webkit-scrollbar { width: 6px; }
-        .card::-webkit-scrollbar-thumb { 
-            background: linear-gradient(180deg, #e50914, #b20710);
-            border-radius: 3px;
+        .conteudo {
+            width: 100%;
+            max-width: 560px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: clamp(20px, 3vh, 36px);
         }
 
-        .logo-red {
-            width: clamp(120px, 14vw, 180px);
-            margin-bottom: clamp(15px, 2vh, 25px);
-            display: inline-block;
-            filter: drop-shadow(0 0 20px rgba(229,9,20,0.5));
+        .logo-tela {
+            width: clamp(110px, 12vw, 150px);
+            margin-bottom: clamp(5px, 1vh, 15px);
+            filter: drop-shadow(0 0 25px rgba(229,9,20,0.4));
         }
 
-        .badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #e50914, #b20710);
-            font-size: clamp(10px, 1vh, 12px);
-            font-weight: 800;
-            padding: clamp(6px, 0.8vh, 10px) clamp(16px, 2vw, 26px);
-            border-radius: 25px;
-            margin-bottom: clamp(15px, 2vh, 25px);
-            letter-spacing: 4px;
-            box-shadow: 0 0 40px rgba(229,9,20,0.6);
-        }
-        .badge-amarelo { 
-            background: linear-gradient(135deg, #ffab00, #ff8f00); 
-            color: #000; 
-            box-shadow: 0 0 40px rgba(255,171,0,0.6);
-        }
-        .badge-verde { 
-            background: linear-gradient(135deg, #00c853, #00a844);
-            box-shadow: 0 0 40px rgba(0,200,83,0.6);
-        }
-
+        /* ================= TIPOGRAFIA ================= */
         h1 {
-            color: #fff;
-            font-size: clamp(24px, 3.5vh, 42px);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-bottom: clamp(8px, 1.2vh, 15px);
-            background: linear-gradient(180deg, #fff 0%, #e50914 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 4px 20px rgba(229,9,20,0.4));
-            line-height: 1.1;
-        }
-        h2 {
-            color: #fff;
-            font-size: clamp(20px, 2.8vh, 34px);
+            font-size: clamp(24px, 3.5vh, 38px);
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 3px;
-            margin-bottom: clamp(10px, 1.5vh, 18px);
+            line-height: 1.15;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        h2 {
+            font-size: clamp(20px, 2.8vh, 30px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             line-height: 1.2;
+            color: #fff;
+            margin-bottom: 8px;
         }
         p {
-            color: #ccc;
-            font-size: clamp(13px, 1.7vh, 17px);
+            font-size: clamp(13px, 1.7vh, 16px);
             line-height: 1.5;
-            margin-bottom: clamp(8px, 1vh, 14px);
+            color: #aaa;
             font-weight: 500;
         }
 
-        /* ================= TRIAL ================= */
-        .trial-container {
-            position: relative;
-            margin: clamp(15px, 2.5vh, 30px) 0;
-            padding: clamp(25px, 3.5vh, 45px) clamp(20px, 3vw, 40px);
-            background: linear-gradient(135deg, rgba(229,9,20,0.2) 0%, rgba(255,171,0,0.08) 100%);
-            border: 3px solid rgba(229,9,20,0.5);
-            border-radius: 26px;
-            overflow: hidden;
-            box-shadow: 
-                inset 0 0 80px rgba(229,9,20,0.15),
-                0 0 60px rgba(229,9,20,0.2);
-        }
-        .trial-container::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: conic-gradient(from 0deg, transparent, rgba(229,9,20,0.25), transparent 30%);
-            animation: rotate 10s linear infinite;
-        }
-        @keyframes rotate { to { transform: rotate(360deg); } }
-        .trial-inner { position: relative; z-index: 1; }
-        
-        .trial-icone {
-            font-size: clamp(50px, 7vh, 80px);
-            margin-bottom: clamp(8px, 1vh, 15px);
-            animation: pulseIcone 1.8s infinite alternate;
-            filter: drop-shadow(0 0 30px rgba(255,171,0,0.6));
+        .emoji-grande {
+            font-size: clamp(60px, 9vh, 90px);
             line-height: 1;
+            margin-bottom: 8px;
+            animation: emojiPulse 2s ease-in-out infinite;
         }
-        @keyframes pulseIcone { 
-            from { transform: scale(1); } 
-            to { transform: scale(1.12); } 
-        }
-        
-        .trial-label {
-            color: #ffc107;
-            font-size: clamp(10px, 1.3vh, 14px);
-            font-weight: 800;
-            letter-spacing: 6px;
-            margin-bottom: clamp(8px, 1.2vh, 18px);
-            text-transform: uppercase;
-        }
-        
-        .trial-dias {
-            display: flex;
-            justify-content: center;
-            align-items: baseline;
-            gap: clamp(12px, 1.5vw, 22px);
-            margin: clamp(8px, 1vh, 15px) 0 clamp(15px, 2vh, 28px);
-        }
-        
-        .trial-numero {
-            font-size: clamp(70px, 13vh, 130px);
-            font-weight: 900;
-            line-height: 1;
-            background: linear-gradient(180deg, #fff 0%, #e50914 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 50px rgba(229,9,20,0.9));
-            animation: numeroPulse 2s ease-in-out infinite;
-        }
-        @keyframes numeroPulse {
+        @keyframes emojiPulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.04); }
+            50% { transform: scale(1.08); }
         }
-        
-        .trial-texto {
-            font-size: clamp(18px, 2.5vh, 28px);
-            font-weight: 900;
-            color: #e50914;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            line-height: 1.1;
-        }
-        .trial-texto small {
-            display: block;
-            font-size: clamp(10px, 1.2vh, 13px);
-            color: #888;
-            font-weight: 700;
-            letter-spacing: 5px;
-            margin-top: 6px;
-        }
-        
-        .trial-beneficios {
-            margin-top: clamp(15px, 2vh, 25px);
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: clamp(8px, 1vh, 14px);
-        }
-        .trial-beneficio {
-            background: rgba(0,0,0,0.6);
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 14px;
-            padding: clamp(8px, 1.2vh, 14px) clamp(10px, 1.5vw, 18px);
-            font-size: clamp(12px, 1.5vh, 15px);
-            color: #ddd;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            justify-content: center;
-        }
-        .trial-beneficio span:first-child { font-size: clamp(16px, 2vh, 22px); }
 
-        .trial-destaque {
-            background: rgba(0,0,0,0.6);
-            border-left: 6px solid #ffc107;
-            border-radius: 14px;
-            padding: clamp(12px, 1.6vh, 20px) clamp(15px, 2vw, 26px);
-            text-align: left;
-            font-size: clamp(12px, 1.5vh, 16px);
-            color: #fff;
+        .subtitulo {
+            color: #888;
+            font-size: clamp(12px, 1.5vh, 14px);
+            text-transform: uppercase;
+            letter-spacing: 4px;
             font-weight: 700;
-            margin-top: clamp(15px, 2vh, 25px);
-            line-height: 1.5;
+            margin-top: 5px;
         }
-        .trial-destaque strong { color: #ffc107; }
+
+        /* ================= BARRA DE PROGRESSO MODERNA ================= */
+        .barra-moderna {
+            width: 100%;
+            max-width: 340px;
+            height: 3px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+            margin-top: 10px;
+        }
+        .barra-moderna-inner {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #e50914, #ff4d4d, #e50914);
+            background-size: 200% 100%;
+            border-radius: 3px;
+            transition: width 0.15s linear;
+            animation: barraShimmer 2s linear infinite;
+            box-shadow: 0 0 15px rgba(229,9,20,0.8);
+        }
+        @keyframes barraShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* ================= INPUTS ================= */
+        .field {
+            width: 100%;
+            text-align: left;
+        }
+        .field label {
+            display: block;
+            color: #666;
+            font-size: clamp(10px, 1.3vh, 12px);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            margin-bottom: 10px;
+        }
+        input {
+            width: 100%;
+            padding: clamp(16px, 2.2vh, 20px) clamp(18px, 2vw, 24px);
+            background: rgba(255,255,255,0.04);
+            border: 2px solid transparent;
+            border-radius: 14px;
+            color: #fff;
+            font-size: clamp(15px, 1.9vh, 18px);
+            font-weight: 700;
+            text-align: center;
+            transition: all 0.25s ease;
+            outline: none;
+            letter-spacing: 0.5px;
+        }
+        input:focus {
+            border-color: #e50914;
+            background: rgba(229,9,20,0.08);
+            box-shadow: 0 0 0 4px rgba(229,9,20,0.2), 0 0 40px rgba(229,9,20,0.4);
+            transform: scale(1.02);
+        }
+        input::placeholder {
+            color: #444;
+            font-size: clamp(11px, 1.4vh, 14px);
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .msg-erro {
+            color: #ff4d4d;
+            font-size: clamp(12px, 1.5vh, 14px);
+            font-weight: 800;
+            min-height: 20px;
+            display: block;
+            text-align: center;
+        }
 
         /* ================= BOTÕES ================= */
         button {
@@ -320,364 +254,191 @@
             font-family: inherit;
             background: none;
         }
-        
         .btn {
             width: 100%;
-            padding: clamp(14px, 2vh, 22px) clamp(20px, 2vw, 32px);
-            border-radius: 16px;
-            font-size: clamp(14px, 1.9vh, 19px);
+            padding: clamp(16px, 2.2vh, 20px) clamp(20px, 2vw, 28px);
+            border-radius: 14px;
+            font-size: clamp(14px, 1.8vh, 17px);
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 2px;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-bottom: clamp(8px, 1.2vh, 15px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
             outline: none;
             border: 3px solid transparent;
         }
-        
         .btn-primario {
             background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
             color: #fff;
-            box-shadow: 0 8px 35px rgba(229,9,20,0.5);
+            box-shadow: 0 8px 30px rgba(229,9,20,0.4);
         }
-        
-        .btn-whats {
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: #fff;
-            box-shadow: 0 8px 35px rgba(37,211,102,0.4);
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-        }
-        
         .btn-cinza {
             background: rgba(255,255,255,0.05);
             color: #ccc;
-            border: 3px solid #333;
+            border: 2px solid #333;
+        }
+        .btn-whats {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(37,211,102,0.3);
         }
 
-        .btn:focus,
-        .btn.foco {
+        /* FOCO TV */
+        .btn:focus, .btn.foco,
+        .plano-card:focus, .plano-card.foco,
+        input:focus {
             transform: scale(1.03);
             border-color: #fff !important;
             box-shadow: 
                 0 0 0 4px rgba(255,255,255,0.95),
-                0 0 60px rgba(255,255,255,0.6),
-                0 15px 45px rgba(0,0,0,0.9) !important;
+                0 0 50px rgba(255,255,255,0.5),
+                0 15px 40px rgba(0,0,0,0.8) !important;
             outline: none;
             z-index: 10;
         }
 
-        /* ================= INPUTS ================= */
-        .field {
-            margin-bottom: clamp(12px, 1.6vh, 20px);
-            text-align: left;
-        }
-        .field label {
-            display: block;
-            color: #999;
-            font-size: clamp(10px, 1.3vh, 13px);
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2.5px;
-            margin-bottom: clamp(6px, 0.8vh, 10px);
-        }
-        
-        input {
-            width: 100%;
-            padding: clamp(15px, 2.2vh, 22px) clamp(18px, 2vw, 26px);
-            background: rgba(0,0,0,0.7);
-            border: 3px solid #333;
-            border-radius: 14px;
-            color: #fff;
-            font-size: clamp(16px, 2.1vh, 21px);
-            font-weight: 700;
-            text-align: center;
-            transition: all 0.2s ease;
-            outline: none;
-            letter-spacing: 1px;
-        }
-        input:focus,
-        input.foco {
-            border-color: #e50914 !important;
-            box-shadow: 0 0 0 4px rgba(229,9,20,0.4), 0 0 45px rgba(229,9,20,0.6);
-            background: rgba(0,0,0,0.9);
-            transform: scale(1.02);
-        }
-        input::placeholder {
-            color: #555;
-            text-transform: uppercase;
-            font-size: clamp(11px, 1.4vh, 15px);
-            font-weight: 700;
-            letter-spacing: 3px;
-        }
-
-        .msg-erro {
-            color: #ff4d4d;
-            font-size: clamp(12px, 1.5vh, 15px);
-            margin-top: 12px;
-            font-weight: 800;
-            min-height: 20px;
-            display: block;
-        }
-
         /* ================= PLANOS ================= */
+        .lista-planos {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
         .plano-card {
-            position: relative;
-            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-            border: 3px solid #2a2a2a;
-            border-radius: 20px;
-            padding: clamp(16px, 2.2vh, 28px) clamp(20px, 2.5vw, 32px);
-            margin-bottom: clamp(10px, 1.4vh, 16px);
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            outline: none;
-        }
-        .plano-card::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 0; bottom: 0;
-            width: 8px;
-            background: linear-gradient(180deg, #e50914, #b20710);
-            border-radius: 20px 0 0 20px;
-            transform: scaleY(0);
-            transition: transform 0.25s;
-        }
-        .plano-card:focus,
-        .plano-card.foco {
-            transform: scale(1.03);
-            border-color: #fff !important;
-            background: linear-gradient(135deg, #262626 0%, #1a1a1a 100%) !important;
-            box-shadow: 
-                0 0 0 4px rgba(255,255,255,0.95),
-                0 0 60px rgba(255,255,255,0.6),
-                0 15px 45px rgba(0,0,0,0.9) !important;
-        }
-        .plano-card:focus::before,
-        .plano-card.foco::before { transform: scaleY(1); }
-        
-        .plano-card.destaque {
-            border-color: #ffab00;
-            background: linear-gradient(135deg, rgba(255,171,0,0.15) 0%, #0f0f0f 100%);
-        }
-        .plano-card.destaque::before { 
-            background: linear-gradient(180deg, #ffab00, #ff8f00);
-        }
-
-        .plano-top {
+            background: rgba(255,255,255,0.03);
+            border: 2px solid transparent;
+            border-radius: 16px;
+            padding: clamp(16px, 2vh, 22px) clamp(20px, 2.2vw, 28px);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: clamp(5px, 0.7vh, 10px);
-            gap: 12px;
-            flex-wrap: wrap;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            outline: none;
+            text-align: left;
+        }
+        .plano-card.destaque {
+            background: rgba(255,171,0,0.08);
+            border-color: rgba(255,171,0,0.4);
+        }
+        .plano-info {
+            flex: 1;
+            min-width: 0;
         }
         .plano-nome {
-            color: #fff;
-            font-size: clamp(15px, 2.1vh, 23px);
+            font-size: clamp(15px, 1.9vh, 18px);
             font-weight: 900;
+            color: #fff;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .plano-tag {
+            background: #e50914;
+            color: #fff;
+            font-size: clamp(9px, 1.1vh, 11px);
+            font-weight: 900;
+            padding: 4px 10px;
+            border-radius: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .plano-tag.best { background: #ffab00; color: #000; }
+        .plano-tag.premium { background: #8e24aa; }
+        .plano-desc {
+            color: #777;
+            font-size: clamp(11px, 1.3vh, 13px);
+            font-weight: 600;
+            margin-top: 4px;
         }
         .plano-preco {
-            color: #00c853;
-            font-size: clamp(19px, 2.8vh, 32px);
+            font-size: clamp(19px, 2.6vh, 24px);
             font-weight: 900;
+            color: #00c853;
             white-space: nowrap;
         }
         .plano-card.destaque .plano-preco { color: #ffc107; }
-        .plano-desc {
-            color: #999;
-            font-size: clamp(11px, 1.4vh, 14px);
-            font-weight: 600;
+
+        /* ================= QR CODE ================= */
+        .qr-wrap {
+            background: #fff;
+            border-radius: 20px;
+            padding: clamp(14px, 2vh, 20px);
+            max-width: clamp(200px, 28vh, 260px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 80px rgba(229,9,20,0.2);
         }
-        .plano-tag {
-            display: inline-block;
-            background: linear-gradient(135deg, #ffab00, #ff8f00);
-            color: #000;
-            font-size: clamp(9px, 1vh, 11px);
-            font-weight: 900;
-            padding: 4px 12px;
+        .qr-wrap img {
+            width: 100%;
+            display: block;
             border-radius: 10px;
-            margin-left: 10px;
-            letter-spacing: 2px;
-            vertical-align: middle;
         }
-        .plano-tag.verde { 
-            background: linear-gradient(135deg, #00c853, #00a844);
-            color: #fff;
+        .qr-valor {
+            font-size: clamp(26px, 3.6vh, 34px);
+            font-weight: 900;
+            color: #00c853;
+            letter-spacing: 1px;
         }
-        .plano-tag.roxo { 
-            background: linear-gradient(135deg, #8e24aa, #6a1b9a);
-            color: #fff;
+        .pix-codigo {
+            width: 100%;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid #1f1f1f;
+            border-radius: 12px;
+            padding: 14px;
+            font-family: monospace;
+            font-size: clamp(10px, 1.2vh, 12px);
+            color: #666;
+            text-align: left;
+            word-break: break-all;
+            max-height: 70px;
+            overflow-y: auto;
+            line-height: 1.5;
+        }
+        .aguardando {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #888;
+            font-size: clamp(12px, 1.4vh, 14px);
+            font-weight: 700;
+        }
+        .dot-loader {
+            display: flex;
+            gap: 6px;
+        }
+        .dot-loader span {
+            width: 8px;
+            height: 8px;
+            background: #e50914;
+            border-radius: 50%;
+            animation: dotBounce 1.4s ease-in-out infinite;
+        }
+        .dot-loader span:nth-child(2) { animation-delay: 0.2s; }
+        .dot-loader span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes dotBounce {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
         }
 
         /* ================= DIVISOR ================= */
-        .divisor-login {
-            border-top: 2px solid #2a2a2a;
-            margin: clamp(20px, 2.5vh, 32px) 0 0;
-            padding-top: clamp(15px, 2vh, 25px);
-        }
-        .divisor-login p {
-            color: #999;
-            font-size: clamp(13px, 1.6vh, 16px);
-            margin-bottom: clamp(10px, 1.3vh, 16px);
-            font-weight: 700;
-        }
-
-        /* ================= QR CODE ================= */
-        .qr-img {
-            background: #fff;
-            border-radius: 22px;
-            padding: clamp(14px, 2vh, 22px);
-            margin: clamp(15px, 2vh, 28px) auto;
-            max-width: clamp(200px, 30vh, 320px);
-            box-shadow: 0 18px 55px rgba(0,0,0,0.7), 0 0 70px rgba(229,9,20,0.3);
-        }
-        .qr-img img {
+        .divisor {
             width: 100%;
-            display: block;
-            border-radius: 12px;
+            height: 1px;
+            background: #1a1a1a;
+            margin: 8px 0;
         }
-        .pix-code {
-            background: #000;
-            border: 2px solid #2a2a2a;
-            border-radius: 14px;
-            padding: clamp(12px, 1.6vh, 18px);
-            font-family: monospace;
-            font-size: clamp(10px, 1.2vh, 13px);
-            word-break: break-all;
-            color: #999;
-            text-align: left;
-            margin-bottom: clamp(12px, 1.6vh, 20px);
-            max-height: clamp(60px, 10vh, 100px);
-            overflow-y: auto;
-        }
-        .polling-status {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            color: #ffab00;
-            font-size: clamp(12px, 1.6vh, 16px);
-            margin-bottom: clamp(12px, 1.6vh, 20px);
-            font-weight: 800;
-            padding: clamp(12px, 1.6vh, 18px);
-            background: rgba(255,171,0,0.1);
-            border: 2px solid rgba(255,171,0,0.35);
-            border-radius: 14px;
-            flex-wrap: wrap;
-        }
-        .mini-loader {
-            border: 4px solid rgba(255,171,0,0.2);
-            border-top-color: #ffab00;
-            border-radius: 50%;
-            width: clamp(20px, 2.8vh, 28px);
-            height: clamp(20px, 2.8vh, 28px);
-            animation: spin 0.8s linear infinite;
-        }
-        .btn-retry-polling {
-            background: #ffab00;
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 800;
-            cursor: pointer;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-family: inherit;
-        }
-        .btn-retry-polling:focus {
-            outline: 3px solid #fff;
-            box-shadow: 0 0 20px rgba(255,255,255,0.6);
-        }
-
-        /* ================= BOAS-VINDAS ================= */
-        .bv-emoji {
-            font-size: clamp(70px, 12vh, 120px);
-            margin-bottom: clamp(15px, 2vh, 25px);
-            animation: pulseIcone 1.8s infinite alternate;
-            filter: drop-shadow(0 0 50px rgba(229,9,20,0.6));
-            line-height: 1;
-        }
-        .bv-usuario {
-            color: #fff;
-            font-size: clamp(22px, 3.5vh, 42px);
-            font-weight: 900;
-            margin-bottom: clamp(20px, 2.5vh, 30px);
-            padding: clamp(12px, 1.8vh, 22px) clamp(25px, 3.5vw, 45px);
-            background: rgba(229,9,20,0.15);
-            border: 3px solid rgba(229,9,20,0.6);
-            border-radius: 60px;
-            display: inline-block;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-        .bv-mensagem {
-            color: #fff;
-            font-size: clamp(16px, 2.3vh, 28px);
-            font-weight: 800;
-            margin-bottom: clamp(20px, 2.5vh, 30px);
-            line-height: 1.4;
-        }
-        .bv-mensagem span {
-            color: #e50914;
-            font-weight: 900;
-        }
-        .bv-status {
-            display: inline-block;
-            padding: clamp(12px, 1.8vh, 18px) clamp(25px, 3vw, 38px);
-            background: rgba(0,200,83,0.15);
-            border: 3px solid rgba(0,200,83,0.6);
-            border-radius: 60px;
-            margin-bottom: clamp(20px, 2.5vh, 30px);
-        }
-        .bv-status-txt {
-            color: #00c853;
-            font-size: clamp(13px, 1.7vh, 18px);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-        }
-
-        .barra {
-            width: clamp(180px, 30vw, 340px);
-            height: 8px;
-            background: rgba(229,9,20,0.2);
-            border-radius: 8px;
-            margin: clamp(20px, 2.5vh, 30px) auto clamp(12px, 1.5vh, 20px);
-            overflow: hidden;
-        }
-        .barra-inner {
-            height: 100%;
-            background: linear-gradient(90deg, #e50914, #ff4d4d);
-            border-radius: 8px;
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-        .bv-msg {
+        .link-secundario {
+            text-align: center;
             color: #666;
-            font-size: clamp(10px, 1.3vh, 13px);
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-weight: 800;
-        }
-
-        /* ================= BLOQUEIO / ERRO ================= */
-        .aviso-bloqueio {
-            color: #ff4d4d;
-            font-weight: 800;
-            font-size: clamp(13px, 1.8vh, 18px);
-            margin: clamp(15px, 2vh, 26px) 0;
-            padding: clamp(15px, 2vh, 22px) clamp(20px, 2.5vw, 30px);
-            background: rgba(229,9,20,0.12);
-            border: 3px solid rgba(229,9,20,0.5);
-            border-radius: 16px;
-            line-height: 1.5;
+            font-size: clamp(12px, 1.4vh, 14px);
+            font-weight: 700;
+            margin-bottom: 10px;
         }
 
         body { cursor: none; }
@@ -689,169 +450,155 @@
 <!-- ================= SPLASH ================= -->
 <div id="splash">
     <img src="download.png" alt="RedPlay" class="splash-logo" onerror="this.style.display='none'">
-    <div class="loader"></div>
-    <div class="splash-txt">Carregando RedPlay</div>
+    <div class="splash-texto">Iniciando aplicação</div>
 </div>
 
-<!-- ================= TELA: TRIAL ================= -->
+<!-- ================= TELA: BOAS-VINDAS TRIAL ================= -->
 <div class="card" id="tela-trial">
-    <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
-    <div class="badge badge-amarelo">🎁 Teste Grátis Liberado</div>
-    <h1>Bem-vindo à RedPlay</h1>
-    <p>Aproveite todos os recursos da nossa plataforma</p>
-
-    <div class="trial-container">
-        <div class="trial-inner">
-            <div class="trial-icone">⭐</div>
-            <div class="trial-label">Você tem direito a</div>
-            <div class="trial-dias">
-                <div class="trial-numero" id="dias-restantes">3</div>
-                <div class="trial-texto">Dias Grátis<small>Acesso Completo</small></div>
-            </div>
-            <div class="trial-beneficios">
-                <div class="trial-beneficio"><span>🎬</span><span>Filmes 4K</span></div>
-                <div class="trial-beneficio"><span>📺</span><span>Séries HD</span></div>
-                <div class="trial-beneficio"><span>⚽</span><span>Esportes</span></div>
-                <div class="trial-beneficio"><span>📡</span><span>Canais Ao Vivo</span></div>
-            </div>
-            <div class="trial-destaque">
-                <strong>Aproveite!</strong> Após 3 dias, escolha um dos nossos planos para continuar assistindo sem interrupções.
-            </div>
+    <div class="conteudo">
+        <div class="emoji-grande">🎬</div>
+        <h1>Bem-vindo à RedPlay</h1>
+        <p class="subtitulo">Preparando seu entretenimento</p>
+        
+        <div class="barra-moderna">
+            <div class="barra-moderna-inner" id="barra-trial"></div>
         </div>
     </div>
-
-    <div class="barra">
-        <div class="barra-inner" id="barra-trial"></div>
-    </div>
-    <p class="bv-msg">Preparando seu entretenimento...</p>
 </div>
 
 <!-- ================= TELA: PLANOS ================= -->
 <div class="card" id="tela-planos">
-    <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
-    <div class="badge">Assinatura</div>
-    <h2>Escolha seu plano</h2>
-    <p>Assine agora e continue assistindo todo o conteúdo</p>
+    <div class="conteudo">
+        <img src="download.png" alt="RedPlay" class="logo-tela" onerror="this.style.display='none'">
+        <h2>Escolha seu plano</h2>
+        <p style="margin-bottom: 10px;">Assine agora e continue assistindo</p>
 
-    <div style="margin-top: 25px; text-align: left;">
-        <div class="plano-card destaque" tabindex="0" id="plano2-mensal1" onclick="escolherPlano('mensal_primeiro')">
-            <div class="plano-top">
-                <div class="plano-nome">Mensal <span class="plano-tag">1ª Vez</span></div>
+        <div class="lista-planos">
+            <div class="plano-card destaque" tabindex="0" onclick="escolherPlano('mensal_primeiro')">
+                <div class="plano-info">
+                    <div class="plano-nome">Mensal <span class="plano-tag">1ª Vez</span></div>
+                    <div class="plano-desc">Primeiro mês com desconto</div>
+                </div>
                 <div class="plano-preco">R$ 12,90</div>
             </div>
-            <div class="plano-desc">Primeiro mês com super desconto exclusivo</div>
-        </div>
 
-        <div class="plano-card" tabindex="0" id="plano2-mensal" onclick="escolherPlano('mensal')">
-            <div class="plano-top">
-                <div class="plano-nome">Mensal</div>
+            <div class="plano-card" tabindex="0" onclick="escolherPlano('mensal')">
+                <div class="plano-info">
+                    <div class="plano-nome">Mensal</div>
+                    <div class="plano-desc">Renovação mensal</div>
+                </div>
                 <div class="plano-preco">R$ 18,90</div>
             </div>
-            <div class="plano-desc">Renovação automática mensal, cancele quando quiser</div>
-        </div>
 
-        <div class="plano-card" tabindex="0" id="plano2-anual" onclick="escolherPlano('anual')">
-            <div class="plano-top">
-                <div class="plano-nome">Anual <span class="plano-tag verde">Melhor Valor</span></div>
+            <div class="plano-card" tabindex="0" onclick="escolherPlano('anual')">
+                <div class="plano-info">
+                    <div class="plano-nome">Anual <span class="plano-tag best">Melhor</span></div>
+                    <div class="plano-desc">Economize R$ 76/ano</div>
+                </div>
                 <div class="plano-preco">R$ 149,90</div>
             </div>
-            <div class="plano-desc">Economize R$ 76 por ano (R$ 12,49/mês)</div>
-        </div>
 
-        <div class="plano-card" tabindex="0" id="plano2-lifetime" onclick="escolherPlano('lifetime')">
-            <div class="plano-top">
-                <div class="plano-nome">Vitalício <span class="plano-tag roxo">Premium</span></div>
+            <div class="plano-card" tabindex="0" onclick="escolherPlano('lifetime')">
+                <div class="plano-info">
+                    <div class="plano-nome">Vitalício <span class="plano-tag premium">Premium</span></div>
+                    <div class="plano-desc">Pague uma vez, para sempre</div>
+                </div>
                 <div class="plano-preco">R$ 450,00</div>
             </div>
-            <div class="plano-desc">Pague uma única vez e tenha acesso para sempre</div>
         </div>
-    </div>
 
-    <div class="divisor-login">
-        <p>Já possui uma conta ativa?</p>
+        <div class="divisor"></div>
+        <p class="link-secundario">Já tem uma conta ativa?</p>
         <button class="btn btn-cinza" onclick="mostrarLoginCliente()" tabindex="0">Fazer Login</button>
     </div>
 </div>
 
 <!-- ================= TELA: LOGIN CLIENTE ================= -->
 <div class="card" id="tela-login-cliente">
-    <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
-    <div class="badge">Acesso</div>
-    <h2>Entrar na conta</h2>
-    <p>Digite seu usuário e senha cadastrados</p>
+    <div class="conteudo">
+        <img src="download.png" alt="RedPlay" class="logo-tela" onerror="this.style.display='none'">
+        <h2>Entrar na conta</h2>
+        <p>Digite seu usuário e senha</p>
 
-    <div class="field" style="margin-top: 25px;">
-        <label>Utilizador</label>
-        <input type="text" id="login-cliente-usuario" placeholder="Digite seu usuário" maxlength="20" autocomplete="off">
-    </div>
+        <div class="field">
+            <label>Utilizador</label>
+            <input type="text" id="login-cliente-usuario" placeholder="seu usuario" maxlength="20" autocomplete="off">
+        </div>
 
-    <div class="field">
-        <label>Senha</label>
-        <input type="password" id="login-cliente-senha" placeholder="Digite sua senha" maxlength="30" autocomplete="off" onkeypress="if(event.key==='Enter')fazerLoginCliente()">
-    </div>
+        <div class="field">
+            <label>Senha</label>
+            <input type="password" id="login-cliente-senha" placeholder="sua senha" maxlength="30" autocomplete="off" onkeypress="if(event.key==='Enter')fazerLoginCliente()">
+        </div>
 
-    <button class="btn btn-primario" onclick="fazerLoginCliente()" tabindex="0">Entrar na Conta</button>
-    <span class="msg-erro" id="erro-login-cliente"></span>
+        <button class="btn btn-primario" onclick="fazerLoginCliente()" tabindex="0">Entrar</button>
+        <span class="msg-erro" id="erro-login-cliente"></span>
 
-    <div class="divisor-login">
-        <button class="btn btn-cinza" onclick="mostrarPlanos()" tabindex="0">Voltar aos Planos</button>
+        <div class="divisor"></div>
+        <button class="btn btn-cinza" onclick="mostrarPlanos()" tabindex="0">Voltar aos planos</button>
     </div>
 </div>
 
 <!-- ================= TELA: QR CODE ================= -->
 <div class="card" id="tela-qrcode">
-    <div class="badge badge-amarelo">Pagamento PIX</div>
-    <h2 id="qr-titulo">PIX Instantâneo</h2>
-    <p>Escaneie o QR Code abaixo com o app do seu banco</p>
+    <div class="conteudo">
+        <h2>Pagamento PIX</h2>
+        <p>Escaneie o QR Code com o app do seu banco</p>
 
-    <div class="plano-preco" id="qr-valor" style="margin: 15px 0; font-size: clamp(24px, 4vh, 38px); color: #00c853;">R$ 0,00</div>
+        <div class="qr-valor" id="qr-valor">R$ 0,00</div>
 
-    <div class="qr-img">
-        <img id="qr-image" src="" alt="QR Code PIX">
+        <div class="qr-wrap">
+            <img id="qr-image" src="" alt="QR Code PIX">
+        </div>
+
+        <div class="pix-codigo" id="qr-code-txt">Gerando código PIX...</div>
+
+        <button class="btn btn-cinza" onclick="copiarPix()" id="btn-copiar" tabindex="0">📋 Copiar código PIX</button>
+
+        <div class="aguardando" id="polling-status">
+            <div class="dot-loader">
+                <span></span><span></span><span></span>
+            </div>
+            <span>Aguardando pagamento</span>
+        </div>
+
+        <div class="divisor"></div>
+        <button class="btn btn-cinza" onclick="voltarInicio()" tabindex="0">Voltar</button>
     </div>
-
-    <div class="pix-code" id="qr-code-txt">Gerando código PIX...</div>
-
-    <button class="btn btn-primario" onclick="copiarPix()" id="btn-copiar" tabindex="0">📋 Copiar Código PIX</button>
-
-    <div class="polling-status" id="polling-status">
-        <div class="mini-loader"></div>
-        <span>Aguardando confirmação do pagamento...</span>
-    </div>
-
-    <button class="btn btn-cinza" onclick="voltarInicio()" tabindex="0">Voltar</button>
 </div>
 
 <!-- ================= TELA: BOAS-VINDAS ================= -->
 <div class="card" id="tela-boas-vindas">
-    <div class="bv-emoji">🎬</div>
-    <div class="badge badge-verde">Tudo Pronto</div>
-    <h1>Bem-vindo de volta!</h1>
-    <div class="bv-usuario" id="bv-usuario">CLIENTE</div>
-    <div class="bv-mensagem">Aproveite todo o conteúdo exclusivo da <span>RedPlay TV</span></div>
-    
-    <div class="bv-status">
-        <span class="bv-status-txt">● Acesso Liberado</span>
-    </div>
+    <div class="conteudo">
+        <div class="emoji-grande">🎬</div>
+        <h1>Bem-vindo!</h1>
+        <p class="subtitulo" id="bv-usuario">cliente</p>
+        
+        <p style="font-size: clamp(14px, 1.8vh, 17px); color: #888; margin-top: 5px;">
+            Aproveite o conteúdo RedPlay
+        </p>
 
-    <div class="barra">
-        <div class="barra-inner" id="barra-bv"></div>
+        <div class="barra-moderna">
+            <div class="barra-moderna-inner" id="barra-bv"></div>
+        </div>
+        <p class="subtitulo" style="font-size: 11px; margin-top: 5px;">Carregando ambiente da TV</p>
     </div>
-    <p class="bv-msg">Carregando ambiente da TV...</p>
 </div>
 
 <!-- ================= TELA: ERRO DE CONEXÃO ================= -->
 <div class="card" id="tela-erro">
-    <div class="bv-emoji">⚠️</div>
-    <div class="badge" style="background:#e50914;">Conexão</div>
-    <h2>Erro de Conexão</h2>
-    <div class="aviso-bloqueio" id="msg-erro-conexao">Não foi possível conectar ao servidor. Verifique sua internet.</div>
-    <button class="btn btn-primario" onclick="iniciarApp()" tabindex="0">🔄 Tentar Novamente</button>
+    <div class="conteudo">
+        <div class="emoji-grande">⚠️</div>
+        <h2>Erro de Conexão</h2>
+        <p id="msg-erro-conexao" style="color: #ff4d4d; font-weight: 700;">
+            Não foi possível conectar ao servidor.
+        </p>
+        <button class="btn btn-primario" onclick="iniciarApp()" tabindex="0">Tentar novamente</button>
+    </div>
 </div>
 
 <script>
 // ==========================================
-// CONFIGURAÇÃO
+// CONFIGURAÇÃO SUPABASE
 // ==========================================
 var SUPABASE_URL = "https://bknbydcaaalyeyncfyze.supabase.co";
 var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNmeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
@@ -861,11 +608,11 @@ var FUNC_CRIAR_COBRANCA = SUPABASE_URL + "/functions/v1/super-service";
 var FUNC_CRIAR_CONTA = SUPABASE_URL + "/functions/v1/criar-conta-cliente";
 
 var DEVICE_KEY = "redplay_device_id";
+var CRED_KEY = "redplay_credenciais_salvas";
 var pollingTimer = null;
 var pollingTentativas = 0;
 var MAX_POLLING = 60;
 var ultimoStatus = null;
-var telaAnterior = null;
 
 // ==========================================
 // ANDROID ID
@@ -891,7 +638,7 @@ function obterDeviceId() {
 }
 
 // ==========================================
-// CHAMADA HTTP
+// HTTP
 // ==========================================
 function chamarFuncao(url, corpo, callback) {
     var xhr = new XMLHttpRequest();
@@ -924,9 +671,9 @@ function mostrarTela(id) {
     if (el) {
         el.classList.add('ativo');
         setTimeout(function() {
-            var focusable = el.querySelectorAll('input, button, .plano-card');
+            var focusable = el.querySelectorAll('input, button, .plano-card, a.btn');
             if (focusable.length > 0) focusable[0].focus();
-        }, 150);
+        }, 200);
     }
 }
 
@@ -935,7 +682,9 @@ function mostrarTela(id) {
 // ==========================================
 window.addEventListener('load', function() {
     try {
-        if (window.location.search.indexOf('reset=1') >= 0) localStorage.clear();
+        if (window.location.search.indexOf('reset=1') >= 0) {
+            localStorage.clear();
+        }
     } catch(e) {}
 
     setTimeout(function() {
@@ -944,8 +693,8 @@ window.addEventListener('load', function() {
         setTimeout(function() {
             splash.style.display = 'none';
             iniciarApp();
-        }, 500);
-    }, 1200);
+        }, 600);
+    }, 2400);
 });
 
 function iniciarApp() {
@@ -953,7 +702,8 @@ function iniciarApp() {
 
     chamarFuncao(FUNC_VERIFICAR, { android_id: device_id }, function(erro, dados) {
         if (erro) {
-            document.getElementById('msg-erro-conexao').innerText = "Erro ao conectar: " + erro;
+            var elErro = document.getElementById('msg-erro-conexao');
+            if (elErro) elErro.innerText = "Erro ao conectar: " + erro;
             mostrarTela('tela-erro');
             return;
         }
@@ -966,33 +716,28 @@ function iniciarApp() {
         }
 
         if (dados.status === 'ativo' || dados.status === 'pago') {
-            document.getElementById('bv-usuario').innerText = dados.usuario || 'CLIENTE';
+            var elUser = document.getElementById('bv-usuario');
+            if (elUser) elUser.innerText = dados.usuario || 'CLIENTE';
             mostrarTela('tela-boas-vindas');
-            animarBarra('barra-bv', 3000);
-            setTimeout(liberarAcessoApp, 3500);
+            animarBarra('barra-bv', 3200);
+            setTimeout(liberarAcessoApp, 3600);
             return;
         }
 
         if (dados.status === 'trial' || dados.status === 'teste_gratis') {
-            var dias = dados.dias_restantes !== undefined ? dados.dias_restantes : 3;
-            document.getElementById('dias-restantes').innerText = dias;
             mostrarTela('tela-trial');
-            animarBarra('barra-trial', 4000);
-            setTimeout(liberarAcessoApp, 4500);
+            animarBarra('barra-trial', 3600);
+            setTimeout(liberarAcessoApp, 4000);
             return;
         }
 
-        if (dados.status === 'expirado') {
-            mostrarTela('tela-planos');
-            return;
-        }
-
+        // Expirou / sem trial → planos
         mostrarTela('tela-planos');
     });
 }
 
 // ==========================================
-// BARRA ANIMADA
+// BARRA ANIMADA MODERNA
 // ==========================================
 function animarBarra(idBarra, duracao) {
     var barra = document.getElementById(idBarra);
@@ -1005,7 +750,7 @@ function animarBarra(idBarra, duracao) {
         var progresso = Math.min((decorrido / duracao) * 100, 100);
         barra.style.width = progresso + '%';
         if (progresso >= 100) clearInterval(timer);
-    }, 50);
+    }, 40);
 }
 
 // ==========================================
@@ -1013,43 +758,40 @@ function animarBarra(idBarra, duracao) {
 // ==========================================
 function liberarAcessoApp() {
     try {
-        if (typeof AndroidApp !== 'undefined' && AndroidApp && typeof AndroidApp.fecharSplashOuLiberar === 'function') {
-            AndroidApp.fecharSplashOuLiberar();
-            return;
-        }
-        if (typeof AndroidApp !== 'undefined' && AndroidApp && typeof AndroidApp.liberarAcesso === 'function') {
-            AndroidApp.liberarAcesso();
-            return;
+        if (typeof AndroidApp !== 'undefined' && AndroidApp) {
+            if (typeof AndroidApp.fecharSplashOuLiberar === 'function') {
+                AndroidApp.fecharSplashOuLiberar();
+                return;
+            }
+            if (typeof AndroidApp.liberarAcesso === 'function') {
+                AndroidApp.liberarAcesso();
+                return;
+            }
         }
     } catch(e) {}
     
-    document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#fff;font-family:Montserrat,sans-serif;font-size:26px;font-weight:900;letter-spacing:2px;text-align:center;padding:20px;">✅ ACESSO LIBERADO<br><br>Redirecionando para a RedPlay...</div>';
+    document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#fff;font-family:Montserrat,sans-serif;font-size:24px;font-weight:900;letter-spacing:2px;text-align:center;padding:20px;">✅ ACESSO LIBERADO</div>';
 }
 
 // ==========================================
-// BLOQUEIO TOTAL (com 3 opções)
+// BLOQUEIO TOTAL (com opções)
 // ==========================================
 function bloquearTotal(motivo) {
-    var htmlBloqueio = 
-        '<div class="card ativo" style="display:block; max-width: 700px;">' +
-            '<img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display=\'none\'">' +
-            '<div class="badge" style="background:#e50914;">⛔ Conta Bloqueada</div>' +
-            '<h2>Acesso Suspenso</h2>' +
-            
-            '<div class="aviso-bloqueio">' + motivo + '</div>' +
-            
-            '<p style="margin-bottom:30px;">Para voltar a assistir, escolha uma das opções abaixo:</p>' +
-            
-            '<button class="btn btn-primario" onclick="mostrarPlanos()" tabindex="0">💳 Renovar Assinatura</button>' +
-            
-            '<button class="btn btn-cinza" onclick="mostrarLoginCliente()" tabindex="0">🔐 Fazer Login com outra conta</button>' +
-            
-            '<a href="https://wa.me/55997340723?text=' + encodeURIComponent('Olá! Minha conta RedPlay está bloqueada. Motivo: ' + motivo) + '" ' +
-               'class="btn btn-whats" target="_blank" tabindex="0">📱 Falar no WhatsApp</a>' +
+    var html = 
+        '<div class="card ativo" style="display:flex;">' +
+            '<div class="conteudo">' +
+                '<div class="emoji-grande">⛔</div>' +
+                '<h2>Conta Bloqueada</h2>' +
+                '<p style="color: #ff4d4d; font-weight: 700; background: rgba(229,9,20,0.1); padding: 15px 20px; border-radius: 12px; margin-top: 10px;">' + motivo + '</p>' +
+                '<p style="margin-top: 10px;">Escolha uma das opções abaixo:</p>' +
+                
+                '<button class="btn btn-primario" onclick="mostrarPlanos()" tabindex="0">💳 Renovar Assinatura</button>' +
+                '<button class="btn btn-cinza" onclick="mostrarLoginCliente()" tabindex="0">🔐 Fazer Login</button>' +
+                '<a href="https://wa.me/55997340723?text=' + encodeURIComponent('Olá! Minha conta RedPlay está bloqueada. Motivo: ' + motivo) + '" class="btn btn-whats" target="_blank" tabindex="0">📱 Falar no WhatsApp</a>' +
+            '</div>' +
         '</div>';
     
-    document.body.innerHTML = htmlBloqueio;
-    
+    document.body.innerHTML = html;
     setTimeout(function() {
         var btn = document.querySelector('body .btn-primario');
         if (btn) btn.focus();
@@ -1057,7 +799,7 @@ function bloquearTotal(motivo) {
 }
 
 // ==========================================
-// RECRIA PLANOS (para tela de bloqueio)
+// MOSTRAR PLANOS (recria se preciso)
 // ==========================================
 function mostrarPlanos() {
     var telaPlanos = document.getElementById('tela-planos');
@@ -1066,317 +808,12 @@ function mostrarPlanos() {
         return;
     }
 
-    var htmlPlanos = 
-        '<div class="card ativo" id="tela-planos" style="display:block; max-width: 700px;">' +
-            '<img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display=\'none\'">' +
-            '<div class="badge">Renovação</div>' +
-            '<h2>Escolha seu plano</h2>' +
-            '<p>Renove agora e continue assistindo</p>' +
-            
-            '<div style="margin-top: 25px; text-align: left;">' +
-                '<div class="plano-card destaque" tabindex="0" onclick="escolherPlano(\'anual\')">' +
-                    '<div class="plano-top">' +
-                        '<div class="plano-nome">Anual <span class="plano-tag verde">Melhor Valor</span></div>' +
-                        '<div class="plano-preco">R$ 149,90</div>' +
-                    '</div>' +
-                    '<div class="plano-desc">12 meses com desconto</div>' +
-                '</div>' +
+    var html = 
+        '<div class="card ativo" id="tela-planos" style="display:flex;">' +
+            '<div class="conteudo">' +
+                '<img src="download.png" alt="RedPlay" class="logo-tela" onerror="this.style.display=\'none\'">' +
+                '<h2>Escolha seu plano</h2>' +
+                '<p>Renove agora e continue assistindo</p>' +
                 
-                '<div class="plano-card" tabindex="0" onclick="escolherPlano(\'mensal\')">' +
-                    '<div class="plano-top">' +
-                        '<div class="plano-nome">Mensal</div>' +
-                        '<div class="plano-preco">R$ 18,90</div>' +
-                    '</div>' +
-                    '<div class="plano-desc">Renovação mensal</div>' +
-                '</div>' +
-                
-                '<div class="plano-card" tabindex="0" onclick="escolherPlano(\'lifetime\')">' +
-                    '<div class="plano-top">' +
-                        '<div class="plano-nome">Vitalício <span class="plano-tag roxo">Premium</span></div>' +
-                        '<div class="plano-preco">R$ 450,00</div>' +
-                    '</div>' +
-                    '<div class="plano-desc">Pague uma vez, para sempre</div>' +
-                '</div>' +
-            '</div>' +
-            
-            '<div class="divisor-login">' +
-                '<p>Já tem outra conta ativa?</p>' +
-                '<button class="btn btn-cinza" onclick="mostrarLoginCliente()" tabindex="0">Fazer Login</button>' +
-            '</div>' +
-        '</div>';
-    
-    document.body.innerHTML = htmlPlanos;
-    
-    setTimeout(function() {
-        var plano = document.querySelector('.plano-card.destaque');
-        if (plano) plano.focus();
-    }, 200);
-}
-
-// ==========================================
-// RECRIA LOGIN (para tela de bloqueio)
-// ==========================================
-function mostrarLoginCliente() {
-    var telaLogin = document.getElementById('tela-login-cliente');
-    var temTodasTelas = document.getElementById('tela-boas-vindas') !== null;
-    
-    if (telaLogin && temTodasTelas) {
-        mostrarTela('tela-login-cliente');
-        return;
-    }
-
-    var htmlLogin = 
-        '<div class="card ativo" id="tela-login-cliente" style="display:block; max-width: 600px;">' +
-            '<img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display=\'none\'">' +
-            '<div class="badge">Acesso</div>' +
-            '<h2>Entrar na conta</h2>' +
-            '<p>Digite seu usuário e senha cadastrados</p>' +
-            
-            '<div class="field" style="margin-top: 25px;">' +
-                '<label>Utilizador</label>' +
-                '<input type="text" id="login-cliente-usuario" placeholder="Digite seu usuário" maxlength="20" autocomplete="off">' +
-            '</div>' +
-            
-            '<div class="field">' +
-                '<label>Senha</label>' +
-                '<input type="password" id="login-cliente-senha" placeholder="Digite sua senha" maxlength="30" autocomplete="off" onkeypress="if(event.key===\'Enter\')fazerLoginCliente()">' +
-            '</div>' +
-            
-            '<button class="btn btn-primario" onclick="fazerLoginCliente()" tabindex="0">Entrar na Conta</button>' +
-            '<span class="msg-erro" id="erro-login-cliente"></span>' +
-            
-            '<div class="divisor-login">' +
-                '<button class="btn btn-cinza" onclick="mostrarPlanos()" tabindex="0">Ver Planos</button>' +
-            '</div>' +
-        '</div>';
-    
-    document.body.innerHTML = htmlLogin;
-    
-    setTimeout(function() {
-        var inp = document.getElementById('login-cliente-usuario');
-        if (inp) inp.focus();
-    }, 200);
-}
-
-// ==========================================
-// ESCOLHER PLANO
-// ==========================================
-function escolherPlano(plano) {
-    var device_id = obterDeviceId();
-    var precosFormatados = {
-        'mensal_primeiro': 'R$ 12,90',
-        'mensal': 'R$ 18,90',
-        'anual': 'R$ 149,90',
-        'lifetime': 'R$ 450,00'
-    };
-
-    // Recria tela do QR Code se não existir
-    if (!document.getElementById('tela-qrcode')) {
-        var htmlQr = 
-            '<div class="card ativo" id="tela-qrcode" style="display:block; max-width: 650px;">' +
-                '<div class="badge badge-amarelo">Pagamento PIX</div>' +
-                '<h2>PIX Instantâneo</h2>' +
-                '<p>Escaneie o QR Code com o app do seu banco</p>' +
-                '<div class="plano-preco" id="qr-valor" style="margin: 15px 0; font-size: clamp(24px, 4vh, 38px); color: #00c853;">' + (precosFormatados[plano] || 'R$ 0,00') + '</div>' +
-                '<div class="qr-img"><img id="qr-image" src="" alt="QR Code PIX"></div>' +
-                '<div class="pix-code" id="qr-code-txt">Gerando código PIX...</div>' +
-                '<button class="btn btn-primario" onclick="copiarPix()" id="btn-copiar" tabindex="0">📋 Copiar Código PIX</button>' +
-                '<div class="polling-status" id="polling-status"><div class="mini-loader"></div><span>Aguardando pagamento...</span></div>' +
-                '<button class="btn btn-cinza" onclick="voltarInicio()" tabindex="0">Voltar</button>' +
-            '</div>';
-        document.body.innerHTML = htmlQr;
-    } else {
-        document.getElementById('qr-valor').innerText = precosFormatados[plano] || 'R$ 0,00';
-        document.getElementById('qr-titulo').innerText = 'Pagamento PIX';
-        document.getElementById('qr-code-txt').innerText = 'Gerando código PIX...';
-        document.getElementById('qr-image').src = '';
-        mostrarTela('tela-qrcode');
-    }
-
-    chamarFuncao(FUNC_CRIAR_COBRANCA, { action: 'criar_cobranca', plano: plano, android_id: device_id }, function(erro, dados) {
-        var qrCodeEl = document.getElementById('qr-code-txt');
-        var pollingEl = document.getElementById('polling-status');
-        
-        if (erro || !dados || !dados.success) {
-            if (qrCodeEl) qrCodeEl.innerText = 'Erro ao gerar PIX. Tente novamente.';
-            if (pollingEl) pollingEl.style.display = 'none';
-            return;
-        }
-
-        if (dados.qrcode_base64) {
-            var imgEl = document.getElementById('qr-image');
-            if (imgEl) imgEl.src = 'data:image/png;base64,' + dados.qrcode_base64;
-        }
-        if (dados.copia_cola && qrCodeEl) {
-            qrCodeEl.innerText = dados.copia_cola;
-        }
-
-        if (dados.txid || dados.payment_id) {
-            iniciarPolling(dados.txid || dados.payment_id);
-        }
-    });
-}
-
-// ==========================================
-// COPIAR PIX
-// ==========================================
-function copiarPix() {
-    var txt = document.getElementById('qr-code-txt').innerText;
-    if (!txt || txt.indexOf('Gerando') >= 0 || txt.indexOf('Erro') >= 0) return;
-    
-    var sucesso = function() {
-        var btn = document.getElementById('btn-copiar');
-        if (btn) {
-            btn.innerText = '✅ Código Copiado!';
-            setTimeout(function() { btn.innerText = '📋 Copiar Código PIX'; }, 2000);
-        }
-    };
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(txt).then(sucesso).catch(function() { fallbackCopy(txt, sucesso); });
-    } else {
-        fallbackCopy(txt, sucesso);
-    }
-}
-
-function fallbackCopy(txt, cb) {
-    var el = document.createElement('textarea');
-    el.value = txt;
-    document.body.appendChild(el);
-    el.select();
-    try { document.execCommand('copy'); cb(); } catch(e) {}
-    document.body.removeChild(el);
-}
-
-// ==========================================
-// POLLING PIX
-// ==========================================
-function iniciarPolling(paymentId) {
-    if (pollingTimer) clearInterval(pollingTimer);
-    pollingTentativas = 0;
-    
-    var pollingEl = document.getElementById('polling-status');
-    if (pollingEl) pollingEl.style.display = 'flex';
-
-    pollingTimer = setInterval(function() {
-        pollingTentativas++;
-        if (pollingTentativas > MAX_POLLING) {
-            clearInterval(pollingTimer);
-            if (pollingEl) {
-                pollingEl.innerHTML = '<span style="color:#ff4d4d;">Pagamento não detectado.</span><button class="btn-retry-polling" onclick="iniciarApp()" tabindex="0">Verificar</button>';
-            }
-            return;
-        }
-
-        chamarFuncao(FUNC_CRIAR_COBRANCA, { action: 'verificar_pagamento', payment_id: paymentId }, function(erro, dados) {
-            if (!erro && dados && dados.pago) {
-                clearInterval(pollingTimer);
-                if (pollingEl) pollingEl.innerHTML = '<span style="color:#00c853;">✅ Pagamento confirmado!</span>';
-                setTimeout(function() {
-                    iniciarApp();
-                }, 2000);
-            }
-        });
-    }, 5000);
-}
-
-// ==========================================
-// LOGIN CLIENTE
-// ==========================================
-function fazerLoginCliente() {
-    var usuario = document.getElementById('login-cliente-usuario').value.trim();
-    var senha = document.getElementById('login-cliente-senha').value.trim();
-    var erroEl = document.getElementById('erro-login-cliente');
-    var device_id = obterDeviceId();
-
-    if (erroEl) erroEl.innerText = '';
-    
-    if (!usuario || !senha) {
-        if (erroEl) erroEl.innerText = 'Preencha todos os campos.';
-        return;
-    }
-
-    chamarFuncao(FUNC_CRIAR_CONTA, { action: 'login', usuario: usuario, senha: senha, android_id: device_id }, function(erro, dados) {
-        if (erro || !dados || !dados.success) {
-            if (erroEl) erroEl.innerText = erro || (dados && dados.erro) || 'Credenciais inválidas.';
-            return;
-        }
-
-        // Verifica se as telas principais existem
-        if (!document.getElementById('tela-boas-vindas')) {
-            document.body.innerHTML = 
-                '<div class="card ativo" style="display:block; max-width: 600px; text-align: center;">' +
-                    '<div class="bv-emoji">🎬</div>' +
-                    '<div class="badge badge-verde">Tudo Pronto</div>' +
-                    '<h1>Bem-vindo de volta!</h1>' +
-                    '<div class="bv-usuario">' + usuario.toUpperCase() + '</div>' +
-                    '<div class="bv-mensagem">Aproveite todo o conteúdo exclusivo da <span>RedPlay TV</span></div>' +
-                    '<div class="bv-status"><span class="bv-status-txt">● Acesso Liberado</span></div>' +
-                    '<div class="barra"><div class="barra-inner" id="barra-bv"></div></div>' +
-                    '<p class="bv-msg">Carregando ambiente da TV...</p>' +
-                '</div>';
-            animarBarra('barra-bv', 3000);
-            setTimeout(liberarAcessoApp, 3500);
-            return;
-        }
-
-        document.getElementById('bv-usuario').innerText = usuario.toUpperCase();
-        mostrarTela('tela-boas-vindas');
-        animarBarra('barra-bv', 3000);
-        setTimeout(liberarAcessoApp, 3500);
-    });
-}
-
-// ==========================================
-// VOLTAR
-// ==========================================
-function voltarInicio() {
-    if (pollingTimer) clearInterval(pollingTimer);
-    if (ultimoStatus && (ultimoStatus.status === 'trial' || ultimoStatus.status === 'teste_gratis')) {
-        mostrarTela('tela-trial');
-    } else if (ultimoStatus && ultimoStatus.status === 'bloqueado_painel') {
-        bloquearTotal(ultimoStatus.motivo || 'Sua conta foi suspensa.');
-    } else {
-        mostrarTela('tela-planos');
-    }
-}
-
-// ==========================================
-// NAVEGAÇÃO D-PAD (Controle remoto)
-// ==========================================
-document.addEventListener('keydown', function(e) {
-    var cardAtivo = document.querySelector('.card.ativo');
-    if (!cardAtivo) return;
-
-    // Botão VOLTAR do controle remoto
-    if (e.key === 'Backspace' || e.key === 'Escape' || e.keyCode === 4) {
-        e.preventDefault();
-        var idAtivo = cardAtivo.id;
-        if (idAtivo === 'tela-qrcode' || idAtivo === 'tela-login-cliente') {
-            voltarInicio();
-        }
-        return;
-    }
-
-    var focusable = Array.prototype.slice.call(
-        cardAtivo.querySelectorAll('input, button, .plano-card, a.btn')
-    ).filter(function(el) {
-        return el.offsetParent !== null && !el.disabled;
-    });
-
-    if (focusable.length === 0) return;
-    var index = focusable.indexOf(document.activeElement);
-
-    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
-        e.preventDefault();
-        index = (index < 0 || index >= focusable.length - 1) ? 0 : index + 1;
-        focusable[index].focus();
-    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-        e.preventDefault();
-        index = (index <= 0) ? focusable.length - 1 : index - 1;
-        focusable[index].focus();
-    }
-});
-</script>
-</body>
-</html>
+                '<div class="lista-planos">' +
+                    '<div class="plano-card destaque" tabindex="0" onclick="escolherPlano(\'anual\')">' +
