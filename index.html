@@ -16,15 +16,11 @@ body{display:flex;justify-content:center;align-items:center;background:#000;}
 .loader{width:50px;height:50px;border:5px solid rgba(229,9,20,.2);border-top-color:#e50914;border-radius:50%;animation:spin .9s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .splash-txt{color:#555;font-size:12px;letter-spacing:4px;margin-top:18px;text-transform:uppercase;font-weight:700;}
-
-/* ==================== CARD ==================== */
 .card{position:fixed;inset:0;background:#0d0d0d;padding:18px 30px;overflow-y:auto;text-align:center;display:none;flex-direction:column;justify-content:center;align-items:center;}
 .card.ativo{display:flex;}
 .card::-webkit-scrollbar{width:5px;}
 .card::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:3px;}
 .card-inner{width:100%;max-width:760px;margin:auto;padding:0;}
-
-/* ==================== TIPOGRAFIA ==================== */
 .logo-red{width:105px;margin-bottom:10px;display:inline-block;}
 .badge{display:inline-block;background:#e50914;font-size:10px;font-weight:800;padding:6px 18px;border-radius:20px;margin-bottom:10px;letter-spacing:2.5px;color:#fff;line-height:1;text-transform:uppercase;}
 .badge-verde{background:#00c853;color:#000;}
@@ -32,31 +28,23 @@ body{display:flex;justify-content:center;align-items:center;background:#000;}
 h1{color:#fff;font-size:26px;font-weight:900;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;line-height:1.15;}
 h2{color:#fff;font-size:22px;font-weight:900;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;line-height:1.2;}
 p{color:#888;font-size:13px;line-height:1.4;margin-bottom:6px;}
-
-/* ==================== TRIAL (COMPACTO) ==================== */
 .trial-container{margin:12px 0 10px;padding:20px 18px;background:#141414;border:1px solid #2a2a2a;border-radius:18px;transition:all .3s ease;}
 .trial-dias{display:flex;justify-content:center;align-items:center;gap:10px;}
 .trial-numero{font-size:75px;font-weight:900;line-height:1;color:#e50914;text-shadow:0 0 40px rgba(229,9,20,.6);}
 .trial-texto{font-size:20px;font-weight:900;color:#e50914;text-transform:uppercase;letter-spacing:2px;line-height:1.1;text-align:left;}
 .trial-texto small{display:block;font-size:10px;color:#666;font-weight:700;letter-spacing:3px;margin-top:3px;}
-
 .trial-contador{margin:12px auto 0;padding:9px 16px;background:#000;border:1px solid #2a2a2a;border-radius:10px;color:#ffc107;font-size:10px;font-weight:800;letter-spacing:1.5px;text-align:center;max-width:360px;text-transform:uppercase;}
 .trial-contador .tempo{color:#fff;font-size:17px;font-weight:900;display:block;margin-top:4px;letter-spacing:2px;font-family:monospace;}
 .trial-contador.expirado{color:#ff4d4d;border-color:#e50914;background:#1a0808;}
 .trial-contador.expirado .tempo{color:#ff4d4d;font-size:13px;}
-
 .trial-destaque{background:#000;border-left:5px solid #ffc107;border-radius:10px;padding:10px 16px;text-align:left;font-size:12px;color:#ccc;font-weight:600;margin-top:12px;line-height:1.4;}
 .trial-destaque strong{color:#ffc107;}
-
 #tela-trial.expirado .trial-container{border-color:#e50914;background:linear-gradient(135deg,rgba(229,9,20,.15) 0%,rgba(139,0,0,.08) 100%);}
 #tela-trial.expirado .trial-numero{color:#ff4d4d;text-shadow:0 0 40px rgba(255,77,77,.6);font-size:50px;}
 #tela-trial.expirado .trial-texto{color:#ff4d4d;font-size:14px;}
 #tela-trial.expirado .trial-destaque{border-left-color:#e50914;background:#1a0808;}
 #tela-trial.expirado .trial-destaque strong{color:#ff4d4d;}
-
 .trial-botoes{margin-top:12px;width:100%;}
-
-/* ==================== BOTÕES ==================== */
 button{cursor:pointer;border:none;font-family:inherit;background:none;}
 .btn{width:100%;padding:15px 22px;border-radius:13px;font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;transition:all .2s ease;margin-bottom:9px;outline:none;border:2px solid transparent;}
 .btn:last-child{margin-bottom:0;}
@@ -68,8 +56,6 @@ button{cursor:pointer;border:none;font-family:inherit;background:none;}
 .btn-cinza:hover{background:#1a1a1a;color:#fff;border-color:#444;}
 .btn-whats{background:#25D366;color:#fff;text-decoration:none;display:inline-block;text-align:center;}
 .btn:focus,.btn.foco{border-color:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.95);outline:none;z-index:10;transform:scale(1.02);}
-
-/* ==================== INPUTS ==================== */
 input{width:100%;padding:16px 20px;background:#000;border:2px solid #2a2a2a;border-radius:13px;color:#fff;font-size:17px;font-weight:700;text-align:center;outline:none;letter-spacing:1px;}
 input:focus{border-color:#e50914;box-shadow:0 0 0 3px rgba(229,9,20,.3);}
 input::placeholder{color:#444;text-transform:uppercase;font-size:12px;font-weight:700;letter-spacing:2px;}
@@ -77,8 +63,6 @@ input::placeholder{color:#444;text-transform:uppercase;font-size:12px;font-weigh
 .lembrar-wrap:focus,.lembrar-wrap.foco{border-color:#e50914;box-shadow:0 0 0 3px rgba(255,255,255,.9);}
 .lembrar-wrap input[type="checkbox"]{width:20px;height:20px;accent-color:#e50914;cursor:pointer;}
 .lembrar-wrap label{font-size:13px;color:#ccc;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:1px;}
-
-/* ==================== PLANOS ==================== */
 .plano-card{position:relative;background:#141414;border:2px solid #2a2a2a;border-radius:14px;padding:16px 20px;margin-bottom:10px;text-align:left;cursor:pointer;outline:none;transition:all .2s ease;}
 .plano-card:hover{border-color:#444;}
 .plano-card:focus,.plano-card.foco{border-color:#fff;transform:scale(1.02);box-shadow:0 0 0 3px rgba(255,255,255,.9);z-index:5;}
@@ -92,24 +76,16 @@ input::placeholder{color:#444;text-transform:uppercase;font-size:12px;font-weigh
 .plano-tag{display:inline-block;background:#ffab00;color:#000;font-size:9px;font-weight:900;padding:3px 9px;border-radius:7px;margin-left:6px;letter-spacing:1.3px;vertical-align:middle;}
 .plano-tag.verde{background:#00c853;color:#fff;}
 .plano-tag.roxo{background:#8e24aa;color:#fff;}
-
-/* ==================== DIVISOR ==================== */
 .divisor-login{border-top:1px solid #1f1f1f;margin:18px 0 0;padding-top:14px;}
 .divisor-login p{color:#777;font-size:13px;margin-bottom:8px;font-weight:700;}
-
-/* ==================== QR CODE ==================== */
 .qr-img{background:#fff;border-radius:16px;padding:14px;margin:16px auto;max-width:240px;}
 .qr-img img{width:100%;display:block;border-radius:8px;}
 .pix-code{background:#000;border:1px solid #2a2a2a;border-radius:12px;padding:12px;font-family:monospace;font-size:11px;word-break:break-all;color:#888;text-align:left;margin-bottom:14px;max-height:70px;overflow-y:auto;}
 .polling-status{display:flex;align-items:center;justify-content:center;gap:10px;color:#ffab00;font-size:13px;margin-bottom:14px;font-weight:700;padding:11px;background:#1a1408;border:1px solid #2a2a2a;border-radius:12px;}
 .mini-loader{border:3px solid rgba(255,171,0,.2);border-top-color:#ffab00;border-radius:50%;width:18px;height:18px;animation:spin .8s linear infinite;}
-
-/* ==================== FIELDS ==================== */
 .field{margin-bottom:14px;text-align:left;}
 .field label{display:block;color:#777;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;}
 .msg-erro{color:#ff4d4d;font-size:13px;margin-top:10px;font-weight:800;min-height:18px;display:block;}
-
-/* ==================== BOAS-VINDAS ==================== */
 .bv-emoji{font-size:75px;margin-bottom:14px;}
 .bv-usuario{color:#fff;font-size:28px;font-weight:900;margin-bottom:18px;padding:14px 32px;background:#141414;border:1px solid #2a2a2a;border-radius:50px;display:inline-block;letter-spacing:2px;}
 .bv-mensagem{color:#fff;font-size:18px;font-weight:700;margin-bottom:18px;line-height:1.4;}
@@ -119,11 +95,7 @@ input::placeholder{color:#444;text-transform:uppercase;font-size:12px;font-weigh
 .barra{width:260px;height:6px;background:#1f1f1f;border-radius:6px;margin:18px auto 12px;overflow:hidden;}
 .barra-inner{height:100%;background:#e50914;border-radius:6px;width:0%;transition:width .1s linear;}
 .bv-msg{color:#555;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;}
-
-/* ==================== BLOQUEIO ==================== */
 .aviso-bloqueio{color:#ff4d4d;font-weight:700;font-size:14px;margin:18px 0;padding:14px 20px;background:#1a0808;border:1px solid #e50914;border-radius:14px;line-height:1.5;}
-
-/* ==================== RESPONSIVO ==================== */
 @media screen and (max-width:720px){
 .card{padding:14px 18px;}
 h1{font-size:22px;}
@@ -151,14 +123,13 @@ body{cursor:none;}
 <p class="splash-txt">Carregando</p>
 </div>
 
-<!-- ==================== TELA: TRIAL ==================== -->
+<!-- TELA: TRIAL -->
 <div class="card" id="tela-trial">
 <div class="card-inner">
 <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
 <span class="badge badge-verde" id="badge-trial">TESTE GRÁTIS LIBERADO</span>
 <h1 id="trial-titulo">Bem-vindo à RedPlay</h1>
 <p id="trial-sub">Sua conta de teste foi ativada</p>
-
 <div class="trial-container">
 <div class="trial-dias">
 <div class="trial-numero" id="trial-numero">3</div>
@@ -166,9 +137,7 @@ body{cursor:none;}
 </div>
 <div class="trial-contador" id="trial-contador">TEMPO RESTANTE<span class="tempo">--d : --h : --m : --s</span></div>
 </div>
-
 <div class="trial-destaque" id="trial-destaque">💡 <strong>Aproveite!</strong> Após 3 dias, escolha um plano para continuar assistindo.</div>
-
 <div class="trial-botoes">
 <button class="btn btn-verde" id="btn-trial-continuar" onclick="continuarTeste()" tabindex="0">▶ Continuar Teste</button>
 <button class="btn btn-primario" id="btn-trial-pagar" onclick="irParaPagamento()" tabindex="0">💳 Fazer Pagamento</button>
@@ -177,7 +146,7 @@ body{cursor:none;}
 </div>
 </div>
 
-<!-- ==================== TELA: PLANOS ==================== -->
+<!-- TELA: PLANOS -->
 <div class="card" id="tela-planos">
 <div class="card-inner">
 <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
@@ -209,7 +178,7 @@ body{cursor:none;}
 </div>
 </div>
 
-<!-- ==================== TELA: LOGIN ==================== -->
+<!-- TELA: LOGIN -->
 <div class="card" id="tela-login-cliente">
 <div class="card-inner">
 <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
@@ -237,7 +206,7 @@ body{cursor:none;}
 </div>
 </div>
 
-<!-- ==================== TELA: QR CODE ==================== -->
+<!-- TELA: QR CODE -->
 <div class="card" id="tela-qrcode">
 <div class="card-inner">
 <span class="badge badge-amarelo">PAGAMENTO PIX</span>
@@ -255,7 +224,7 @@ body{cursor:none;}
 </div>
 </div>
 
-<!-- ==================== TELA: BOAS-VINDAS ==================== -->
+<!-- TELA: BOAS-VINDAS -->
 <div class="card" id="tela-boas-vindas">
 <div class="card-inner">
 <div class="bv-emoji" id="bv-emoji">🎬</div>
@@ -269,7 +238,7 @@ body{cursor:none;}
 </div>
 </div>
 
-<!-- ==================== TELA: ERRO ==================== -->
+<!-- TELA: ERRO -->
 <div class="card" id="tela-erro">
 <div class="card-inner">
 <div class="bv-emoji">⚠️</div>
@@ -328,7 +297,15 @@ if(xhr.readyState===4){
 var resp=null;
 try{resp=JSON.parse(xhr.responseText);}catch(e){resp=null;}
 if(xhr.status>=200&&xhr.status<300)callback(null,resp);
-else callback("HTTP "+xhr.status,resp);
+else{
+// Tenta extrair mensagem do erro
+var msg="HTTP "+xhr.status;
+if(resp&&resp.erro)msg=resp.erro;
+else if(resp&&resp.mensagem)msg=resp.mensagem;
+else if(resp&&resp.message)msg=resp.message;
+else if(resp&&resp.error)msg=typeof resp.error==='string'?resp.error:JSON.stringify(resp.error);
+callback(msg,resp);
+}
 }
 };
 xhr.onerror=function(){callback("Falha na conexão",null);};
@@ -364,72 +341,59 @@ iniciarApp();
 },1200);
 });
 
-/* ==================== CONTADOR DO TRIAL ==================== */
+/* ==================== CONTADOR TRIAL ==================== */
 function atualizarContadorTrial(){
 var el=document.getElementById('trial-contador');
 if(!el)return;
-
 if(!statusAtual||statusAtual.status==='expirado'){
 el.className='trial-contador expirado';
 el.innerHTML='SEU TESTE EXPIROU<span class="tempo">Escolha um plano para continuar</span>';
 return;
 }
-
 var inicioRaw=statusAtual.trial_inicio||statusAtual.data_inicio;
-
 if(!inicioRaw){
 el.className='trial-contador';
 el.innerHTML='TESTE ATIVO<span class="tempo">3 dias a partir de hoje</span>';
 return;
 }
-
 var inicioMs;
 if(typeof inicioRaw==='number'){inicioMs=inicioRaw;}
 else{inicioMs=new Date(inicioRaw).getTime();}
-
 if(isNaN(inicioMs)||inicioMs<=0){
 el.className='trial-contador';
 el.innerHTML='TESTE ATIVO<span class="tempo">3 dias a partir de hoje</span>';
 return;
 }
-
 var agora=Date.now();
 var decorrido=agora-inicioMs;
-
 if(decorrido<0){
 el.className='trial-contador';
 el.innerHTML='TEMPO RESTANTE<span class="tempo">03d : 00h : 00m : 00s</span>';
 return;
 }
-
 var restante=TRIAL_DURACAO_MS-decorrido;
 if(restante<=0){
 el.className='trial-contador expirado';
 el.innerHTML='SEU TESTE EXPIROU<span class="tempo">Escolha um plano para continuar</span>';
 return;
 }
-
 var dias=Math.floor(restante/(24*60*60*1000));
 var horas=Math.floor((restante%(24*60*60*1000))/(60*60*1000));
 var min=Math.floor((restante%(60*60*1000))/(60*1000));
 var seg=Math.floor((restante%(60*1000))/1000);
-
 var partes=[];
 partes.push(String(dias).padStart(2,'0')+'d');
 partes.push(String(horas).padStart(2,'0')+'h');
 partes.push(String(min).padStart(2,'0')+'m');
 partes.push(String(seg).padStart(2,'0')+'s');
-
 el.className='trial-contador';
 el.innerHTML='TEMPO RESTANTE<span class="tempo">'+partes.join(' : ')+'</span>';
 }
-
 function iniciarContadorTrial(){
 if(contadorTimer)clearInterval(contadorTimer);
 atualizarContadorTrial();
 contadorTimer=setInterval(atualizarContadorTrial,1000);
 }
-
 function pararContadorTrial(){
 if(contadorTimer){clearInterval(contadorTimer);contadorTimer=null;}
 }
@@ -438,10 +402,8 @@ if(contadorTimer){clearInterval(contadorTimer);contadorTimer=null;}
 function exibirTrial(){
 var info=statusAtual;
 if(!info){mostrarTela('tela-erro');return;}
-
 var tela=document.getElementById('tela-trial');
 tela.classList.remove('expirado');
-
 var btnContinuar=document.getElementById('btn-trial-continuar');
 var btnConta=document.getElementById('btn-trial-conta');
 var badge=document.getElementById('badge-trial');
@@ -450,7 +412,6 @@ var sub=document.getElementById('trial-sub');
 var numero=document.getElementById('trial-numero');
 var texto=document.getElementById('trial-texto');
 var destaque=document.getElementById('trial-destaque');
-
 if(info.status==='expirado'){
 tela.classList.add('expirado');
 if(btnContinuar)btnContinuar.style.display='none';
@@ -471,11 +432,9 @@ if(numero)numero.innerText='3';
 if(texto)texto.innerHTML='Dias<small>Grátis</small>';
 if(destaque)destaque.innerHTML='💡 <strong>Aproveite!</strong> Após 3 dias, escolha um plano para continuar assistindo.';
 }
-
 mostrarTela('tela-trial');
 iniciarContadorTrial();
 }
-
 function continuarTeste(){
 if(!statusAtual||statusAtual.status==='expirado'){
 alert('Seu teste expirou. Escolha um plano para continuar.');
@@ -485,12 +444,7 @@ return;
 pararContadorTrial();
 liberarAcessoApp();
 }
-
-function irParaPagamento(){
-pararContadorTrial();
-mostrarTela('tela-planos');
-}
-
+function irParaPagamento(){pararContadorTrial();mostrarTela('tela-planos');}
 function irParaConta(){
 pararContadorTrial();
 if(!statusAtual||statusAtual.status==='expirado'){
@@ -500,13 +454,9 @@ return;
 }
 mostrarTela('tela-login-cliente');
 }
-
 function voltarDosPlanos(){
-if(statusAtual&&statusAtual.status==='expirado'){
-mostrarTela('tela-trial');
-}else{
-mostrarTela('tela-planos');
-}
+if(statusAtual&&statusAtual.status==='expirado')mostrarTela('tela-trial');
+else mostrarTela('tela-planos');
 }
 
 /* ==================== FLUXO PRINCIPAL ==================== */
@@ -530,18 +480,15 @@ mostrarTela('tela-erro');
 return;
 }
 statusAtual=dados;
-
 if(dados.status==='bloqueado_painel'){
 bloquear(dados.motivo||'Sua conta foi suspensa pelo suporte.');
 return;
 }
-
 if(dados.status==='ativo'||dados.status==='pago'){
 var nome=dados.usuario||(credenciais?credenciais.usuario:'CLIENTE');
 irParaBoasVindas(nome);
 return;
 }
-
 exibirTrial();
 });
 }
@@ -588,11 +535,10 @@ document.getElementById('qr-code-txt').innerText='Carregando código PIX...';
 document.getElementById('qr-image').src='';
 document.getElementById('polling-status').style.display='flex';
 document.getElementById('polling-status').innerHTML='<div class="mini-loader"></div><span>Aguardando pagamento...</span>';
-
 var device_id=obterDeviceId();
 chamarFuncao(FUNC_CRIAR_COBRANCA,{action:'criar_cobranca',plano:plano,android_id:device_id},function(erro,dados){
 if(erro||!dados||!dados.success){
-document.getElementById('qr-code-txt').innerText='Erro ao gerar PIX. Tente novamente.';
+document.getElementById('qr-code-txt').innerText='Erro: '+(erro||'Não foi possível gerar');
 document.getElementById('polling-status').innerHTML='<span style="color:#ff4d4d;">Não foi possível gerar a cobrança.</span>';
 return;
 }
@@ -645,7 +591,7 @@ setTimeout(iniciarApp,2000);
 },5000);
 }
 
-/* ==================== LOGIN ==================== */
+/* ==================== LOGIN (com mensagens de erro reais) ==================== */
 function toggleLembrar(e){
 if(e)e.stopPropagation();
 var cb=document.getElementById('lembrar-senha');
@@ -678,16 +624,36 @@ setTimeout(irParaPagamento,1500);
 return;
 }
 
+// Feedback visual no botão
+erroEl.innerText='Conectando...';
+erroEl.style.color='#ffab00';
+
 var device_id=obterDeviceId();
 chamarFuncao(FUNC_CRIAR_COBRANCA,{action:'login',usuario:usuario,senha:senha,android_id:device_id},function(erro,dados){
 if(erro){
-erroEl.innerText='Erro ao conectar. Tente novamente.';
+// Mostra o erro real do servidor
+erroEl.style.color='#ff4d4d';
+if(erro.indexOf('HTTP 500')>=0){
+erroEl.innerText='Erro no servidor. Tente novamente em instantes.';
+}else if(erro.indexOf('HTTP 401')>=0||erro.indexOf('HTTP 403')>=0){
+erroEl.innerText='Acesso negado. Contate o suporte.';
+}else if(erro.indexOf('HTTP 404')>=0){
+erroEl.innerText='Serviço indisponível. Contate o suporte.';
+}else if(erro.indexOf('Falha na conexão')>=0){
+erroEl.innerText='Sem internet. Verifique sua conexão.';
+}else if(erro.indexOf('Tempo esgotado')>=0){
+erroEl.innerText='Servidor demorou para responder. Tente novamente.';
+}else{
+erroEl.innerText=erro;
+}
 return;
 }
 if(!dados||!dados.success){
-erroEl.innerText=(dados&&dados.erro)||'Credenciais inválidas.';
+erroEl.style.color='#ff4d4d';
+erroEl.innerText=(dados&&(dados.erro||dados.mensagem||dados.message))||'Usuário ou senha inválidos.';
 return;
 }
+erroEl.style.color='';
 salvarCredenciais(usuario,senha,lembrar);
 irParaBoasVindas(usuario);
 });
@@ -706,7 +672,6 @@ localStorage.removeItem(LEMBRAR_KEY);
 /* ==================== BOAS-VINDAS ==================== */
 function irParaBoasVindas(usuario){
 var info=statusAtual||{};
-
 var emoji=document.getElementById('bv-emoji');
 var badge=document.getElementById('bv-badge');
 var titulo=document.getElementById('bv-titulo');
@@ -714,7 +679,6 @@ var msg=document.getElementById('bv-mensagem');
 var statusBox=document.getElementById('bv-status-box');
 var statusTxt=document.getElementById('bv-status-txt');
 var msgRodape=document.getElementById('bv-msg');
-
 document.getElementById('bv-usuario').innerText=usuario.toUpperCase();
 
 if(info.status==='trial'){
@@ -754,10 +718,8 @@ if(statusBox){statusBox.style.background='#0d1f10';statusBox.style.borderColor='
 if(statusTxt){statusTxt.style.color='#00c853';statusTxt.innerText='● ACESSO LIBERADO';}
 if(msgRodape)msgRodape.innerText='Carregando ambiente da TV...';
 }
-
 mostrarTela('tela-boas-vindas');
 animarBarra('barra-bv',3000);
-
 if(info.status==='expirado'){
 setTimeout(function(){mostrarTela('tela-planos');},3500);
 }else{
