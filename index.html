@@ -16,40 +16,37 @@ body{display:flex;justify-content:center;align-items:center;background:#000;}
 .loader{width:55px;height:55px;border:5px solid rgba(229,9,20,.2);border-top-color:#e50914;border-radius:50%;animation:spin .9s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .splash-txt{color:#555;font-size:13px;letter-spacing:4px;margin-top:22px;text-transform:uppercase;font-weight:700;}
-.card{position:relative;background:#0d0d0d;border:1px solid #1f1f1f;border-radius:24px;padding:50px 55px;width:90%;max-width:820px;max-height:92vh;overflow-y:auto;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.9);display:none;margin:auto;}
-.card.ativo{display:block;}
+.card{position:fixed;inset:0;background:#0d0d0d;padding:40px 55px;overflow-y:auto;text-align:center;display:none;flex-direction:column;justify-content:center;align-items:center;}
+.card.ativo{display:flex;}
 .card::-webkit-scrollbar{width:5px;}
 .card::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:3px;}
-.logo-red{width:160px;margin-bottom:22px;display:inline-block;}
-.badge{display:inline-block;background:#e50914;font-size:11px;font-weight:800;padding:7px 20px;border-radius:20px;margin-bottom:24px;letter-spacing:3px;color:#fff;}
+.card-inner{width:100%;max-width:820px;margin:auto;}
+.logo-red{width:150px;margin-bottom:18px;display:inline-block;}
+.badge{display:inline-block;background:#e50914;font-size:11px;font-weight:800;padding:7px 20px;border-radius:20px;margin-bottom:20px;letter-spacing:3px;color:#fff;}
 .badge-verde{background:#00c853;color:#000;}
 .badge-amarelo{background:#ffab00;color:#000;}
-h1{color:#fff;font-size:34px;font-weight:900;text-transform:uppercase;letter-spacing:3px;margin-bottom:12px;line-height:1.2;}
-h2{color:#fff;font-size:26px;font-weight:900;text-transform:uppercase;letter-spacing:2px;margin-bottom:18px;}
-p{color:#888;font-size:16px;line-height:1.6;margin-bottom:14px;}
-.trial-container{margin:30px 0;padding:40px 30px;background:#141414;border:1px solid #2a2a2a;border-radius:20px;transition:all .3s ease;}
-.trial-icone{font-size:70px;margin-bottom:12px;}
-.trial-label{color:#ffc107;font-size:12px;font-weight:800;letter-spacing:5px;margin-bottom:18px;text-transform:uppercase;}
-.trial-dias{display:flex;justify-content:center;align-items:baseline;gap:18px;margin:12px 0 22px;}
-.trial-numero{font-size:110px;font-weight:900;line-height:1;color:#e50914;text-shadow:0 0 40px rgba(229,9,20,.6);transition:all .3s ease;}
-.trial-texto{font-size:22px;font-weight:800;color:#e50914;text-transform:uppercase;letter-spacing:3px;}
-.trial-texto small{display:block;font-size:12px;color:#666;font-weight:600;letter-spacing:4px;margin-top:6px;}
-.trial-contador{margin:20px auto 0;padding:14px 20px;background:#000;border:1px solid #2a2a2a;border-radius:12px;color:#ffc107;font-size:13px;font-weight:800;letter-spacing:1.5px;text-align:center;max-width:420px;text-transform:uppercase;}
-.trial-contador .tempo{color:#fff;font-size:22px;font-weight:900;display:block;margin-top:8px;letter-spacing:2px;font-family:monospace;}
+h1{color:#fff;font-size:32px;font-weight:900;text-transform:uppercase;letter-spacing:3px;margin-bottom:10px;line-height:1.2;}
+h2{color:#fff;font-size:24px;font-weight:900;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;}
+p{color:#888;font-size:15px;line-height:1.5;margin-bottom:12px;}
+.trial-container{margin:22px 0;padding:30px 25px;background:#141414;border:1px solid #2a2a2a;border-radius:20px;transition:all .3s ease;}
+.trial-icone{font-size:60px;margin-bottom:10px;}
+.trial-dias{display:flex;justify-content:center;align-items:baseline;gap:15px;margin:8px 0 18px;}
+.trial-numero{font-size:95px;font-weight:900;line-height:1;color:#e50914;text-shadow:0 0 40px rgba(229,9,20,.6);transition:all .3s ease;}
+.trial-texto{font-size:20px;font-weight:800;color:#e50914;text-transform:uppercase;letter-spacing:3px;}
+.trial-texto small{display:block;font-size:11px;color:#666;font-weight:600;letter-spacing:4px;margin-top:6px;}
+.trial-contador{margin:12px auto 0;padding:12px 18px;background:#000;border:1px solid #2a2a2a;border-radius:12px;color:#ffc107;font-size:12px;font-weight:800;letter-spacing:1.5px;text-align:center;max-width:420px;text-transform:uppercase;}
+.trial-contador .tempo{color:#fff;font-size:20px;font-weight:900;display:block;margin-top:6px;letter-spacing:2px;font-family:monospace;}
 .trial-contador.expirado{color:#ff4d4d;border-color:#e50914;background:#1a0808;}
-.trial-contador.expirado .tempo{color:#ff4d4d;font-size:16px;}
-.trial-beneficios{margin-top:22px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
-.trial-beneficio{background:#000;border:1px solid #2a2a2a;border-radius:12px;padding:12px 16px;font-size:14px;color:#ccc;font-weight:700;display:flex;align-items:center;gap:8px;justify-content:center;}
-.trial-beneficio span:first-child{font-size:20px;}
-.trial-destaque{background:#000;border-left:5px solid #ffc107;border-radius:12px;padding:16px 22px;text-align:left;font-size:15px;color:#ccc;font-weight:600;margin-top:22px;line-height:1.5;}
+.trial-contador.expirado .tempo{color:#ff4d4d;font-size:14px;}
+.trial-destaque{background:#000;border-left:5px solid #ffc107;border-radius:12px;padding:14px 20px;text-align:left;font-size:14px;color:#ccc;font-weight:600;margin-top:18px;line-height:1.5;}
 .trial-destaque strong{color:#ffc107;}
 #tela-trial.expirado .trial-container{border-color:#e50914;background:linear-gradient(135deg,rgba(229,9,20,.15) 0%,rgba(139,0,0,.08) 100%);}
-#tela-trial.expirado .trial-numero{color:#ff4d4d;text-shadow:0 0 40px rgba(255,77,77,.6);font-size:70px;}
-#tela-trial.expirado .trial-texto{color:#ff4d4d;font-size:18px;}
+#tela-trial.expirado .trial-numero{color:#ff4d4d;text-shadow:0 0 40px rgba(255,77,77,.6);font-size:60px;}
+#tela-trial.expirado .trial-texto{color:#ff4d4d;font-size:16px;}
 #tela-trial.expirado .trial-destaque{border-left-color:#e50914;background:#1a0808;}
 #tela-trial.expirado .trial-destaque strong{color:#ff4d4d;}
 button{cursor:pointer;border:none;font-family:inherit;background:none;}
-.btn{width:100%;padding:20px 28px;border-radius:14px;font-size:17px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;transition:all .2s ease;margin-bottom:14px;outline:none;border:2px solid transparent;}
+.btn{width:100%;padding:18px 26px;border-radius:14px;font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;transition:all .2s ease;margin-bottom:12px;outline:none;border:2px solid transparent;}
 .btn-primario{background:#e50914;color:#fff;}
 .btn-primario:hover{background:#b20710;}
 .btn-verde{background:#00c853;color:#000;}
@@ -58,47 +55,60 @@ button{cursor:pointer;border:none;font-family:inherit;background:none;}
 .btn-cinza:hover{background:#1a1a1a;color:#fff;border-color:#444;}
 .btn-whats{background:#25D366;color:#fff;text-decoration:none;display:inline-block;text-align:center;}
 .btn:focus,.btn.foco{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.9);outline:none;z-index:10;}
-input{width:100%;padding:20px 22px;background:#000;border:2px solid #2a2a2a;border-radius:14px;color:#fff;font-size:20px;font-weight:700;text-align:center;outline:none;letter-spacing:1px;}
+input{width:100%;padding:18px 20px;background:#000;border:2px solid #2a2a2a;border-radius:14px;color:#fff;font-size:18px;font-weight:700;text-align:center;outline:none;letter-spacing:1px;}
 input:focus{border-color:#e50914;box-shadow:0 0 0 3px rgba(229,9,20,.3);}
-input::placeholder{color:#444;text-transform:uppercase;font-size:14px;font-weight:700;letter-spacing:2px;}
-.lembrar-wrap{display:flex;align-items:center;justify-content:center;gap:14px;margin:18px 0 14px;padding:14px 20px;border-radius:14px;cursor:pointer;outline:none;border:2px solid #2a2a2a;background:#000;}
+input::placeholder{color:#444;text-transform:uppercase;font-size:13px;font-weight:700;letter-spacing:2px;}
+.lembrar-wrap{display:flex;align-items:center;justify-content:center;gap:14px;margin:16px 0 12px;padding:12px 20px;border-radius:14px;cursor:pointer;outline:none;border:2px solid #2a2a2a;background:#000;}
 .lembrar-wrap:focus,.lembrar-wrap.foco{border-color:#e50914;box-shadow:0 0 0 3px rgba(255,255,255,.9);}
-.lembrar-wrap input[type="checkbox"]{width:24px;height:24px;accent-color:#e50914;cursor:pointer;}
-.lembrar-wrap label{font-size:15px;color:#ccc;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:1px;}
-.plano-card{position:relative;background:#141414;border:2px solid #2a2a2a;border-radius:18px;padding:24px 28px;margin-bottom:14px;text-align:left;cursor:pointer;outline:none;transition:all .2s ease;}
+.lembrar-wrap input[type="checkbox"]{width:22px;height:22px;accent-color:#e50914;cursor:pointer;}
+.lembrar-wrap label{font-size:14px;color:#ccc;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:1px;}
+.plano-card{position:relative;background:#141414;border:2px solid #2a2a2a;border-radius:16px;padding:20px 24px;margin-bottom:12px;text-align:left;cursor:pointer;outline:none;transition:all .2s ease;}
 .plano-card:hover{border-color:#444;}
 .plano-card:focus,.plano-card.foco{border-color:#fff;transform:scale(1.02);box-shadow:0 0 0 3px rgba(255,255,255,.9);z-index:5;}
 .plano-card.destaque{border-color:#ffab00;background:#1a1408;}
 .plano-card.destaque .plano-preco{color:#ffc107;}
 .plano-card.lifetime{border-color:#ffc107;background:linear-gradient(135deg,#1a1408 0%,#0d0d0d 100%);box-shadow:0 0 25px rgba(255,193,7,.2);}
 .plano-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:12px;flex-wrap:wrap;}
-.plano-nome{color:#fff;font-size:20px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;}
-.plano-preco{color:#00c853;font-size:26px;font-weight:900;white-space:nowrap;}
-.plano-desc{color:#777;font-size:14px;font-weight:600;}
+.plano-nome{color:#fff;font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;}
+.plano-preco{color:#00c853;font-size:24px;font-weight:900;white-space:nowrap;}
+.plano-desc{color:#777;font-size:13px;font-weight:600;}
 .plano-tag{display:inline-block;background:#ffab00;color:#000;font-size:10px;font-weight:900;padding:3px 10px;border-radius:8px;margin-left:8px;letter-spacing:1.5px;vertical-align:middle;}
 .plano-tag.verde{background:#00c853;color:#fff;}
 .plano-tag.roxo{background:#8e24aa;color:#fff;}
-.divisor-login{border-top:1px solid #1f1f1f;margin:26px 0 0;padding-top:22px;}
-.divisor-login p{color:#777;font-size:15px;margin-bottom:12px;font-weight:700;}
-.qr-img{background:#fff;border-radius:18px;padding:18px;margin:22px auto;max-width:300px;}
+.divisor-login{border-top:1px solid #1f1f1f;margin:22px 0 0;padding-top:18px;}
+.divisor-login p{color:#777;font-size:14px;margin-bottom:10px;font-weight:700;}
+.qr-img{background:#fff;border-radius:18px;padding:16px;margin:18px auto;max-width:280px;}
 .qr-img img{width:100%;display:block;border-radius:8px;}
-.pix-code{background:#000;border:1px solid #2a2a2a;border-radius:12px;padding:16px;font-family:monospace;font-size:12px;word-break:break-all;color:#888;text-align:left;margin-bottom:18px;max-height:90px;overflow-y:auto;}
-.polling-status{display:flex;align-items:center;justify-content:center;gap:12px;color:#ffab00;font-size:15px;margin-bottom:18px;font-weight:700;padding:14px;background:#1a1408;border:1px solid #2a2a2a;border-radius:12px;}
+.pix-code{background:#000;border:1px solid #2a2a2a;border-radius:12px;padding:14px;font-family:monospace;font-size:12px;word-break:break-all;color:#888;text-align:left;margin-bottom:16px;max-height:80px;overflow-y:auto;}
+.polling-status{display:flex;align-items:center;justify-content:center;gap:12px;color:#ffab00;font-size:14px;margin-bottom:16px;font-weight:700;padding:12px;background:#1a1408;border:1px solid #2a2a2a;border-radius:12px;}
 .mini-loader{border:3px solid rgba(255,171,0,.2);border-top-color:#ffab00;border-radius:50%;width:20px;height:20px;animation:spin .8s linear infinite;}
-.field{margin-bottom:18px;text-align:left;}
+.field{margin-bottom:16px;text-align:left;}
 .field label{display:block;color:#777;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;}
 .msg-erro{color:#ff4d4d;font-size:14px;margin-top:12px;font-weight:800;min-height:20px;display:block;}
-.bv-emoji{font-size:100px;margin-bottom:18px;}
-.bv-usuario{color:#fff;font-size:34px;font-weight:900;margin-bottom:26px;padding:18px 40px;background:#141414;border:1px solid #2a2a2a;border-radius:50px;display:inline-block;letter-spacing:2px;}
-.bv-mensagem{color:#fff;font-size:22px;font-weight:700;margin-bottom:26px;line-height:1.4;}
+.bv-emoji{font-size:90px;margin-bottom:16px;}
+.bv-usuario{color:#fff;font-size:32px;font-weight:900;margin-bottom:22px;padding:16px 36px;background:#141414;border:1px solid #2a2a2a;border-radius:50px;display:inline-block;letter-spacing:2px;}
+.bv-mensagem{color:#fff;font-size:20px;font-weight:700;margin-bottom:22px;line-height:1.4;}
 .bv-mensagem span{color:#e50914;font-weight:900;}
-.bv-status{display:inline-block;padding:14px 30px;background:#0d1f10;border:1px solid #00c853;border-radius:50px;margin-bottom:26px;transition:all .3s ease;}
-.bv-status-txt{color:#00c853;font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:2px;}
-.barra{width:300px;height:6px;background:#1f1f1f;border-radius:6px;margin:26px auto 16px;overflow:hidden;}
+.bv-status{display:inline-block;padding:12px 26px;background:#0d1f10;border:1px solid #00c853;border-radius:50px;margin-bottom:22px;transition:all .3s ease;}
+.bv-status-txt{color:#00c853;font-size:15px;font-weight:900;text-transform:uppercase;letter-spacing:2px;}
+.barra{width:280px;height:6px;background:#1f1f1f;border-radius:6px;margin:22px auto 14px;overflow:hidden;}
 .barra-inner{height:100%;background:#e50914;border-radius:6px;width:0%;transition:width .1s linear;}
 .bv-msg{color:#555;font-size:12px;text-transform:uppercase;letter-spacing:3px;font-weight:700;}
-.aviso-bloqueio{color:#ff4d4d;font-weight:700;font-size:16px;margin:22px 0;padding:18px 26px;background:#1a0808;border:1px solid #e50914;border-radius:14px;line-height:1.5;}
-@media screen and (max-width:720px){.card{padding:35px 25px;}h1{font-size:26px;}h2{font-size:22px;}.trial-numero{font-size:80px;}.bv-usuario{font-size:24px;}.trial-contador .tempo{font-size:18px;}}
+.aviso-bloqueio{color:#ff4d4d;font-weight:700;font-size:15px;margin:20px 0;padding:16px 22px;background:#1a0808;border:1px solid #e50914;border-radius:14px;line-height:1.5;}
+@media screen and (max-width:720px){
+.card{padding:25px 20px;}
+h1{font-size:24px;}
+h2{font-size:20px;}
+.trial-numero{font-size:70px;}
+.trial-icone{font-size:50px;}
+.bv-usuario{font-size:22px;}
+.trial-contador .tempo{font-size:17px;}
+.btn{padding:16px 22px;font-size:15px;margin-bottom:10px;}
+.plano-card{padding:16px 20px;}
+.plano-preco{font-size:22px;}
+.logo-red{width:120px;margin-bottom:14px;}
+.badge{font-size:10px;padding:6px 16px;margin-bottom:16px;letter-spacing:2px;}
+}
 body{cursor:none;}
 @media(pointer:fine){body{cursor:default;}}
 </style>
@@ -112,38 +122,34 @@ body{cursor:none;}
 </div>
 
 <div class="card" id="tela-trial">
+<div class="card-inner">
 <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
 <span class="badge badge-verde" id="badge-trial">✓ TESTE GRÁTIS LIBERADO</span>
 <h1 id="trial-titulo">Bem-vindo à RedPlay</h1>
-<p id="trial-sub" style="margin-bottom:5px;">Sua conta de teste foi ativada com sucesso</p>
+<p id="trial-sub" style="margin-bottom:5px;">Sua conta de teste foi ativada</p>
 <div class="trial-container">
 <div class="trial-icone" id="trial-icone">🎁</div>
-<div class="trial-label" id="trial-label">VOCÊ TEM DIREITO A</div>
 <div class="trial-dias">
 <div class="trial-numero" id="trial-numero">3</div>
 <div class="trial-texto" id="trial-texto">Dias<small>Grátis</small></div>
 </div>
 <div class="trial-contador" id="trial-contador">Calculando...</div>
-<div class="trial-beneficios">
-<div class="trial-beneficio"><span>🎬</span><span>Filmes</span></div>
-<div class="trial-beneficio"><span>📺</span><span>Séries</span></div>
-<div class="trial-beneficio"><span>⚽</span><span>Esportes</span></div>
-<div class="trial-beneficio"><span>📡</span><span>Canais</span></div>
-</div>
 </div>
 <div class="trial-destaque" id="trial-destaque">💡 <strong>Aproveite!</strong> Após 3 dias, escolha um plano para continuar assistindo.</div>
-<div style="margin-top:25px;">
+<div style="margin-top:20px;">
 <button class="btn btn-verde" id="btn-trial-continuar" onclick="continuarTeste()" tabindex="0">▶ Continuar Teste</button>
 <button class="btn btn-primario" id="btn-trial-pagar" onclick="irParaPagamento()" tabindex="0">💳 Fazer Pagamento</button>
 <button class="btn btn-cinza" id="btn-trial-conta" onclick="irParaConta()" tabindex="0">🔐 Iniciar com Conta</button>
 </div>
 </div>
+</div>
 
 <div class="card" id="tela-planos">
+<div class="card-inner">
 <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
 <span class="badge">SELECIONE SEU PLANO</span>
 <h2>Continue assistindo</h2>
-<p style="margin-bottom:26px;">Escolha um plano para liberar o acesso</p>
+<p style="margin-bottom:22px;">Escolha um plano para liberar o acesso</p>
 <div style="text-align:left;">
 <div class="plano-card destaque" tabindex="0" onclick="escolherPlano('mensal_primeiro')">
 <div class="plano-top"><span class="plano-nome">Mensal <span class="plano-tag">1ª VEZ</span></span><span class="plano-preco">R$ 12,90</span></div>
@@ -158,7 +164,7 @@ body{cursor:none;}
 <div class="plano-desc">12 meses com desconto. Economize R$ 76!</div>
 </div>
 <div class="plano-card lifetime" tabindex="0" onclick="escolherPlano('lifetime')">
-<div class="plano-top"><span class="plano-nome">Vitalício (Lifetime) <span class="plano-tag roxo">PREMIUM</span></span><span class="plano-preco">R$ 450,00</span></div>
+<div class="plano-top"><span class="plano-nome">Vitalício <span class="plano-tag roxo">PREMIUM</span></span><span class="plano-preco">R$ 450,00</span></div>
 <div class="plano-desc">Pague uma vez e assista para sempre</div>
 </div>
 </div>
@@ -167,12 +173,14 @@ body{cursor:none;}
 <button class="btn btn-cinza" onclick="mostrarTela('tela-login-cliente')" tabindex="0">Fazer Login</button>
 </div>
 </div>
+</div>
 
 <div class="card" id="tela-login-cliente">
+<div class="card-inner">
 <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
 <span class="badge">FAZER LOGIN</span>
 <h2>Entre na sua conta</h2>
-<p style="margin-bottom:26px;">Use o usuário e senha que você criou</p>
+<p style="margin-bottom:22px;">Use o usuário e senha que você criou</p>
 <div class="field">
 <label>Nome de Usuário</label>
 <input type="text" id="login-cliente-usuario" placeholder="seu usuario" maxlength="20" autocomplete="off">
@@ -192,12 +200,14 @@ body{cursor:none;}
 <button class="btn btn-cinza" onclick="mostrarTela('tela-planos')" tabindex="0">Ver Planos</button>
 </div>
 </div>
+</div>
 
 <div class="card" id="tela-qrcode">
+<div class="card-inner">
 <span class="badge badge-amarelo">PAGAMENTO PIX</span>
 <h2>Escaneie o QR Code</h2>
 <p>Use o app do seu banco para pagar</p>
-<p id="qr-valor" style="font-size:30px;color:#00c853;font-weight:900;margin-bottom:18px;">R$ 0,00</p>
+<p id="qr-valor" style="font-size:28px;color:#00c853;font-weight:900;margin-bottom:16px;">R$ 0,00</p>
 <div class="qr-img"><img id="qr-image" src="" alt="QR Code PIX"></div>
 <div class="pix-code" id="qr-code-txt">Carregando código PIX...</div>
 <button class="btn btn-cinza" onclick="copiarPix()" id="btn-copiar" tabindex="0">📋 Copiar Código PIX</button>
@@ -207,8 +217,10 @@ body{cursor:none;}
 </div>
 <button class="btn btn-cinza" onclick="voltarDosPlanos()" tabindex="0">← Voltar</button>
 </div>
+</div>
 
 <div class="card" id="tela-boas-vindas">
+<div class="card-inner">
 <div class="bv-emoji" id="bv-emoji">🎬</div>
 <span class="badge badge-verde" id="bv-badge">✓ TUDO PRONTO</span>
 <h2 id="bv-titulo">Bem-vindo!</h2>
@@ -218,14 +230,17 @@ body{cursor:none;}
 <div class="barra"><div class="barra-inner" id="barra-bv"></div></div>
 <p class="bv-msg" id="bv-msg">Carregando ambiente da TV...</p>
 </div>
+</div>
 
 <div class="card" id="tela-erro">
+<div class="card-inner">
 <div class="bv-emoji">⚠️</div>
 <span class="badge">CONEXÃO</span>
 <h2>Erro de Conexão</h2>
 <div class="aviso-bloqueio" id="msg-erro-conexao">Não foi possível conectar ao servidor. Verifique sua internet e tente novamente.</div>
 <button class="btn btn-primario" onclick="iniciarApp()" tabindex="0">🔄 Tentar Novamente</button>
 <a href="#" class="btn btn-whats" onclick="abrirWhatsApp(event)" tabindex="0">📱 Falar no WhatsApp</a>
+</div>
 </div>
 
 <script>
@@ -241,6 +256,7 @@ var pollingTentativas=0;
 var MAX_POLLING=60;
 var contadorTimer=null;
 var statusAtual=null;
+var TRIAL_DURACAO_MS=3*24*60*60*1000;
 
 function obterDeviceId(){
 try{
@@ -311,41 +327,66 @@ iniciarApp();
 });
 
 /* =====================================================
-   CÁLCULO DO TEMPO RESTANTE (usando trial_inicio do servidor)
+   CONTADOR DO TRIAL — aceita trial_inicio do servidor
    ===================================================== */
-function calcularRestante(inicioMs){
-var TRIAL_DURACAO_MS=3*24*60*60*1000;
-if(!inicioMs)return {dias:0,horas:0,min:0,seg:0,expirado:true};
-var restante=TRIAL_DURACAO_MS-(Date.now()-inicioMs);
-if(restante<=0)return {dias:0,horas:0,min:0,seg:0,expirado:true};
-return {
-dias:Math.floor(restante/(24*60*60*1000)),
-horas:Math.floor((restante%(24*60*60*1000))/(60*60*1000)),
-min:Math.floor((restante%(60*60*1000))/(60*1000)),
-seg:Math.floor((restante%(60*1000))/1000),
-expirado:false
-};
-}
-
 function atualizarContadorTrial(){
-if(!statusAtual||!statusAtual.trial_inicio){return;}
 var el=document.getElementById('trial-contador');
 if(!el)return;
-var inicioMs=typeof statusAtual.trial_inicio==='number'
-? statusAtual.trial_inicio
-: new Date(statusAtual.trial_inicio).getTime();
 
-var t=calcularRestante(inicioMs);
-if(t.expirado){
+if(!statusAtual||statusAtual.status==='expirado'){
 el.className='trial-contador expirado';
 el.innerHTML='⚠ SEU TESTE EXPIROU<span class="tempo">Escolha um plano para continuar</span>';
 return;
 }
+
+// Aceita tanto trial_inicio quanto data_inicio
+var inicioRaw=statusAtual.trial_inicio||statusAtual.data_inicio;
+
+if(!inicioRaw){
+el.className='trial-contador';
+el.innerHTML='⏳ TESTE ATIVO<span class="tempo">3 dias a partir de hoje</span>';
+return;
+}
+
+var inicioMs;
+if(typeof inicioRaw==='number'){
+inicioMs=inicioRaw;
+}else{
+inicioMs=new Date(inicioRaw).getTime();
+}
+
+if(isNaN(inicioMs)||inicioMs<=0){
+el.className='trial-contador';
+el.innerHTML='⏳ TESTE ATIVO<span class="tempo">3 dias a partir de hoje</span>';
+return;
+}
+
+var agora=Date.now();
+var decorrido=agora-inicioMs;
+
+if(decorrido<0){
+el.className='trial-contador';
+el.innerHTML='⏳ TESTE ATIVO<span class="tempo">03d : 00h : 00m : 00s</span>';
+return;
+}
+
+var restante=TRIAL_DURACAO_MS-decorrido;
+if(restante<=0){
+el.className='trial-contador expirado';
+el.innerHTML='⚠ SEU TESTE EXPIROU<span class="tempo">Escolha um plano para continuar</span>';
+return;
+}
+
+var dias=Math.floor(restante/(24*60*60*1000));
+var horas=Math.floor((restante%(24*60*60*1000))/(60*60*1000));
+var min=Math.floor((restante%(60*60*1000))/(60*1000));
+var seg=Math.floor((restante%(60*1000))/1000);
+
 var partes=[];
-if(t.dias>0)partes.push(t.dias+'d');
-partes.push(String(t.horas).padStart(2,'0')+'h');
-partes.push(String(t.min).padStart(2,'0')+'m');
-partes.push(String(t.seg).padStart(2,'0')+'s');
+partes.push(String(dias).padStart(2,'0')+'d');
+partes.push(String(horas).padStart(2,'0')+'h');
+partes.push(String(min).padStart(2,'0')+'m');
+partes.push(String(seg).padStart(2,'0')+'s');
 
 el.className='trial-contador';
 el.innerHTML='⏳ TEMPO RESTANTE<span class="tempo">'+partes.join(' : ')+'</span>';
@@ -362,7 +403,7 @@ if(contadorTimer){clearInterval(contadorTimer);contadorTimer=null;}
 }
 
 /* =====================================================
-   EXIBIR TRIAL (dados vindos do servidor)
+   EXIBIR TRIAL
    ===================================================== */
 function exibirTrial(){
 var info=statusAtual;
@@ -377,7 +418,6 @@ var badge=document.getElementById('badge-trial');
 var titulo=document.getElementById('trial-titulo');
 var sub=document.getElementById('trial-sub');
 var icone=document.getElementById('trial-icone');
-var label=document.getElementById('trial-label');
 var numero=document.getElementById('trial-numero');
 var texto=document.getElementById('trial-texto');
 var destaque=document.getElementById('trial-destaque');
@@ -388,20 +428,18 @@ if(btnContinuar)btnContinuar.style.display='none';
 if(btnConta)btnConta.style.display='none';
 if(badge){badge.className='badge';badge.style.background='#e50914';badge.innerText='⛔ TESTE EXPIRADO';}
 if(titulo)titulo.innerText='Seu teste expirou';
-if(sub)sub.innerText='Para continuar assistindo, faça o pagamento';
+if(sub)sub.innerText='Para continuar, faça o pagamento';
 if(icone)icone.innerText='⛔';
-if(label)label.innerText='PARA CONTINUAR VOCÊ PRECISA';
 if(numero)numero.innerText='PAGAR';
 if(texto)texto.innerHTML='Assinar<small>Acesso Completo</small>';
-if(destaque)destaque.innerHTML='⚠ <strong>Seu teste terminou.</strong> Faça o pagamento para liberar novamente o acesso à RedPlay.';
+if(destaque)destaque.innerHTML='⚠ <strong>Seu teste terminou.</strong> Faça o pagamento para liberar o acesso.';
 }else{
 if(btnContinuar)btnContinuar.style.display='block';
 if(btnConta)btnConta.style.display='block';
 if(badge){badge.className='badge badge-verde';badge.innerText='✓ TESTE GRÁTIS LIBERADO';}
 if(titulo)titulo.innerText='Bem-vindo à RedPlay';
-if(sub)sub.innerText='Sua conta de teste foi ativada com sucesso';
+if(sub)sub.innerText='Sua conta de teste foi ativada';
 if(icone)icone.innerText='🎁';
-if(label)label.innerText='VOCÊ TEM DIREITO A';
 if(numero)numero.innerText='3';
 if(texto)texto.innerHTML='Dias<small>Grátis</small>';
 if(destaque)destaque.innerHTML='💡 <strong>Aproveite!</strong> Após 3 dias, escolha um plano para continuar assistindo.';
@@ -411,9 +449,6 @@ mostrarTela('tela-trial');
 iniciarContadorTrial();
 }
 
-/* =====================================================
-   AÇÕES DA TELA DE TRIAL
-   ===================================================== */
 function continuarTeste(){
 if(!statusAtual||statusAtual.status==='expirado'){
 alert('Seu teste expirou. Escolha um plano para continuar.');
@@ -482,7 +517,6 @@ irParaBoasVindas(nome);
 return;
 }
 
-// Trial ou expirado
 exibirTrial();
 });
 }
@@ -511,7 +545,7 @@ document.body.innerHTML='<div style="display:flex;justify-content:center;align-i
 }
 
 function bloquear(motivo){
-document.body.innerHTML='<div class="card ativo" style="display:block;max-width:700px;"><img src="download.png" class="logo-red" onerror="this.style.display=\'none\'"><span class="badge" style="background:#e50914;">⛔ CONTA BLOQUEADA</span><h2>Acesso Suspenso</h2><div class="aviso-bloqueio">'+motivo+'</div><a href="https://wa.me/'+NUMERO_WHATSAPP+'" class="btn btn-whats" target="_blank" tabindex="0">📱 Falar no WhatsApp</a></div>';
+document.body.innerHTML='<div class="card ativo" style="display:flex;max-width:100%;"><div class="card-inner"><img src="download.png" class="logo-red" onerror="this.style.display=\'none\'"><span class="badge" style="background:#e50914;">⛔ CONTA BLOQUEADA</span><h2>Acesso Suspenso</h2><div class="aviso-bloqueio">'+motivo+'</div><a href="https://wa.me/'+NUMERO_WHATSAPP+'" class="btn btn-whats" target="_blank" tabindex="0">📱 Falar no WhatsApp</a></div></div>';
 }
 
 function abrirWhatsApp(e){
@@ -520,9 +554,6 @@ var msg=encodeURIComponent('Olá! Preciso de ajuda com a RedPlay.');
 window.open('https://wa.me/'+NUMERO_WHATSAPP+'?text='+msg,'_blank');
 }
 
-/* =====================================================
-   PLANOS E PAGAMENTO
-   ===================================================== */
 function escolherPlano(plano){
 var precos={'mensal_primeiro':'R$ 12,90','mensal':'R$ 18,90','anual':'R$ 149,90','lifetime':'R$ 450,00'};
 document.getElementById('qr-valor').innerText=precos[plano]||'R$ 0,00';
@@ -588,9 +619,6 @@ setTimeout(iniciarApp,2000);
 },5000);
 }
 
-/* =====================================================
-   LOGIN
-   ===================================================== */
 function toggleLembrar(e){
 if(e)e.stopPropagation();
 var cb=document.getElementById('lembrar-senha');
@@ -648,9 +676,6 @@ localStorage.removeItem(LEMBRAR_KEY);
 }catch(e){}
 }
 
-/* =====================================================
-   BOAS-VINDAS DINÂMICA
-   ===================================================== */
 function irParaBoasVindas(usuario){
 var info=statusAtual||{};
 
@@ -666,17 +691,21 @@ document.getElementById('bv-usuario').innerText=usuario.toUpperCase();
 
 if(info.status==='trial'){
 var tempoStr='';
-if(info.trial_inicio){
-var inicioMs=typeof info.trial_inicio==='number'?info.trial_inicio:new Date(info.trial_inicio).getTime();
-var t=calcularRestante(inicioMs);
-if(t.dias>0)tempoStr=t.dias+' dia'+(t.dias>1?'s':'')+' e '+t.horas+'h';
-else if(t.horas>0)tempoStr=t.horas+'h e '+t.min+'min';
-else tempoStr=t.min+'min';
+var inicioRaw=info.trial_inicio||info.data_inicio;
+if(inicioRaw){
+var inicioMs=typeof inicioRaw==='number'?inicioRaw:new Date(inicioRaw).getTime();
+var restante=TRIAL_DURACAO_MS-(Date.now()-inicioMs);
+if(restante>0){
+var d=Math.floor(restante/(24*60*60*1000));
+var h=Math.floor((restante%(24*60*60*1000))/(60*60*1000));
+if(d>0)tempoStr=d+' dia'+(d>1?'s':'')+' e '+h+'h';
+else if(h>0)tempoStr=h+'h';
+}
 }
 if(emoji)emoji.innerText='⏳';
 if(badge){badge.className='badge badge-amarelo';badge.innerText='✓ PERÍODO DE TESTE';}
 if(titulo)titulo.innerText='Bem-vindo!';
-if(msg)msg.innerHTML='Você está no <span>teste grátis</span>.'+(tempoStr?' Restam '+tempoStr+' para escolher um plano.':'');
+if(msg)msg.innerHTML='Você está no <span>teste grátis</span>.'+(tempoStr?' Restam '+tempoStr+'.':'');
 if(statusBox){statusBox.style.background='#1a1408';statusBox.style.borderColor='#ffab00';}
 if(statusTxt){statusTxt.style.color='#ffc107';statusTxt.innerText='⏳ TESTE ATIVO'+(tempoStr?' - '+tempoStr:'');}
 if(msgRodape)msgRodape.innerText='Carregando ambiente da TV...';
@@ -708,9 +737,6 @@ setTimeout(liberarAcessoApp,3500);
 }
 }
 
-/* =====================================================
-   NAVEGAÇÃO D-PAD
-   ===================================================== */
 document.addEventListener('keydown',function(e){
 var card=document.querySelector('.card.ativo');
 if(!card)return;
