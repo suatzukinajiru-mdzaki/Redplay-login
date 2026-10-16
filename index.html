@@ -11,42 +11,54 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Montserrat',Arial,sans-serif;-webkit-tap-highlight-color:transparent;}
 html,body{height:100vh;width:100vw;overflow:hidden;background:#000;color:#fff;user-select:none;-webkit-user-select:none;}
 body{display:flex;justify-content:center;align-items:center;background:#000;}
+
+/* ==================== SPLASH ==================== */
 #splash{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:99999;transition:opacity .4s ease-out;}
-.splash-logo{width:220px;margin-bottom:30px;}
-.loader{width:50px;height:50px;border:5px solid rgba(229,9,20,.2);border-top-color:#e50914;border-radius:50%;animation:spin .9s linear infinite;}
+.splash-logo{width:240px;margin-bottom:30px;}
+.loader{width:55px;height:55px;border:5px solid rgba(229,9,20,.2);border-top-color:#e50914;border-radius:50%;animation:spin .9s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.splash-txt{color:#555;font-size:12px;letter-spacing:4px;margin-top:18px;text-transform:uppercase;font-weight:700;}
-.card{position:fixed;inset:0;background:#0d0d0d;padding:18px 30px;overflow-y:auto;text-align:center;display:none;flex-direction:column;justify-content:center;align-items:center;}
+.splash-txt{color:#555;font-size:12px;letter-spacing:5px;margin-top:20px;text-transform:uppercase;font-weight:700;}
+
+/* ==================== CARD (TV BOX - TELA LARGA) ==================== */
+.card{position:fixed;inset:0;background:#0d0d0d;padding:30px 60px;overflow-y:auto;text-align:center;display:none;flex-direction:column;justify-content:center;align-items:center;}
 .card.ativo{display:flex;}
-.card::-webkit-scrollbar{width:5px;}
+.card::-webkit-scrollbar{width:6px;}
 .card::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:3px;}
-.card-inner{width:100%;max-width:760px;margin:auto;padding:0;}
-.logo-red{width:105px;margin-bottom:10px;display:inline-block;}
-.badge{display:inline-block;background:#e50914;font-size:10px;font-weight:800;padding:6px 18px;border-radius:20px;margin-bottom:10px;letter-spacing:2.5px;color:#fff;line-height:1;text-transform:uppercase;}
+.card-inner{width:100%;max-width:1100px;margin:auto;display:flex;flex-direction:column;align-items:center;}
+
+/* ==================== TIPOGRAFIA ==================== */
+.logo-red{width:120px;margin-bottom:14px;display:inline-block;}
+.badge{display:inline-block;background:#e50914;font-size:12px;font-weight:800;padding:8px 24px;border-radius:20px;margin-bottom:16px;letter-spacing:3px;color:#fff;line-height:1;text-transform:uppercase;}
 .badge-verde{background:#00c853;color:#000;}
 .badge-amarelo{background:#ffab00;color:#000;}
-h1{color:#fff;font-size:26px;font-weight:900;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;line-height:1.15;}
-h2{color:#fff;font-size:22px;font-weight:900;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;line-height:1.2;}
-p{color:#888;font-size:13px;line-height:1.4;margin-bottom:6px;}
-.trial-container{margin:12px 0 10px;padding:20px 18px;background:#141414;border:1px solid #2a2a2a;border-radius:18px;transition:all .3s ease;}
-.trial-dias{display:flex;justify-content:center;align-items:center;gap:10px;}
-.trial-numero{font-size:75px;font-weight:900;line-height:1;color:#e50914;text-shadow:0 0 40px rgba(229,9,20,.6);}
-.trial-texto{font-size:20px;font-weight:900;color:#e50914;text-transform:uppercase;letter-spacing:2px;line-height:1.1;text-align:left;}
-.trial-texto small{display:block;font-size:10px;color:#666;font-weight:700;letter-spacing:3px;margin-top:3px;}
-.trial-contador{margin:12px auto 0;padding:9px 16px;background:#000;border:1px solid #2a2a2a;border-radius:10px;color:#ffc107;font-size:10px;font-weight:800;letter-spacing:1.5px;text-align:center;max-width:360px;text-transform:uppercase;}
-.trial-contador .tempo{color:#fff;font-size:17px;font-weight:900;display:block;margin-top:4px;letter-spacing:2px;font-family:monospace;}
+h1{color:#fff;font-size:32px;font-weight:900;text-transform:uppercase;letter-spacing:3px;margin-bottom:8px;line-height:1.15;}
+h2{color:#fff;font-size:26px;font-weight:900;text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;line-height:1.2;}
+p{color:#888;font-size:15px;line-height:1.5;margin-bottom:10px;}
+
+/* ==================== TRIAL ==================== */
+.trial-container{margin:16px 0 14px;padding:28px 40px;background:#141414;border:1px solid #2a2a2a;border-radius:20px;transition:all .3s ease;width:100%;max-width:620px;}
+.trial-dias{display:flex;justify-content:center;align-items:center;gap:18px;}
+.trial-numero{font-size:95px;font-weight:900;line-height:1;color:#e50914;text-shadow:0 0 50px rgba(229,9,20,.6);}
+.trial-texto{font-size:26px;font-weight:900;color:#e50914;text-transform:uppercase;letter-spacing:3px;line-height:1.1;text-align:left;}
+.trial-texto small{display:block;font-size:12px;color:#666;font-weight:700;letter-spacing:4px;margin-top:4px;}
+.trial-contador{margin:16px auto 0;padding:12px 20px;background:#000;border:1px solid #2a2a2a;border-radius:12px;color:#ffc107;font-size:12px;font-weight:800;letter-spacing:2px;text-align:center;max-width:420px;text-transform:uppercase;}
+.trial-contador .tempo{color:#fff;font-size:22px;font-weight:900;display:block;margin-top:6px;letter-spacing:3px;font-family:monospace;}
 .trial-contador.expirado{color:#ff4d4d;border-color:#e50914;background:#1a0808;}
-.trial-contador.expirado .tempo{color:#ff4d4d;font-size:13px;}
-.trial-destaque{background:#000;border-left:5px solid #ffc107;border-radius:10px;padding:10px 16px;text-align:left;font-size:12px;color:#ccc;font-weight:600;margin-top:12px;line-height:1.4;}
+.trial-contador.expirado .tempo{color:#ff4d4d;font-size:16px;}
+.trial-destaque{background:#000;border-left:5px solid #ffc107;border-radius:12px;padding:14px 22px;text-align:left;font-size:14px;color:#ccc;font-weight:600;margin-top:16px;line-height:1.5;width:100%;max-width:620px;}
 .trial-destaque strong{color:#ffc107;}
 #tela-trial.expirado .trial-container{border-color:#e50914;background:linear-gradient(135deg,rgba(229,9,20,.15) 0%,rgba(139,0,0,.08) 100%);}
-#tela-trial.expirado .trial-numero{color:#ff4d4d;text-shadow:0 0 40px rgba(255,77,77,.6);font-size:50px;}
-#tela-trial.expirado .trial-texto{color:#ff4d4d;font-size:14px;}
+#tela-trial.expirado .trial-numero{color:#ff4d4d;text-shadow:0 0 40px rgba(255,77,77,.6);font-size:60px;}
+#tela-trial.expirado .trial-texto{color:#ff4d4d;font-size:18px;}
 #tela-trial.expirado .trial-destaque{border-left-color:#e50914;background:#1a0808;}
 #tela-trial.expirado .trial-destaque strong{color:#ff4d4d;}
-.trial-botoes{margin-top:12px;width:100%;}
+
+/* Área dos botões do trial - largura confortável */
+.trial-botoes{margin-top:16px;width:100%;max-width:620px;}
+
+/* ==================== BOTÕES ==================== */
 button{cursor:pointer;border:none;font-family:inherit;background:none;}
-.btn{width:100%;padding:15px 22px;border-radius:13px;font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;transition:all .2s ease;margin-bottom:9px;outline:none;border:2px solid transparent;}
+.btn{width:100%;padding:18px 24px;border-radius:14px;font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:2px;transition:all .2s ease;margin-bottom:10px;outline:none;border:2px solid transparent;}
 .btn:last-child{margin-bottom:0;}
 .btn-primario{background:#e50914;color:#fff;}
 .btn-primario:hover{background:#b20710;}
@@ -56,60 +68,80 @@ button{cursor:pointer;border:none;font-family:inherit;background:none;}
 .btn-cinza:hover{background:#1a1a1a;color:#fff;border-color:#444;}
 .btn-whats{background:#25D366;color:#fff;text-decoration:none;display:inline-block;text-align:center;}
 .btn:focus,.btn.foco{border-color:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.95);outline:none;z-index:10;transform:scale(1.02);}
-input{width:100%;padding:16px 20px;background:#000;border:2px solid #2a2a2a;border-radius:13px;color:#fff;font-size:17px;font-weight:700;text-align:center;outline:none;letter-spacing:1px;}
+
+/* ==================== INPUTS ==================== */
+input{width:100%;padding:18px 22px;background:#000;border:2px solid #2a2a2a;border-radius:14px;color:#fff;font-size:18px;font-weight:700;text-align:center;outline:none;letter-spacing:1px;}
 input:focus{border-color:#e50914;box-shadow:0 0 0 3px rgba(229,9,20,.3);}
-input::placeholder{color:#444;text-transform:uppercase;font-size:12px;font-weight:700;letter-spacing:2px;}
-.lembrar-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin:14px 0 10px;padding:11px 18px;border-radius:13px;cursor:pointer;outline:none;border:2px solid #2a2a2a;background:#000;}
+input::placeholder{color:#444;text-transform:uppercase;font-size:13px;font-weight:700;letter-spacing:2px;}
+.lembrar-wrap{display:flex;align-items:center;justify-content:center;gap:14px;margin:16px 0 12px;padding:13px 20px;border-radius:14px;cursor:pointer;outline:none;border:2px solid #2a2a2a;background:#000;}
 .lembrar-wrap:focus,.lembrar-wrap.foco{border-color:#e50914;box-shadow:0 0 0 3px rgba(255,255,255,.9);}
-.lembrar-wrap input[type="checkbox"]{width:20px;height:20px;accent-color:#e50914;cursor:pointer;}
-.lembrar-wrap label{font-size:13px;color:#ccc;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:1px;}
-.plano-card{position:relative;background:#141414;border:2px solid #2a2a2a;border-radius:14px;padding:16px 20px;margin-bottom:10px;text-align:left;cursor:pointer;outline:none;transition:all .2s ease;}
+.lembrar-wrap input[type="checkbox"]{width:22px;height:22px;accent-color:#e50914;cursor:pointer;}
+.lembrar-wrap label{font-size:14px;color:#ccc;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:1px;}
+
+/* Largura padronizada das telas de formulário */
+.form-box{width:100%;max-width:520px;}
+
+/* ==================== PLANOS ==================== */
+.planos-box{width:100%;max-width:720px;text-align:left;}
+.plano-card{position:relative;background:#141414;border:2px solid #2a2a2a;border-radius:14px;padding:18px 24px;margin-bottom:12px;text-align:left;cursor:pointer;outline:none;transition:all .2s ease;}
 .plano-card:hover{border-color:#444;}
 .plano-card:focus,.plano-card.foco{border-color:#fff;transform:scale(1.02);box-shadow:0 0 0 3px rgba(255,255,255,.9);z-index:5;}
 .plano-card.destaque{border-color:#ffab00;background:#1a1408;}
 .plano-card.destaque .plano-preco{color:#ffc107;}
 .plano-card.lifetime{border-color:#ffc107;background:linear-gradient(135deg,#1a1408 0%,#0d0d0d 100%);box-shadow:0 0 25px rgba(255,193,7,.2);}
-.plano-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:10px;flex-wrap:wrap;}
-.plano-nome{color:#fff;font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;}
-.plano-preco{color:#00c853;font-size:22px;font-weight:900;white-space:nowrap;}
-.plano-desc{color:#777;font-size:12px;font-weight:600;}
-.plano-tag{display:inline-block;background:#ffab00;color:#000;font-size:9px;font-weight:900;padding:3px 9px;border-radius:7px;margin-left:6px;letter-spacing:1.3px;vertical-align:middle;}
+.plano-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;gap:12px;flex-wrap:wrap;}
+.plano-nome{color:#fff;font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;}
+.plano-preco{color:#00c853;font-size:24px;font-weight:900;white-space:nowrap;}
+.plano-desc{color:#777;font-size:13px;font-weight:600;}
+.plano-tag{display:inline-block;background:#ffab00;color:#000;font-size:10px;font-weight:900;padding:3px 10px;border-radius:8px;margin-left:8px;letter-spacing:1.5px;vertical-align:middle;}
 .plano-tag.verde{background:#00c853;color:#fff;}
 .plano-tag.roxo{background:#8e24aa;color:#fff;}
-.divisor-login{border-top:1px solid #1f1f1f;margin:18px 0 0;padding-top:14px;}
-.divisor-login p{color:#777;font-size:13px;margin-bottom:8px;font-weight:700;}
-.qr-img{background:#fff;border-radius:16px;padding:14px;margin:16px auto;max-width:240px;}
+
+/* ==================== DIVISOR ==================== */
+.divisor-login{border-top:1px solid #1f1f1f;margin:22px 0 0;padding-top:18px;}
+.divisor-login p{color:#777;font-size:14px;margin-bottom:10px;font-weight:700;}
+
+/* ==================== QR CODE ==================== */
+.qr-img{background:#fff;border-radius:16px;padding:16px;margin:18px auto;max-width:260px;}
 .qr-img img{width:100%;display:block;border-radius:8px;}
-.pix-code{background:#000;border:1px solid #2a2a2a;border-radius:12px;padding:12px;font-family:monospace;font-size:11px;word-break:break-all;color:#888;text-align:left;margin-bottom:14px;max-height:70px;overflow-y:auto;}
-.polling-status{display:flex;align-items:center;justify-content:center;gap:10px;color:#ffab00;font-size:13px;margin-bottom:14px;font-weight:700;padding:11px;background:#1a1408;border:1px solid #2a2a2a;border-radius:12px;}
-.mini-loader{border:3px solid rgba(255,171,0,.2);border-top-color:#ffab00;border-radius:50%;width:18px;height:18px;animation:spin .8s linear infinite;}
-.field{margin-bottom:14px;text-align:left;}
-.field label{display:block;color:#777;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;}
-.msg-erro{color:#ff4d4d;font-size:13px;margin-top:10px;font-weight:800;min-height:18px;display:block;}
-.bv-emoji{font-size:75px;margin-bottom:14px;}
-.bv-usuario{color:#fff;font-size:28px;font-weight:900;margin-bottom:18px;padding:14px 32px;background:#141414;border:1px solid #2a2a2a;border-radius:50px;display:inline-block;letter-spacing:2px;}
-.bv-mensagem{color:#fff;font-size:18px;font-weight:700;margin-bottom:18px;line-height:1.4;}
+.pix-code{background:#000;border:1px solid #2a2a2a;border-radius:12px;padding:14px;font-family:monospace;font-size:12px;word-break:break-all;color:#888;text-align:left;margin-bottom:16px;max-height:80px;overflow-y:auto;width:100%;max-width:520px;}
+.polling-status{display:flex;align-items:center;justify-content:center;gap:12px;color:#ffab00;font-size:14px;margin-bottom:16px;font-weight:700;padding:12px;background:#1a1408;border:1px solid #2a2a2a;border-radius:12px;width:100%;max-width:520px;}
+.mini-loader{border:3px solid rgba(255,171,0,.2);border-top-color:#ffab00;border-radius:50%;width:20px;height:20px;animation:spin .8s linear infinite;}
+
+/* ==================== FIELDS ==================== */
+.field{margin-bottom:16px;text-align:left;}
+.field label{display:block;color:#777;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;}
+.msg-erro{color:#ff4d4d;font-size:14px;margin-top:12px;font-weight:800;min-height:20px;display:block;}
+
+/* ==================== BOAS-VINDAS ==================== */
+.bv-emoji{font-size:90px;margin-bottom:16px;}
+.bv-usuario{color:#fff;font-size:34px;font-weight:900;margin-bottom:22px;padding:16px 40px;background:#141414;border:1px solid #2a2a2a;border-radius:50px;display:inline-block;letter-spacing:2px;}
+.bv-mensagem{color:#fff;font-size:22px;font-weight:700;margin-bottom:22px;line-height:1.4;}
 .bv-mensagem span{color:#e50914;font-weight:900;}
-.bv-status{display:inline-block;padding:10px 22px;background:#0d1f10;border:1px solid #00c853;border-radius:50px;margin-bottom:18px;transition:all .3s ease;}
-.bv-status-txt{color:#00c853;font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:2px;}
-.barra{width:260px;height:6px;background:#1f1f1f;border-radius:6px;margin:18px auto 12px;overflow:hidden;}
+.bv-status{display:inline-block;padding:12px 28px;background:#0d1f10;border:1px solid #00c853;border-radius:50px;margin-bottom:22px;transition:all .3s ease;}
+.bv-status-txt{color:#00c853;font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:2px;}
+.barra{width:300px;height:6px;background:#1f1f1f;border-radius:6px;margin:22px auto 14px;overflow:hidden;}
 .barra-inner{height:100%;background:#e50914;border-radius:6px;width:0%;transition:width .1s linear;}
-.bv-msg{color:#555;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;}
-.aviso-bloqueio{color:#ff4d4d;font-weight:700;font-size:14px;margin:18px 0;padding:14px 20px;background:#1a0808;border:1px solid #e50914;border-radius:14px;line-height:1.5;}
+.bv-msg{color:#555;font-size:12px;text-transform:uppercase;letter-spacing:3px;font-weight:700;}
+
+/* ==================== BLOQUEIO ==================== */
+.aviso-bloqueio{color:#ff4d4d;font-weight:700;font-size:15px;margin:20px 0;padding:16px 24px;background:#1a0808;border:1px solid #e50914;border-radius:14px;line-height:1.5;width:100%;max-width:620px;}
+
+/* ==================== RESPONSIVO TV BOX PEQUENA ==================== */
 @media screen and (max-width:720px){
-.card{padding:14px 18px;}
-h1{font-size:22px;}
-h2{font-size:18px;}
-.trial-numero{font-size:65px;}
-.trial-texto{font-size:18px;}
-.bv-usuario{font-size:20px;}
-.trial-contador .tempo{font-size:15px;}
-.btn{padding:13px 18px;font-size:14px;margin-bottom:8px;}
-.plano-card{padding:14px 16px;}
-.plano-preco{font-size:20px;}
-.logo-red{width:90px;margin-bottom:8px;}
-.badge{font-size:9px;padding:5px 14px;margin-bottom:10px;letter-spacing:2px;line-height:1;}
-p{font-size:12px;margin-bottom:5px;}
+.card{padding:20px 22px;}
+h1{font-size:24px;}
+h2{font-size:20px;}
+.trial-numero{font-size:70px;}
+.trial-texto{font-size:20px;}
+.bv-usuario{font-size:24px;}
+.trial-contador .tempo{font-size:18px;}
+.btn{padding:15px 20px;font-size:14px;margin-bottom:9px;}
+.plano-card{padding:15px 18px;}
+.plano-preco{font-size:22px;}
+.logo-red{width:100px;margin-bottom:10px;}
+.badge{font-size:10px;padding:6px 18px;margin-bottom:12px;letter-spacing:2px;}
+p{font-size:13px;}
 }
 body{cursor:none;}
 @media(pointer:fine){body{cursor:default;}}
@@ -152,8 +184,8 @@ body{cursor:none;}
 <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
 <span class="badge">SELECIONE SEU PLANO</span>
 <h2>Continue assistindo</h2>
-<p style="margin-bottom:18px;">Escolha um plano para liberar o acesso</p>
-<div style="text-align:left;">
+<p style="margin-bottom:20px;">Escolha um plano para liberar o acesso</p>
+<div class="planos-box">
 <div class="plano-card destaque" tabindex="0" onclick="escolherPlano('mensal_primeiro')">
 <div class="plano-top"><span class="plano-nome">Mensal <span class="plano-tag">1ª VEZ</span></span><span class="plano-preco">R$ 12,90</span></div>
 <div class="plano-desc">Primeiro mês com desconto especial</div>
@@ -184,14 +216,15 @@ body{cursor:none;}
 <img src="download.png" alt="RedPlay" class="logo-red" onerror="this.style.display='none'">
 <span class="badge">FAZER LOGIN</span>
 <h2>Entre na sua conta</h2>
-<p style="margin-bottom:18px;">Use o usuário e senha que você criou</p>
+<p style="margin-bottom:20px;">Use o usuário e senha que você criou</p>
+<div class="form-box">
 <div class="field">
 <label>Nome de Usuário</label>
-<input type="text" id="login-cliente-usuario" placeholder="seu usuario" maxlength="20" autocomplete="off">
+<input type="text" id="login-cliente-usuario" placeholder="seu usuario" maxlength="30" autocomplete="off">
 </div>
 <div class="field">
 <label>Senha</label>
-<input type="password" id="login-cliente-senha" placeholder="sua senha" maxlength="30" autocomplete="off">
+<input type="password" id="login-cliente-senha" placeholder="sua senha" maxlength="40" autocomplete="off">
 </div>
 <div class="lembrar-wrap" id="lembrar-wrap" tabindex="0" onclick="toggleLembrar(event)">
 <input type="checkbox" id="lembrar-senha">
@@ -199,6 +232,7 @@ body{cursor:none;}
 </div>
 <button class="btn btn-primario" onclick="fazerLoginCliente()" tabindex="0">Entrar</button>
 <span class="msg-erro" id="erro-login-cliente"></span>
+</div>
 <div class="divisor-login">
 <p>Não tem conta ainda?</p>
 <button class="btn btn-cinza" onclick="mostrarTela('tela-planos')" tabindex="0">Ver Planos</button>
@@ -212,7 +246,7 @@ body{cursor:none;}
 <span class="badge badge-amarelo">PAGAMENTO PIX</span>
 <h2>Escaneie o QR Code</h2>
 <p>Use o app do seu banco para pagar</p>
-<p id="qr-valor" style="font-size:26px;color:#00c853;font-weight:900;margin-bottom:14px;">R$ 0,00</p>
+<p id="qr-valor" style="font-size:28px;color:#00c853;font-weight:900;margin-bottom:16px;">R$ 0,00</p>
 <div class="qr-img"><img id="qr-image" src="" alt="QR Code PIX"></div>
 <div class="pix-code" id="qr-code-txt">Carregando código PIX...</div>
 <button class="btn btn-cinza" onclick="copiarPix()" id="btn-copiar" tabindex="0">📋 Copiar Código PIX</button>
@@ -255,6 +289,7 @@ var SUPABASE_URL="https://bknbydcaaalyeyncfyze.supabase.co";
 var SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNfeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
 var FUNC_VERIFICAR=SUPABASE_URL+"/functions/v1/verificar-dispositivo";
 var FUNC_CRIAR_COBRANCA=SUPABASE_URL+"/functions/v1/super-service";
+var FUNC_LOGIN=SUPABASE_URL+"/functions/v1/login-cliente";
 var NUMERO_WHATSAPP="55997340723";
 var DEVICE_KEY="redplay_device_id";
 var LEMBRAR_KEY="redplay_credenciais";
@@ -298,12 +333,10 @@ var resp=null;
 try{resp=JSON.parse(xhr.responseText);}catch(e){resp=null;}
 if(xhr.status>=200&&xhr.status<300)callback(null,resp);
 else{
-// Tenta extrair mensagem do erro
 var msg="HTTP "+xhr.status;
 if(resp&&resp.erro)msg=resp.erro;
 else if(resp&&resp.mensagem)msg=resp.mensagem;
 else if(resp&&resp.message)msg=resp.message;
-else if(resp&&resp.error)msg=typeof resp.error==='string'?resp.error:JSON.stringify(resp.error);
 callback(msg,resp);
 }
 }
@@ -536,15 +569,17 @@ document.getElementById('qr-image').src='';
 document.getElementById('polling-status').style.display='flex';
 document.getElementById('polling-status').innerHTML='<div class="mini-loader"></div><span>Aguardando pagamento...</span>';
 var device_id=obterDeviceId();
-chamarFuncao(FUNC_CRIAR_COBRANCA,{action:'criar_cobranca',plano:plano,android_id:device_id},function(erro,dados){
-if(erro||!dados||!dados.success){
-document.getElementById('qr-code-txt').innerText='Erro: '+(erro||'Não foi possível gerar');
-document.getElementById('polling-status').innerHTML='<span style="color:#ff4d4d;">Não foi possível gerar a cobrança.</span>';
+chamarFuncao(FUNC_CRIAR_COBRANCA,{plano:plano,device_id:device_id},function(erro,dados){
+if(erro||!dados||!dados.sucesso){
+var msg=erro||(dados&&dados.erro)||'Não foi possível gerar a cobrança.';
+document.getElementById('qr-code-txt').innerText='Erro: '+msg;
+document.getElementById('polling-status').innerHTML='<span style="color:#ff4d4d;">'+msg+'</span>';
 return;
 }
-if(dados.qrcode_base64)document.getElementById('qr-image').src='data:image/png;base64,'+dados.qrcode_base64;
-if(dados.copia_cola)document.getElementById('qr-code-txt').innerText=dados.copia_cola;
-if(dados.txid||dados.payment_id)iniciarPolling(dados.txid||dados.payment_id);
+if(dados.qr_code_base64)document.getElementById('qr-image').src='data:image/png;base64,'+dados.qr_code_base64;
+if(dados.qr_code)document.getElementById('qr-code-txt').innerText=dados.qr_code;
+else if(dados.copia_cola)document.getElementById('qr-code-txt').innerText=dados.copia_cola;
+if(dados.payment_id||dados.order_id)iniciarPolling(dados.payment_id||dados.order_id);
 });
 }
 
@@ -581,8 +616,8 @@ clearInterval(pollingTimer);
 pollingEl.innerHTML='<span style="color:#ff4d4d;">Pagamento não detectado.</span>';
 return;
 }
-chamarFuncao(FUNC_CRIAR_COBRANCA,{action:'verificar_pagamento',payment_id:paymentId},function(erro,dados){
-if(!erro&&dados&&dados.pago){
+chamarFuncao(FUNC_CRIAR_COBRANCA,{verificar:paymentId,payment_id:paymentId},function(erro,dados){
+if(!erro&&dados&&(dados.pago||dados.status==='approved'||dados.status==='pago')){
 clearInterval(pollingTimer);
 pollingEl.innerHTML='<span style="color:#00c853;">✅ Pagamento confirmado!</span>';
 setTimeout(iniciarApp,2000);
@@ -591,7 +626,7 @@ setTimeout(iniciarApp,2000);
 },5000);
 }
 
-/* ==================== LOGIN (com mensagens de erro reais) ==================== */
+/* ==================== LOGIN (usa função dedicada) ==================== */
 function toggleLembrar(e){
 if(e)e.stopPropagation();
 var cb=document.getElementById('lembrar-senha');
@@ -616,6 +651,7 @@ var senha=document.getElementById('login-cliente-senha').value.trim();
 var erroEl=document.getElementById('erro-login-cliente');
 var lembrar=document.getElementById('lembrar-senha').checked;
 erroEl.innerText='';
+erroEl.style.color='#ff4d4d';
 if(!usuario||!senha){erroEl.innerText='Preencha todos os campos.';return;}
 
 if(statusAtual&&statusAtual.status==='expirado'){
@@ -624,37 +660,27 @@ setTimeout(irParaPagamento,1500);
 return;
 }
 
-// Feedback visual no botão
-erroEl.innerText='Conectando...';
 erroEl.style.color='#ffab00';
+erroEl.innerText='Conectando...';
 
 var device_id=obterDeviceId();
-chamarFuncao(FUNC_CRIAR_COBRANCA,{action:'login',usuario:usuario,senha:senha,android_id:device_id},function(erro,dados){
+chamarFuncao(FUNC_LOGIN,{usuario:usuario,senha:senha,android_id:device_id},function(erro,dados){
 if(erro){
-// Mostra o erro real do servidor
 erroEl.style.color='#ff4d4d';
-if(erro.indexOf('HTTP 500')>=0){
-erroEl.innerText='Erro no servidor. Tente novamente em instantes.';
-}else if(erro.indexOf('HTTP 401')>=0||erro.indexOf('HTTP 403')>=0){
-erroEl.innerText='Acesso negado. Contate o suporte.';
-}else if(erro.indexOf('HTTP 404')>=0){
-erroEl.innerText='Serviço indisponível. Contate o suporte.';
-}else if(erro.indexOf('Falha na conexão')>=0){
-erroEl.innerText='Sem internet. Verifique sua conexão.';
-}else if(erro.indexOf('Tempo esgotado')>=0){
-erroEl.innerText='Servidor demorou para responder. Tente novamente.';
-}else{
 erroEl.innerText=erro;
-}
 return;
 }
 if(!dados||!dados.success){
 erroEl.style.color='#ff4d4d';
-erroEl.innerText=(dados&&(dados.erro||dados.mensagem||dados.message))||'Usuário ou senha inválidos.';
+erroEl.innerText=(dados&&dados.erro)||'Usuário ou senha inválidos.';
 return;
 }
 erroEl.style.color='';
 salvarCredenciais(usuario,senha,lembrar);
+if(dados.status==='bloqueado_painel'){bloquear('Sua conta foi suspensa.');return;}
+if(dados.status==='expirado'){statusAtual={status:'expirado'};exibirTrial();return;}
+if(dados.status==='ativo'||dados.status==='pago'){statusAtual={status:'ativo',usuario:dados.usuario};irParaBoasVindas(usuario);return;}
+statusAtual={status:'trial',usuario:dados.usuario,trial_inicio:statusAtual?statusAtual.trial_inicio:null};
 irParaBoasVindas(usuario);
 });
 }
