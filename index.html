@@ -7,7 +7,7 @@
 <title>RedPlay TV</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--vermelho:#e50914;--vermelho-escuro:#b20710;--verde:#00c853;--amarelo:#ffab00;--dourado:#ffc107;--roxo:#8e24aa;--preto:#000;--painel:#0d0d0d;--painel-hover:#1a1a1a;--borda:#1f1f1f;--texto:#fff;--texto-suave:#888;}
+:root{--vermelho:#e50914;--vermelho-escuro:#b20710;--verde:#00c853;--amarelo:#ffab00;--dourado:#ffc107;--roxo:#8e24aa;--preto:#000;--painel:#0d0d0d;--borda:#1f1f1f;--texto:#fff;--texto-suave:#888;}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Montserrat',Arial,sans-serif;-webkit-tap-highlight-color:transparent;}
 html,body{height:100vh;width:100vw;overflow:hidden;background:#000;color:#fff;user-select:none;-webkit-user-select:none;}
 body{display:flex;justify-content:center;align-items:center;background:#000;}
@@ -230,22 +230,17 @@ body{cursor:none;}
 
 <script>
 var SUPABASE_URL="https://bknbydcaaalyeyncfyze.supabase.co";
-var SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNfeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_z96rFkWrk7fTegOk6m_4";
+var SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbmJ5ZGNhYWFseWV5bmNfeXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5OTUzODcsImV4cCI6MjEwNjU3MTM4N30.FMR90ELrwArXl3s3lko1c_Zy96rFkWrk7fTegOk6m_4";
 var FUNC_VERIFICAR=SUPABASE_URL+"/functions/v1/verificar-dispositivo";
 var FUNC_CRIAR_COBRANCA=SUPABASE_URL+"/functions/v1/super-service";
 var NUMERO_WHATSAPP="55997340723";
 var DEVICE_KEY="redplay_device_id";
 var LEMBRAR_KEY="redplay_credenciais";
-var TRIAL_INICIO_KEY="redplay_trial_inicio";
-var TRIAL_VISTO_KEY="redplay_trial_visto";
-var TRIAL_STATUS_KEY="redplay_trial_status";
-var BLOQUEIO_KEY="redplay_bloqueio";
-var TRIAL_DURACAO_MS=3*24*60*60*1000;
 var pollingTimer=null;
 var pollingTentativas=0;
 var MAX_POLLING=60;
-var ultimoStatus=null;
 var contadorTimer=null;
+var statusAtual=null;
 
 function obterDeviceId(){
 try{
@@ -303,15 +298,6 @@ if(id==='tela-login-cliente')carregarCredenciaisSalvas();
 
 window.addEventListener('load',function(){
 try{if(window.location.search.indexOf('reset=1')>=0)localStorage.clear();}catch(e){}
-
-var bloqueioSalvo=null;
-try{bloqueioSalvo=localStorage.getItem(BLOQUEIO_KEY);}catch(e){}
-if(bloqueioSalvo){
-document.getElementById('splash').style.display='none';
-bloquear(bloqueioSalvo);
-return;
-}
-
 setTimeout(function(){
 var splash=document.getElementById('splash');
 if(splash){
@@ -321,38 +307,16 @@ splash.style.display='none';
 iniciarApp();
 },400);
 }else{iniciarApp();}
-},1500);
+},1200);
 });
 
-function obterStatusTrial(){
-var inicio=null,visto=false,statusSalvo=null;
-try{
-var is=localStorage.getItem(TRIAL_INICIO_KEY);
-if(is)inicio=parseInt(is);
-visto=localStorage.getItem(TRIAL_VISTO_KEY)==='true';
-statusSalvo=localStorage.getItem(TRIAL_STATUS_KEY);
-}catch(e){}
-
-if(statusSalvo==='ativo'||statusSalvo==='bloqueado'||statusSalvo==='expirado'){
-return {status:statusSalvo,inicio:inicio,visto:visto};
-}
-
-if(!inicio){
-var agora=Date.now();
-try{localStorage.setItem(TRIAL_INICIO_KEY,agora.toString());}catch(e){}
-return {status:'trial',inicio:agora,visto:false,restante:TRIAL_DURACAO_MS};
-}
-
-var restante=TRIAL_DURACAO_MS-(Date.now()-inicio);
-if(restante<=0){
-try{localStorage.setItem(TRIAL_STATUS_KEY,'expirado');}catch(e){}
-return {status:'expirado',inicio:inicio,visto:visto,restante:0};
-}
-return {status:'trial',inicio:inicio,visto:visto,restante:restante};
-}
-
-function calcularRestante(inicio){
-var restante=TRIAL_DURACAO_MS-(Date.now()-inicio);
+/* =====================================================
+   CÁLCULO DO TEMPO RESTANTE (usando trial_inicio do servidor)
+   ===================================================== */
+function calcularRestante(inicioMs){
+var TRIAL_DURACAO_MS=3*24*60*60*1000;
+if(!inicioMs)return {dias:0,horas:0,min:0,seg:0,expirado:true};
+var restante=TRIAL_DURACAO_MS-(Date.now()-inicioMs);
 if(restante<=0)return {dias:0,horas:0,min:0,seg:0,expirado:true};
 return {
 dias:Math.floor(restante/(24*60*60*1000)),
@@ -364,24 +328,19 @@ expirado:false
 }
 
 function atualizarContadorTrial(){
-var info=obterStatusTrial();
+if(!statusAtual||!statusAtual.trial_inicio){return;}
 var el=document.getElementById('trial-contador');
 if(!el)return;
+var inicioMs=typeof statusAtual.trial_inicio==='number'
+? statusAtual.trial_inicio
+: new Date(statusAtual.trial_inicio).getTime();
 
-if(info.status==='expirado'){
-el.className='trial-contador expirado';
-el.innerHTML='⚠ SEU TESTE EXPIROU<span class="tempo">Escolha um plano para continuar</span>';
-return;
-}
-
-var t=calcularRestante(info.inicio);
+var t=calcularRestante(inicioMs);
 if(t.expirado){
-try{localStorage.setItem(TRIAL_STATUS_KEY,'expirado');}catch(e){}
 el.className='trial-contador expirado';
 el.innerHTML='⚠ SEU TESTE EXPIROU<span class="tempo">Escolha um plano para continuar</span>';
 return;
 }
-
 var partes=[];
 if(t.dias>0)partes.push(t.dias+'d');
 partes.push(String(t.horas).padStart(2,'0')+'h');
@@ -402,21 +361,17 @@ function pararContadorTrial(){
 if(contadorTimer){clearInterval(contadorTimer);contadorTimer=null;}
 }
 
+/* =====================================================
+   EXIBIR TRIAL (dados vindos do servidor)
+   ===================================================== */
 function exibirTrial(){
-var info=obterStatusTrial();
-
-if(info.visto&&info.status==='trial'){
-liberarAcessoApp();
-return;
-}
-
-try{localStorage.setItem(TRIAL_VISTO_KEY,'true');}catch(e){}
+var info=statusAtual;
+if(!info){mostrarTela('tela-erro');return;}
 
 var tela=document.getElementById('tela-trial');
 tela.classList.remove('expirado');
 
 var btnContinuar=document.getElementById('btn-trial-continuar');
-var btnPagar=document.getElementById('btn-trial-pagar');
 var btnConta=document.getElementById('btn-trial-conta');
 var badge=document.getElementById('badge-trial');
 var titulo=document.getElementById('trial-titulo');
@@ -456,9 +411,11 @@ mostrarTela('tela-trial');
 iniciarContadorTrial();
 }
 
+/* =====================================================
+   AÇÕES DA TELA DE TRIAL
+   ===================================================== */
 function continuarTeste(){
-var info=obterStatusTrial();
-if(info.status==='expirado'){
+if(!statusAtual||statusAtual.status==='expirado'){
 alert('Seu teste expirou. Escolha um plano para continuar.');
 irParaPagamento();
 return;
@@ -474,8 +431,7 @@ mostrarTela('tela-planos');
 
 function irParaConta(){
 pararContadorTrial();
-var info=obterStatusTrial();
-if(info.status==='expirado'){
+if(!statusAtual||statusAtual.status==='expirado'){
 alert('Seu teste expirou. Faça o pagamento para continuar.');
 irParaPagamento();
 return;
@@ -484,14 +440,16 @@ mostrarTela('tela-login-cliente');
 }
 
 function voltarDosPlanos(){
-var info=obterStatusTrial();
-if(info.status==='expirado'){
+if(statusAtual&&statusAtual.status==='expirado'){
 mostrarTela('tela-trial');
 }else{
 mostrarTela('tela-planos');
 }
 }
 
+/* =====================================================
+   FLUXO PRINCIPAL
+   ===================================================== */
 function iniciarApp(){
 var credenciais=null;
 try{
@@ -506,35 +464,25 @@ document.getElementById('msg-erro-conexao').innerText="Erro ao conectar: "+erro;
 mostrarTela('tela-erro');
 return;
 }
-if(!dados){
+if(!dados||!dados.status){
 document.getElementById('msg-erro-conexao').innerText="Resposta inválida do servidor.";
 mostrarTela('tela-erro');
 return;
 }
-ultimoStatus=dados;
+statusAtual=dados;
 
 if(dados.status==='bloqueado_painel'){
-var motivo=dados.motivo||'Sua conta foi suspensa pelo suporte.';
-try{localStorage.setItem(BLOQUEIO_KEY,motivo);}catch(e){}
-try{localStorage.setItem(TRIAL_STATUS_KEY,'bloqueado');}catch(e){}
-bloquear(motivo);
+bloquear(dados.motivo||'Sua conta foi suspensa pelo suporte.');
 return;
 }
 
 if(dados.status==='ativo'||dados.status==='pago'){
-try{localStorage.setItem(TRIAL_STATUS_KEY,'ativo');}catch(e){}
 var nome=dados.usuario||(credenciais?credenciais.usuario:'CLIENTE');
 irParaBoasVindas(nome);
 return;
 }
 
-if(dados.status==='expirado'){
-try{localStorage.setItem(TRIAL_STATUS_KEY,'expirado');}catch(e){}
-exibirTrial();
-return;
-}
-
-try{localStorage.setItem(TRIAL_STATUS_KEY,'trial');}catch(e){}
+// Trial ou expirado
 exibirTrial();
 });
 }
@@ -572,6 +520,9 @@ var msg=encodeURIComponent('Olá! Preciso de ajuda com a RedPlay.');
 window.open('https://wa.me/'+NUMERO_WHATSAPP+'?text='+msg,'_blank');
 }
 
+/* =====================================================
+   PLANOS E PAGAMENTO
+   ===================================================== */
 function escolherPlano(plano){
 var precos={'mensal_primeiro':'R$ 12,90','mensal':'R$ 18,90','anual':'R$ 149,90','lifetime':'R$ 450,00'};
 document.getElementById('qr-valor').innerText=precos[plano]||'R$ 0,00';
@@ -579,6 +530,7 @@ mostrarTela('tela-qrcode');
 document.getElementById('qr-code-txt').innerText='Carregando código PIX...';
 document.getElementById('qr-image').src='';
 document.getElementById('polling-status').style.display='flex';
+document.getElementById('polling-status').innerHTML='<div class="mini-loader"></div><span>Aguardando pagamento...</span>';
 
 var device_id=obterDeviceId();
 chamarFuncao(FUNC_CRIAR_COBRANCA,{action:'criar_cobranca',plano:plano,android_id:device_id},function(erro,dados){
@@ -630,13 +582,15 @@ chamarFuncao(FUNC_CRIAR_COBRANCA,{action:'verificar_pagamento',payment_id:paymen
 if(!erro&&dados&&dados.pago){
 clearInterval(pollingTimer);
 pollingEl.innerHTML='<span style="color:#00c853;">✅ Pagamento confirmado!</span>';
-try{localStorage.setItem(TRIAL_STATUS_KEY,'ativo');}catch(e){}
 setTimeout(iniciarApp,2000);
 }
 });
 },5000);
 }
 
+/* =====================================================
+   LOGIN
+   ===================================================== */
 function toggleLembrar(e){
 if(e)e.stopPropagation();
 var cb=document.getElementById('lembrar-senha');
@@ -663,8 +617,7 @@ var lembrar=document.getElementById('lembrar-senha').checked;
 erroEl.innerText='';
 if(!usuario||!senha){erroEl.innerText='Preencha todos os campos.';return;}
 
-var info=obterStatusTrial();
-if(info.status==='expirado'){
+if(statusAtual&&statusAtual.status==='expirado'){
 erroEl.innerText='Seu teste expirou. Faça o pagamento para continuar.';
 setTimeout(irParaPagamento,1500);
 return;
@@ -695,8 +648,11 @@ localStorage.removeItem(LEMBRAR_KEY);
 }catch(e){}
 }
 
+/* =====================================================
+   BOAS-VINDAS DINÂMICA
+   ===================================================== */
 function irParaBoasVindas(usuario){
-var info=obterStatusTrial();
+var info=statusAtual||{};
 
 var emoji=document.getElementById('bv-emoji');
 var badge=document.getElementById('bv-badge');
@@ -709,17 +665,20 @@ var msgRodape=document.getElementById('bv-msg');
 document.getElementById('bv-usuario').innerText=usuario.toUpperCase();
 
 if(info.status==='trial'){
-var t=calcularRestante(info.inicio);
 var tempoStr='';
+if(info.trial_inicio){
+var inicioMs=typeof info.trial_inicio==='number'?info.trial_inicio:new Date(info.trial_inicio).getTime();
+var t=calcularRestante(inicioMs);
 if(t.dias>0)tempoStr=t.dias+' dia'+(t.dias>1?'s':'')+' e '+t.horas+'h';
 else if(t.horas>0)tempoStr=t.horas+'h e '+t.min+'min';
 else tempoStr=t.min+'min';
+}
 if(emoji)emoji.innerText='⏳';
 if(badge){badge.className='badge badge-amarelo';badge.innerText='✓ PERÍODO DE TESTE';}
 if(titulo)titulo.innerText='Bem-vindo!';
-if(msg)msg.innerHTML='Você está no <span>teste grátis</span>. Restam '+tempoStr+' para escolher um plano.';
+if(msg)msg.innerHTML='Você está no <span>teste grátis</span>.'+(tempoStr?' Restam '+tempoStr+' para escolher um plano.':'');
 if(statusBox){statusBox.style.background='#1a1408';statusBox.style.borderColor='#ffab00';}
-if(statusTxt){statusTxt.style.color='#ffc107';statusTxt.innerText='⏳ TESTE ATIVO - '+tempoStr;}
+if(statusTxt){statusTxt.style.color='#ffc107';statusTxt.innerText='⏳ TESTE ATIVO'+(tempoStr?' - '+tempoStr:'');}
 if(msgRodape)msgRodape.innerText='Carregando ambiente da TV...';
 }else if(info.status==='expirado'){
 if(emoji)emoji.innerText='⛔';
@@ -749,6 +708,9 @@ setTimeout(liberarAcessoApp,3500);
 }
 }
 
+/* =====================================================
+   NAVEGAÇÃO D-PAD
+   ===================================================== */
 document.addEventListener('keydown',function(e){
 var card=document.querySelector('.card.ativo');
 if(!card)return;
@@ -783,4 +745,3 @@ fazerLoginCliente();
 </script>
 </body>
 </html>
-
